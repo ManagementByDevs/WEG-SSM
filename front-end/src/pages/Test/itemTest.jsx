@@ -1,57 +1,187 @@
 import React, { useContext, useState } from "react";
 import {
-  Drawer,
-  Button,
-  ListItem,
-  ListSubheader,
   ListItemIcon,
   ListItemText,
   ListItemButton,
   Collapse,
   List,
   Divider,
+  Checkbox,
+  FormControlLabel,
   Box,
-  Typography,
 } from "@mui/material";
 
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import SendIcon from "@mui/icons-material/Send";
+import AbcOutlinedIcon from "@mui/icons-material/AbcOutlined";
+import PinOutlinedIcon from "@mui/icons-material/PinOutlined";
+import OutlinedFlagIcon from "@mui/icons-material/OutlinedFlag";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import TodayOutlinedIcon from "@mui/icons-material/TodayOutlined";
+
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 export default function ItemTest(props) {
+  // Context para alterar a linguagem do sistema
+  const { texts } = useContext(TextLanguageContext);
 
-  const [open, setOpen] = useState(true);
+  // Context para alterar o tamanho da fonte
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  const [open, setOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);
   };
 
+  /** Função para mudar o valor do checkbox de ordenação por score "Menor Score" */
+  const mudarCheck1 = () => {
+    props.setOrdenacaoScore([!props.ordenacaoScore[0], false]);
+  };
+
+  /** Função para mudar o valor do checkbox de ordenação por score "Maior Score" */
+  const mudarCheck2 = () => {
+    props.setOrdenacaoScore([false, !props.ordenacaoScore[1]]);
+  };
+
+  /** Função para mudar o valor do checkbox de ordenação por título "Z-A" ou por número sequencial "Decrescente" */
+  const mudarCheck3 = () => {
+    props.setOrdenacaoTitulo([!props.ordenacaoTitulo[0], false]);
+  };
+
+  /** Função para mudar o valor do checkbox de ordenação por título "A-Z" ou por número sequencial "Crescente" */
+  const mudarCheck4 = () => {
+    props.setOrdenacaoTitulo([false, !props.ordenacaoTitulo[1]]);
+  };
+
+  /** Função para mudar o valor do checkbox de ordenação por data "Mais Velha" */
+  const mudarCheck5 = () => {
+    props.setOrdenacaoDate([!props.ordenacaoDate[0], false]);
+  };
+
+  /** Função para mudar o valor do checkbox de ordenação por data "Mais Nova" */
+  const mudarCheck6 = () => {
+    props.setOrdenacaoDate([false, !props.ordenacaoDate[1]]);
+  };
+
   return (
     <>
-      <ListItemButton onClick={handleClick}>
+      <ListItemButton onClick={handleClick} sx={{backgroundColor: "component.main"}}>
         <ListItemIcon>
-          <InboxIcon />
+          {props.opcao.id == 1 ? (
+            <AbcOutlinedIcon />
+          ) : props.opcao.id == 2 ? (
+            <PinOutlinedIcon />
+          ) : props.opcao.id == 3 ? (
+            <OutlinedFlagIcon />
+          ) : props.opcao.id == 4 ? (
+            <CalendarMonthOutlinedIcon />
+          ) : props.opcao.id == 5 ? (
+            <TodayOutlinedIcon />
+          ) : (
+            <Box />
+          )}
         </ListItemIcon>
-        <ListItemText primary={props.opcao.tipo} />
+        {
+          props.valorAba == 4 && props.opcao.id == 2 ? (
+            <ListItemText primary="PPM" />
+          ) : (
+            <ListItemText primary={props.opcao.tipo} />
+          )
+        }
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
-      <Divider/>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="Starred" />
+      <Divider />
+      <Collapse in={open}>
+        <List component="div">
+          <ListItemButton>
+            {props.opcao.id == 1 ? (
+              <FormControlLabel
+                checked={props.ordenacaoTitulo[1]}
+                onChange={mudarCheck4}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.az}
+              />
+            ) : props.opcao.id == 2 ? (
+              <FormControlLabel
+                checked={props.ordenacaoTitulo[1]}
+                onChange={mudarCheck4}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.crescente}
+              />
+            ) : props.opcao.id == 3 ? (
+              <FormControlLabel
+                checked={props.ordenacaoScore[1]}
+                onChange={mudarCheck2}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.maiorScore}
+              />
+            ) : props.opcao.id == 4 ? (
+              <FormControlLabel
+                checked={props.ordenacaoDate[1]}
+                onChange={mudarCheck6}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.maisRecente}
+              />
+            ) : props.opcao.id == 5 ? (
+              <FormControlLabel
+                checked={props.ordenacaoDate[1]}
+                onChange={mudarCheck6}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.maisRecente}
+              />
+            ) : (
+              <Box />
+            )}
           </ListItemButton>
-          <Divider/>
+          <Divider />
+          <ListItemButton>
+            {props.opcao.id == 1 ? (
+              <FormControlLabel
+                checked={props.ordenacaoTitulo[0]}
+                onChange={mudarCheck3}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.za}
+              />
+            ) : props.opcao.id == 2 ? (
+              <FormControlLabel
+                checked={props.ordenacaoTitulo[0]}
+                onChange={mudarCheck3}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.decrescente}
+              />
+            ) : props.opcao.id == 3 ? (
+              <FormControlLabel
+                checked={props.ordenacaoScore[0]}
+                onChange={mudarCheck1}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.menorScore}
+              />
+            ) : props.opcao.id == 4 ? (
+              <FormControlLabel
+                checked={props.ordenacaoDate[0]}
+                onChange={mudarCheck5}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.maisAntiga}
+              />
+            ) : props.opcao.id == 5 ? (
+              <FormControlLabel
+                checked={props.ordenacaoDate[0]}
+                onChange={mudarCheck5}
+                control={<Checkbox />}
+                label={texts.modalOrdenacao.maisAntiga}
+              />
+            ) : (
+              <Box />
+            )}
+          </ListItemButton>
+          <Divider />
         </List>
       </Collapse>
     </>
