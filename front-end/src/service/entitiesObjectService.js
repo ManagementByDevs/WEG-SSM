@@ -92,6 +92,7 @@ class EntitiesObjectService {
       tamanho: "",
       titulo: "",
       visibilidade: true,
+      motivoRecusa: "",
       presenteEm: "", // "Pauta" | "Ata" | "Nada"
     };
   }

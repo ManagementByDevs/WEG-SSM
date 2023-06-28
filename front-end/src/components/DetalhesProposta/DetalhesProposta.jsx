@@ -24,6 +24,7 @@ import EditOffIcon from "@mui/icons-material/EditOff";
 import ModalConfirmacao from "../Modais/Modal-confirmacao/ModalConfirmacao";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 import DetalhesPropostaEditMode from "../DetalhesPropostaEditMode/DetalhesPropostaEditMode";
+import ModalRecusarDemanda from "../Modais/Modal-recusarDemanda/ModalRecusarDemanda";
 
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
@@ -52,8 +53,8 @@ const DetalhesProposta = ({
   parecerInformacao = "",
   parecerDG = "",
   parecerInformacaoDG = "",
-  setDadosProposta = () => {},
-  setFeedbackEditSuccess = () => {},
+  setDadosProposta = () => { },
+  setFeedbackEditSuccess = () => { },
   onlyView = false,
 }) => {
   // Context para alterar o tamanho da fonte
@@ -259,11 +260,11 @@ const DetalhesProposta = ({
               onClick={() =>
                 lerTexto(
                   texts.detalhesProposta.data +
-                    " " +
-                    DateService.getTodaysDateUSFormat(
-                      DateService.getDateByMySQLFormat(proposta.data),
-                      texts.linguagem
-                    )
+                  " " +
+                  DateService.getTodaysDateUSFormat(
+                    DateService.getDateByMySQLFormat(proposta.data),
+                    texts.linguagem
+                  )
                 )
               }
             >
@@ -344,8 +345,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.solicitante?.nome +
-                      " - " +
-                      proposta.solicitante?.departamento?.nome
+                    " - " +
+                    proposta.solicitante?.departamento?.nome
                   )
                 }
               >
@@ -368,8 +369,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.buSolicitante?.siglaBu +
-                      " - " +
-                      proposta.buSolicitante?.nomeBu
+                    " - " +
+                    proposta.buSolicitante?.nomeBu
                   )
                 }
               >
@@ -392,8 +393,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.gerente?.nome +
-                      " - " +
-                      proposta.gerente?.departamento?.nome
+                    " - " +
+                    proposta.gerente?.departamento?.nome
                   )
                 }
               >
@@ -419,8 +420,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.forum?.siglaForum +
-                        " - " +
-                        proposta.forum?.nomeForum
+                      " - " +
+                      proposta.forum?.nomeForum
                     )
                   }
                 >
@@ -460,8 +461,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.secaoTI.siglaSecao +
-                      " - " +
-                      proposta.secaoTI.nomeSecao
+                    " - " +
+                    proposta.secaoTI.nomeSecao
                   )
                 }
               >
@@ -684,13 +685,13 @@ const DetalhesProposta = ({
                       DateService.getDateByMySQLFormat(proposta.inicioExecucao),
                       texts.linguagem
                     ) +
-                      " " +
-                      texts.detalhesProposta.ate +
-                      " " +
-                      DateService.getTodaysDateUSFormat(
-                        DateService.getDateByMySQLFormat(proposta.fimExecucao),
-                        texts.linguagem
-                      )
+                    " " +
+                    texts.detalhesProposta.ate +
+                    " " +
+                    DateService.getTodaysDateUSFormat(
+                      DateService.getDateByMySQLFormat(proposta.fimExecucao),
+                      texts.linguagem
+                    )
                   )
                 }
               >
@@ -721,8 +722,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.paybackValor +
-                        " " +
-                        proposta.paybackTipo.toLowerCase()
+                      " " +
+                      proposta.paybackTipo.toLowerCase()
                     )
                   }
                 >
@@ -817,6 +818,39 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.pareceres}:&nbsp;
               </Typography>
               <Box className="mx-4">
+
+                {proposta.motivoRecusa && proposta.status == "CANCELLED" ? (
+                  <Box>
+                    <Box className="flex items-center mt-4">
+                      {/* Label */}
+                      <Typography
+                        fontSize={FontConfig.medium}
+                        onClick={() =>
+                          lerTexto(
+                            texts.detalhesProposta.semComissao
+                          )
+                        }
+                      >
+                        {texts.detalhesProposta.semComissao}
+                      </Typography>
+                    </Box>
+                    {/* Comporta o texto do parecer da comissão */}
+                    <Box
+                      className="mt-2 mx-4 border-l-2 px-2"
+                      sx={{ borderColor: "primary.main" }}
+                      onClick={() =>
+                        lerTexto(proposta.motivoRecusa)
+                      }
+                    >
+                      <Typography
+                        fontSize={FontConfig.medium}
+                      >
+                        {proposta.motivoRecusa}
+                      </Typography>
+                    </Box>
+                  </Box>
+                ) : null}
+
                 {/* Parecer da Comissão */}
                 <ParecerComissao
                   proposta={proposta}
@@ -1053,9 +1087,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -1224,7 +1258,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 onClick={() =>
                   lerTexto(
                     beneficio.tipoBeneficio[0].toUpperCase() +
-                      beneficio.tipoBeneficio.substring(1).toLowerCase()
+                    beneficio.tipoBeneficio.substring(1).toLowerCase()
                   )
                 }
               >
@@ -1275,8 +1309,8 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
   emAprovacao = false,
@@ -1297,8 +1331,8 @@ const ParecerComissao = ({
 // Chamar o parecer da DG
 const ParecerDG = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
   emAprovacao = false,
@@ -1319,8 +1353,8 @@ const ParecerDG = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
 }) => {
@@ -1349,8 +1383,8 @@ const ParecerComissaoInsertText = ({
             onClick={() =>
               lerTexto(
                 texts.detalhesProposta.comissao +
-                  ": " +
-                  proposta.forum.nomeForum
+                ": " +
+                proposta.forum.nomeForum
               )
             }
           >
@@ -1420,7 +1454,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
     if (parecerComissaoInformacoesBox.current) {
       parecerComissaoInformacoesBox.current.innerHTML =
         proposta.parecerInformacao == null ||
-        proposta.parecerInformacao == "null"
+          proposta.parecerInformacao == "null"
           ? texts.detalhesProposta.semInformacoesAdicionais
           : proposta.parecerInformacao;
     }
@@ -1452,8 +1486,8 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
             onClick={() =>
               lerTexto(
                 texts.detalhesProposta.comissao +
-                  ": " +
-                  proposta.forum.nomeForum
+                ": " +
+                proposta.forum.nomeForum
               )
             }
           >
@@ -1488,8 +1522,8 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
 }) => {
@@ -1563,7 +1597,7 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
     if (parecerDGInformacoesBox.current) {
       parecerDGInformacoesBox.current.innerHTML =
         proposta.parecerInformacaoDG == null ||
-        proposta.parecerInformacaoDG == "null"
+          proposta.parecerInformacaoDG == "null"
           ? texts.detalhesProposta.semInformacoesAdicionais
           : proposta.parecerInformacaoDG;
     }
@@ -1611,8 +1645,8 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
 // Status da Proposta
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  getCorStatus = () => {},
+  setProposta = () => { },
+  getCorStatus = () => { },
 }) => {
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
@@ -1634,6 +1668,12 @@ const StatusProposta = ({
 
   // Estado do modal de confirmação de troca de status
   const [confirmEditStatus, setConfirmEditStatus] = useState(false);
+
+  // Estado do modal de informar motivo de recusa da proposta, caso seja selecionado o status "Cancelled"
+  const [modalRecusarProposta, setModalRecusarProposta] = useState(false);
+
+  // Variável armazenando o motivo da recusa caso a proposta seja reprovada
+  const [motivoRecusa, setMotivoRecusa] = useState("");
 
   // Estado do novo status
   const [newStatus, setNewStatus] = useState("");
@@ -1741,8 +1781,8 @@ const StatusProposta = ({
     setConfirmEditStatus(false);
 
     // Requisição para atualizar a proposta com o novo status
-    PropostaService.atualizarStatus(proposta.id, newStatus).then((response) => {
-      setProposta({ ...proposta, status: response.status });
+    PropostaService.atualizarStatus(proposta.id, newStatus, motivoRecusa).then((response) => {
+      setProposta({ ...proposta, status: response.status, motivoRecusa: motivoRecusa });
 
       // Criar notificação
       sendNotification(
@@ -1757,7 +1797,7 @@ const StatusProposta = ({
           "Status Editado para " + getStatusFormatted(newStatus),
           arquivo,
           CookieService.getUser().id
-        ).then(() => {});
+        ).then(() => { });
       });
     });
   };
@@ -1814,7 +1854,21 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
+      />
+      <ModalRecusarDemanda
+        open={modalRecusarProposta}
+        setOpen={setModalRecusarProposta}
+        handleClose={() => {
+          setModalRecusarProposta(false);
+          setMotivoRecusa("");
+        }}
+        confirmRecusarDemanda={() => {
+          setModalRecusarProposta(false);
+          confirmSelectStatus("CANCELLED");
+        }}
+        motivo={motivoRecusa}
+        setMotivo={setMotivoRecusa}
       />
       {/* Menu para a alteração de status */}
       <Menu
@@ -1855,7 +1909,7 @@ const StatusProposta = ({
         {/* Status de CANCELLED */}
         <MenuItem
           className="gap-2"
-          onClick={() => confirmSelectStatus("CANCELLED")}
+          onClick={() => setModalRecusarProposta(true)}
         >
           <Box
             className="w-4 h-4 rounded"

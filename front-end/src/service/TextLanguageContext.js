@@ -853,6 +853,7 @@ const TextLanguageContext = createContext({
         cancelled: "Cancelada",
         done: "Concluída",
       },
+      semComissao: "Cancelamento fora de comissão:"
     },
     modalAddPropostaPauta: {
       feedbacks: {

@@ -931,6 +931,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "Escopo vazio",
           semTabelasDeCusto: "Proposta sem tabelas de custo",
+          semComissao: "Cancelamento fora de comissão:"
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Dado inválido!",
@@ -1908,6 +1909,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "Empty scope",
           semTabelasDeCusto: "Proposal without cost tables",
+          semComissao: "Out of commission cancellation:"
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Invalid data!",
@@ -2852,6 +2854,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "空范围",
           semTabelasDeCusto: "没有成本表的提案",
+          semComissao: "佣金外取消："
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "无效数据",
@@ -3825,6 +3828,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "Alcance vacío",
           semTabelasDeCusto: "Propuesta sin tablas de costos",
+          semComissao: "Cancelación fuera de comisión:"
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "¡Datos inválidos!",
