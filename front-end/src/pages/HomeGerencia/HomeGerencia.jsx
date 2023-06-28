@@ -1788,7 +1788,10 @@ const HomeGerencia = () => {
                   <Box>
                     <TabPanel sx={{ padding: 0 }} value="1">
                       <Ajuda
-                        onClick={() => setIsTourMinhasDemandasOpen(true)}
+                        onClick={() => {
+                          setIsTourMinhasDemandasOpen(true)
+                          setState({ ...state, ["right"]: false });
+                        }}
                       />
                       <Box>
                         {isTourMinhasDemandasOpen ? (
@@ -1833,7 +1836,12 @@ const HomeGerencia = () => {
                   {/* Valores para as abas selecionadas */}
                   <Box id="primeiroDemandas">
                     <TabPanel sx={{ padding: 0 }} value="2">
-                      <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
+                      <Ajuda
+                        onClick={() => {
+                          setIsTourDemandasOpen(true)
+                          setState({ ...state, ["right"]: false });
+                        }}
+                      />
                       {isTourDemandasOpen ? (
                         <DemandaGerencia
                           key={1}
@@ -1879,7 +1887,10 @@ const HomeGerencia = () => {
                         onClick={() => {}}
                       >
                         <Ajuda
-                          onClick={() => setIsTourCriarPropostasOpen(true)}
+                          onClick={() => {
+                            setIsTourCriarPropostasOpen(true)
+                              setState({ ...state, ["right"]: false });
+                          }}
                         />
                         <Box id="primeiroCriarPropostas">
                           {isTourCriarPropostasOpen ? (
@@ -1921,7 +1932,12 @@ const HomeGerencia = () => {
                       </TabPanel>
                       <TabPanel sx={{ padding: 0 }} value="4">
                         <Box id="primeiroPropostas">
-                          <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
+                          <Ajuda
+                            onClick={() => {
+                              setIsTourPropostasOpen(true)
+                                setState({ ...state, ["right"]: false });
+                            }}
+                          />
                           {isTourPropostasOpen ? (
                             <DemandaGerencia
                               key={1}
@@ -1964,7 +1980,12 @@ const HomeGerencia = () => {
                       </TabPanel>
                       <Box id="primeiroPautas">
                         <TabPanel sx={{ padding: 0 }} value="5">
-                          <Ajuda onClick={() => setIsTourPautasOpen(true)} />
+                          <Ajuda
+                            onClick={() => {
+                              setIsTourPautasOpen(true)
+                                setState({ ...state, ["right"]: false });
+                            }}
+                          />
                           {isTourPautasOpen ? (
                             <Pauta
                               key={1}
@@ -1990,7 +2011,12 @@ const HomeGerencia = () => {
                       </Box>
                       <Box id="primeiroAtas">
                         <TabPanel sx={{ padding: 0 }} value="6">
-                          <Ajuda onClick={() => setIsTourAtasOpen(true)} />
+                          <Ajuda
+                            onClick={() => {
+                              setIsTourAtasOpen(true)
+                              setState({ ...state, ["right"]: false });
+                            }}
+                          />
                           {isTourAtasOpen ? (
                             <Pauta
                               key={1}

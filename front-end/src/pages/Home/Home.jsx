@@ -823,7 +823,12 @@ const Home = (props) => {
                 ) : (
                   <>
                     <TabPanel sx={{ padding: 0 }} value="1">
-                      <Ajuda onClick={() => setIsTourOpen(true)} />
+                      <Ajuda
+                        onClick={() => {
+                          setIsTourOpen(true);
+                          setState({ ...state, ["right"]: false });
+                        }}
+                      />
                       <Box>
                         {isTourOpen ? (
                           <Demanda
@@ -853,7 +858,12 @@ const Home = (props) => {
                       </Box>
                     </TabPanel>
                     <TabPanel sx={{ padding: 0 }} value="2">
-                      <Ajuda onClick={() => setIsTourOpenDepartamento(true)} />
+                      <Ajuda
+                        onClick={() => {
+                          setIsTourOpenDepartamento(true);
+                          setState({ ...state, ["right"]: false });
+                        }}
+                      />
                       <Box>
                         {isTourOpenDepartamento ? (
                           <Demanda
