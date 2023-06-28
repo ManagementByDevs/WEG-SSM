@@ -1,12 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  FormControl,
-  MenuItem,
-  Select,
-  Pagination,
-  Box,
-  Typography,
-} from "@mui/material";
+import { FormControl, MenuItem, Select, Pagination, Box, Typography, } from "@mui/material";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -14,6 +7,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente de paginação dos resultados na página principal
 const Paginacao = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -38,9 +32,7 @@ const Paginacao = (props) => {
       <Typography
         fontSize={FontConfig.medium}
         sx={{ marginRight: "15px" }}
-        onClick={() => {
-          lerTexto(texts.paginacao.itensPorPagina);
-        }}
+        onClick={() => { lerTexto(texts.paginacao.itensPorPagina); }}
       >
         {texts.paginacao.itensPorPagina}:
       </Typography>

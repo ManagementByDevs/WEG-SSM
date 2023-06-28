@@ -21,6 +21,7 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 /** Ícone e modal de notificações presente no Header */
 const NotificacaoModal = () => {
+
   /** Variável para pegar informações da URL */
   const location = useLocation();
 
@@ -122,7 +123,7 @@ const NotificacaoModal = () => {
           .then((response) => {
             setNotificacoes([...response.content]);
           })
-          .catch((error) => {});
+          .catch((error) => { });
       }
     );
   };
@@ -154,9 +155,7 @@ const NotificacaoModal = () => {
     <>
       <Feedback
         open={feedback}
-        handleClose={() => {
-          setFeedback(false);
-        }}
+        handleClose={() => { setFeedback(false); }}
         status={"info"}
         mensagem={texts.notificacaoModal.notificacaoLidaComSucesso}
       />
@@ -247,9 +246,9 @@ const NotificacaoModal = () => {
             >
               {notificacoes.length > 0
                 ? texts.notificacaoModal.verTudo +
-                  "(" +
-                  notificacoes.length +
-                  ")"
+                "(" +
+                notificacoes.length +
+                ")"
                 : texts.notificacaoModal.verNotificacoes}
             </Typography>
           </Box>

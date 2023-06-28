@@ -18,9 +18,9 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 // Componente para exibir as notificações do sistema
 const Notificacao = ({
   notificacao = EntitiesObjectService.notificacao(),
-  onNotificacaoClick = () => {},
+  onNotificacaoClick = () => { },
 }) => {
-  
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -46,12 +46,14 @@ const Notificacao = ({
     });
   };
 
+  // Função para retornar o titulo da notificação
   const retornaTitulo = () => {
     if (notificacao.numeroSequencial) {
       return formataStatus();
     }
   };
 
+  // Função para formatar o status da notificação
   const formataStatus = () => {
     let textAux = texts.notificacaoComponente;
 
@@ -144,8 +146,7 @@ const Notificacao = ({
               e.preventDefault();
               if (diferencaDias < 7 && diferencaDias > 1) {
                 lerTexto(
-                  `${diferencaDias.toFixed(0) * 1 - 1} ${
-                    texts.notificacaoComponente.diasAtras
+                  `${diferencaDias.toFixed(0) * 1 - 1} ${texts.notificacaoComponente.diasAtras
                   }`
                 );
               } else if (diferencaDias < 1 && diferencaDias > 0) {
@@ -165,22 +166,21 @@ const Notificacao = ({
           }}
         >
           {diferencaDias < 7 && diferencaDias > 1
-            ? `${diferencaDias.toFixed(0) * 1 - 1} ${
-                texts.notificacaoComponente.diasAtras
-              }`
+            ? `${diferencaDias.toFixed(0) * 1 - 1} ${texts.notificacaoComponente.diasAtras
+            }`
             : diferencaDias < 1 && diferencaDias > 0
-            ? texts.notificacaoComponente.hoje
-            : diferencaDias > 7 && diferencaDias < 14
-            ? texts.notificacaoComponente.umaSemanaAtras
-            : diferencaDias > 14 && diferencaDias < 21
-            ? texts.notificacaoComponente.duasSemanasAtras
-            : diferencaDias > 21 && diferencaDias < 28
-            ? texts.notificacaoComponente.tresSemanasAtras
-            : diferencaDias > 28 && diferencaDias < 30
-            ? texts.notificacaoComponente.quatroSemanasAtras
-            : diferencaDias > 31
-            ? texts.notificacaoComponente.maisDeUmMesAtras
-            : null}
+              ? texts.notificacaoComponente.hoje
+              : diferencaDias > 7 && diferencaDias < 14
+                ? texts.notificacaoComponente.umaSemanaAtras
+                : diferencaDias > 14 && diferencaDias < 21
+                  ? texts.notificacaoComponente.duasSemanasAtras
+                  : diferencaDias > 21 && diferencaDias < 28
+                    ? texts.notificacaoComponente.tresSemanasAtras
+                    : diferencaDias > 28 && diferencaDias < 30
+                      ? texts.notificacaoComponente.quatroSemanasAtras
+                      : diferencaDias > 31
+                        ? texts.notificacaoComponente.maisDeUmMesAtras
+                        : null}
         </Typography>
       </Box>
 

@@ -8,6 +8,7 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 import ItemOrdenacao from "./ItemOrdenacao/itemOrdenacao";
 
 export default function TemporaryDrawer(props) {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -17,6 +18,7 @@ export default function TemporaryDrawer(props) {
   /** Context para ler o texto da tela */
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
+  // Array com as opções de filtro
   const opcoesFiltrar = [
     {
       id: 1,
@@ -42,11 +44,7 @@ export default function TemporaryDrawer(props) {
 
   return (
     <List
-      sx={{
-        width: "18rem",
-        bgcolor: "background.paper",
-        padding: "0",
-      }}
+      sx={{ width: "18rem", bgcolor: "background.paper", padding: "0", }}
       component="nav"
       aria-labelledby="nested-list-subheader"
     >

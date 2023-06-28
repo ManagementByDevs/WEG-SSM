@@ -10,6 +10,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import DateService from "../../service/dateService";
 
 const Pautas = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -21,6 +22,12 @@ const Pautas = (props) => {
 
   // Estado para saber se a ata já foi apreciada pela DG
   const [isApreciada, setIsApreciada] = useState(false);
+
+  // useEffect utilizado para verificar se a ata já foi apreciada pela DG
+  useEffect(() => {
+    // Faz a verificação se a ata já foi apreciada pela DG
+    setIsApreciada(props.dados.publicadaDg);
+  }, []);
 
   // Função para formatar a data para melhor leitura
   const getDataFormatada = (dataReuniao) => {
@@ -41,11 +48,6 @@ const Pautas = (props) => {
     return "#C4C4C4";
   };
 
-  useEffect(() => {
-    // Faz a verificação se a ata já foi apreciada pela DG
-    setIsApreciada(props.dados.publicadaDg);
-  }, []);
-
   // Função que retorna o tamanho do componente que conterá o texto
   const retornaTamanhoTexto = () => {
     if (props.dados.publicada) {
@@ -57,14 +59,10 @@ const Pautas = (props) => {
 
   return (
     <Paper
-      onClick={(e) => {
-        props.onItemClick(props.dados);
-      }}
+      onClick={(e) => { props.onItemClick(props.dados); }}
       className="flex flex-col border-t-4 pt-2 pb-3 pl-6 pr-4"
       sx={{
-        "&:hover": {
-          backgroundColor: "hover.main",
-        },
+        "&:hover": { backgroundColor: "hover.main", },
         borderColor: "primary.main",
         cursor: "pointer",
       }}
@@ -120,9 +118,7 @@ const Pautas = (props) => {
             </Box>
           ) : (
             <Tooltip
-              title={
-                isApreciada || !props.dados.publicada ? texts.pauta.jaApreciada : texts.pauta.naoApreciada
-              }
+              title={isApreciada || !props.dados.publicada ? texts.pauta.jaApreciada : texts.pauta.naoApreciada}
             >
               <Box
                 className="w-6 h-4 ml-3 rounded"

@@ -6,6 +6,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 const NotificacaoDetermineIcon = ({ tipoIcone }) => {
+
   // Propriedades do ícone da notificação
   const properties = { fontSize: "30px" };
 

@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import {
-  Menu,
-  MenuItem,
-  Tooltip,
-  IconButton,
-  Avatar,
-  Typography,
-  Box,
-  FormControlLabel,
-  Switch,
-  Slider,
-} from "@mui/material/";
+import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography, Box, FormControlLabel, Switch, Slider, } from "@mui/material/";
 import { styled } from "@mui/material/styles";
 
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
@@ -22,7 +11,6 @@ import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlin
 import FontContext from "../../../service/FontContext";
 import ColorModeContext from "../../../service/TemaContext";
 import TextLanguageContext from "../../../service/TextLanguageContext";
-
 import UsuarioService from "../../../service/usuarioService";
 import CookieService from "../../../service/cookieService";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
@@ -75,6 +63,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
+// Modal com as preferências do usuário
 const UserModal = () => {
   //useContext para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -116,9 +105,7 @@ const UserModal = () => {
   // Variável de estado para controlar o tema
   const [temaDark, setTemaDark] = useState(mode == "dark" ? true : false);
 
-  /**
-   * Pega as preferências do usuário e as aplica no sistema
-   */
+  // Pega as preferências do usuário e as aplica no sistema
   const arrangePreferences = () => {
     if (!CookieService.getCookie("jwt")) return;
     UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
@@ -135,6 +122,7 @@ const UserModal = () => {
     );
   };
 
+  // Função para alterar o valor do slider de acordo com a preferência do usuário
   const alterarValorSlider = (preferencias) => {
     switch (preferencias.fontSizeDefault) {
       case "18px":
@@ -176,7 +164,7 @@ const UserModal = () => {
         usuario.preferencias = JSON.stringify(preferencias);
 
         if (usuario.id) {
-          UsuarioService.updateUser(usuario.id, usuario).then((e) => {});
+          UsuarioService.updateUser(usuario.id, usuario).then((e) => { });
         }
       }
     );
@@ -270,8 +258,10 @@ const UserModal = () => {
       saveNewPreference("fontSizeDefault", FontConfig.default);
     }
   }, [FontConfig]);
+
   // ********************************************** Fim Preferências **********************************************
 
+  // Navigate utilizado para navegar entre as páginas
   const navigate = useNavigate();
 
   // UseState para poder visualizar e alterar o chat icon
@@ -665,9 +655,7 @@ const UserModal = () => {
             fontSize={FontConfig?.medium}
             align="right"
             sx={{ fontWeight: 600, mt: "-16px" }}
-            onClick={() => {
-              lerTexto(texts.userModal.sair);
-            }}
+            onClick={() => { lerTexto(texts.userModal.sair); }}
           >
             {
               // Se estiver lendo, o texto é o padrão, se não, é o texto de sair

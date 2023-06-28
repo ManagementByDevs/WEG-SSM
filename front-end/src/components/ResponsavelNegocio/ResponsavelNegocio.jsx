@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Box, Typography, Tooltip } from "@mui/material";
 
@@ -11,7 +11,9 @@ import FontContext from "../../service/FontContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
+// Componente para exibir os responsáveis de negócio
 const ResponsavelNegocio = (props) => {
+
   // Context para alterar o idioma
   const { texts } = useContext(TextLanguageContext);
 
@@ -22,10 +24,9 @@ const ResponsavelNegocio = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
-    SpeechRecognitionContext
-  );
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
 
+  // useEffect utilizado para a leitura de texto
   useEffect(() => {
     switch (localClique) {
       case "nome":

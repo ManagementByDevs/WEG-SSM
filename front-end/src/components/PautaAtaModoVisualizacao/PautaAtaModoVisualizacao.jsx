@@ -23,10 +23,12 @@ const PautaAtaModoVisualizacao = ({
   isAta = false,
   setPautaSelecionada = () => { },
 }) => {
+  // Verificação utilizada para aparecer a tela de nenhum resultado encontrado
   if (listaPautas.length == 0) {
     return <NadaEncontrado />;
   }
 
+  // Verificação utilizada para mostrar o formato grid ou table
   if (nextModoVisualizacao == "TABLE")
     return (
       <PautaGrid
@@ -46,6 +48,7 @@ const PautaAtaModoVisualizacao = ({
   );
 };
 
+//Função para mostra a pauta em formato de tabela
 const PautaTable = ({
   listaPautas = [
     {
@@ -61,6 +64,7 @@ const PautaTable = ({
   isAta,
   setPautaSelecionada = () => { },
 }) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -88,6 +92,7 @@ const PautaTable = ({
     return "#C4C4C4";
   };
 
+  // Função para mostrar se a ata já foi apreciada pela DG
   const isApreciada = (ata = EntitiesObjectService.ata()) => {
     return ata.parecerDG;
   };
@@ -305,6 +310,7 @@ const PautaTable = ({
   );
 };
 
+// Função para mostra a pauta em formato de grid
 const PautaGrid = ({
   listaPautas = [
     {
@@ -343,14 +349,16 @@ const PautaGrid = ({
   );
 };
 
+// Função para mostrar "Nada Encontrado" caso não tenha nenhuma pauta no sistema
 const NadaEncontrado = () => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  /** Context para ler o texto da tela */
+  // Context para ler o texto da tela 
   const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   return (

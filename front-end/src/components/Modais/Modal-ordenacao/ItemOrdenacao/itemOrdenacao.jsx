@@ -1,15 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  ListItemIcon,
-  ListItemText,
-  ListItemButton,
-  Collapse,
-  List,
-  Divider,
-  Checkbox,
-  FormControlLabel,
-  Box,
-} from "@mui/material";
+import { ListItemIcon, ListItemText, ListItemButton, Collapse, List, Divider, Checkbox, FormControlLabel, Box, } from "@mui/material";
 
 import AbcOutlinedIcon from "@mui/icons-material/AbcOutlined";
 import PinOutlinedIcon from "@mui/icons-material/PinOutlined";
@@ -24,14 +14,17 @@ import TextLanguageContext from "../../../../service/TextLanguageContext";
 import SpeechSynthesisContext from "../../../../service/SpeechSynthesisContext";
 
 export default function ItemTest(props) {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para ler o texto da tela */
   const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
+  // useState utilizado para abrir o modal
   const [open, setOpen] = useState(false);
 
+  // handleClick para fechar o modal
   const handleClick = () => {
     setOpen(!open);
   };

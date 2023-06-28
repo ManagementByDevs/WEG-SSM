@@ -14,6 +14,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const PropostaDeAta = (props) => {
+
   // Context para alterar o idioma do texto
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -30,7 +31,34 @@ const PropostaDeAta = (props) => {
   // Variável para armazenar os dados da proposta
   const dados = props.dadosProposta;
 
-  // UseEffect para setar os dadpos da proposta
+  // Variável para armazenar o titulo da demanda
+  const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
+
+  // Variável para armazenar o problema da demanda
+  const [problema, setProblema] = useState(dados.problema);
+
+  // Variável para armazenar a proposta da demanda
+  const [proposta, setProposta] = useState(dados.proposta);
+
+  // Variável para armazenar a frequencia de uso da demanda
+  const [frequencia, setFrequencia] = useState(dados.frequencia);
+
+  // Variável para armazenar os beneficios da demanda
+  const [beneficios, setBeneficios] = useState(null);
+
+  // Variável para armazenar uma proposta de pauta
+  const [propostaDePauta, setPropostaDePauta] = useState(false);
+
+  // Variávle para armazenar o parecer
+  const [parecer, setParecer] = useState("");
+
+  // Variável para armazenar o parecer da comissão
+  const [parecerComissao, setParecerComissao] = useState(false);
+
+  // Variável para armazenar o parecer da DG
+  const [parecerDG, setParecerDG] = useState(props.parecerDG);
+
+  // UseEffect para setar os dados da proposta
   useEffect(() => {
     setTituloDemanda(dados.titulo);
     setProblema(dados.problema);
@@ -47,28 +75,14 @@ const PropostaDeAta = (props) => {
         visible: beneficio.visible,
       };
     });
+
     setBeneficios(aux);
   }, [dados]);
 
-  // UseStates para armazenar os valores dos campos da proposta
-  const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
-  const [problema, setProblema] = useState(dados.problema);
-  const [proposta, setProposta] = useState(dados.proposta);
-  const [frequencia, setFrequencia] = useState(dados.frequencia);
-  const [beneficios, setBeneficios] = useState(null);
-  const [propostaDePauta, setPropostaDePauta] = useState(false);
-
-  // função para aparecer a parte da comissão, caso seja uma porposta de uma pauta
+  // useEffect para aparecer a parte da comissão, caso seja uma porposta de uma pauta
   useEffect(() => {
     setPropostaDePauta(props.propostaPauta);
   });
-
-  // select do parecer da comissao
-  const [parecer, setParecer] = useState("");
-  const [parecerComissao, setParecerComissao] = useState(false);
-
-  // useState para a pauta criada
-  const [parecerDG, setParecerDG] = useState(props.parecerDG);
 
   // mudar o conteúdo do select e
   const mudarParecer = (event) => {
@@ -118,7 +132,7 @@ const PropostaDeAta = (props) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
         setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-        
+
         // setValorPesquisa(transcript);
       };
 
@@ -138,7 +152,6 @@ const PropostaDeAta = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
@@ -153,8 +166,6 @@ const PropostaDeAta = (props) => {
       stopRecognition();
     }
   }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
 
   return (
     <Box>

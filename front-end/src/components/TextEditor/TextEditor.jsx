@@ -5,6 +5,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Componente para criar um editor de texto utilizado para o campo de escopo da proposta */
 const TextEditor = (props) => {
+
   // Context para alterar idioma
   const { texts, setTexts } = useContext(TextLanguageContext);
 
