@@ -6,13 +6,13 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 
-/** Função utilizada para aparecer o ícone de ajuda ao passar o mouse */ 
+/** Função utilizada para aparecer o ícone de ajuda ao passar o mouse */
 const aparecer = keyframes({ from: { width: "1.3rem" }, to: { width: "3.2rem" } });
 
-/** Função utilizada para desaparecer o ícone de ajuda ao tirar o mouse */ 
+/** Função utilizada para desaparecer o ícone de ajuda ao tirar o mouse */
 const sumir = keyframes({ from: { width: "3.2rem" }, to: { width: "1.3rem" } });
 
-/** Componente de ajuda utilizado para demonstrar o usuário as principais funções do sistema */ 
+/** Componente de ajuda utilizado para demonstrar o usuário as principais funções do sistema */
 const Ajuda = (props) => {
 
   /** Contexto para trocar a linguagem  */

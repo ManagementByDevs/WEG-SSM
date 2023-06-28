@@ -29,6 +29,7 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 /** Componente utilizado para criação da proposta, redirecionando para as etapas respectivas  */
 const BarraProgressaoProposta = (props) => {
+
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 

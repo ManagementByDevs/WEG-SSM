@@ -1,15 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Paper,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, Paper, IconButton, Tooltip, } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -52,9 +44,7 @@ const DetalhesDemanda = (props) => {
   const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
-    SpeechRecognitionContext
-  );
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
@@ -114,8 +104,7 @@ const DetalhesDemanda = (props) => {
   const [openModal, setOpenModal] = useState(false);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
-    useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
 
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);

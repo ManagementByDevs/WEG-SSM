@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { TableRow, Box, Tooltip, Input, InputAdornment } from "@mui/material";
 
@@ -13,6 +13,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 // Componente para criar uma linha da tabela de CCs
 const LinhaTabelaCCs = (props) => {
+
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -39,6 +40,7 @@ const LinhaTabelaCCs = (props) => {
     }
   }, [mode]);
 
+  // UseEffect utilizado para ouvir áudio do local clicado
   useEffect(() => {
     let aux = [...props.custos];
     switch (localClique) {

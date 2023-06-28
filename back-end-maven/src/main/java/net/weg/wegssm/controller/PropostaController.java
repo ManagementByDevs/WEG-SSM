@@ -4424,6 +4424,7 @@ public class PropostaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
         }
 
+        System.out.println("parecer gerencia: " + parecerGerencia + "\nparecer informacao: " + parecerInformacao);
         Proposta proposta = propostaOptional.get();
         proposta.setParecerComissao(parecerGerencia);
         proposta.setParecerInformacao(parecerInformacao);

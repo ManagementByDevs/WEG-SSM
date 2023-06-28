@@ -1,14 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -30,6 +22,7 @@ const EscopoModoVisualizacao = ({
   handleDelete,
   buscar,
 }) => {
+
   // Se não encontrar nada, vai aparecer componente de nada encontrado
   if (listaEscopos && listaEscopos.length === 0) {
     return <NadaEncontrado />;
@@ -75,6 +68,7 @@ const EscopoTable = ({
   onEscopoClick,
   buscar,
 }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -282,6 +276,7 @@ const EscopoGrid = ({ listaEscopos, onEscopoClick, handleDelete }) => {
 
 // Componente para exibir nada encontrado
 const NadaEncontrado = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

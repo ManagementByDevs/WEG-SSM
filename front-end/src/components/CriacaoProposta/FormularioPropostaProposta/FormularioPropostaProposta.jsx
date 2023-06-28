@@ -1,16 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import {
-  Box,
-  Typography,
-  Divider,
-  Paper,
-  IconButton,
-  Tooltip,
-  MenuItem,
-  TextField,
-  Autocomplete,
-  Checkbox,
-} from "@mui/material";
+import { Box, Typography, Divider, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox, } from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -41,6 +30,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 /** Fase de criação de proposta em que os dados da demanda poderão ser editados */
 const FormularioPropostaProposta = (props) => {
+  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

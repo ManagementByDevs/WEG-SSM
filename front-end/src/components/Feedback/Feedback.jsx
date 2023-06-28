@@ -5,6 +5,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Feedback padrão para avisos do sistema sobre processos concluídos / problemas no sistema */
 const Feedback = (props) => {
+
   // Variável para definir a posição vertical do feedback
   const vertical = "top";
 

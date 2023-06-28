@@ -3,24 +3,24 @@ import { useNavigate } from "react-router-dom";
 
 import { Box, Typography, IconButton, Paper, Tooltip } from "@mui/material";
 
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+
 import ModalMotivoRecusa from "../Modais/Modal-motivoRecusa/ModalMotivoRecusa";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
-
 import ChatService from "../../service/chatService";
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
-
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import propostaService from "../../service/propostaService";
 
 /** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
+
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 

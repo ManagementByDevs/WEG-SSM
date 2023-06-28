@@ -12,6 +12,7 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 // Etapa de criação de proposta para adicionar as tabelas de custos
 const FormularioCustosProposta = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

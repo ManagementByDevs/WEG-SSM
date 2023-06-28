@@ -1,21 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import {
-  Autocomplete,
-  Box,
-  Checkbox,
-  Divider,
-  IconButton,
-  MenuItem,
-  Paper,
-  Select,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Box, Checkbox, Divider, IconButton, MenuItem, Paper, Select, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
 
 import * as _ from "lodash";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -37,6 +21,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import Feedback from "../Feedback/Feedback";
 import ModalConfirmacao from "../Modais/Modal-confirmacao/ModalConfirmacao";
 import QuillCustom from "./Inputs/QuillCustom";
+import InputCustom from "./Inputs/InputCustom";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -48,22 +33,24 @@ import SecaoTIService from "../../service/secaoTIService";
 import PropostaService from "../../service/propostaService";
 import ExportPdfService from "../../service/exportPdfService";
 import CookieService from "../../service/cookieService";
-import InputCustom from "./Inputs/InputCustom";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
+// Variável de exemplo de proposta
 const propostaExample = EntitiesObjectService.proposta();
 
 // Variável para armazenar os ícones do checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+// Componente de edição da proposta
 const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
   setPropostaData = () => { },
   setIsEditing = () => { },
   emAprovacao = false,
 }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -189,12 +176,6 @@ const DetalhesPropostaEditMode = ({
 
     if (possibleStatus.includes(proposta.status)) return true;
     return false;
-  };
-
-  /** Formata o HTML em casos como a falta de fechamentos em tags "<br>" */
-  const formatarHtml = (texto) => {
-    texto = texto.replace(/<br>/g, "<br/>");
-    return texto;
   };
 
   /** Valida se os CCs são válidos */
@@ -447,7 +428,6 @@ const DetalhesPropostaEditMode = ({
       novosAnexos,
       listaIdsAnexos
     ).then((response) => {
-      console.log(response);
       setPropostaData(response);
       setIsEditing(false);
 
@@ -509,10 +489,6 @@ const DetalhesPropostaEditMode = ({
   const handleOnTituloChange = (event) => {
     setProposta({ ...proposta, titulo: event.target.value });
   };
-
-  useEffect(() => {
-    console.log("Proposta: ", proposta);
-  }, [proposta]);
 
   /** Handler para quando for selecionado uma nova BU */
   const handleOnBuSolicitanteSelect = (event) => {
@@ -2621,6 +2597,7 @@ const ParecerComissaoInsertText = ({
   proposta = propostaExample,
   setProposta = () => { },
 }) => {
+
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -2754,6 +2731,7 @@ const ParecerDGInsertText = ({
   proposta = propostaExample,
   setProposta = () => { },
 }) => {
+
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 

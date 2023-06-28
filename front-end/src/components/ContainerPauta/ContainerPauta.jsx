@@ -11,6 +11,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente para representar uma pauta no sistema, contendo suas informações e ações */
 const ContainerPauta = (props) => {
+
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 

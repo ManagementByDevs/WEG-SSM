@@ -9,15 +9,17 @@ import TextLanguageContext from "../../../service/TextLanguageContext";
 import { SpeechRecognitionContext } from "../../../service/SpeechRecognitionService";
 import { useEffect } from "react";
 
+// Componente de input customizado
 const InputCustom = ({
   defaultText = "",
-  saveProposal = () => {},
+  saveProposal = () => { },
   sx = {},
   label = "",
   multiline = false,
   regex = new RegExp(),
-  handleOnMicChange = () => {},
+  handleOnMicChange = () => { },
 }) => {
+
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 

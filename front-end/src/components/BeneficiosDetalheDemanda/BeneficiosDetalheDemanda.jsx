@@ -1,19 +1,6 @@
 import React, { useState, useContext, useEffect, useRef, memo } from "react";
 
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Paper,
-  Typography,
-  Box,
-  FormControl,
-  Select,
-  MenuItem,
-  Tooltip,
-} from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, FormControl, Select, MenuItem, Tooltip, } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -30,6 +17,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 /** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
+
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -40,9 +28,7 @@ const BeneficiosDetalheDemanda = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, palavrasJuntas, localClique } = useContext(
-    SpeechRecognitionContext
-  );
+  const { startRecognition, escutar, palavrasJuntas, localClique } = useContext(SpeechRecognitionContext);
 
   /** UseState utilizado para mudar a cor do textArea */
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -72,29 +58,6 @@ const BeneficiosDetalheDemanda = (props) => {
     }
   });
 
-  /** Função responsável por estilizar as linhas da tabela de benefícios */
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
-
-  /** Função utilizada para editar um texto do campo de memória de cálculo */
-  const alterarTexto = (e) => {
-    props.setBeneficio({ ...props.beneficio, memoriaCalculo: e }, props.index);
-  };
-
-  const formatarTipoBeneficio = (tipoBeneficio) => {
-    const novoTipo = tipoBeneficio?.charAt(0) +
-      tipoBeneficio
-        ?.substring(1, tipoBeneficio?.length)
-        ?.toLowerCase() || texts.DetalhesDemanda.real;
-    return novoTipo;
-  }
-
   /** useEffect utilizado para setar o valor do input de valor_mensal de um benefício com o input de voz */
   useEffect(() => {
     switch (localClique) {
@@ -111,6 +74,30 @@ const BeneficiosDetalheDemanda = (props) => {
         break;
     }
   }, [palavrasJuntas]);
+
+  /** Função responsável por estilizar as linhas da tabela de benefícios */
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
+
+  /** Função utilizada para editar um texto do campo de memória de cálculo */
+  const alterarTexto = (e) => {
+    props.setBeneficio({ ...props.beneficio, memoriaCalculo: e }, props.index);
+  };
+
+  /** Função para formatar o tipo de benefício */
+  const formatarTipoBeneficio = (tipoBeneficio) => {
+    const novoTipo = tipoBeneficio?.charAt(0) +
+      tipoBeneficio
+        ?.substring(1, tipoBeneficio?.length)
+        ?.toLowerCase() || texts.DetalhesDemanda.real;
+    return novoTipo;
+  }
 
   return (
     <Box className="flex items-center">
@@ -141,9 +128,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
-                      onClick={() => {
-                        lerTexto(texts.BeneficiosDetalheDemanda.tipo);
-                      }}
+                      onClick={() => { lerTexto(texts.BeneficiosDetalheDemanda.tipo); }}
                     >
                       {texts.BeneficiosDetalheDemanda.tipo}
                     </Typography>
@@ -157,9 +142,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
-                      onClick={() => {
-                        lerTexto(texts.BeneficiosDetalheDemanda.valorMensal);
-                      }}
+                      onClick={() => { lerTexto(texts.BeneficiosDetalheDemanda.valorMensal); }}
                     >
                       {texts.BeneficiosDetalheDemanda.valorMensal}
                     </Typography>
@@ -173,9 +156,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
-                      onClick={() => {
-                        lerTexto(texts.BeneficiosDetalheDemanda.moeda);
-                      }}
+                      onClick={() => { lerTexto(texts.BeneficiosDetalheDemanda.moeda); }}
                     >
                       {texts.BeneficiosDetalheDemanda.moeda}
                     </Typography>
@@ -189,9 +170,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
-                      onClick={() => {
-                        lerTexto(texts.BeneficiosDetalheDemanda.memoriaCalculo);
-                      }}
+                      onClick={() => { lerTexto(texts.BeneficiosDetalheDemanda.memoriaCalculo); }}
                     >
                       {texts.BeneficiosDetalheDemanda.memoriaCalculo}
                     </Typography>

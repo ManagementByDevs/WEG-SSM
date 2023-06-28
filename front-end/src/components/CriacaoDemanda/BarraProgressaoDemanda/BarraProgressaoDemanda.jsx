@@ -2,14 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 
-import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Typography, Button, } from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -31,6 +24,7 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
  * salvando a demanda e escopos no banco de dados
  */
 const BarraProgressaoDemanda = () => {
+
   /** Location utilizado para setar o state utilizado para verificação de lógica */
   const location = useLocation();
 

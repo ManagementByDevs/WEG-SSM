@@ -590,8 +590,11 @@ const DetalhesPauta = (props) => {
 
               {/* Input para informar o número sequencial da ata */}
               <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
-                <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}>
-                  Número Sequencial da Ata:
+                <Typography
+                  sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
+                  onClick={() => { lerTexto(texts.detalhesPauta.numeroSequencialAta); }}
+                >
+                  {texts.detalhesPauta.numeroSequencialAta}:
                 </Typography>
                 <Typography
                   fontSize={props.fontConfig}
@@ -607,7 +610,6 @@ const DetalhesPauta = (props) => {
                   onChange={salvarNumeroSequencial}
                 />
               </Box>
-
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
 
@@ -625,9 +627,7 @@ const DetalhesPauta = (props) => {
                     textAlign: "center",
                   }}
                   color="primary.main"
-                  onClick={() => {
-                    lerTexto(texts.detalhesPauta.sumario);
-                  }}
+                  onClick={() => { lerTexto(texts.detalhesPauta.sumario); }}
                 >
                   {texts.detalhesPauta.sumario}
                 </Typography>
@@ -726,7 +726,6 @@ const DetalhesPauta = (props) => {
                 />
               </Box>
             )}
-
           </Box>
         </Box>
 

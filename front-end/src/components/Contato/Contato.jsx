@@ -13,10 +13,11 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente contato utilizado para representar os contatos do chat */
 const Contato = ({
-  onClick = () => {},
+  onClick = () => { },
   idChat = 0,
   chat = EntitiesObjectService.chat(),
 }) => {
+
   /** UseState para saber se o contato foi selecionado ou não */
   const [corSelecionado, setCorSelecionado] = useState("transparent");
 
@@ -70,6 +71,7 @@ const Contato = ({
 
 /** Informações do contato */
 const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
+
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 

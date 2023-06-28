@@ -64,17 +64,11 @@ const DetalhesAta = (props) => {
   /** Index de uma proposta, utilizado para mostrar os dados de uma porposta específica */
   const [indexProposta, setIndexProposta] = useState(-1);
 
-  /** Variável utilizada para passar para a próxima proposta */
-  const [botaoProximo, setBotaoProximo] = useState(true);
-
   /** Variável para armazenar o objeto da ata */
   const [ata, setAta] = useState(EntitiesObjectService.ata());
 
   /** Variávle para armazenar o número sequencial da ata da dg */
   const [numeroSequencialAtaDG, setNumeroSequencialAtaDG] = useState("");
-
-  /** feedback para ata criada com sucesso */
-  const [feedbackAta, setFeedbackAta] = useState(false);
 
   /** Feedback para quando o usuário não preencher todos os campos obrigatórios */
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
@@ -87,13 +81,6 @@ const DetalhesAta = (props) => {
 
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
-
-  /** useEffect usado para feedback de ata criada */
-  useEffect(() => {
-    if (location.state?.feedback) {
-      setFeedbackAta(true);
-    }
-  }, [location.state?.feedback]);
 
   /** useEffect utilizado para mostrar uma proposta pelo seu index */
   useEffect(() => {
@@ -121,7 +108,6 @@ const DetalhesAta = (props) => {
 
   /** Função para voltar ao sumário da ata */
   const voltarSumario = () => {
-    setBotaoProximo(true);
     setIndexProposta(-1);
     setProposta(false);
   };
@@ -140,7 +126,6 @@ const DetalhesAta = (props) => {
         setProposta(false);
         setIndexProposta(-1);
       } else {
-        setBotaoProximo(true);
         setProposta(false);
         setDadosProposta(ata.propostas[indexProposta - 1]);
         setIndexProposta(indexProposta - 1);
@@ -154,7 +139,6 @@ const DetalhesAta = (props) => {
   const proximo = () => {
     if (!lendoTexto) {
       if (indexProposta == ata.propostas.length - 1) {
-        setBotaoProximo(false);
       } else {
         setProposta(false);
         setDadosProposta(ata.propostas[indexProposta + 1]);
@@ -330,7 +314,6 @@ const DetalhesAta = (props) => {
 
   /** Função para salvar o número sequencial da ata da dg digitado no input */
   const salvarNumeroSequencialAtaDG = (event) => {
-    console.log(event.target.value)
     setNumeroSequencialAtaDG(event.target.value);
   }
 
@@ -480,7 +463,6 @@ const DetalhesAta = (props) => {
                   );
                 }}
               >
-                {/* {props.inicio} */}
                 {texts.detalhesAta.comissao}: {ata.comissao.siglaForum} -{" "}
                 {ata.comissao.nomeForum}
               </Typography>
@@ -488,7 +470,7 @@ const DetalhesAta = (props) => {
               {!ata.publicadaDg ? (
                 <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
                   <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}>
-                    Número Sequencial da Ata da DG:
+                    {texts.detalhesAta.numeroSequencialDG}:
                   </Typography>
                   <Typography
                     fontSize={props.fontConfig}
@@ -506,17 +488,22 @@ const DetalhesAta = (props) => {
                 </Box>
               ) : (
                 <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
-                  <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}>
-                    Número Sequencial da Ata da DG:
+                  <Typography
+                    sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
+                    onClick={() => { lerTexto(texts.detalhesAta.numeroSequencialDG); }}
+                  >
+                    {texts.detalhesAta.numeroSequencialDG}:
                   </Typography>
-                 
-                  <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", marginLeft: "1%" }}>
+
+                  <Typography
+                    sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", marginLeft: "1%" }}
+                    onClick={() => { lerTexto(ata.numeroSequencialDG); }}
+                  >
                     {ata.numeroSequencialDG}
                   </Typography>
                 </Box>
               )
               }
-
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
 
@@ -533,9 +520,7 @@ const DetalhesAta = (props) => {
                     textAlign: "center",
                   }}
                   color="primary.main"
-                  onClick={() => {
-                    lerTexto(texts.detalhesAta.sumario);
-                  }}
+                  onClick={() => { lerTexto(texts.detalhesAta.sumario); }}
                 >
                   {texts.detalhesAta.sumario}
                 </Typography>

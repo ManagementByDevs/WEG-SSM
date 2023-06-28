@@ -1,17 +1,6 @@
-import React, { useContext, useRef, useEffect, useState } from "react";
-import {
-  Box,
-  FormControl,
-  Select,
-  MenuItem,
-  Typography,
-  Divider,
-  IconButton,
-  Paper,
-  Tooltip,
-} from "@mui/material";
+import React, { useContext, useRef, useEffect } from "react";
 
-import ColorModeContext from "../../../service/TemaContext";
+import { Box, FormControl, Select, MenuItem, Typography, Divider, IconButton, Paper, Tooltip, } from "@mui/material";
 
 import ResponsavelNegocio from "../../ResponsavelNegocio/ResponsavelNegocio";
 
@@ -20,14 +9,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
+import ColorModeContext from "../../../service/TemaContext";
 import FontContext from "../../../service/FontContext";
 import TextLanguageContext from "../../../service/TextLanguageContext";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../../service/SpeechRecognitionService";
-
 import ResponsavelNegocioService from "../../../service/responsavelNegocioService";
 import AnexoService from "../../../service/anexoService";
 
+// Componente utilizado para adicionar os dados gerais da proposta
 const FormularioGeralProposta = (props) => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
@@ -42,9 +32,7 @@ const FormularioGeralProposta = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
-    SpeechRecognitionContext
-  );
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
 
   // Variável para o input de anexos
   const inputFile = useRef(null);
@@ -94,6 +82,7 @@ const FormularioGeralProposta = (props) => {
     });
   };
 
+  /** useEffect utilizado para leitura de voz no local clicado */
   useEffect(() => {
     switch (localClique) {
       case "qtdPaybackSimples":
@@ -118,24 +107,6 @@ const FormularioGeralProposta = (props) => {
         break;
     }
   }, [palavrasJuntas]);
-
-  /** Função para buscar a data de início de execução */
-  const valorDataInicio = () => {
-    if (props.gerais.periodoExecucacaoInicio == "1970-01-01") {
-      return null;
-    } else {
-      return props.gerais.periodoExecucacaoInicio;
-    }
-  };
-
-  /** Função para buscar a data de fim da execução */
-  const valorDataFim = () => {
-    if (props.gerais.periodoExecucacaoFim == "1970-01-01") {
-      return null;
-    } else {
-      return props.gerais.periodoExecucacaoFim;
-    }
-  };
 
   return (
     <Box className="flex flex-col">

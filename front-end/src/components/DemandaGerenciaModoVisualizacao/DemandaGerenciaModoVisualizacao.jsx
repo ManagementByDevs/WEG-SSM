@@ -1,16 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography, } from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
@@ -37,6 +28,7 @@ const DemandaGerenciaModoVisualizacao = ({
   isProposta = false,
   setFeedbackAbrirChat,
 }) => {
+
   // verificação para ver se retorna algo, caso não retorne nada, mostre o componente "NadaEncontrado"
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
@@ -53,7 +45,6 @@ const DemandaGerenciaModoVisualizacao = ({
         setFeedbackAbrirChat={setFeedbackAbrirChat}
       />
     );
-
   return (
     <DemandaTable
       listaDemandas={listaDemandas}
@@ -94,6 +85,7 @@ const DemandaTable = ({
   isProposta = false,
   setFeedbackAbrirChat,
 }) => {
+
   // Variável utilizada para navegação no sistema
   const navigate = useNavigate();
 
@@ -582,6 +574,7 @@ const DemandaGrid = ({
 
 // Componente para exibição de nada encontrado
 const NadaEncontrado = () => {
+  
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 

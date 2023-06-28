@@ -17,6 +17,7 @@ import UsuarioService from "../../service/usuarioService";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
+
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -247,7 +248,7 @@ const DemandaGerencia = (props) => {
         <Box className="relative">
           <Box className="h-16 items-end w-full flex justify-between">
             {/* Infos Solicitante e Departamento */}
-            <Box sx={{width: "50%"}}>
+            <Box sx={{ width: "50%" }}>
               {/* Solicitante */}
               <Box className="flex">
                 <Typography
@@ -326,8 +327,8 @@ const DemandaGerencia = (props) => {
               </Box>
             </Box>
             {/* Infos gerente responsável, analista responsavel e icons */}
-            <Box className="flex items-end justify-end" sx={{width: "80%"}}>
-              <Box className="flex flex-col" sx={{ width: "100%" ,height: "100%" }}>
+            <Box className="flex items-end justify-end" sx={{ width: "80%" }}>
+              <Box className="flex flex-col" sx={{ width: "100%", height: "100%" }}>
                 {/* Container analista responsavel */}
                 <Box className="flex">
                   <Typography

@@ -569,7 +569,7 @@ public class PDFGeneratorService {
 
         // Adicionando a tabela de benefícios
 
-        for (Beneficio beneficio : proposta.getDemanda().getBeneficios()) {
+        for (Beneficio beneficio : proposta.getBeneficios()) {
             PdfPTable tableBeneficios = new PdfPTable(4);
 
             tableBeneficios.setWidthPercentage(100);
