@@ -21,7 +21,7 @@ import PropostaService from "../../service/propostaService";
 
 /** Página que mostra os detalhes da proposta selecionada, com opção de download para pdf */
 const DetalhesPropostaPagina = () => {
-  /** Location utilizado para pegar os dados da demanda */
+  /** Location utilizado para pegar os dados da proposta */
   const location = useLocation();
 
   /** Params da rota */

@@ -39,7 +39,7 @@ const LerTexto = () => {
           borderRadius: "30%",
           background: corButton,
           right: 0,
-          top: "33%",
+          bottom: "14%",
           zIndex: 9999999,
         }}
         onClick={lerTexto}

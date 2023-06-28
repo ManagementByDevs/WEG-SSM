@@ -56,6 +56,9 @@ class PropostaService {
     if (params.presenteEm != null) {
       newParams.presenteEm = params.presenteEm;
     }
+    if(params.codigoPPM != null) {
+      newParams.codigoPPM = params.codigoPPM;
+    }
 
     return (
       await axios.get(proposta + `/page?${page}`, {
@@ -78,9 +81,15 @@ class PropostaService {
     ).data;
   }
 
-  async atualizarStatus(idProposta, statusNovo) {
+  async atualizarStatus(idProposta, statusNovo, motivoRecusa) {
+    let form = new FormData();
+    form.append("status", statusNovo);
+    if(motivoRecusa) {
+      form.append("motivo", motivoRecusa);
+    }
+
     return (
-      await axios.put(`/proposta/status/${idProposta}/${statusNovo}`, {
+      await axios.put(`/proposta/status/${idProposta}`, form, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       })
@@ -110,10 +119,6 @@ class PropostaService {
         })
       ).data;
     }
-  }
-
-  async atualizarStatus(idProposta, status) {
-    return (await axios.put(`${proposta}/${idProposta}/${status}`)).data;
   }
 
   async removerPresenca(idProposta) {

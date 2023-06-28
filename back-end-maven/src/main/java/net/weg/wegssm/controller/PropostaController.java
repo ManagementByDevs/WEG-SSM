@@ -4086,11 +4086,13 @@ public class PropostaController {
      *
      * @param id     ID da proposta a ser atualizada
      * @param status Status novo que a proposta irá receber
+     * @param motivo Motivo da recusa de uma proposta, caso ela seja recusada
      * @return ResponseEntity com a proposta atualizada
      */
-    @PutMapping("/{id}/{status}")
+    @PutMapping("/status/{id}")
     public ResponseEntity<Object> atualizarStatus(@PathVariable(value = "id") Long id,
-                                                  @PathVariable(value = "status") Status status) {
+                                                  @RequestParam(value = "status") Status status,
+                                                  @RequestParam(value = "motivo", required = false) String motivo) {
         Optional<Proposta> propostaOptional = propostaService.findById(id);
         if (propostaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
@@ -4098,6 +4100,16 @@ public class PropostaController {
 
         Proposta proposta = propostaOptional.get();
         proposta.setStatus(status);
+
+        if(status == Status.CANCELLED) {
+            proposta.setMotivoRecusa(motivo);
+            proposta.getDemanda().setStatus(Status.CANCELLED);
+            proposta.getDemanda().setMotivoRecusa(motivo);
+        }
+        if(status == Status.DONE) {
+            proposta.getDemanda().setStatus(Status.DONE);
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 

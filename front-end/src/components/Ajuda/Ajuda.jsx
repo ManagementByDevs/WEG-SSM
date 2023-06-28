@@ -6,11 +6,11 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 
-/** Função utilizada para aparecer o ícone de ajuda ao passar o mouse */
-const aparecer = keyframes({ from: { width: "1.3rem" }, to: { width: "3.2rem" } });
+/** Função utilizada para aparecer o ícone de ajuda ao passar o mouse */ 
+const aparecer = keyframes({ from: { width: "2.5rem" }, to: { width: "3.5rem" } });
 
-/** Função utilizada para desaparecer o ícone de ajuda ao tirar o mouse */
-const sumir = keyframes({ from: { width: "3.2rem" }, to: { width: "1.3rem" } });
+/** Função utilizada para desaparecer o ícone de ajuda ao tirar o mouse */ 
+const sumir = keyframes({ from: { width: "3.5rem" }, to: { width: "2.5rem" } });
 
 /** Componente de ajuda utilizado para demonstrar o usuário as principais funções do sistema */
 const Ajuda = (props) => {
@@ -24,8 +24,8 @@ const Ajuda = (props) => {
       onClick={props.onClick}
       className="flex absolute items-center "
       sx={{
-        zIndex: 2,
-        width: "1.5rem",
+        zIndex: 9999,
+        width: "2.5rem",
         height: "2.5rem",
         backgroundColor: "primary.main",
         borderRadius: "15px 0 0 15px",
@@ -38,7 +38,7 @@ const Ajuda = (props) => {
       }}
     >
       {/* Ícone de ajuda */}
-      <Tooltip title={texts.ajuda.ajuda} placement="top">
+      <Tooltip title={texts.ajuda.ajuda} placement="left">
         <IconButton sx={{ color: "text.white" }}>
           <HelpOutlineOutlinedIcon sx={{ fontSize: "30px" }} />
         </IconButton>

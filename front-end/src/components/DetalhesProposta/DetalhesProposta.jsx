@@ -12,6 +12,7 @@ import ModalConfirmacao from "../Modais/Modal-confirmacao/ModalConfirmacao";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 import DetalhesPropostaEditMode from "../DetalhesPropostaEditMode/DetalhesPropostaEditMode";
 import Feedback from "../Feedback/Feedback";
+import ModalRecusarDemanda from "../Modais/Modal-recusarDemanda/ModalRecusarDemanda";
 
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
@@ -802,6 +803,39 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.pareceres}:&nbsp;
               </Typography>
               <Box className="mx-4">
+
+                {proposta.motivoRecusa && proposta.status == "CANCELLED" ? (
+                  <Box>
+                    <Box className="flex items-center mt-4">
+                      {/* Label */}
+                      <Typography
+                        fontSize={FontConfig.medium}
+                        onClick={() =>
+                          lerTexto(
+                            texts.detalhesProposta.semComissao
+                          )
+                        }
+                      >
+                        {texts.detalhesProposta.semComissao}
+                      </Typography>
+                    </Box>
+                    {/* Comporta o texto do parecer da comissão */}
+                    <Box
+                      className="mt-2 mx-4 border-l-2 px-2"
+                      sx={{ borderColor: "primary.main" }}
+                      onClick={() =>
+                        lerTexto(proposta.motivoRecusa)
+                      }
+                    >
+                      <Typography
+                        fontSize={FontConfig.medium}
+                      >
+                        {proposta.motivoRecusa}
+                      </Typography>
+                    </Box>
+                  </Box>
+                ) : null}
+
                 {/* Parecer da Comissão */}
                 <ParecerComissao
                   proposta={proposta}
@@ -1622,6 +1656,12 @@ const StatusProposta = ({
   // Estado do modal de confirmação de troca de status
   const [confirmEditStatus, setConfirmEditStatus] = useState(false);
 
+  // Estado do modal de informar motivo de recusa da proposta, caso seja selecionado o status "Cancelled"
+  const [modalRecusarProposta, setModalRecusarProposta] = useState(false);
+
+  // Variável armazenando o motivo da recusa caso a proposta seja reprovada
+  const [motivoRecusa, setMotivoRecusa] = useState("");
+
   // Estado do novo status
   const [newStatus, setNewStatus] = useState("");
 
@@ -1728,8 +1768,8 @@ const StatusProposta = ({
     setConfirmEditStatus(false);
 
     // Requisição para atualizar a proposta com o novo status
-    PropostaService.atualizarStatus(proposta.id, newStatus).then((response) => {
-      setProposta({ ...proposta, status: response.status });
+    PropostaService.atualizarStatus(proposta.id, newStatus, motivoRecusa).then((response) => {
+      setProposta({ ...proposta, status: response.status, motivoRecusa: motivoRecusa });
 
       // Criar notificação
       sendNotification(
@@ -1803,6 +1843,20 @@ const StatusProposta = ({
         onConfirmClick={editarStatus}
         onCancelClick={() => { }}
       />
+      <ModalRecusarDemanda
+        open={modalRecusarProposta}
+        setOpen={setModalRecusarProposta}
+        handleClose={() => {
+          setModalRecusarProposta(false);
+          setMotivoRecusa("");
+        }}
+        confirmRecusarDemanda={() => {
+          setModalRecusarProposta(false);
+          confirmSelectStatus("CANCELLED");
+        }}
+        motivo={motivoRecusa}
+        setMotivo={setMotivoRecusa}
+      />
       {/* Menu para a alteração de status */}
       <Menu
         id="basic-menu"
@@ -1842,7 +1896,7 @@ const StatusProposta = ({
         {/* Status de CANCELLED */}
         <MenuItem
           className="gap-2"
-          onClick={() => confirmSelectStatus("CANCELLED")}
+          onClick={() => setModalRecusarProposta(true)}
         >
           <Box
             className="w-4 h-4 rounded"
