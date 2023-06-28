@@ -8,6 +8,8 @@ import {
   Outlet,
 } from "react-router-dom";
 
+import { Box, GlobalStyles } from "@mui/material";
+
 import VLibras from "@djpfs/react-vlibras";
 
 import Home from "./pages/Home/Home";
@@ -131,6 +133,9 @@ const App = () => {
                 <SpeechSynthesisContext.Provider value={speechSynthesis}>
                   <Router>
                     <LerTexto />
+                    <GlobalStyles
+                      styles={{ "div[vw].enabled": { top: "53.5rem !important", marginRight: "0px !important" } }}
+                    />
                     <VLibras forceOnload />
                     <Routes>
                       <Route path="/login" element={<Login />} />
