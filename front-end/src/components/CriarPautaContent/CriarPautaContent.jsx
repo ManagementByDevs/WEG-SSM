@@ -474,7 +474,7 @@ const CriarPautaContent = () => {
                 <ClipLoader color="#00579D" size={80} />
               </Box>
             ) : (
-              <Box className="flex flex-col gap-2">
+              <Box className="flex w-full flex-col gap-2">
                 <TextField
                   value={search}
                   onChange={handleOnSearchChange}
@@ -484,7 +484,7 @@ const CriarPautaContent = () => {
                 />
                 {!isEmpty(listaPropostasData) ? (
                   <>
-                    <Box>
+                    <Box className="w-full">
                       <PropostaList
                         draggable
                         onDragStart={handleOnPropostaDragStart}
@@ -510,11 +510,10 @@ const CriarPautaContent = () => {
                 ) : (
                   <Box className="w-full mt-2">
                     <Typography
-                      className="w-full text-center"
+                      className="text-center"
                       fontSize={FontConfig.big}
                       sx={{
                         color: "text.secondary",
-                        mb: 1,
                       }}
                       onClick={() => {
                         lerTexto("");
