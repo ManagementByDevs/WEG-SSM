@@ -1,4 +1,4 @@
-import React, { useContext, useState, memo } from "react";
+import React, { useContext, useEffect, useState, memo } from "react";
 
 import {
   Box,
@@ -22,15 +22,14 @@ import TextLanguageContext from "../../../service/TextLanguageContext";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 import DetalhesProposta from "../../DetalhesProposta/DetalhesProposta";
 
-const PropostaItemList = memo(function PropostaItemList({
+const PropostaList = ({
   draggable = false,
   onDragStart = () => {},
   listaPropostas = [EntitiesObjectService.proposta()],
   setListaPropostas = () => {},
   addProposta = () => {},
-  searchText = "",
   inDiscussion = false,
-}) {
+}) => {
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
@@ -191,6 +190,6 @@ const PropostaItemList = memo(function PropostaItemList({
       })}
     </>
   );
-});
+};
 
-export default PropostaItemList;
+export default PropostaList;

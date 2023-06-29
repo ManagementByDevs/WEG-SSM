@@ -1,6 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Fade, Divider, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Paper, Select, FormControl, MenuItem, TextField, } from "@mui/material";
+import {
+  Modal,
+  Fade,
+  Divider,
+  Typography,
+  Box,
+  Button,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Paper,
+  Select,
+  FormControl,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 
 import { red } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
@@ -21,7 +36,6 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalAddPropostaPauta = (props) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -44,7 +58,8 @@ const ModalAddPropostaPauta = (props) => {
   const [check, setCheck] = useState([false, false]);
 
   // Feedback para preencher todos os campos
-  const [feedbackPreenchaTodosCampos, setFeedbackPreenchaTodosCampos] = useState(false);
+  const [feedbackPreenchaTodosCampos, setFeedbackPreenchaTodosCampos] =
+    useState(false);
 
   // Feedback pauta atualizada
   const [feedbackPautaAtualizada, setFeedbackPautaAtualizada] = useState(false);
@@ -81,7 +96,7 @@ const ModalAddPropostaPauta = (props) => {
   // UseState para armazenar a comissão
   const [comissao, setComissao] = useState(comissaoEstatico);
 
-  // useEffect utilizado para obter as pautas e os foruns 
+  // useEffect utilizado para obter as pautas e os foruns
   useEffect(() => {
     PautaService.get().then((res) => {
       setListaPautas(res);
@@ -116,7 +131,7 @@ const ModalAddPropostaPauta = (props) => {
     } else {
       setCheck([true, false]);
     }
-  }
+  };
 
   // Função para mudar o check do input
   const mudarCheck2 = () => {
@@ -125,7 +140,7 @@ const ModalAddPropostaPauta = (props) => {
     } else {
       setCheck([false, true]);
     }
-  }
+  };
 
   // função para selecionar a nova pauta
   const selecionarNovaPauta = () => {
@@ -194,7 +209,7 @@ const ModalAddPropostaPauta = (props) => {
                 "Adicionada na Pauta #" + res.numeroSequencial,
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
             });
           }
         );
@@ -224,7 +239,7 @@ const ModalAddPropostaPauta = (props) => {
                 "Adicionada na Pauta #" + res.numeroSequencial,
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
             });
           }
         );
@@ -292,7 +307,8 @@ const ModalAddPropostaPauta = (props) => {
           <Box
             className="absolute flex justify-between items-center flex-col"
             sx={{
-              top: "50%", left: "50%",
+              top: "50%",
+              left: "50%",
               transform: "translate(-50%, -50%)",
               width: 500,
               height: 500,
@@ -301,7 +317,8 @@ const ModalAddPropostaPauta = (props) => {
               borderTop: "10px solid #00579D",
               boxShadow: 24,
               p: 2,
-            }}>
+            }}
+          >
             {/* Título do modal */}
             <Typography
               fontWeight={650}
@@ -432,7 +449,10 @@ const ModalAddPropostaPauta = (props) => {
                     />
                   </Box>
 
-                  <Box className="flex items-end gap-4 justify-between" sx={{ width: "100%", marginTop: "2%", }}>
+                  <Box
+                    className="flex items-end gap-4 justify-between"
+                    sx={{ width: "100%", marginTop: "2%" }}
+                  >
                     <Box className="w-1/2">
                       <TextField
                         value={numSequencial}
@@ -476,7 +496,7 @@ const ModalAddPropostaPauta = (props) => {
                         assim como opção de criar nova pauta ou adicionar em alguma pauta */}
             <Box
               className="flex justify-center items-center flex-col"
-              sx={{ p: 1.5, }}
+              sx={{ p: 1.5 }}
             >
               <Typography
                 fontWeight={650}
@@ -521,7 +541,12 @@ const ModalAddPropostaPauta = (props) => {
                 }}
               >
                 <Button
-                  sx={{ width: "7rem", border: "solid 1px", color: "tertiary.main", p: 1 }}
+                  sx={{
+                    width: "7rem",
+                    border: "solid 1px",
+                    color: "tertiary.main",
+                    p: 1,
+                  }}
                   disableElevation
                   onClick={addPauta}
                   disabled={novaPauta}
