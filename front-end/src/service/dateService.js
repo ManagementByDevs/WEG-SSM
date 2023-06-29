@@ -1,3 +1,5 @@
+import ChineseLanguageService from "./chineseLanguageService";
+
 class DateService {
   /**
    * Chame para criar um objeto com a data de hoje
@@ -42,7 +44,7 @@ class DateService {
       case "es":
         return dd + "/" + mm + "/" + yyyy;
       case "ch":
-        return yyyy + "/" + mm + "/" + dd;
+        return ChineseLanguageService.formatarDataCompleta(yyyy + "/" + mm + "/" + dd + "/null");
       default:
         return yyyy + "-" + mm + "-" + dd;
     }
@@ -58,17 +60,27 @@ class DateService {
     const mm = String(newDate.getMonth() + 1).padStart(2, "0");
     const yyyy = newDate.getFullYear();
 
+    let hora = newDate.getHours();
+    let minutos = newDate.getMinutes();
+
+    if (hora.toString().length == 1) {
+      hora = "0" + hora.toString();
+    }
+    if (minutos.toString().length == 1) {
+      minutos = "0" + minutos.toString();
+    }
+
     switch (linguagem) {
       case "pt":
-        return dd + "/" + mm + "/" + yyyy;
+        return dd + "/" + mm + "/" + yyyy + " - " + hora + ":" + minutos;
       case "en":
-        return mm + "/" + dd + "/" + yyyy;
+        return mm + "/" + dd + "/" + yyyy + " - " + hora + ":" + minutos;
       case "es":
-        return dd + "/" + mm + "/" + yyyy;
+        return dd + "/" + mm + "/" + yyyy + " - " + hora + ":" + minutos;
       case "ch":
-        return yyyy + "/" + mm + "/" + dd;
+        return ChineseLanguageService.formatarDataCompleta(yyyy + "/" + mm + "/" + dd + "/" + hora + "-" + minutos);
       default:
-        return yyyy + "-" + mm + "-" + dd;
+        return dd + "/" + mm + "/" + yyyy + " - " + hora + ":" + minutos;
     }
   }
 

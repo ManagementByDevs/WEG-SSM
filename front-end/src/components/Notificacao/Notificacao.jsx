@@ -15,6 +15,8 @@ import NotificacaoService from "../../service/notificacaoService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
+import ChineseLanguageService from "../../service/chineseLanguageService";
+
 // Componente para exibir as notificações do sistema
 const Notificacao = ({
   notificacao = EntitiesObjectService.notificacao(),
@@ -29,12 +31,6 @@ const Notificacao = ({
 
   /** Context para ler o texto da tela */
   const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
-
-  // Calculo de datas
-  let dataAtual = DateService.getTodaysDate();
-  let dataNotificacao = DateService.getDateByPreviousDate(notificacao.data);
-  const diferencaMeses = dataAtual - dataNotificacao;
-  const diferencaDias = diferencaMeses / (1000 * 60 * 60 * 24);
 
   // Função para marcar a notificação como lida
   const handleClick = () => {
@@ -52,6 +48,68 @@ const Notificacao = ({
       return formataStatus();
     }
   };
+
+  const formatarData = (data) => {
+    let dataAtual = DateService.getTodaysDate();
+    let dataNotificacao = DateService.getDateByPreviousDate(notificacao.data);
+
+    if (dataAtual.getDate() == dataNotificacao.getDate() &&
+      dataAtual.getMonth() == dataNotificacao.getMonth() &&
+      dataAtual.getFullYear() == dataNotificacao.getFullYear()) {
+
+      let hora = dataNotificacao.getHours();
+      let minutos = dataNotificacao.getMinutes();
+
+      if (hora.toString().length == 1) {
+        hora = "0" + hora.toString();
+      }
+      if (minutos.toString().length == 1) {
+        minutos = "0" + minutos.toString();
+      }
+
+      if(texts.linguagem != "ch") {
+        return hora + ":" + minutos;
+      } else {
+        return ChineseLanguageService.formatHora(hora + "-" + minutos);
+      }
+
+    } else if (dataAtual.getMonth() == dataNotificacao.getMonth() &&
+      dataAtual.getFullYear() == dataNotificacao.getFullYear() &&
+      dataAtual.getDate() - 1 == dataNotificacao.getDate()) {
+      return texts.notificacaoComponente.ontem;
+    } else {
+      let dataFinal = "";
+      const dd = String(dataNotificacao.getDate()).padStart(2, "0");
+      const mm = String(dataNotificacao.getMonth() + 1).padStart(2, "0");
+      let yyyy = "null";
+
+      if(dataNotificacao.getFullYear() != dataAtual.getFullYear()) {
+        yyyy = dataNotificacao.getFullYear();
+      }
+
+      switch (texts.linguagem) {
+        case "pt":
+          dataFinal += dd + "/" + mm;
+          break;
+        case "en":
+          dataFinal += mm + "/" + dd;
+          break;
+        case "es":
+          dataFinal += dd + "/" + mm;
+          break;
+        case "ch":
+          dataFinal += ChineseLanguageService.formatarDataCompleta(yyyy + "/" + mm + "/" + dd + "/null");
+          break;
+        default:
+          dataFinal += dd + "/" + mm;
+      }
+
+      if(yyyy != "null") {
+        dataFinal += yyyy;
+      }
+      return dataFinal;
+    }
+  }
 
   // Função para formatar o status da notificação
   const formataStatus = () => {
@@ -144,28 +202,28 @@ const Notificacao = ({
           onClick={(e) => {
             if (lendoTexto) {
               e.preventDefault();
-              if (diferencaDias < 7 && diferencaDias > 1) {
-                lerTexto(
-                  `${diferencaDias.toFixed(0) * 1 - 1} ${texts.notificacaoComponente.diasAtras
-                  }`
-                );
-              } else if (diferencaDias < 1 && diferencaDias > 0) {
-                lerTexto(texts.notificacaoComponente.hoje);
-              } else if (diferencaDias > 7 && diferencaDias < 14) {
-                lerTexto(texts.notificacaoComponente.umaSemanaAtras);
-              } else if (diferencaDias > 14 && diferencaDias < 21) {
-                lerTexto(texts.notificacaoComponente.duasSemanasAtras);
-              } else if (diferencaDias > 21 && diferencaDias < 28) {
-                lerTexto(texts.notificacaoComponente.tresSemanasAtras);
-              } else if (diferencaDias > 28 && diferencaDias < 30) {
-                lerTexto(texts.notificacaoComponente.quatroSemanasAtras);
-              } else if (diferencaDias > 30) {
-                lerTexto(texts.notificacaoComponente.maisDeUmMesAtras);
-              }
+              // if (diferencaDias < 7 && diferencaDias > 1) {
+              //   lerTexto(
+              //     `${diferencaDias.toFixed(0) * 1 - 1} ${texts.notificacaoComponente.diasAtras
+              //     }`
+              //   );
+              // } else if (diferencaDias < 1 && diferencaDias > 0) {
+              //   lerTexto(texts.notificacaoComponente.hoje);
+              // } else if (diferencaDias > 7 && diferencaDias < 14) {
+              //   lerTexto(texts.notificacaoComponente.umaSemanaAtras);
+              // } else if (diferencaDias > 14 && diferencaDias < 21) {
+              //   lerTexto(texts.notificacaoComponente.duasSemanasAtras);
+              // } else if (diferencaDias > 21 && diferencaDias < 28) {
+              //   lerTexto(texts.notificacaoComponente.tresSemanasAtras);
+              // } else if (diferencaDias > 28 && diferencaDias < 30) {
+              //   lerTexto(texts.notificacaoComponente.quatroSemanasAtras);
+              // } else if (diferencaDias > 30) {
+              //   lerTexto(texts.notificacaoComponente.maisDeUmMesAtras);
+              // }
             }
           }}
         >
-          {diferencaDias < 7 && diferencaDias > 1
+          {/* {diferencaDias < 7 && diferencaDias > 1
             ? `${diferencaDias.toFixed(0) * 1 - 1} ${texts.notificacaoComponente.diasAtras
             }`
             : diferencaDias < 1 && diferencaDias > 0
@@ -180,7 +238,8 @@ const Notificacao = ({
                       ? texts.notificacaoComponente.quatroSemanasAtras
                       : diferencaDias > 31
                         ? texts.notificacaoComponente.maisDeUmMesAtras
-                        : null}
+                        : null} */}
+          {formatarData(notificacao.data)}
         </Typography>
       </Box>
 

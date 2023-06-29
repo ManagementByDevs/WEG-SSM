@@ -145,7 +145,6 @@ const Escopos = () => {
     for (let escopo of listaEscopos) {
       const escopoFormatado = {
         ...escopo,
-        proposta: atob(escopo.proposta),
         porcentagem: calculaPorcentagem(escopo),
       };
       listaNova.push(escopoFormatado);
@@ -159,7 +158,7 @@ const Escopos = () => {
     setCarregamentoItens(true);
 
     let params = { usuario: usuario, titulo: inputPesquisa };
-    EscopoService.buscarPagina(params, "sort=id,asc&").then((response) => {
+    EscopoService.buscarPagina(params, "sort=id,asc&size=" + tamanhoPagina + "&page=" + paginaAtual).then((response) => {
       setEscopos(formatarEscopos(response.content));
       setCarregamentoItens(false);
     });
