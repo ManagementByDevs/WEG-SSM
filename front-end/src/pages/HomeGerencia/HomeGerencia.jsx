@@ -1535,6 +1535,17 @@ const HomeGerencia = () => {
                         setOrdenacaoScore={setOrdenacaoScore}
                         ordenacaoDate={ordenacaoDate}
                         setOrdenacaoDate={setOrdenacaoDate}
+                        filtro={filtrosAtuais}
+                        setFiltro={setFiltrosAtuais}
+                        listaForuns={listaForum}
+                        listaDepartamentos={listaDepartamento}
+                        listaSolicitantes={listaSolicitantes}
+                        setListaSolicitantes={setListaSolicitantes}
+                        listaGerentes={listaGerentes}
+                        setListaGerentes={setListaGerentes}
+                        listaAnalistas={listaAnalistas}
+                        setListaAnalistas={setListaAnalistas}
+                        filtroProposta={filtroProposta}
                         valorAba={valorAba}
                       />
                     </Drawer>
@@ -1789,7 +1800,7 @@ const HomeGerencia = () => {
                     <TabPanel sx={{ padding: 0 }} value="1">
                       <Ajuda
                         onClick={() => {
-                          setIsTourMinhasDemandasOpen(true)
+                          setIsTourMinhasDemandasOpen(true);
                           setState({ ...state, ["right"]: false });
                         }}
                       />
@@ -1838,7 +1849,7 @@ const HomeGerencia = () => {
                     <TabPanel sx={{ padding: 0 }} value="2">
                       <Ajuda
                         onClick={() => {
-                          setIsTourDemandasOpen(true)
+                          setIsTourDemandasOpen(true);
                           setState({ ...state, ["right"]: false });
                         }}
                       />
@@ -1888,8 +1899,8 @@ const HomeGerencia = () => {
                       >
                         <Ajuda
                           onClick={() => {
-                            setIsTourCriarPropostasOpen(true)
-                              setState({ ...state, ["right"]: false });
+                            setIsTourCriarPropostasOpen(true);
+                            setState({ ...state, ["right"]: false });
                           }}
                         />
                         <Box id="primeiroCriarPropostas">
@@ -1934,8 +1945,8 @@ const HomeGerencia = () => {
                         <Box id="primeiroPropostas">
                           <Ajuda
                             onClick={() => {
-                              setIsTourPropostasOpen(true)
-                                setState({ ...state, ["right"]: false });
+                              setIsTourPropostasOpen(true);
+                              setState({ ...state, ["right"]: false });
                             }}
                           />
                           {isTourPropostasOpen ? (
@@ -1982,8 +1993,8 @@ const HomeGerencia = () => {
                         <TabPanel sx={{ padding: 0 }} value="5">
                           <Ajuda
                             onClick={() => {
-                              setIsTourPautasOpen(true)
-                                setState({ ...state, ["right"]: false });
+                              setIsTourPautasOpen(true);
+                              setState({ ...state, ["right"]: false });
                             }}
                           />
                           {isTourPautasOpen ? (
@@ -2013,7 +2024,7 @@ const HomeGerencia = () => {
                         <TabPanel sx={{ padding: 0 }} value="6">
                           <Ajuda
                             onClick={() => {
-                              setIsTourAtasOpen(true)
+                              setIsTourAtasOpen(true);
                               setState({ ...state, ["right"]: false });
                             }}
                           />
