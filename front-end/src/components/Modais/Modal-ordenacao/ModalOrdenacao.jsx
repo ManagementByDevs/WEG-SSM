@@ -17,6 +17,15 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 import ItemOrdenacao from "./ItemOrdenacao/itemOrdenacao";
 
+import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
+import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import Diversity3OutlinedIcon from '@mui/icons-material/Diversity3Outlined';
+import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
+import AspectRatioOutlinedIcon from '@mui/icons-material/AspectRatioOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
+
 export default function TemporaryDrawer(props) {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -107,19 +116,20 @@ export default function TemporaryDrawer(props) {
       component="nav"
       aria-labelledby="nested-list-subheader"
     >
-      <Box
-        className="w-full flex items-center justify-center"
-        sx={{ backgroundColor: "primary.main", height: "4.5rem" }}
-      >
+      <Box className="p-2" sx={{backgroundColor: "primary.main"}}>
+        <Divider />
         <Typography
-          fontSize={FontConfig.smallTitle}
-          sx={{ color: "text.white", fontWeight: 600 }}
-          onClick={() => {
-            lerTexto(texts.modalOrdenacao.ordenar);
+          sx={{
+            marginY: "0.3rem",
+            textAlign: "center",
+            fontSize: FontConfig.big,
+            fontWeight: 600,
+            color: "text.white",
           }}
         >
           {texts.modalOrdenacao.filtrar}
         </Typography>
+        <Divider />
       </Box>
       {props.valorAba != 5 && (
         <Box className="flex flex-col w-full items-center mt-5">
@@ -138,7 +148,7 @@ export default function TemporaryDrawer(props) {
           )}
         </Box>
       )}
-      <Box className="my-1 p-2">
+      <Box className="my-1 p-2" sx={{backgroundColor: "primary.main"}}>
         <Divider />
         <Typography
           sx={{
@@ -146,7 +156,7 @@ export default function TemporaryDrawer(props) {
             textAlign: "center",
             fontSize: FontConfig.big,
             fontWeight: 600,
-            color: "primary.main",
+            color: "text.white",
           }}
         >
           {texts.modalOrdenacao.ordenar}
@@ -192,21 +202,52 @@ export default function TemporaryDrawer(props) {
 }
 
 const Input = (props) => (
-  <FormControl sx={{ marginBottom: "1rem", width: "80%" }} size="small">
-    <InputLabel id="demo-select-small-label">Age</InputLabel>
+  <FormControl sx={{ marginBottom: "1rem", width: "85%" }} size="small">
+    <InputLabel id="demo-select-small-label" className="flex items-center">
+      {
+        props.opcao.id == 1 ? <BookmarkBorderOutlinedIcon className="mr-2"/> :
+        props.opcao.id == 2 ? <AssignmentIndOutlinedIcon className="mr-2"/> :
+        props.opcao.id == 3 ? <Diversity3OutlinedIcon className="mr-2"/> :
+        props.opcao.id == 4 ? <BusinessOutlinedIcon className="mr-2"/> :
+        props.opcao.id == 5 ? <AspectRatioOutlinedIcon className="mr-2"/> :
+        props.opcao.id == 6 ? <PersonOutlineOutlinedIcon className="mr-2"/> :
+        props.opcao.id == 7 ? <PersonOutlineOutlinedIcon className="mr-2"/> :
+        props.opcao.id == 8 ? <PersonOutlineOutlinedIcon className="mr-2"/> :
+        props.opcao.id == 9 ? <VisibilityOutlinedIcon className="mr-2"/> :
+        props.opcao.id == 10 ? <PublicOutlinedIcon className="mr-2"/> :
+        null
+      }
+      {props.opcao.tipo}
+      </InputLabel>
     <Select
       labelId="demo-select-small-label"
       id="demo-select-small"
       value={props.age}
-      label="Age"
+      label={"icon " + props.opcao.tipo}
       onChange={props.handleChange}
     >
       <MenuItem value="">
-        <em>None</em>
+        <em>Nenhum</em>
       </MenuItem>
-      <MenuItem value={10}>Ten</MenuItem>
-      <MenuItem value={20}>Twenty</MenuItem>
-      <MenuItem value={30}>Thirty</MenuItem>
+      {
+        props.opcao.id == 1 ? (
+          <>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          </>
+        ) :
+        props.opcao.id == 2 ? <MenuItem value={20}>Twenty</MenuItem> :
+        props.opcao.id == 3 ? <MenuItem value={30}>Thirty</MenuItem> :
+        props.opcao.id == 4 ? <MenuItem value={30}>Thirty</MenuItem> :
+        props.opcao.id == 5 ? <MenuItem value={30}>Thirty</MenuItem> :
+        props.opcao.id == 6 ? <MenuItem value={30}>Thirty</MenuItem> :
+        props.opcao.id == 7 ? <MenuItem value={30}>Thirty</MenuItem> :
+        props.opcao.id == 8 ? <MenuItem value={30}>Thirty</MenuItem> :
+        props.opcao.id == 9 ? <MenuItem value={30}>Thirty</MenuItem> :
+        props.opcao.id == 10 ? <MenuItem value={30}>Thirty</MenuItem> :
+        null
+      }
     </Select>
   </FormControl>
 );
