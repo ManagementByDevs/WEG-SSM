@@ -4430,13 +4430,12 @@ public class PropostaController {
     @RequestMapping("/ata/{idProposta}")
     public ResponseEntity<Object> updateCriacaoAta(@PathVariable(value = "idProposta") Long idProposta,
                                                    @RequestParam(value = "parecerComissao") ParecerGerencia parecerGerencia,
-                                                   @RequestParam(value = "parecerInformacao") String parecerInformacao) {
+                                                   @RequestParam(value = "parecerInformacao", required = false) String parecerInformacao) {
         Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
         if (propostaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
         }
 
-        System.out.println("parecer gerencia: " + parecerGerencia + "\nparecer informacao: " + parecerInformacao);
         Proposta proposta = propostaOptional.get();
         proposta.setParecerComissao(parecerGerencia);
         proposta.setParecerInformacao(parecerInformacao);
@@ -4474,7 +4473,7 @@ public class PropostaController {
     @RequestMapping("/dg/{idProposta}")
     public ResponseEntity<Object> updateDg(@PathVariable(value = "idProposta") Long idProposta,
                                            @RequestParam(value = "parecerComissao") ParecerGerencia parecerGerencia,
-                                           @RequestParam(value = "parecerInformacao") String parecerInformacao) {
+                                           @RequestParam(value = "parecerInformacao", required = false) String parecerInformacao) {
         Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
         if (propostaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
