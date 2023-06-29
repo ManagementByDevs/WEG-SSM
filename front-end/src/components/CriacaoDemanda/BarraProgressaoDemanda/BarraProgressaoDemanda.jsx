@@ -277,7 +277,6 @@ const BarraProgressaoDemanda = () => {
           retornaObjetoHistorico(),
           arquivo
         ).then((response) => {
-          setCarregamentoDemanda(false);
           direcionarHome();
           excluirEscopo();
         });

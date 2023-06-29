@@ -76,13 +76,7 @@ const PautaTable = ({
 
   // Retorna data formatada para melhor leitura
   const getDataFormatada = (dataInicio) => {
-    let dateInicio = new Date(DateService.getDateByMySQLFormat(dataInicio));
-
-    return `${DateService.getTodaysDateUSFormat(dataInicio, texts.linguagem)} ${texts.pautaAtaModoVisualizacao.as
-      } ${dateInicio.getHours()}:${dateInicio.getMinutes() < 10
-        ? "0" + dateInicio.getMinutes()
-        : dateInicio.getMinutes()
-      }`;
+    return DateService.getTodaysDateUSFormat(dataInicio, texts.linguagem);
   };
 
   // Função que retorna a cor do status da ata

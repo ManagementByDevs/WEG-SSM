@@ -454,6 +454,7 @@ const TextLanguageContext = createContext({
       reprovadaPorFaltaDeInformacoes: "reprovada por falta de informações",
       diasAtras: "dias atrás",
       hoje: "hoje",
+      ontem: "ontem",
       umaSemanaAtras: "1 semana atrás",
       duasSemanasAtras: "2 semanas atrás",
       tresSemanasAtras: "3 semanas atrás",

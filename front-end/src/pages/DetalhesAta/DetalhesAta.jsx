@@ -222,7 +222,9 @@ const DetalhesAta = (props) => {
 
   /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
   const formatarHtml = (texto) => {
-    texto = texto.replace(/<br>/g, "<br/>");
+    if (texto) {
+      texto = texto.replace(/<br>/g, "<br/>");
+    }
     return texto;
   };
 
