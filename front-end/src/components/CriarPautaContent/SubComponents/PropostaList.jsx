@@ -104,7 +104,7 @@ const PropostaList = ({
             draggable={draggable}
             onDragStart={(e) => onDragStart(e, proposta)}
           >
-            <Box className="flex items-center gap-2 w-2/3">
+            <Box className="flex items-center w-2/3">
               <Box className="w-1/2">
                 <Typography
                   fontSize={FontConfig.default}
@@ -122,7 +122,7 @@ const PropostaList = ({
                   fontSize={FontConfig.default}
                   fontWeight={500}
                   color="text.primary"
-                  className="overflow-hidden text-ellipsis whitespace-nowrap"
+                  className="truncate"
                   onClick={() => {
                     lerTexto(proposta.titulo);
                   }}
@@ -133,7 +133,7 @@ const PropostaList = ({
             </Box>
             <Box className="w-1/3 flex justify-end">
               {inDiscussion ? (
-                <Box className="flex items-center gap-2">
+                <>
                   <Tooltip
                     title={
                       proposta.publicada
@@ -172,7 +172,7 @@ const PropostaList = ({
                       <RemoveIcon />
                     </IconButton>
                   </Tooltip>
-                </Box>
+                </>
               ) : (
                 <>
                   <Tooltip title={texts.criarPauta.expandir}>
