@@ -51,7 +51,7 @@ public class HistoricoController {
     /**
      * Método GET para listar todos os históricos
      *
-     * @return
+     * @return - Retorno da lista de históricos
      */
     @GetMapping
     public ResponseEntity<List<Historico>> findAll() {
@@ -61,8 +61,8 @@ public class HistoricoController {
     /**
      * Método GET para listar um historico específico através de um id
      *
-     * @param id
-     * @return
+     * @param id - ID do historico a ser buscado
+     * @return - Retorno do histórico
      */
     @GetMapping("/id/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -76,8 +76,8 @@ public class HistoricoController {
     /**
      * Método GET para listar um historico específico de um autor
      *
-     * @param idAutor
-     * @return
+     * @param idAutor - ID do autor do histórico
+     * @return - Retorno do histórico
      */
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<Object> findByIdUser(@PathVariable(value = "idUsuario") Long idAutor) {
@@ -96,7 +96,7 @@ public class HistoricoController {
      * Método POST para criar um historico no banco de dados
      *
      * @param historicoDto ( Objeto a ser cadastrado = req.body )
-     * @return
+     * @return - Retorno do histórico cadastrado
      */
     @PostMapping("/{idUsuario}")
     public ResponseEntity<Object> save(@PathVariable(value = "idUsuario") Long idUsuario, @RequestBody HistoricoDTO historicoDto) {
@@ -113,8 +113,8 @@ public class HistoricoController {
     /**
      * Método DELETE para deletar um historico, colocando sua visibilidade como false
      *
-     * @param id
-     * @return
+     * @param id - ID do historico a ser deletado
+     * @return - Retorno do histórico deletado
      */
     @Transactional
     @DeleteMapping("/visibilidade/{id}")
@@ -132,8 +132,8 @@ public class HistoricoController {
     /**
      * Método DELETE para deletar um histórico do banco de dados
      *
-     * @param id
-     * @return
+     * @param id - ID do histórico a ser deletado
+     * @return - Retorno da mensagem de sucesso ou erro
      */
     @Transactional
     @DeleteMapping("/{id}")

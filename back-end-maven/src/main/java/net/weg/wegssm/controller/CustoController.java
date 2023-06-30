@@ -29,8 +29,8 @@ public class CustoController {
     /**
      * Método POST para salvar um custo
      *
-     * @param custoDTO
-     * @return
+     * @param custoDTO - Objeto do custo a ser salvo
+     * @return - Retorno do objeto salvo
      */
     @PostMapping
     public ResponseEntity<Custo> save(@RequestBody @Valid CustoDTO custoDTO) {
@@ -39,12 +39,11 @@ public class CustoController {
         return ResponseEntity.status(HttpStatus.OK).body(custoService.save(custo));
     }
 
-
     /**
      * Método DELETE para deletar um custo pelo id
      *
-     * @param id
-     * @return
+     * @param id - ID do custo a ser deletado
+     * @return - Retorno da mensagem de sucesso ou erro
      */
     @Transactional
     @DeleteMapping("/{id}")

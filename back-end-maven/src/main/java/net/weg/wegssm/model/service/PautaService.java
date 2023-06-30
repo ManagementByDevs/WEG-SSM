@@ -25,7 +25,6 @@ public class PautaService {
 
     /**
      * Função para buscar todas as pautas
-     *
      * @return
      */
     public List<Pauta> findAll() {
@@ -34,7 +33,6 @@ public class PautaService {
 
     /**
      * Função para buscar todas as pautas com paginação
-     *
      * @param pageable
      * @return
      */
@@ -44,7 +42,6 @@ public class PautaService {
 
     /**
      * Função para buscar uma pauta por id
-     *
      * @param id
      * @return
      */
@@ -54,7 +51,6 @@ public class PautaService {
 
     /**
      * Função para buscar uma pauta por número sequencial
-     *
      * @param numeroSequencial
      * @return
      */
@@ -64,7 +60,6 @@ public class PautaService {
 
     /**
      * Funçao para verificar se uma pauta existe por id
-     *
      * @param id
      * @return
      */
@@ -74,7 +69,6 @@ public class PautaService {
 
     /**
      * Função para verificar se uma pauta existe por número sequencial
-     *
      * @param numeroSequencial
      * @return
      */
@@ -84,7 +78,6 @@ public class PautaService {
 
     /**
      * Função para salvar uma pauta
-     *
      * @param entity
      * @param <S>
      * @return
@@ -95,7 +88,6 @@ public class PautaService {
 
     /**
      * Função para deletar uma pauta por id
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -104,7 +96,6 @@ public class PautaService {
 
     /**
      * Função para buscar uma pauta por proposta
-     *
      * @param proposta
      * @return
      */

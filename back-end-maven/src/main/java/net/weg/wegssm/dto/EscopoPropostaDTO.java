@@ -31,22 +31,17 @@ public class EscopoPropostaDTO {
     private List<Beneficio> beneficios = new ArrayList<>();
     private Bu buSolicitante;
     private List<Bu> busBeneficiadas;
-
     @NotNull
     private Usuario solicitante;
-
     @NotNull
     private Usuario gerente;
-
     private Usuario analista;
     private Forum forum;
     private Departamento departamento;
     private List<TabelaCusto> tabelaCustos;
     private List<ResponsavelNegocio> responsavelNegocio;
-
     @NotNull
     private Demanda demanda;
-
     private List<Anexo> anexo;
     private String presenteEm;
 

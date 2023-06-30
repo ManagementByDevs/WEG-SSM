@@ -17,7 +17,6 @@ import UsuarioService from "../../service/usuarioService";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -143,12 +142,12 @@ const DemandaGerencia = (props) => {
         {/* Container titulo, ppm e status */}
         <Box className="flex justify-between">
           {/* Container titulo/ppm */}
-          <Box className="flex mt-1">
+          <Box className="w-3/4 flex mt-1">
             <Typography
               variant="h1"
               fontSize={FontConfig.veryBig}
               fontWeight="600"
-              className="overflow-hidden text-ellipsis whitespace-nowrap"
+              className="truncate "
               title={props.dados.titulo}
               onClick={(e) => {
                 if (lendoTexto) {
@@ -328,7 +327,10 @@ const DemandaGerencia = (props) => {
             </Box>
             {/* Infos gerente responsável, analista responsavel e icons */}
             <Box className="flex items-end justify-end" sx={{ width: "80%" }}>
-              <Box className="flex flex-col" sx={{ width: "100%", height: "100%" }}>
+              <Box
+                className="flex flex-col"
+                sx={{ width: "100%", height: "100%" }}
+              >
                 {/* Container analista responsavel */}
                 <Box className="flex">
                   <Typography

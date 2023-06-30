@@ -18,10 +18,8 @@ public class EscopoDTO {
     private String proposta;
     private String frequencia;
     private Long porcentagem;
-
     @NotNull
     private Usuario usuario;
-
     private List<Anexo> anexo;
 
 }

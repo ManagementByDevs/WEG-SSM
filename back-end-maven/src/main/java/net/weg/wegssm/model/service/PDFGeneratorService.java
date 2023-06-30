@@ -35,7 +35,6 @@ public class PDFGeneratorService {
 
     /**
      * Construtor do service
-     *
      * @param demandaService
      */
     public PDFGeneratorService(DemandaService demandaService) {
@@ -44,7 +43,6 @@ public class PDFGeneratorService {
 
     /**
      * Função para exportar uma demanda para pdf
-     *
      * @param response
      * @param demanda
      * @return
@@ -57,12 +55,10 @@ public class PDFGeneratorService {
         BaseColor azulWeg = new BaseColor(0, 87, 157);
 
         // Formatação da data para o documento pdf
-
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         // Criando a página do pdf
-
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -70,7 +66,6 @@ public class PDFGeneratorService {
         document.open();
 
         // Criando a logo da weg para modelo pdf
-
         Image img = Image.getInstance("https://logospng.org/download/weg/logo-weg-2048.png");
 
         int indentation = 0;
@@ -80,7 +75,6 @@ public class PDFGeneratorService {
         img.setAbsolutePosition(460, 740);
 
         // Criando as fontes da página
-
         Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitulo.setSize(24);
         fontTitulo.setColor(azulWeg);
@@ -96,7 +90,6 @@ public class PDFGeneratorService {
         fontInfoHeader.setSize(12);
 
         // Criando a formatação da página pdf
-
         Paragraph paragraphTitulo = new Paragraph(demanda.getTitulo(), fontTitulo);
         paragraphTitulo.setSpacingBefore(15);
 
@@ -122,7 +115,6 @@ public class PDFGeneratorService {
         document.add(paragraphBeneficios);
 
         // Criando tabela para os benefícios
-
         for (Beneficio beneficio : demanda.getBeneficios()) {
             PdfPTable tableBeneficios = new PdfPTable(4);
 
@@ -188,7 +180,6 @@ public class PDFGeneratorService {
         document.add(paragraphInfoFrequencia);
 
         // Adicionando informações após o retorno do analista
-
         if (demanda.getTamanho() != null) {
             Chunk chunkTamanho = new Chunk("Tamanho: ", fontSubtitulo);
             Chunk chunkValorTamanho = new Chunk(demanda.getTamanho(), fontInformacoes);
@@ -262,7 +253,6 @@ public class PDFGeneratorService {
         document.add(paragraphAnexos);
 
         // Adicionando o nome dos arquivos
-
         for (Anexo anexo : demanda.getAnexo()) {
             Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + " - " + anexo.getTipo(), fontInformacoes);
             paragraphInfoAnexos.setIndentationLeft(40);
@@ -272,7 +262,6 @@ public class PDFGeneratorService {
         }
 
         // Encerrando o documento
-
         document.close();
 
         return document;
@@ -280,7 +269,6 @@ public class PDFGeneratorService {
 
     /**
      * Função para exportar uma proposta para pdf
-     *
      * @param response
      * @param proposta
      * @return
@@ -289,18 +277,17 @@ public class PDFGeneratorService {
      */
     public Document exportProposta(HttpServletResponse response, Proposta proposta) throws IOException, DocumentException {
 
+        // Buscando a demanda que pertence a proposta
         Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
 
         //Colors
         BaseColor azulWeg = new BaseColor(0, 87, 157);
 
         // Formatação da data para quando baixar o documento pdf
-
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         // Criando a página do pdf
-
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -308,7 +295,6 @@ public class PDFGeneratorService {
         document.open();
 
         // Criando a logo da weg para o modelo pdf
-
         Image img = Image.getInstance("https://logospng.org/download/weg/logo-weg-2048.png");
 
         int indentation = 0;
@@ -318,7 +304,6 @@ public class PDFGeneratorService {
         img.setAbsolutePosition(460, 740);
 
         // Criando as fontes da página
-
         Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitulo.setSize(24);
         fontTitulo.setColor(azulWeg);
@@ -339,7 +324,6 @@ public class PDFGeneratorService {
         fontInfoHeaderProposta.setStyle(Font.BOLD);
 
         // Criando a formatação da página pdf
-
         Paragraph paragraphData = new Paragraph("Data de emissão: " + currentDateTime, fontInfoHeader);
         paragraphData.setSpacingBefore(20);
 
@@ -433,7 +417,6 @@ public class PDFGeneratorService {
         paragraphFrequencia.setSpacingBefore(15);
 
         // Adicionando os paragrafos no documento
-
         document.add(img);
         document.add(paragraphData);
         document.add(paragraphPPMData);
@@ -446,15 +429,12 @@ public class PDFGeneratorService {
         XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta().getBytes()));
         document.add(paragraphProblema);
         XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProblema().getBytes()));
-
         document.add(paragraphEscopo);
         XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo().getBytes()));
-
         document.add(paragraphFrequencia);
         document.add(paragraphTabelaCustos);
 
         // Adicionando a tabela de CC
-
         for (TabelaCusto tableCusto : proposta.getTabelaCustos()) {
             PdfPTable tableCustos = new PdfPTable(4);
 
@@ -488,7 +468,6 @@ public class PDFGeneratorService {
             cell.setPhrase(new Phrase("Horas", font));
             tableCustos.addCell(cell);
 
-            int tamanhoLista = 0;
             for (Custo custos : tableCusto.getCustos()) {
                 tableCustos.addCell(tableCusto.getTipoDespesa());
                 tableCustos.addCell(custos.getPerfilDespesa());
@@ -513,8 +492,6 @@ public class PDFGeneratorService {
 
             cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell2.setVerticalAlignment(Element.ALIGN_CENTER);
-
-            // FAZER O CALCULO
 
             cell2.setPhrase(new Phrase("Valor Hora", font));
             tableValorTotal.addCell(cell2);
@@ -568,7 +545,6 @@ public class PDFGeneratorService {
         document.add(paragraphBeneficios);
 
         // Adicionando a tabela de benefícios
-
         for (Beneficio beneficio : proposta.getBeneficios()) {
             PdfPTable tableBeneficios = new PdfPTable(4);
 
@@ -659,7 +635,6 @@ public class PDFGeneratorService {
         document.add(paragraphAnexos);
 
         // Adicionando o nome dos anexos
-
         for (Anexo anexo : proposta.getDemanda().getAnexo()) {
             Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + " - " + anexo.getTipo(), fontInformacoes);
             paragraphInfoAnexos.setIndentationLeft(40);
@@ -669,7 +644,6 @@ public class PDFGeneratorService {
         }
 
         // Adicionando os responsáveis pelo negócio
-
         for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()) {
             Paragraph paragraphResponsavelNegocio = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontInformacoes);
             paragraphResponsavelNegocio.setAlignment(Element.ALIGN_CENTER);
@@ -685,7 +659,6 @@ public class PDFGeneratorService {
         document.add(paragraphRN);
 
         // Encerrando o documento
-
         document.close();
 
         return document;
@@ -693,7 +666,6 @@ public class PDFGeneratorService {
 
     /**
      * Função para exportar uma pauta para pdf
-     *
      * @param response
      * @param pauta
      * @return
@@ -706,12 +678,10 @@ public class PDFGeneratorService {
         BaseColor azulWeg = new BaseColor(0, 87, 157);
 
         // Formatação da data para quando baixar o documento
-
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         // Criação do documento pdf
-
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -719,7 +689,6 @@ public class PDFGeneratorService {
         document.open();
 
         // Criando a logo da weg para o modelo pdf
-
         Image img = Image.getInstance("https://logospng.org/download/weg/logo-weg-2048.png");
 
         int indentation = 0;
@@ -729,7 +698,6 @@ public class PDFGeneratorService {
         img.setAbsolutePosition(460, 740);
 
         // Criação das fontes da página
-
         Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitulo.setSize(24);
         fontTitulo.setStyle(Font.BOLD);
@@ -764,7 +732,6 @@ public class PDFGeneratorService {
         fontInfoHeaderPauta.setStyle(Font.BOLD);
 
         // Formatação da página pdf
-
         Paragraph paragraphData = new Paragraph("Data de emissão: " + currentDateTime, fontHeader);
         paragraphData.setSpacingBefore(20);
 
@@ -811,7 +778,6 @@ public class PDFGeneratorService {
         int contadorProposta = 1;
 
         // Adicionando as propostas dentro da pauta
-
         for (Proposta proposta : pauta.getPropostas()) {
 
             Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
@@ -933,15 +899,12 @@ public class PDFGeneratorService {
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta().getBytes()));
             document.add(paragraphProblema);
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProblema().getBytes()));
-
             document.add(paragraphEscopo);
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo().getBytes()));
-
             document.add(paragraphFrequencia);
             document.add(paragraphTabelaCustos);
 
             // Adicionando a tabela de CC
-
             for (TabelaCusto tableCusto : proposta.getTabelaCustos()) {
                 PdfPTable tableCustos = new PdfPTable(4);
 
@@ -1000,8 +963,6 @@ public class PDFGeneratorService {
                 cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
                 cell2.setVerticalAlignment(Element.ALIGN_CENTER);
 
-                // Fazer o cálculo
-
                 cell2.setPhrase(new Phrase("Valor Hora", font));
                 tableValorTotal.addCell(cell2);
                 cell2.setPhrase(new Phrase("Total", font));
@@ -1054,7 +1015,6 @@ public class PDFGeneratorService {
             document.add(paragraphBeneficios);
 
             // Adicionando a tabela de benefícios
-
             for (Beneficio beneficio : proposta.getDemanda().getBeneficios()) {
                 PdfPTable tableBeneficios = new PdfPTable(4);
 
@@ -1145,7 +1105,6 @@ public class PDFGeneratorService {
             document.add(paragraphAnexos);
 
             // Adicionando o nome dos anexos
-
             for (Anexo anexo : proposta.getDemanda().getAnexo()) {
                 Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + " - " + anexo.getTipo(), fontInformacoes);
                 paragraphInfoAnexos.setIndentationLeft(40);
@@ -1155,7 +1114,6 @@ public class PDFGeneratorService {
             }
 
             // Adicionando os responsáveis pelo negócio
-
             for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()) {
                 Paragraph paragraphResponsavelNegocio = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontInformacoes);
                 paragraphResponsavelNegocio.setAlignment(Element.ALIGN_CENTER);
@@ -1196,6 +1154,7 @@ public class PDFGeneratorService {
 
         }
 
+        // encerrando o documento
         document.close();
 
         return document;
@@ -1203,7 +1162,6 @@ public class PDFGeneratorService {
 
     /**
      * Função para exportar uma ata para pdf
-     *
      * @param response
      * @param ata
      * @return
@@ -1216,12 +1174,10 @@ public class PDFGeneratorService {
         BaseColor azulWeg = new BaseColor(0, 87, 157);
 
         // Formatando a data para colocar no documento
-
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         // Criando o documento pdf
-
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1229,7 +1185,6 @@ public class PDFGeneratorService {
         document.open();
 
         // Criando a logo da weg para o modelo pdf
-
         Image img = Image.getInstance("https://logospng.org/download/weg/logo-weg-2048.png");
 
         int indentation = 0;
@@ -1239,7 +1194,6 @@ public class PDFGeneratorService {
         img.setAbsolutePosition(460, 740);
 
         // Formatação para o documento
-
         Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitulo.setSize(24);
         fontTitulo.setColor(azulWeg);
@@ -1314,7 +1268,6 @@ public class PDFGeneratorService {
         int contadorProposta = 1;
 
         // Adicionando as propostas dentro da ata
-
         for (Proposta proposta : ata.getPropostas()) {
 
             Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
@@ -1415,7 +1368,6 @@ public class PDFGeneratorService {
             paragraphFrequencia.setSpacingBefore(15);
 
             // Adicionando os paragrafos no documento
-
             document.add(img);
             document.add(paragraphContadorProposta);
             document.add(paragraphData);
@@ -1429,15 +1381,12 @@ public class PDFGeneratorService {
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta().getBytes()));
             document.add(paragraphProblema);
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProblema().getBytes()));
-
             document.add(paragraphEscopo);
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo().getBytes()));
-
             document.add(paragraphFrequencia);
             document.add(paragraphTabelaCustos);
 
             // Adicionando a tabela de CC
-
             for (TabelaCusto tableCusto : proposta.getTabelaCustos()) {
                 PdfPTable tableCustos = new PdfPTable(4);
 
@@ -1550,7 +1499,6 @@ public class PDFGeneratorService {
             document.add(paragraphBeneficios);
 
             // Adicionando a tabela de benefícios
-
             for (Beneficio beneficio : proposta.getDemanda().getBeneficios()) {
                 PdfPTable tableBeneficios = new PdfPTable(4);
 
@@ -1641,7 +1589,6 @@ public class PDFGeneratorService {
             document.add(paragraphAnexos);
 
             // Adicionando o nome dos anexos
-
             for (Anexo anexo : proposta.getDemanda().getAnexo()) {
                 Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + " - " + anexo.getTipo(), fontInformacoes);
                 paragraphInfoAnexos.setIndentationLeft(40);
@@ -1651,7 +1598,6 @@ public class PDFGeneratorService {
             }
 
             // Adicionando os responsáveis pelo negócio
-
             for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()) {
                 Paragraph paragraphResponsavelNegocio = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontInformacoes);
                 paragraphResponsavelNegocio.setAlignment(Element.ALIGN_CENTER);
@@ -1665,8 +1611,6 @@ public class PDFGeneratorService {
             paragraphRN.setSpacingBefore(10);
 
             document.add(paragraphRN);
-
-            // finaliza aqui
 
             Paragraph paragraphParecer = new Paragraph("Pareceres: ", fontSubtitulo);
             paragraphParecer.setAlignment(Paragraph.ANCHOR);
@@ -1710,6 +1654,7 @@ public class PDFGeneratorService {
 
         }
 
+        // encerrando o documento
         document.close();
 
         return document;

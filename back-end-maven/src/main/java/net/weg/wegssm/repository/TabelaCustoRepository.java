@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
  * Classe repository para as tabelas de custos
  */
 @Repository
-public interface TabelaCustoRepository extends JpaRepository<TabelaCusto, Long> {
-
-}
+public interface TabelaCustoRepository extends JpaRepository<TabelaCusto, Long> { }

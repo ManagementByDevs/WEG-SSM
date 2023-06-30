@@ -34,6 +34,9 @@ public class TabelaCusto {
     @JoinColumn(name = "tabela_custo_id")
     private List<CC> ccs;
 
+    /**
+     * Tipo de despesa do custo (Interna ou Externa)
+     */
     @Column
     private String tipoDespesa;
 

@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class DocumentoHistoricoService {
 
+    /**
+     * Classe repository do documento histórico
+     */
     private DocumentoHistoricoRepository documentoHistoricoRepository;
 
     /**
      * Função para salvar um documento histórico
-     *
      * @param documentoHistorico
      * @return
      */

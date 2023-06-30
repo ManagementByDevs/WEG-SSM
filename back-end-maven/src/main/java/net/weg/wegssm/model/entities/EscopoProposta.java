@@ -220,4 +220,5 @@ public class EscopoProposta {
             throw new RuntimeException(e.getMessage());
         }
     }
+
 }

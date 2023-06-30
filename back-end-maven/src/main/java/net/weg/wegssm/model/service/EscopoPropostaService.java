@@ -27,7 +27,6 @@ public class EscopoPropostaService {
 
     /**
      * Função para buscar um escopo da proposta pelo usuário
-     *
      * @param usuario
      * @param pageable
      * @return
@@ -38,7 +37,6 @@ public class EscopoPropostaService {
 
     /**
      * Função para buscar um escopo proposta pelo usuário e pelo título
-     *
      * @param usuario
      * @param titulo
      * @param pageable
@@ -50,7 +48,6 @@ public class EscopoPropostaService {
 
     /**
      * Função para salvar um escopo da proposta
-     *
      * @param escopoProposta
      * @return
      */
@@ -60,7 +57,6 @@ public class EscopoPropostaService {
 
     /**
      * Função para verificar se existe um escopo da proposta pelo id
-     *
      * @param id
      * @return
      */
@@ -70,7 +66,6 @@ public class EscopoPropostaService {
 
     /**
      * Função para deletar um escopo da proposta pelo id
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -79,7 +74,6 @@ public class EscopoPropostaService {
 
     /**
      * Função para buscar um escopo da proposta pela demanda
-     *
      * @param demanda
      * @return
      */
@@ -89,7 +83,6 @@ public class EscopoPropostaService {
 
     /**
      * Função para buscar um escopo da proposta pelo id
-     *
      * @param idEscopo
      * @return
      */

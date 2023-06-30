@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
  * Classe repository para o documento histórico
  */
 @Repository
-public interface DocumentoHistoricoRepository extends JpaRepository<DocumentoHistorico, Long> {
-
-}
+public interface DocumentoHistoricoRepository extends JpaRepository<DocumentoHistorico, Long> { }

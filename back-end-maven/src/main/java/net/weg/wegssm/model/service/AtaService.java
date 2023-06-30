@@ -25,7 +25,6 @@ public class AtaService {
 
     /**
      * Função para buscar todas as atas
-     *
      * @return
      */
     public List<Ata> findAll() {
@@ -34,7 +33,6 @@ public class AtaService {
 
     /**
      * Função para buscar todas as atas com paginação
-     *
      * @param pageable
      * @return
      */
@@ -44,7 +42,6 @@ public class AtaService {
 
     /**
      * Função para buscar uma ata pelo número sequencial
-     *
      * @param numeroSequencial
      * @return
      */
@@ -54,7 +51,6 @@ public class AtaService {
 
     /**
      * Função para buscar uma ata pelo ID
-     *
      * @param id
      * @return
      */
@@ -64,7 +60,6 @@ public class AtaService {
 
     /**
      * Função para verificar se existe uma ata com o ID informado
-     *
      * @param id
      * @return
      */
@@ -74,7 +69,6 @@ public class AtaService {
 
     /**
      * Função para verificar se existe uma ata com o número sequencial informado
-     *
      * @param numeroSequencial
      * @return
      */
@@ -84,7 +78,6 @@ public class AtaService {
 
     /**
      * Função para salvar uma ata
-     *
      * @param entity
      * @param <S>
      * @return
@@ -95,7 +88,6 @@ public class AtaService {
 
     /**
      * Função para excluir uma ata pelo ID
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -104,7 +96,6 @@ public class AtaService {
 
     /**
      * Função para buscar uma ata através de uma proposta
-     *
      * @param proposta
      * @return
      */
@@ -112,27 +103,69 @@ public class AtaService {
         return ataRepository.findByPropostasContaining(proposta);
     }
 
+    /**
+     * Função para buscar uma ata pelo número sequencial e se a ata está publicada pela dg
+     * @param numeroSequencial
+     * @param publicadaDg
+     * @param pageable
+     * @return
+     */
     public Page<Ata> findByNumeroSequencialAndPublicadaDg(String numeroSequencial, Boolean publicadaDg, Pageable pageable) {
         return ataRepository.findByNumeroSequencialAndPublicadaDg(numeroSequencial, publicadaDg, pageable);
     }
 
+    /**
+     * Função para buscar uma ata se estiver publicada pela dg
+     * @param publicadaDg
+     * @param pageable
+     * @return
+     */
     public Page<Ata> findByPublicadaDg(Boolean publicadaDg, Pageable pageable) {
         return ataRepository.findByPublicadaDg(publicadaDg, pageable);
     }
 
+    /**
+     * Função para buscar uma ata pelo número sequencial e se a ata está publicada pela dg e pela comissão
+     * @param numeroSequencial
+     * @param publicadaDg
+     * @param publicada
+     * @param pageable
+     * @return
+     */
     public Page<Ata> findByNumeroSequencialAndPublicadaDgAndPublicada(String numeroSequencial, Boolean publicadaDg, Boolean publicada, Pageable pageable) {
         return ataRepository.findByNumeroSequencialAndPublicadaDgAndPublicada(numeroSequencial, publicadaDg, publicada, pageable);
     }
 
+    /**
+     * Função para buscar uma ata pelo número sequencial e se a ata está publicada pela comissão
+     * @param numeroSequencial
+     * @param publicada
+     * @param pageable
+     * @return
+     */
     public Page<Ata> findByNumeroSequencialAndPublicada(String numeroSequencial, Boolean publicada, Pageable pageable) {
         return ataRepository.findByNumeroSequencialAndPublicada(numeroSequencial, publicada, pageable);
     }
 
+    /**
+     * Função para buscar uma ata se estiver publicada pela dg e pela comissão
+     * @param publicadaDg
+     * @param publicada
+     * @param pageable
+     * @return
+     */
     public Page<Ata> findByPublicadaDgAndPublicada(Boolean publicadaDg, Boolean publicada, Pageable pageable) {
         return ataRepository.findByPublicadaDgAndPublicada(publicadaDg, publicada, pageable);
     }
 
+    /**
+     * Função para buscar uma ata se estiver publicada pela comissão
+     * @param publicada
+     * @param pageable
+     * @return
+     */
     public Page<Ata> findByPublicada(Boolean publicada, Pageable pageable) {
         return ataRepository.findByPublicada(publicada, pageable);
     }
+
 }

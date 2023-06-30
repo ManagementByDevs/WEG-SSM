@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
  * Classe repository para os departamentos
  */
 @Repository
-public interface DepartamentoRepository extends JpaRepository<Departamento, Long> {
-
-}
+public interface DepartamentoRepository extends JpaRepository<Departamento, Long> { }

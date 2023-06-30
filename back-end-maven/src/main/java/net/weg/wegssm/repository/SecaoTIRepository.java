@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
  * Classe repository para as seções de TI
  */
 @Repository
-public interface SecaoTIRepository extends JpaRepository<SecaoTI, Long> {
-
-}
+public interface SecaoTIRepository extends JpaRepository<SecaoTI, Long> { }

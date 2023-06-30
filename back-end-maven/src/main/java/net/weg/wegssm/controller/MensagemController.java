@@ -60,9 +60,9 @@ public class MensagemController {
     /**
      * Método MESSAGEMAPPING utilizado para receber uma mensagem
      *
-     * @param id
-     * @param mensagemDTO
-     * @return
+     * @param id - ID da mensagem
+     * @param mensagemDTO - Objeto da mensagem
+     * @return  - ResponseEntity com a mensagem
      */
     @MessageMapping("/weg_ssm/mensagem/{id}")
     @SendTo("/weg_ssm/mensagem/{id}/chat")

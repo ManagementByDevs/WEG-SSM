@@ -21,6 +21,7 @@ public class UserJpaDeserializer extends JsonDeserializer<UserJpa> {
 
     /**
      * Função para transformar o usuário recebido no cookie para a classe Usuario
+     *
      * @param p
      * @param ctxt
      * @return

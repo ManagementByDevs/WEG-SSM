@@ -26,7 +26,6 @@ public class EscopoService {
 
     /**
      * Função para buscar todos os escopos
-     *
      * @return
      */
     public List<Escopo> findAll() {
@@ -35,7 +34,6 @@ public class EscopoService {
 
     /**
      * Função para buscar um escopo através de um id
-     *
      * @param id
      * @return
      */
@@ -45,7 +43,6 @@ public class EscopoService {
 
     /**
      * Função para buscar um escopo através de um título
-     *
      * @param titulo
      * @return
      */
@@ -55,7 +52,6 @@ public class EscopoService {
 
     /**
      * Função para buscar um escopo pelo usuário
-     *
      * @param usuario
      * @return
      */
@@ -65,7 +61,6 @@ public class EscopoService {
 
     /**
      * Função para buscar um escopo pelo usuário com paginação
-     *
      * @param usuario
      * @param pageable
      * @return
@@ -76,7 +71,6 @@ public class EscopoService {
 
     /**
      * Função para verificar se existe um escopo através do id
-     *
      * @param id
      * @return
      */
@@ -86,7 +80,6 @@ public class EscopoService {
 
     /**
      * Função para verificar se existe um escopo através do título
-     *
      * @param titulo
      * @return
      */
@@ -96,7 +89,6 @@ public class EscopoService {
 
     /**
      * Função para verificar se existe um escopo através do usuário
-     *
      * @param usuario
      * @return
      */
@@ -106,7 +98,6 @@ public class EscopoService {
 
     /**
      * Função para salvar um escopo
-     *
      * @param entity
      * @param <S>
      * @return
@@ -117,7 +108,6 @@ public class EscopoService {
 
     /**
      * Função para deletar um escopo
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -126,7 +116,6 @@ public class EscopoService {
 
     /**
      * Função para buscar um escopo através do usuário e do título com paginação
-     *
      * @param usuario
      * @param titulo
      * @param pageable

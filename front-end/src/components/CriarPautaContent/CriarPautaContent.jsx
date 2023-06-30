@@ -1,9 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  useDeferredValue,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +11,12 @@ import {
   MenuItem,
   Button,
   TextField,
+  InputAdornment,
+  Tooltip,
 } from "@mui/material";
+
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import { ClipLoader } from "react-spinners";
 
@@ -50,10 +50,12 @@ const CriarPautaContent = () => {
   const { mode } = useContext(ColorModeContext);
 
   /** Context para obter a função de leitura de texto */
-  const { localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   /** Context para ler o texto da tela */
-  const { lerTexto } = useContext(SpeechSynthesisContext);
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Navigate do react-router-dom */
   const navigate = useNavigate();
@@ -247,7 +249,6 @@ const CriarPautaContent = () => {
       (proposta) => !idsListaPropostas.has(proposta.id)
     );
 
-    console.log("aqui");
     setListaPropostasData(novaListaPropostasData);
   };
 
@@ -270,12 +271,8 @@ const CriarPautaContent = () => {
       })
     );
 
-    console.log("Nova pauta:", newPauta);
-
     PautaService.post(newPauta).then((res) => {
-      console.log("Pauta criada:", res);
       for (let proposta of listaPropostas) {
-        console.log("Proposta:", proposta);
         PropostaService.atualizacaoPauta(proposta.id, proposta.publicada).then(
           (response) => {
             // Salvamento de histórico
@@ -292,11 +289,18 @@ const CriarPautaContent = () => {
         );
       }
 
-      console.log("Pauta:", res);
       localStorage.setItem("tipoFeedback", 7);
       navigate("/");
     });
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "search-bar":
+        setSearch(palavrasJuntas);
+        break;
+    }
+  }, [palavrasJuntas]);
 
   useEffect(() => {
     getForum();
@@ -304,8 +308,6 @@ const CriarPautaContent = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Lista de propostas:", listaPropostas);
-
     PropostaService.getPage(
       params,
       ordenacao + "size=" + tamanhoPagina + "&page=" + 0
@@ -318,7 +320,12 @@ const CriarPautaContent = () => {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       PropostaService.getPage(
-        { ...params, titulo: search },
+        {
+          ...params,
+          titulo: search,
+          // titulo: !parseInt(search) ? search : null,
+          // codigoPPM: parseInt(search) ? parseInt(search) : null,
+        },
         ordenacao + "size=" + tamanhoPagina + "&page=" + 0
       ).then((data) => {
         setTotalPaginas(data.totalPages);
@@ -344,14 +351,12 @@ const CriarPautaContent = () => {
           fontSize={FontConfig.smallTitle}
           fontWeight={600}
           color="primary"
+          onClick={() => {
+            lerTexto(texts.criarPauta.novaPauta);
+          }}
         >
-          Nova Pauta
+          {texts.criarPauta.novaPauta}
         </Typography>
-        <Button variant="text" onClick={handleOnCreatePauta}>
-          <Typography fontSize={FontConfig.medium} fontWeight={600}>
-            Criar pauta
-          </Typography>
-        </Button>
       </Box>
       <Divider />
 
@@ -365,8 +370,11 @@ const CriarPautaContent = () => {
                 fontSize={FontConfig.default}
                 fontWeight={500}
                 color="primary"
+                onClick={() => {
+                  lerTexto(texts.criarPauta.numeroSequencial);
+                }}
               >
-                Número sequencial
+                {texts.criarPauta.numeroSequencial}
                 <AsteriscoObrigatorio />
               </Typography>
               <InputCustom
@@ -384,8 +392,11 @@ const CriarPautaContent = () => {
                   fontSize={FontConfig.default}
                   fontWeight={500}
                   color="primary"
+                  onClick={() => {
+                    lerTexto(texts.criarPauta.dataReuniao);
+                  }}
                 >
-                  Data da reunião
+                  {texts.criarPauta.dataReuniao}
                   <AsteriscoObrigatorio />
                 </Typography>
                 <Input
@@ -405,8 +416,11 @@ const CriarPautaContent = () => {
                 fontSize={FontConfig.default}
                 fontWeight={500}
                 color="primary"
+                onClick={() => {
+                  lerTexto(texts.criarPauta.forum);
+                }}
               >
-                Fórum
+                {texts.criarPauta.forum}
                 <AsteriscoObrigatorio />
               </Typography>
               <Select
@@ -439,10 +453,13 @@ const CriarPautaContent = () => {
               fontSize={FontConfig.default}
               fontWeight={500}
               color="primary"
+              onClick={() => {
+                lerTexto(texts.criarPauta.propostas);
+              }}
             >
-              Propostas <AsteriscoObrigatorio />
+              {texts.criarPauta.propostas} <AsteriscoObrigatorio />
             </Typography>
-            <Box className="border h-96 rounded">
+            <Box className="border h-80 rounded p-2">
               {!isEmpty(listaPropostas) ? (
                 <PropostaList
                   listaPropostas={listaPropostas}
@@ -455,10 +472,10 @@ const CriarPautaContent = () => {
                     fontSize={FontConfig.big}
                     sx={{ color: "text.secondary", mb: 1 }}
                     onClick={() => {
-                      lerTexto("");
+                      lerTexto(texts.criarPauta.arrasteSoltePropostaAqui);
                     }}
                   >
-                    Arraste e Solte uma Proposta Aqui
+                    {texts.criarPauta.arrasteSoltePropostaAqui}
                   </Typography>
                 </Box>
               )}
@@ -478,9 +495,28 @@ const CriarPautaContent = () => {
                 <TextField
                   value={search}
                   onChange={handleOnSearchChange}
-                  label="Pesquisar por nome ou PPM"
+                  label={texts.criarPauta.pesquisarPropostas}
                   fullWidth
                   variant="standard"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip
+                          className="flex items-center hover:cursor-pointer"
+                          title={texts.homeGerencia.gravarAudio}
+                          onClick={() => {
+                            startRecognition("search-bar");
+                          }}
+                        >
+                          {escutar && localClique == "search-bar" ? (
+                            <MicOutlinedIcon color="primary" />
+                          ) : (
+                            <MicNoneOutlinedIcon />
+                          )}
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 {!isEmpty(listaPropostasData) ? (
                   <>
@@ -516,10 +552,12 @@ const CriarPautaContent = () => {
                         color: "text.secondary",
                       }}
                       onClick={() => {
-                        lerTexto("");
+                        lerTexto(
+                          texts.criarPauta.naoHaPropostasParaSeremAdicionadas
+                        );
                       }}
                     >
-                      Não há propostas para serem adicionadas
+                      {texts.criarPauta.naoHaPropostasParaSeremAdicionadas}
                     </Typography>
                   </Box>
                 )}
@@ -527,6 +565,23 @@ const CriarPautaContent = () => {
             )}
           </Box>
         </Box>
+      </Box>
+      <Box className="w-full flex justify-end">
+        <Button
+          variant="contained"
+          disableElevation
+          onClick={() => {
+            if (lendoTexto) {
+              lerTexto(texts.criarPauta.criarPauta);
+            } else {
+              handleOnCreatePauta();
+            }
+          }}
+        >
+          <Typography fontSize={FontConfig.default} fontWeight={600}>
+            {texts.criarPauta.criarPauta}
+          </Typography>
+        </Button>
       </Box>
     </>
   );

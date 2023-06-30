@@ -346,7 +346,7 @@ const TextLanguage = (linguagem) => {
             confirmEditar:
               "Deseja realmente editar? Essa ação não pode ser revertida!",
             publicarAta: "Deseja publicar a ata?",
-            criarAta: "Deseja criar a ata?"
+            criarAta: "Deseja criar a ata?",
           },
           mensagensBotao: {
             sim: "Sim",
@@ -935,7 +935,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "Escopo vazio",
           semTabelasDeCusto: "Proposta sem tabelas de custo",
-          semComissao: "Cancelamento fora de comissão:"
+          semComissao: "Cancelamento fora de comissão:",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Dado inválido!",
@@ -996,6 +996,22 @@ const TextLanguage = (linguagem) => {
           gravarAudio: "Gravar áudio",
         },
         criarPauta: {
+          novaPauta: "Nova Pauta",
+          criarPauta: "Criar Pauta",
+          numeroSequencial: "Número Sequencial",
+          dataReuniao: "Data da Reunião",
+          forum: "Fórum",
+          propostas: "Propostas",
+          arrasteSoltePropostaAqui: "Arraste e Solte uma Proposta Aqui",
+          // pesquisarPropostas: "Pesquisar por nome ou PPM",
+          pesquisarPropostas: "Pesquisar por nome",
+          naoHaPropostasParaSeremAdicionadas:
+            "Não há propostas para serem adicionadas!",
+          publicada: "Publicada",
+          naoPublicada: "Não publicada",
+          expandir: "Expandir",
+          remover: "Remover",
+          adicionar: "Adicionar",
           addNumeroSequencial: "Adicione um número sequencial!",
           addDataReuniao: "Adicione uma data de reunião!",
           addComissao: "Adicione uma comissão!",
@@ -1362,7 +1378,7 @@ const TextLanguage = (linguagem) => {
             confirmEditar:
               "Do you really want to edit it? This action can't be reversed!",
             publicarAta: "Do you want to publish the minutes?",
-            criarAta: "Do you want to create the minutes?"
+            criarAta: "Do you want to create the minutes?",
           },
           mensagensBotao: {
             sim: "Yes",
@@ -1917,7 +1933,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "Empty scope",
           semTabelasDeCusto: "Proposal without cost tables",
-          semComissao: "Out of commission cancellation:"
+          semComissao: "Out of commission cancellation:",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Invalid data!",
@@ -1978,6 +1994,22 @@ const TextLanguage = (linguagem) => {
           gravarAudio: "Record Audio",
         },
         criarPauta: {
+          novaPauta: "New Agenda",
+          criarPauta: "Create Agenda",
+          numeroSequencial: "Sequential number",
+          dataReuniao: "Meeting Date",
+          forum: "Forum",
+          propostas: "Proposals",
+          arrasteSoltePropostaAqui: "Drag and Drop a Proposal Here",
+          // pesquisarPropostas: "Search by name or PPM",
+          pesquisarPropostas: "Search by name",
+          naoHaPropostasParaSeremAdicionadas:
+            "There are no proposals to be added!",
+          publicada: "Published",
+          naoPublicada: "Unpublished",
+          expandir: "Expand",
+          remover: "Remove",
+          adicionar: "Add",
           addNumeroSequencial: "Add a sequential number!",
           addDataReuniao: "Add a meeting date!",
           addComissao: "Add a commission!",
@@ -2336,7 +2368,7 @@ const TextLanguage = (linguagem) => {
               "此操作可能会删除一些提案数据！ 您真的要更改其状态吗？",
             confirmEditar: "您真的要编辑它吗？ 此操作不可逆转！",
             publicarAta: "你想公布会议记录吗？",
-            criarAta: "你想创建会议记录吗？"
+            criarAta: "你想创建会议记录吗？",
           },
           mensagensBotao: {
             sim: "是",
@@ -2866,7 +2898,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "空范围",
           semTabelasDeCusto: "没有成本表的提案",
-          semComissao: "佣金外取消："
+          semComissao: "佣金外取消：",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "无效数据",
@@ -2926,6 +2958,21 @@ const TextLanguage = (linguagem) => {
           gravarAudio: "录制音频",
         },
         criarPauta: {
+          novaPauta: "新议程",
+          criarPauta: "创建议程",
+          numeroSequencial: "序号",
+          dataReuniao: "会议日期",
+          forum: "论坛",
+          propostas: "提案",
+          arrasteSoltePropostaAqui: "将提案拖放到此处",
+          // pesquisarPropostas: "按名称或 PPM 搜索",
+          pesquisarPropostas: "按名称搜索",
+          naoHaPropostasParaSeremAdicionadas: "没有要添加的提案！",
+          publicada: "已发表",
+          naoPublicada: "未发表",
+          expandir: "扩张",
+          remover: "消除",
+          adicionar: "添加",
           addNumeroSequencial: "添加序号！",
           addDataReuniao: "添加会议日期！",
           addComissao: "增加佣金！",
@@ -3294,7 +3341,7 @@ const TextLanguage = (linguagem) => {
             confirmEditar:
               "¿De verdad quieres editarlo? ¡Esta acción no se puede revertir!",
             publicarAta: "¿Quieres publicar el acta?",
-            criarAta: "¿Quieres crear los minutos?"
+            criarAta: "¿Quieres crear los minutos?",
           },
           mensagensBotao: {
             sim: "Sí",
@@ -3844,7 +3891,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "Alcance vacío",
           semTabelasDeCusto: "Propuesta sin tablas de costos",
-          semComissao: "Cancelación fuera de comisión:"
+          semComissao: "Cancelación fuera de comisión:",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "¡Datos inválidos!",
@@ -3905,6 +3952,21 @@ const TextLanguage = (linguagem) => {
           gravarAudio: "Grabar Audio",
         },
         criarPauta: {
+          novaPauta: "Nueva Agenda",
+          criarPauta: "Crear Agenda",
+          numeroSequencial: "Numero secuencial",
+          dataReuniao: "Fecha de la reunión",
+          forum: "Foro",
+          propostas: "Propuestas",
+          arrasteSoltePropostaAqui: "Arrastre y suelte una propuesta aquí",
+          // pesquisarPropostas: "Buscar por nombre o PPM",
+          pesquisarPropostas: "Buscar por nombre",
+          naoHaPropostasParaSeremAdicionadas: "¡No hay propuestas para añadir!",
+          publicada: "Publicada",
+          naoPublicada: "Inédita",
+          expandir: "Expandir",
+          remover: "Eliminar",
+          adicionar: "Agregar",
           addNumeroSequencial: "¡Agregue un número secuencial!",
           addDataReuniao: "¡Agregue una fecha de reunión!",
           addComissao: "¡Agregue una comisión!",

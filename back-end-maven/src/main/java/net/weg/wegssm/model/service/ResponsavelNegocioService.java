@@ -21,7 +21,6 @@ public class ResponsavelNegocioService {
 
     /**
      * Função booleana para verificação se um responsável de negócio existe pelo seu ID
-     *
      * @param id
      * @return
      */
@@ -31,7 +30,6 @@ public class ResponsavelNegocioService {
 
     /**
      * Função para salvar um responsável negócio
-     *
      * @param entity
      * @param <S>
      * @return
@@ -42,7 +40,6 @@ public class ResponsavelNegocioService {
 
     /**
      * Função para excluir um responsável de negócio pelo seu ID
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -51,7 +48,6 @@ public class ResponsavelNegocioService {
 
     /**
      * Função para buscar um responsável negócio pelo seu ID
-     *
      * @param id
      * @return
      */

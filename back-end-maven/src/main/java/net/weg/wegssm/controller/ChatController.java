@@ -54,8 +54,8 @@ public class ChatController {
     /**
      * Método MessageMapping para receber qualquer mensagem enviada para o endpoint /weg_ssm/chats
      *
-     * @param mensagem
-     * @return
+     * @param mensagem - Payload da mensagem enviada
+     * @return - Retorno da mensagem enviada
      */
     @MessageMapping("/weg_ssm/chats")
     @SendTo("/weg_ssm/chats")
@@ -67,7 +67,7 @@ public class ChatController {
      * Método POST para criar um chat no banco de dados
      *
      * @param chatDto ( Objeto a ser cadastrado = req.body )
-     * @return
+     * @return - Retorno do chat criado
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid ChatDTO chatDto) {
@@ -75,12 +75,7 @@ public class ChatController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
         }
 
-        System.out.println("Criando chat: " + chatDto.getIdProposta());
-
         Chat chat = new Chat();
-//        chat.setConversa_encerrada(false);
-//        chat.setIdDemanda(chatDto.getProposta());
-//        chat.setUsuariosChat(chatDto.getUsuarios());
         BeanUtils.copyProperties(chatDto, chat);
         chat.setConversaEncerrada(false);
 
@@ -91,7 +86,7 @@ public class ChatController {
     /**
      * Método GET para listar todos os chats
      *
-     * @return
+     * @return - Retorno da lista de chats
      */
     @GetMapping
     public ResponseEntity<List<Chat>> findAll() {
@@ -101,8 +96,8 @@ public class ChatController {
     /**
      * Método GET para listar um chat específico através de um id
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para a busca
+     * @return - Retorno do objeto ou mensagem de erro
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -116,29 +111,32 @@ public class ChatController {
     /**
      * Método GET para buscar um chat através do id do usuário e da proposta
      *
-     * @param idUser
-     * @param idProposta
-     * @return
+     * @param idUser     - ID do usuário relacionado ao chat
+     * @param idProposta - ID da proposta relacionada ao chat
+     * @return - Retorno do chat ou mensagem de erro
      */
     @GetMapping("/user/{idUser}/proposta/{idProposta}")
     public ResponseEntity<List<Chat>> findByPropostaAndUser(@PathVariable(value = "idUser") Long idUser, @PathVariable(value = "idProposta") Long idProposta) {
         Optional<Usuario> usuario = usuarioService.findById(idUser);
         Optional<Proposta> proposta = propostaService.findById(idProposta);
+
         if (usuario.isEmpty() || proposta.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findByIdPropostaAndUsuariosChat(proposta.get(), usuario.get()));
     }
 
     /**
      * Método GET para buscar uma lista de chats através do id do remetente
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para a busca
+     * @return - Retorno do chat ou mensagem de erro
      */
     @GetMapping("/remetente/{id}")
     public ResponseEntity<List<Chat>> findByRemetente(@PathVariable(value = "id") Long id) {
         Optional<Usuario> usuario = usuarioService.findById(id);
+
         if (usuario.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -157,15 +155,16 @@ public class ChatController {
     /**
      * Método PUT para editar um chat através de seu id
      *
-     * @param id
-     * @param chatDto
-     * @return
+     * @param id      - ID utilizado para a edição do chat
+     * @param chatDto - Objeto a ser editado = req.body
+     * @return - Retorno do chat editado ou mensagem de erro
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid ChatDTO chatDto) {
         if (!chatService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este id.");
         }
+
         Chat chat = new Chat();
         BeanUtils.copyProperties(chatDto, chat);
         chat.setId(id);
@@ -174,80 +173,10 @@ public class ChatController {
     }
 
     /**
-     * Método GET para listar um chat específico através do titulo (usuario da conversa) para admins
-     *
-     * @param titulo
-     * @return
-     */
-//    @GetMapping("/tituloadmin/{titulo}")
-//    public ResponseEntity<Object> findByTitleAdmin(@PathVariable(value = "titulo") String titulo) {
-//        if (!usuarioService.existsByNomeContains(titulo)) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este nome.");
-//        }
-//
-//        List<Usuario> usuarios = usuarioService.findByNomeStartsWith(titulo);
-//        List<Chat> chats = new ArrayList<>();
-//
-//        for (Usuario user : usuarios) {
-//            List<Chat> chatAux = chatService.findByUsuario(user);
-//            for (Chat chat : chatAux) {
-//                chats.add(chat);
-//            }
-//        }
-//
-//        return ResponseEntity.status(HttpStatus.FOUND).body(chats);
-//    }
-
-    /**
-     * Método GET para listar um chat específico através do titulo (usuario da conversa) para solicitantes
-     *
-     * @param titulo
-     * @return
-     */
-//    @GetMapping("/titulo/{titulo}")
-//    public ResponseEntity<Object> findByTitle(@PathVariable(value = "titulo") String titulo) {
-//        if (!usuarioService.existsByNomeContains(titulo)) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este nome.");
-//        }
-//
-//        List<Usuario> usuarios = usuarioService.findByNomeStartsWith(titulo);
-//        List<Chat> chats = new ArrayList<>();
-//
-//        for (Usuario user : usuarios) {
-//            List<Chat> chatAux = chatService.findBySolicitante(user);
-//            for (Chat chat : chatAux) {
-//                chats.add(chat);
-//            }
-//        }
-//
-//        return ResponseEntity.status(HttpStatus.FOUND).body(chats);
-//    }
-
-    /**
-     * Método GET para listar um chat específico através do usuário
-     *
-     * @param idUsuario
-     * @return
-     */
-//    @GetMapping("/usuario/{idUsuario}")
-//    public ResponseEntity<Object> findByUsuario(@PathVariable(value = "idUsuario") Long idUsuario) {
-//        if (!usuarioService.existsById(idUsuario)) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
-//        }
-//
-////        Usuario usuario = usuarioService.findById(idUsuario).get();
-////        if (!chatService.existsByUsuario(usuario)) {
-////            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este usuário.");
-////        }
-//
-//        return ResponseEntity.status(HttpStatus.FOUND).body(chatService.findByUsuario(usuario));
-//    }
-
-    /**
      * Método DELETE para deletar um chat, colocando sua visibilidade como false
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para deletar um chat (visibilidade = false)
+     * @return - Retorno do chat deletado ou mensagem de erro
      */
     @Transactional
     @DeleteMapping("/visibilidade/{id}")
@@ -265,8 +194,8 @@ public class ChatController {
     /**
      * Método DELETE para deletar um histórico do banco de dados
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para deletar o chat
+     * @return - Retorno da mensagem de sucesso ou erro
      */
     @Transactional
     @DeleteMapping("/{id}")
@@ -274,6 +203,7 @@ public class ChatController {
         if (!chatService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum histórico com este id.");
         }
+
         chatService.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body("Chat deletado com sucesso.");

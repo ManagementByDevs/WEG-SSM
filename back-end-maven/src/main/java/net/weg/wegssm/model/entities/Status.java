@@ -2,6 +2,9 @@ package net.weg.wegssm.model.entities;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Classe ENUM utilizada para definir os status de uma demanda/proposta
+ */
 @AllArgsConstructor
 public enum Status {
 

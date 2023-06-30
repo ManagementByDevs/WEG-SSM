@@ -27,41 +27,64 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/weg_ssm/proposta")
 public class PropostaController {
 
-    /** Service de Proposta */
+    /**
+     * Service de Proposta
+     */
     private PropostaService propostaService;
 
-    /** Service de Usuário */
+    /**
+     * Service de Usuário
+     */
     private UsuarioService usuarioService;
 
-    /** Service de Responsável de Negócio */
+    /**
+     * Service de Responsável de Negócio
+     */
     private ResponsavelNegocioService responsavelNegocioService;
 
-    /** Service de Tabelas de Custos */
+    /**
+     * Service de Tabelas de Custos
+     */
     private TabelaCustoService tabelaCustoService;
 
-    /** Service de Custos */
+    /**
+     * Service de Custos
+     */
     private CustoService custoService;
 
-    /** Service de CCs */
+    /**
+     * Service de CCs
+     */
     private CCsService ccsService;
 
-    /** Service de Anexos */
+    /**
+     * Service de Anexos
+     */
     private AnexoService anexoService;
 
-    /** Service de Benefícios */
+    /**
+     * Service de Benefícios
+     */
     private BeneficioService beneficioService;
 
-    /** Service de Demandas */
+    /**
+     * Service de Demandas
+     */
     private DemandaService demandaService;
 
-    /** Service de Histórico */
+    /**
+     * Service de Histórico
+     */
     private HistoricoService historicoService;
 
-    /** Service de Documentos de Histórico */
+    /**
+     * Service de Documentos de Histórico
+     */
     private DocumentoHistoricoService documentoHistoricoService;
 
     /**
      * Função para buscar todas as propostas existentes
+     *
      * @return ResponseEntity com uma lista com todas as propostas salvas
      */
     @GetMapping
@@ -71,6 +94,7 @@ public class PropostaController {
 
     /**
      * Função para buscar uma proposta pelo seu ID, passado como variável
+     *
      * @param id ID da proposta
      * @return ResponseEntity com a proposta encontrada
      */
@@ -85,6 +109,7 @@ public class PropostaController {
 
     /**
      * Função para buscar uma proposta pelo ID de uma demanda, passado como variável
+     *
      * @param id ID da demanda
      * @return ResponseEntity com a proposta encontrada
      */
@@ -109,17 +134,19 @@ public class PropostaController {
         return ResponseEntity.status(200).body(propostaService.findByPpm(ppm, pageable));
     }
 
-    /** Função principal para a pesquisa de propostas, usando diversos parâmetros possíveis para a busca
-     * @param pageable Pageable usado para a ordenação das propostas e separação em páginas
-     * @param titulo Título da proposta
-     * @param solicitanteJson Solicitante de proposta em formato String
-     * @param gerenteJson Gerente da proposta em formato String
-     * @param forumJson Forum da proposta em formato String
+    /**
+     * Função principal para a pesquisa de propostas, usando diversos parâmetros possíveis para a busca
+     *
+     * @param pageable         Pageable usado para a ordenação das propostas e separação em páginas
+     * @param titulo           Título da proposta
+     * @param solicitanteJson  Solicitante de proposta em formato String
+     * @param gerenteJson      Gerente da proposta em formato String
+     * @param forumJson        Forum da proposta em formato String
      * @param departamentoJson Departamento da proposta em formato String
-     * @param tamanho Tamanho da proposta
-     * @param analistaJson Analista da proposta em formato String
-     * @param status Status da proposta
-     * @param presenteEm Parâmetro "PresenteEm" da proposta
+     * @param tamanho          Tamanho da proposta
+     * @param analistaJson     Analista da proposta em formato String
+     * @param status           Status da proposta
+     * @param presenteEm       Parâmetro "PresenteEm" da proposta
      * @return ResponseEntity contendo uma página de propostas filtradas com os parâmetros que receber
      */
     @GetMapping("/page")
@@ -142,7 +169,7 @@ public class PropostaController {
         Forum forum = new ForumUtil().convertJsonToModel(forumJson);
         Departamento departamento = new DepartamentoUtil().convertJsonToModel(departamentoJson);
 
-        if(codigoPPM != null) {
+        if (codigoPPM != null) {
             return findByPpm(pageable, codigoPPM);
         }
 
@@ -4029,6 +4056,7 @@ public class PropostaController {
 
     /**
      * Função para calcular e retornar o score de uma proposta
+     *
      * @param proposta Proposta usada para o cálculo de seu Score
      * @return Score calculado da proposta recebida
      */
@@ -4039,25 +4067,25 @@ public class PropostaController {
         for (Beneficio beneficio : proposta.getBeneficios()) {
             beneficio = beneficioService.findById(beneficio.getId()).get();
 
-            if(beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
+            if (beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
                 valorBeneficiosReais += beneficio.getValor_mensal();
             }
 
-            if(beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
+            if (beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
                 valorBeneficiosPotenciais += beneficio.getValor_mensal();
             }
         }
 
         Integer valorTamanhoDemanda;
-        if(proposta.getTamanho() == null) {
+        if (proposta.getTamanho() == null) {
             valorTamanhoDemanda = 1000000000;
         } else if (proposta.getTamanho().equals("Muito Pequeno")) {
             valorTamanhoDemanda = 40;
-        } else if(proposta.getTamanho().equals("Pequeno")) {
+        } else if (proposta.getTamanho().equals("Pequeno")) {
             valorTamanhoDemanda = 300;
-        } else if(proposta.getTamanho().equals("Médio")) {
+        } else if (proposta.getTamanho().equals("Médio")) {
             valorTamanhoDemanda = 1000;
-        } else if(proposta.getTamanho().equals("Grande")) {
+        } else if (proposta.getTamanho().equals("Grande")) {
             valorTamanhoDemanda = 3000;
         } else {
             valorTamanhoDemanda = 5000;
@@ -4068,11 +4096,11 @@ public class PropostaController {
 
         Usuario solicitante = usuarioService.findById(proposta.getSolicitante().getId()).get();
         Integer valorPrioridade;
-        if(solicitante.getTipoUsuario().equals(TipoUsuario.SOLICITANTE)) {
+        if (solicitante.getTipoUsuario().equals(TipoUsuario.SOLICITANTE)) {
             valorPrioridade = 1;
-        } else if(solicitante.getTipoUsuario().equals(TipoUsuario.ANALISTA)) {
+        } else if (solicitante.getTipoUsuario().equals(TipoUsuario.ANALISTA)) {
             valorPrioridade = 2;
-        } else if(solicitante.getTipoUsuario().equals(TipoUsuario.GERENTE)) {
+        } else if (solicitante.getTipoUsuario().equals(TipoUsuario.GERENTE)) {
             valorPrioridade = 4;
         } else {
             valorPrioridade = 16;
@@ -4101,12 +4129,12 @@ public class PropostaController {
         Proposta proposta = propostaOptional.get();
         proposta.setStatus(status);
 
-        if(status == Status.CANCELLED) {
+        if (status == Status.CANCELLED) {
             proposta.setMotivoRecusa(motivo);
             proposta.getDemanda().setStatus(Status.CANCELLED);
             proposta.getDemanda().setMotivoRecusa(motivo);
         }
-        if(status == Status.DONE) {
+        if (status == Status.DONE) {
             proposta.getDemanda().setStatus(Status.DONE);
         }
 
@@ -4495,29 +4523,6 @@ public class PropostaController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
-    }
-
-
-    /**
-     * Função para "deletar" uma proposta pelo seu ID, definindo o atributo "visibilidade" para falso
-     *
-     * @param id ID da proposta a ser atualizada
-     * @return ResponseEntity com a proposta atualizada
-     */
-    @Transactional
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
-
-        Optional<Proposta> propostaOptional = propostaService.findById(id);
-        if (propostaOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma proposta com este id.");
-        }
-
-        Proposta proposta = propostaOptional.get();
-        proposta.setVisibilidade(false);
-        propostaService.save(proposta);
-
-        return ResponseEntity.status(HttpStatus.OK).body(proposta);
     }
 
 }

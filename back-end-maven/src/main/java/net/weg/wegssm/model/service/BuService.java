@@ -21,6 +21,7 @@ public class BuService {
 
     /**
      * Função para buscar todas as BUs salvas no banco
+     * @return
      */
     public List<Bu> findAll() {
         return buRepository.findAll();

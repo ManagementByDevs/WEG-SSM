@@ -34,8 +34,8 @@ public class UsuarioController {
     /**
      * Função para buscar um usuário pelo seu email, usado na conversão do cookie de autenticação
      *
-     * @param email
-     * @return
+     * @param email - Email utilizado para buscar o usuário
+     * @return - Retorno do usuário
      */
     @GetMapping("/email/{email}")
     public ResponseEntity<Object> findByEmail(@PathVariable(value = "email") String email) {
@@ -49,8 +49,8 @@ public class UsuarioController {
     /**
      * Função para buscar um usuário pelo seu ID, recebido por uma variável
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para pesquisa
+     * @return - Retorno do ususário
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -64,10 +64,10 @@ public class UsuarioController {
     /**
      * Função para buscar uma lista de usuários pelo nome e tipo de usuário, necessária para filtragem
      *
-     * @param pageable
-     * @param nome
-     * @param tipo_usuario
-     * @return
+     * @param pageable     - Objeto de paginação
+     * @param nome         - Nome do usuario
+     * @param tipo_usuario - Tipo de usuário
+     * @return - Retorno da lista dos usuários
      */
     @GetMapping("/filtragem/{nome}/{tipo_usuario}")
     public ResponseEntity<List<Usuario>> findByNomeAndTipoUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
@@ -79,8 +79,8 @@ public class UsuarioController {
     /**
      * Função para criar um novo usuário, recebendo o objeto pelo body
      *
-     * @param usuarioDTO
-     * @return
+     * @param usuarioDTO - Objeto do usuário a ser cadastrado
+     * @return - Retorno do usuário cadastrado
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid UsuarioDTO usuarioDTO) {
@@ -101,9 +101,9 @@ public class UsuarioController {
     /**
      * Função para atualizar um usuário, recebendo o objeto atualizado no body e o ID como parâmetro
      *
-     * @param id
-     * @param usuarioDTO
-     * @return
+     * @param id         - ID do usuário a ser atualizado
+     * @param usuarioDTO - Objeto do usuário atualizado
+     * @return - Retorno do usuário atualizado
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody UsuarioDTO usuarioDTO) {

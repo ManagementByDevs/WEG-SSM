@@ -9,7 +9,5 @@ import org.springframework.stereotype.Repository;
  * Classe repository para os benefícios
  */
 @Repository
-public interface BeneficioRepository extends JpaRepository<Beneficio, Long> {
-
-}
+public interface BeneficioRepository extends JpaRepository<Beneficio, Long> { }
 
