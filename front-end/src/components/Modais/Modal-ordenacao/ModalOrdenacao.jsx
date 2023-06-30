@@ -147,6 +147,8 @@ export default function TemporaryDrawer(props) {
                 opcao={opcao}
                 filtro={props.filtro}
                 setFiltro={props.setFiltro}
+                filtroAtas={props.filtroAtas}
+                setFiltroAtas={props.setFiltroAtas}
                 listaForuns={props.listaForuns}
                 listaDepartamentos={props.listaDepartamentos}
                 listaSolicitantes={props.listaSolicitantes}
@@ -167,6 +169,8 @@ export default function TemporaryDrawer(props) {
                 opcao={opcao}
                 filtro={props.filtro}
                 setFiltro={props.setFiltro}
+                filtroAtas={props.filtroAtas}
+                setFiltroAtas={props.setFiltroAtas}
                 listaForuns={props.listaForuns}
                 listaDepartamentos={props.listaDepartamentos}
                 listaSolicitantes={props.listaSolicitantes}
@@ -185,6 +189,8 @@ export default function TemporaryDrawer(props) {
                 opcao={opcao}
                 filtro={props.filtro}
                 setFiltro={props.setFiltro}
+                filtroAtas={props.filtroAtas}
+                setFiltroAtas={props.setFiltroAtas}
                 listaForuns={props.listaForuns}
                 listaDepartamentos={props.listaDepartamentos}
                 listaSolicitantes={props.listaSolicitantes}
@@ -203,6 +209,8 @@ export default function TemporaryDrawer(props) {
                 opcao={opcao}
                 filtro={props.filtro}
                 setFiltro={props.setFiltro}
+                filtroAtas={props.filtroAtas}
+                setFiltroAtas={props.setFiltroAtas}
                 listaForuns={props.listaForuns}
                 listaDepartamentos={props.listaDepartamentos}
                 listaSolicitantes={props.listaSolicitantes}
@@ -386,6 +394,64 @@ function Input(props) {
   /** Função para atualizar os filtros quando um analista for selecionado */
   const selecionarAnalista = (event, value) => {
     props.setFiltro({ ...props.filtro, analista: value });
+  };
+
+  /**  useState para armezenar o tipo de apreciação selecionada para o value */
+  const [tipoApreciacao, setTipoApreciacao] = useState("");
+
+  /** Função para atualizar os filtros quando uma apreciação for selecionada */
+  const selecionarApreciacao = (event, value) => {
+    if (value.props.value == "Apreciada") {
+      setTipoApreciacao("Apreciada");
+      props.setFiltroAtas({
+        ...props.filtroAtas,
+        apreciada: true,
+        naoApreciada: false,
+      });
+    } else if (value.props.value == "NaoApreciada") {
+      setTipoApreciacao("NaoApreciada");
+      props.setFiltroAtas({
+        ...props.filtroAtas,
+        apreciada: false,
+        naoApreciada: true,
+      });
+    } else {
+      setTipoApreciacao("");
+      props.setFiltroAtas({
+        ...props.filtroAtas,
+        apreciada: false,
+        naoApreciada: false,
+      });
+    }
+  };
+
+  /**  useState para armezenar o tipo de publicação selecionada para o value */
+  const [tipoPublicacao, setTipoPublicacao] = useState("");
+
+  /** Função para atualizar os filtros quando uma publicação for selecionada */
+  const selecionarPublicidade = (event, value) => {
+    if (value.props.value == "Publicado") {
+      setTipoPublicacao("Publicado");
+      props.setFiltroAtas({
+        ...props.filtroAtas,
+        naoPublicada: false,
+        publicada: true,
+      });
+    } else if (value.props.value == "NaoPublicado") {
+      setTipoPublicacao("NaoPublicado");
+      props.setFiltroAtas({
+        ...props.filtroAtas,
+        naoPublicada: true,
+        publicada: false,
+      });
+    } else {
+      setTipoPublicacao("");
+      props.setFiltroAtas({
+        ...props.filtroAtas,
+        naoPublicada: false,
+        publicada: false,
+      });
+    }
   };
 
   const gerentes = {
@@ -662,31 +728,29 @@ function Input(props) {
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
-              value={props.age}
+              value={tipoApreciacao}
               label={"icon " + props.opcao.tipo}
-              onChange={props.handleChange}
+              onChange={selecionarApreciacao}
             >
               <MenuItem value="">
-                <em>Nenhum</em>
+                <em>Sem filtro</em>
               </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={"Apreciada"}>Apreciada</MenuItem>
+              <MenuItem value={"NaoApreciada"}>Não Apreciada</MenuItem>
             </Select>
           ) : props.opcao.id == 10 ? (
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
-              value={props.age}
+              value={tipoPublicacao}
               label={"icon " + props.opcao.tipo}
-              onChange={props.handleChange}
+              onChange={selecionarPublicidade}
             >
               <MenuItem value="">
-                <em>Nenhum</em>
+                <em>Sem filtro</em>
               </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={"Publicado"}>Publicado</MenuItem>
+              <MenuItem value={"NaoPublicado"}>Não Publicado</MenuItem>
             </Select>
           ) : null}
         </FormControl>
