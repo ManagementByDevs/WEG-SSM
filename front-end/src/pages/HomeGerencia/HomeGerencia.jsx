@@ -713,27 +713,25 @@ const HomeGerencia = () => {
   const formatarOrdenacao = () => {
     let textoNovo = "";
     if (ordenacaoTitulo[1]) {
-        textoNovo += "sort=titulo,asc&";
+      textoNovo += "sort=titulo,asc&";
     }
     if (ordenacaoTitulo[0]) {
-        textoNovo += "sort=titulo,desc&";
+      textoNovo += "sort=titulo,desc&";
     }
-    if(valorAba > 4) {
-
+    if (valorAba > 4) {
       if (ordenacaoNum[1]) {
-          textoNovo += "sort=numeroSequencial,asc&";
+        textoNovo += "sort=numeroSequencial,asc&";
       }
       if (ordenacaoNum[0]) {
-          textoNovo += "sort=numeroSequencial,desc&";
+        textoNovo += "sort=numeroSequencial,desc&";
       }
     }
-    if(valorAba == 4) {
-
+    if (valorAba == 4) {
       if (ordenacaoNum[1]) {
-          textoNovo += "sort=codigoPPM,asc&";
+        textoNovo += "sort=codigoPPM,asc&";
       }
       if (ordenacaoNum[0]) {
-          textoNovo += "sort=codigoPPM,desc&";
+        textoNovo += "sort=codigoPPM,desc&";
       }
     }
     if (ordenacaoDate[0]) {
@@ -1524,47 +1522,6 @@ const HomeGerencia = () => {
                   )}
                 </TabList>
                 <Box className="absolute right-0 top-2">
-                  {/* Ícone e sidebar para ordenação */}
-                  <React.Fragment key="right">
-                    <Tooltip title={texts.homeGerencia.ordenacao}>
-                      <IconButton onClick={toggleDrawer("right", true)}>
-                        <SwapVertIcon
-                          id="segundoDemandas"
-                          className="cursor-pointer"
-                          color="primary"
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Drawer
-                      anchor={"right"}
-                      open={state["right"]}
-                      onClose={toggleDrawer("right", false)}
-                    >
-                      <ModalOrdenacao
-                        ordenacaoTitulo={ordenacaoTitulo}
-                        setOrdenacaoTitulo={setOrdenacaoTitulo}
-                        ordenacaoNum={ordenacaoNum}
-                        setOrdenacaoNum={setOrdenacaoNum}
-                        ordenacaoScore={ordenacaoScore}
-                        setOrdenacaoScore={setOrdenacaoScore}
-                        ordenacaoDate={ordenacaoDate}
-                        setOrdenacaoDate={setOrdenacaoDate}
-                        filtro={filtrosAtuais}
-                        setFiltro={setFiltrosAtuais}
-                        listaForuns={listaForum}
-                        listaDepartamentos={listaDepartamento}
-                        listaSolicitantes={listaSolicitantes}
-                        setListaSolicitantes={setListaSolicitantes}
-                        listaGerentes={listaGerentes}
-                        setListaGerentes={setListaGerentes}
-                        listaAnalistas={listaAnalistas}
-                        setListaAnalistas={setListaAnalistas}
-                        filtroProposta={filtroProposta}
-                        valorAba={valorAba}
-                      />
-                    </Drawer>
-                  </React.Fragment>
-
                   {nextModoVisualizacao == "TABLE" ? (
                     <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
                       <IconButton
@@ -1686,79 +1643,80 @@ const HomeGerencia = () => {
                   </Box>
 
                   {/* Botão de filtrar */}
-                  {(valorAba < 5 || valorAba > 5) && (
+                    <React.Fragment key="right">
                     <Button
                       id="terceiroDemandas"
-                      className="flex gap-1"
+                      className="flex"
                       sx={{
                         backgroundColor: "primary.main",
                         color: "text.white",
                         fontSize: FontConfig.default,
-                        minWidth: "5rem",
+                      }}
+                      onClick={toggleDrawer("right", true)}
+                      variant="contained"
+                      disableElevation
+                    >
+                      <Tooltip title={texts.homeGerencia.filtrar}>
+                        <FilterAltOutlinedIcon />
+                      </Tooltip>
+                    </Button>
+                    <Drawer
+                      anchor={"right"}
+                      open={state["right"]}
+                      onClose={toggleDrawer("right", false)}
+                    >
+                      <ModalOrdenacao
+                        ordenacaoTitulo={ordenacaoTitulo}
+                        setOrdenacaoTitulo={setOrdenacaoTitulo}
+                        ordenacaoNum={ordenacaoNum}
+                        setOrdenacaoNum={setOrdenacaoNum}
+                        ordenacaoScore={ordenacaoScore}
+                        setOrdenacaoScore={setOrdenacaoScore}
+                        ordenacaoDate={ordenacaoDate}
+                        setOrdenacaoDate={setOrdenacaoDate}
+                        filtro={filtrosAtuais}
+                        setFiltro={setFiltrosAtuais}
+                        filtroAtas={paramsAtas}
+                        setFiltroAtas={setParamsAtas}
+                        listaForuns={listaForum}
+                        listaDepartamentos={listaDepartamento}
+                        listaSolicitantes={listaSolicitantes}
+                        setListaSolicitantes={setListaSolicitantes}
+                        listaGerentes={listaGerentes}
+                        setListaGerentes={setListaGerentes}
+                        listaAnalistas={listaAnalistas}
+                        setListaAnalistas={setListaAnalistas}
+                        filtroProposta={filtroProposta}
+                        valorAba={valorAba}
+                      />
+                    </Drawer>
+                  </React.Fragment>
+                  {/* Botão de exportar */}
+                  {valorAba != 1 && (
+                    <Button
+                      id="quartoDemandas"
+                      className="flex"
+                      sx={{
+                        backgroundColor: "primary.main",
+                        color: "text.white",
+                        fontSize: FontConfig.default,
                       }}
                       onClick={() => {
                         if (!lendoTexto) {
-                          setModalFiltro(true);
+                          exportarExcel();
                         } else {
-                          lerTexto(texts.homeGerencia.filtrar);
+                          lerTexto(texts.homeGerencia.exportar);
                         }
                       }}
                       variant="contained"
                       disableElevation
                     >
-                      {texts.homeGerencia.filtrar} <FilterAltOutlinedIcon />
-                    </Button>
-                  )}
-                  {modalFiltro && valorAba < 5 && (
-                    <ModalFiltroGerencia
-                      fecharModal={() => {
-                        setModalFiltro(false);
-                      }}
-                      filtro={filtrosAtuais}
-                      setFiltro={setFiltrosAtuais}
-                      listaForuns={listaForum}
-                      listaDepartamentos={listaDepartamento}
-                      listaSolicitantes={listaSolicitantes}
-                      setListaSolicitantes={setListaSolicitantes}
-                      listaGerentes={listaGerentes}
-                      setListaGerentes={setListaGerentes}
-                      listaAnalistas={listaAnalistas}
-                      setListaAnalistas={setListaAnalistas}
-                      filtroProposta={filtroProposta}
-                      valorAba={valorAba}
-                    />
-                  )}
-
-                  {modalFiltro && valorAba > 5 && (
-                    <ModalFiltroAtas
-                      fecharModal={() => {
-                        setModalFiltro(false);
-                      }}
-                      filtro={paramsAtas}
-                      setFiltro={setParamsAtas}
-                    />
-                  )}
-
-                  {/* Botão de exportar */}
-                  {valorAba != 1 && (
-                    <Button
-                      id="quartoDemandas"
-                      className="flex gap-1"
-                      sx={{
-                        backgroundColor: "primary.main",
-                        color: "text.white",
-                        fontSize: FontConfig.default,
-                        minWidth: "6rem",
-                      }}
-                      onClick={exportarExcel}
-                      variant="contained"
-                      disableElevation
-                    >
-                      {texts.homeGerencia.exportar} <FileDownloadIcon />
+                      <Tooltip title={texts.homeGerencia.exportar}>
+                        <FileDownloadIcon />
+                      </Tooltip>
                     </Button>
                   )}
                 </Box>
-
                 {valorAba * 1 <= 2 ? (
                   // Botão de criar demanda
                   <Button
