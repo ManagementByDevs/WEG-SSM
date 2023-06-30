@@ -1549,6 +1549,17 @@ const HomeGerencia = () => {
                         setOrdenacaoScore={setOrdenacaoScore}
                         ordenacaoDate={ordenacaoDate}
                         setOrdenacaoDate={setOrdenacaoDate}
+                        filtro={filtrosAtuais}
+                        setFiltro={setFiltrosAtuais}
+                        listaForuns={listaForum}
+                        listaDepartamentos={listaDepartamento}
+                        listaSolicitantes={listaSolicitantes}
+                        setListaSolicitantes={setListaSolicitantes}
+                        listaGerentes={listaGerentes}
+                        setListaGerentes={setListaGerentes}
+                        listaAnalistas={listaAnalistas}
+                        setListaAnalistas={setListaAnalistas}
+                        filtroProposta={filtroProposta}
                         valorAba={valorAba}
                       />
                     </Drawer>
