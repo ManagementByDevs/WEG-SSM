@@ -6,6 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Classe repository para os anexos
  */
-public interface AnexoRepository extends JpaRepository<Anexo, Long> {
-
-}
+public interface AnexoRepository extends JpaRepository<Anexo, Long> { }

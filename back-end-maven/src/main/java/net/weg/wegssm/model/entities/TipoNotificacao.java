@@ -2,6 +2,9 @@ package net.weg.wegssm.model.entities;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Classe ENUM utilizada para definir o tipo de uma notificação
+ */
 @AllArgsConstructor
 public enum TipoNotificacao {
 
@@ -24,4 +27,5 @@ public enum TipoNotificacao {
     DONE_ANALISTA("Done Analista");
 
     String tipo;
+
 }

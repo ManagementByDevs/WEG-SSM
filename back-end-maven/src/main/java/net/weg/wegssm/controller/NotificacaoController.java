@@ -53,7 +53,7 @@ public class NotificacaoController {
     /**
      * Método GET para buscar todas as notificações
      *
-     * @return
+     * @return - Retorno da lista de mensagens
      */
     @GetMapping
     public ResponseEntity<List<Notificacao>> findAll() {
@@ -63,8 +63,8 @@ public class NotificacaoController {
     /**
      * Método GET para buscar uma notificação específica através do id
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado na busca da notificação
+     * @return - Retorno da notificação
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -78,8 +78,8 @@ public class NotificacaoController {
     /**
      * Método GET para buscar as notificações de um usuário
      *
-     * @param id
-     * @return List de Notificação
+     * @param id - ID do usuário que as notificações pertencem
+     * @return - List de Notificação
      */
     @GetMapping("user/{id}")
     public ResponseEntity<Page<Notificacao>> findByUserId(@PathVariable(value = "id") Long id, @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -93,9 +93,9 @@ public class NotificacaoController {
     /**
      * Método GET para buscar notificação através de um id
      *
-     * @param id
-     * @param pageable
-     * @return
+     * @param id       - ID do usuário
+     * @param pageable - Objeto que contém a paginação
+     * @return         - Retorno da paginação
      */
     @GetMapping("user/modal-notificacao/{id}")
     public ResponseEntity<Page<Notificacao>> findByUsuarioAndVisualizado(@PathVariable(value = "id") Long id, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -109,8 +109,8 @@ public class NotificacaoController {
     /**
      * Método GET para buscar as notificações pela data
      *
-     * @param data
-     * @return
+     * @param data - Data utilizada na busca
+     * @return - Retorno da notificação
      */
     @GetMapping("/date/{data}")
     public ResponseEntity<Object> findByData(@PathVariable(value = "data") Data data) {
@@ -120,8 +120,8 @@ public class NotificacaoController {
     /**
      * Método GET para buscar as notificações de um determinado tipo de notificação (Aprovada, reprovada...)
      *
-     * @param tipoNotificacao
-     * @return
+     * @param tipoNotificacao - Tipo de notificação utilizado na busca
+     * @return - Retorno da lista de notificações
      */
     @GetMapping("/tipoNotificacao/{tipoNotificacao}")
     public ResponseEntity<List<Notificacao>> findByTipoNotificacao(@PathVariable(value = "tipoNotificacao") TipoNotificacao tipoNotificacao) {
@@ -129,38 +129,10 @@ public class NotificacaoController {
     }
 
     /**
-     * Método GET para ordenar as notificacoes a partir da DATA, da mais recente para a mais antiga
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarDataRecente")
-    public ResponseEntity<Page<Notificacao>> findAllDataRecente(@PageableDefault(
-            page = 0, size = 20, sort = "data", direction = Sort.Direction.DESC
-    ) Pageable pageable) {
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(notificacaoService.findAll(pageable));
-    }
-
-    /**
-     * Método GET para ordenar as notificações a partir da DATA, da mais antiga para a mais recente
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarDataAntiga")
-    public ResponseEntity<Page<Notificacao>> findAllDataAntiga(@PageableDefault(
-            page = 0, size = 20, sort = "data", direction = Sort.Direction.ASC
-    ) Pageable pageable) {
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(notificacaoService.findAll(pageable));
-    }
-
-    /**
      * Método POST para criar uma notificação
      *
-     * @param notificacaoDTO
-     * @return
+     * @param notificacaoDTO - Objeto da notificação
+     * @return - Retorno do objeto cadastrado
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid NotificacaoDTO notificacaoDTO) {
@@ -175,6 +147,13 @@ public class NotificacaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(notificacaoService.save(notificacao));
     }
 
+    /**
+     * Função utilizada para salvar uma notificação em tempo real
+     *
+     * @param userId         - ID do usuário no qual a notificação pertence
+     * @param notificacaoDTO - Objeto da notificação
+     * @return - Retorno da notificação criada
+     */
     @MessageMapping("/weg_ssm/notificacao/{userId}")
     @SendTo("/weg_ssm/{userId}/notificacao")
     public Notificacao salvarNotificacao(@DestinationVariable Long userId,
@@ -193,8 +172,8 @@ public class NotificacaoController {
     /**
      * Método PUT para atualizar a notificação
      *
-     * @param notificacaoDTO
-     * @return
+     * @param notificacaoDTO - Objeto para editar a notificação
+     * @return - Retorno da notificação atualizada
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@RequestBody @Valid NotificacaoDTO notificacaoDTO, @PathVariable(value = "id") Long id) {
@@ -208,8 +187,8 @@ public class NotificacaoController {
     /**
      * Método DELETE para deletar uma notificação
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para deletar uma notificação
+     * @return - Retorno da mensagem de sucesso ou erro
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {

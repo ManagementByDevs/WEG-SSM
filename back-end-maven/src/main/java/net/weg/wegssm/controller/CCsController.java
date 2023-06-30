@@ -28,8 +28,8 @@ public class CCsController {
     /**
      * Método POST para salvar uma CC, recebendo o objeto no body
      *
-     * @param ccDTO
-     * @return
+     * @param ccDTO - Objeto a ser cadastrado
+     * @return - Retorno do objeto cadastrado
      */
     @PostMapping
     public ResponseEntity<CC> save(@RequestBody @Valid CcDTO ccDTO) {
@@ -41,8 +41,8 @@ public class CCsController {
     /**
      * Método DELETE para excluir uma CC pelo seu ID
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para um CC a ser deletado
+     * @return - Retorno de sucesso ou erro
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {

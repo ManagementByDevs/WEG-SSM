@@ -19,6 +19,7 @@ public class DepartamentoService {
 
     /**
      * Construtor da classe
+     * @param departamentoRepository
      */
     public DepartamentoService(DepartamentoRepository departamentoRepository) {
         this.departamentoRepository = departamentoRepository;
@@ -26,6 +27,7 @@ public class DepartamentoService {
 
     /**
      * Função para buscar todos os departamentos salvos
+     * @return
      */
     public List<Departamento> findAll() {
         return departamentoRepository.findAll();

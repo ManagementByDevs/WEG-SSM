@@ -26,7 +26,6 @@ public class HistoricoService {
 
     /**
      * Função para buscar todos os históricos
-     *
      * @return
      */
     public List<Historico> findAll() {
@@ -35,7 +34,6 @@ public class HistoricoService {
 
     /**
      * Função para buscar um histórico através de um id
-     *
      * @param id
      * @return
      */
@@ -45,7 +43,6 @@ public class HistoricoService {
 
     /**
      * Função par buscar um histórico através do autor
-     *
      * @param autor
      * @return
      */
@@ -55,7 +52,6 @@ public class HistoricoService {
 
     /**
      * Função para verificar se existe um histórico através do id
-     *
      * @param id
      * @return
      */
@@ -65,7 +61,6 @@ public class HistoricoService {
 
     /**
      * Função para verificar se existe um histórico através do autor
-     *
      * @param autor
      * @return
      */
@@ -75,7 +70,6 @@ public class HistoricoService {
 
     /**
      * Função para salvar um histórico
-     *
      * @param entity
      * @param <S>
      * @return
@@ -86,7 +80,6 @@ public class HistoricoService {
 
     /**
      * Função para deletar um histórico através do id
-     *
      * @param id
      */
     public void deleteById(Long id) {

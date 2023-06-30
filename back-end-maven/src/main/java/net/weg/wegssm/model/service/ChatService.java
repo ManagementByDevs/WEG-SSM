@@ -25,7 +25,6 @@ public class ChatService {
 
     /**
      * Função para buscar todos os chats
-     *
      * @return
      */
     public List<Chat> findAll() {
@@ -34,7 +33,6 @@ public class ChatService {
 
     /**
      * Função para buscar um chat pelo seu ID
-     *
      * @param id
      * @return
      */
@@ -42,17 +40,8 @@ public class ChatService {
         return chatRepository.findById(id);
     }
 
-//    public List<Chat> findByUsuario(Usuario usuario) {
-//        return chatRepository.findByUsuario(usuario);
-//    }
-//
-//    public List<Chat> findBySolicitante(Usuario user) {
-//        return chatRepository.findBySolicitante(user);
-//    }
-
     /**
      * Função para verificar se um chat existe pelo seu ID
-     *
      * @param id
      * @return
      */
@@ -60,13 +49,8 @@ public class ChatService {
         return chatRepository.existsById(id);
     }
 
-//    public Boolean existsByUsuario(Usuario usuario) {
-//        return chatRepository.existsByUsuario(usuario);
-//    }
-
     /**
      * Função para salvar um chat
-     *
      * @param entity
      * @param <S>
      * @return
@@ -77,7 +61,6 @@ public class ChatService {
 
     /**
      * Função para deletar um chat pelo seu id
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -86,7 +69,6 @@ public class ChatService {
 
     /**
      * Função para buscar um chat pelos usuários que fazem parte
-     *
      * @param usuario
      * @return
      */
@@ -96,7 +78,6 @@ public class ChatService {
 
     /**
      * Função para buscar um chat pela proposta e pelos usuários que fazem parte
-     *
      * @param proposta
      * @param usuario
      * @return

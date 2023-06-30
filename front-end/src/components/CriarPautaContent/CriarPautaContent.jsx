@@ -357,20 +357,6 @@ const CriarPautaContent = () => {
         >
           {texts.criarPauta.novaPauta}
         </Typography>
-        <Button
-          variant="text"
-          onClick={() => {
-            if (lendoTexto) {
-              lerTexto(texts.criarPauta.criarPauta);
-            } else {
-              handleOnCreatePauta();
-            }
-          }}
-        >
-          <Typography fontSize={FontConfig.medium} fontWeight={600}>
-            {texts.criarPauta.criarPauta}
-          </Typography>
-        </Button>
       </Box>
       <Divider />
 
@@ -473,7 +459,7 @@ const CriarPautaContent = () => {
             >
               {texts.criarPauta.propostas} <AsteriscoObrigatorio />
             </Typography>
-            <Box className="border h-96 rounded">
+            <Box className="border h-80 rounded p-2">
               {!isEmpty(listaPropostas) ? (
                 <PropostaList
                   listaPropostas={listaPropostas}
@@ -579,6 +565,23 @@ const CriarPautaContent = () => {
             )}
           </Box>
         </Box>
+      </Box>
+      <Box className="w-full flex justify-end">
+        <Button
+          variant="contained"
+          disableElevation
+          onClick={() => {
+            if (lendoTexto) {
+              lerTexto(texts.criarPauta.criarPauta);
+            } else {
+              handleOnCreatePauta();
+            }
+          }}
+        >
+          <Typography fontSize={FontConfig.default} fontWeight={600}>
+            {texts.criarPauta.criarPauta}
+          </Typography>
+        </Button>
       </Box>
     </>
   );

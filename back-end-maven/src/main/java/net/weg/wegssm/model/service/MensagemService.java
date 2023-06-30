@@ -26,7 +26,6 @@ public class MensagemService {
 
     /**
      * Função para buscar todas as mensagens
-     *
      * @return
      */
     public List<Mensagem> findAll() {
@@ -35,7 +34,6 @@ public class MensagemService {
 
     /**
      * Função para buscar uma mensagem através de um id
-     *
      * @param id
      * @return
      */
@@ -45,7 +43,6 @@ public class MensagemService {
 
     /**
      * Função para verificar se existe uma mensagem através do id
-     *
      * @param id
      * @return
      */
@@ -55,7 +52,6 @@ public class MensagemService {
 
     /**
      * Função para salvar uma mensagem
-     *
      * @param entity
      * @param <S>
      * @return
@@ -66,7 +62,6 @@ public class MensagemService {
 
     /**
      * Função para deletar uma mensagem através de um id
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -75,7 +70,6 @@ public class MensagemService {
 
     /**
      * Função para buscar mensagem através do id com paginação
-     *
      * @param chat
      * @param pageable
      * @return
@@ -86,7 +80,6 @@ public class MensagemService {
 
     /**
      * Função para encontrar todas as mensagens através do id do chat
-     *
      * @param chat
      * @return
      */
@@ -96,7 +89,6 @@ public class MensagemService {
 
     /**
      * Função para encontrar todas as mensagens através do id do chat e se foi visto
-     *
      * @param chat
      * @param visto
      * @return
@@ -107,7 +99,6 @@ public class MensagemService {
 
     /**
      * Função para encontrar todas as mensagens através do id do chat e se foi visto e se o usuário não é o usuário atual
-     *
      * @param chat
      * @param visto
      * @param usuario

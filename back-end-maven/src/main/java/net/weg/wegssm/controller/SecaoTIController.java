@@ -29,7 +29,7 @@ public class SecaoTIController {
     /**
      * Função para buscar todas as seções de TI
      *
-     * @return
+     * @return - Retorno da lista de seções de ti
      */
     @GetMapping
     public ResponseEntity<List<SecaoTI>> findAll() {

@@ -19,6 +19,9 @@ public class CustoService {
 
     /**
      * Função para salvar um custo no banco de dados
+     * @param entity
+     * @param <S>
+     * @return
      */
     public <S extends Custo> S save(S entity) {
         return custoRepository.save(entity);
@@ -26,6 +29,8 @@ public class CustoService {
 
     /**
      * Função booleana para verificar se um custo existe pelo seu ID
+     * @param id
+     * @return
      */
     public Boolean existsById(Long id) {
         return custoRepository.existsById(id);
@@ -33,6 +38,7 @@ public class CustoService {
 
     /**
      * Função para excluir um custo pelo seu ID
+     * @param id
      */
     public void deleteById(Long id) {
         custoRepository.deleteById(id);

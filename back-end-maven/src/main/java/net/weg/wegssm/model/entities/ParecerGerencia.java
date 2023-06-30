@@ -2,6 +2,9 @@ package net.weg.wegssm.model.entities;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Classe ENUM com os tipos de parecer da gerência
+ */
 @AllArgsConstructor
 public enum ParecerGerencia {
 

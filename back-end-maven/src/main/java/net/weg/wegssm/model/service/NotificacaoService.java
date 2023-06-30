@@ -29,7 +29,6 @@ public class NotificacaoService {
 
     /**
      * Função para buscar todas as notificações
-     *
      * @return
      */
     public List<Notificacao> findAll() {
@@ -38,7 +37,6 @@ public class NotificacaoService {
 
     /**
      * Função para buscar todas as notificações com paginação
-     *
      * @param pageable
      * @return
      */
@@ -48,7 +46,6 @@ public class NotificacaoService {
 
     /**
      * Função para buscar uma notificação através de um id
-     *
      * @param id
      * @return
      */
@@ -58,7 +55,6 @@ public class NotificacaoService {
 
     /**
      * Função para buscar notificação através do tipo
-     *
      * @param tipoNotificacao
      * @return
      */
@@ -68,7 +64,6 @@ public class NotificacaoService {
 
     /**
      * Função para verificar se existe uma notificação através do id
-     *
      * @param id
      * @return
      */
@@ -78,7 +73,6 @@ public class NotificacaoService {
 
     /**
      * Função para salvar uma notificação
-     *
      * @param entity
      * @param <S>
      * @return
@@ -89,7 +83,6 @@ public class NotificacaoService {
 
     /**
      * Função para deletar uma notificação através do id
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -98,7 +91,6 @@ public class NotificacaoService {
 
     /**
      * Função para buscar notificações através de um usuário
-     *
      * @param usuario
      * @param pageable
      * @return
@@ -109,7 +101,6 @@ public class NotificacaoService {
 
     /**
      * Função para buscar notificações através da data
-     *
      * @param data
      * @return
      */
@@ -119,7 +110,6 @@ public class NotificacaoService {
 
     /**
      * Função para buscar notificação através do usuário e da visualização
-     *
      * @param usuario
      * @param visualizado
      * @param pageable

@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
  * Classe repository para as CCs
  */
 @Repository
-public interface CCsRepository extends JpaRepository<CC, Long> {
-
-}
+public interface CCsRepository extends JpaRepository<CC, Long> { }

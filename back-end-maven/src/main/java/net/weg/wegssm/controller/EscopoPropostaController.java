@@ -74,8 +74,8 @@ public class EscopoPropostaController {
     /**
      * Método GET para listar um escopo específico através do id do usuário
      *
-     * @param pageable
-     * @param idUsuario
+     * @param pageable  - Objeto que contém a paginação
+     * @param idUsuario - ID do usuário logado
      * @return
      */
     @GetMapping("/usuario/{idUsuario}")
@@ -88,9 +88,9 @@ public class EscopoPropostaController {
     /**
      * Método GET para listar um esocpo através do id do usuário e do título
      *
-     * @param pageable
-     * @param idUsuario
-     * @param titulo
+     * @param pageable  - Objeto que contém a paginação
+     * @param idUsuario - ID do usuário logado
+     * @param titulo    - Título do escopo
      * @return
      */
     @GetMapping("/titulo/{idUsuario}/{titulo}")
@@ -104,8 +104,8 @@ public class EscopoPropostaController {
     /**
      * Método GET para listar um escopo através do id da demanda
      *
-     * @param idDemanda
-     * @return
+     * @param idDemanda - ID da demanda
+     * @return - Retorno do escopo
      */
     @GetMapping("/demanda/{idDemanda}")
     public ResponseEntity<List<EscopoProposta>> findByDemanda(@PathVariable(value = "idDemanda") Long idDemanda) {
@@ -117,8 +117,8 @@ public class EscopoPropostaController {
     /**
      * Método POST para criar um escopo de proposta
      *
-     * @param escopoPropostaJSON
-     * @return
+     * @param escopoPropostaJSON - Objeto utilizado para criação de um escopo
+     * @return - Retorno do esocpo criado
      */
     @PostMapping
     public ResponseEntity<EscopoProposta> save(@RequestParam("escopo-proposta") String escopoPropostaJSON) {
@@ -147,8 +147,8 @@ public class EscopoPropostaController {
     /**
      * Método PUT para editar um escopo da proposta
      *
-     * @param escopoPropostaJSON
-     * @return
+     * @param escopoPropostaJSON - Objeto utilizado para editar um escopo
+     * @return - Retorno do novo escopo
      */
     @PutMapping
     public ResponseEntity<Object> update(@RequestParam(value = "escopo-proposta") String escopoPropostaJSON) {
@@ -208,8 +208,8 @@ public class EscopoPropostaController {
     /**
      * Método DELETE para deletar um escopo da proposta
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para deletar um escopo
+     * @return - Retorno da mensagem de confirmação ou erro
      */
     @Transactional
     @DeleteMapping("/{id}")

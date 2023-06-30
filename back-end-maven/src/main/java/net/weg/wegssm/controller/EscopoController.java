@@ -68,6 +68,14 @@ public class EscopoController {
         return ResponseEntity.status(HttpStatus.OK).body(escopoOptional.get());
     }
 
+    /**
+     * Método GET para listar e filtras os escopos com paginação
+     *
+     * @param pageable    - Objeto que contém os dados da paginação
+     * @param usuarioJson - Usuário que está logado
+     * @param titulo      - Título do escopo
+     * @return - Retorno da paginação filtrada
+     */
     @GetMapping("/page")
     public ResponseEntity<Page<Escopo>> findPage(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                  @RequestParam(value = "usuario") String usuarioJson,
@@ -75,7 +83,7 @@ public class EscopoController {
         UsuarioUtil usuarioUtil = new UsuarioUtil();
         Usuario usuario = usuarioUtil.convertJsonToModel(usuarioJson);
 
-        if(titulo != null && !titulo.isEmpty()) {
+        if (titulo != null && !titulo.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuarioAndTitulo(usuario, titulo, pageable));
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuario(usuario, pageable));
@@ -85,9 +93,9 @@ public class EscopoController {
     /**
      * Método GET para procurar os escopos de um usuário pelo seu ID
      *
-     * @param pageable  Objeto para paginação
-     * @param idUsuario ID do usuário
-     * @return Página com os escopos do usuário recebido
+     * @param pageable  - Objeto para paginação
+     * @param idUsuario - ID do usuário
+     * @return - Página com os escopos do usuário recebido
      */
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<Object> findByUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
@@ -102,10 +110,10 @@ public class EscopoController {
     /**
      * Método GET para buscar um escopo através do título e do id do usuário
      *
-     * @param pageable
-     * @param idUsuario
-     * @param titulo
-     * @return
+     * @param pageable  - Objeto que contém os dados da paginação
+     * @param idUsuario - ID do usuário que está logado
+     * @param titulo    - Título do escopo
+     * @return - Retorno da paginação filtrada
      */
     @GetMapping("/titulo/{idUsuario}/{titulo}")
     public ResponseEntity<Page<Escopo>> findByUsuarioAndTitulo(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
@@ -118,8 +126,8 @@ public class EscopoController {
     /**
      * Método POST para salvar um novo escopo
      *
-     * @param idUsuario
-     * @return
+     * @param idUsuario - ID do usuário que está logado
+     * @return -  Retorno do escopo salvo
      */
     @PostMapping("/novo/{idUsuario}")
     public ResponseEntity<Escopo> saveNovo(@PathVariable(value = "idUsuario") Long idUsuario) {
@@ -134,8 +142,8 @@ public class EscopoController {
     /**
      * Método PUT para atualizar um escopo
      *
-     * @param escopo
-     * @return
+     * @param escopo - Objeto de escopo a ser editado
+     * @return - Retorno do escopo atualizado
      */
     @PutMapping
     public ResponseEntity<Object> update(@RequestBody Escopo escopo) {
@@ -170,8 +178,8 @@ public class EscopoController {
     /**
      * Método DELETE para deletar um escopo do banco de dados
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para deletar o escopo
+     * @return - Mensagme de sucesso ou erro
      */
     @Transactional
     @DeleteMapping("/{id}")

@@ -8,7 +8,5 @@ import org.springframework.stereotype.Repository;
  * Classe repository para os custos
  */
 @Repository
-public interface CustoRepository extends JpaRepository<Custo, Long> {
-
-}
+public interface CustoRepository extends JpaRepository<Custo, Long> { }
 

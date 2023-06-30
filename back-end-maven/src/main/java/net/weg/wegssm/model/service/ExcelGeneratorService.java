@@ -24,28 +24,28 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ExcelGeneratorService {
 
+    /**
+     * Classe service da demanda
+     */
     private DemandaService demandaService;
+
+    /**
+     * Classe service da proposta
+     */
     private PropostaService propostaService;
+
+    /**
+     * Classe service da pauta
+     */
     private PautaService pautaService;
+
+    /**
+     * Classe service da ata
+     */
     private AtaService ataService;
 
     /**
-     * Função para criar uma linha de cabeçalho com o estilo
-     *
-     * @param workbook
-     * @param color
-     * @return
-     */
-    private static XSSFCellStyle createRowStyle(XSSFWorkbook workbook, XSSFColor color) {
-        XSSFCellStyle style = workbook.createCellStyle();
-        style.setFillForegroundColor(color);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        return style;
-    }
-
-    /**
      * Função para exportar as demandas assessment para excel
-     *
      * @param response
      * @param listaDemandas
      * @throws IOException
@@ -196,7 +196,6 @@ public class ExcelGeneratorService {
 
     /**
      * Função para exportar demandas back_log para excel
-     *
      * @param response
      * @param listaDemandas
      * @throws IOException
@@ -329,7 +328,6 @@ public class ExcelGeneratorService {
 
     /**
      * Função para exportar as propostas para excel
-     *
      * @param response
      * @param listaPropostas
      * @throws IOException
@@ -519,7 +517,6 @@ public class ExcelGeneratorService {
 
     /**
      * Função para exportar as pautas para excel
-     *
      * @param response
      * @param listaPautas
      * @throws IOException
@@ -796,7 +793,6 @@ public class ExcelGeneratorService {
 
     /**
      * Função para exportar as atas para excel
-     *
      * @param response
      * @param listaAtas
      * @throws IOException

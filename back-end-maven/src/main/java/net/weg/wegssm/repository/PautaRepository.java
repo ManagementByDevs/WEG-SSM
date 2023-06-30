@@ -42,6 +42,11 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
      */
     Pauta findByPropostasContaining(Proposta proposta);
 
+    /**
+     * Função para retornar as propostas que pertencem a uma pauta, utilizado par ao calculo do score
+     *
+     * @return
+     */
     @Query("SELECT p FROM Pauta p LEFT JOIN FETCH p.propostas")
     List<Pauta> findAllScore();
 }

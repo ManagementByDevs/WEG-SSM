@@ -123,4 +123,5 @@ public class ScoreDemandaThread extends Thread implements Runnable {
 
         return (((2 * valorBeneficiosReais) + (1 * valorBeneficiosPotenciais) + agingFinal) / valorTamanhoDemanda) * valorPrioridade;
     }
+
 }
