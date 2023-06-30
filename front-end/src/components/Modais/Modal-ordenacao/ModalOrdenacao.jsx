@@ -72,10 +72,6 @@ export default function TemporaryDrawer(props) {
       tipo: "Status",
     },
     {
-      id: 2,
-      tipo: "Gerente Responsável",
-    },
-    {
       id: 3,
       tipo: "Fórum",
     },
@@ -88,14 +84,6 @@ export default function TemporaryDrawer(props) {
       tipo: "Tamanho",
     },
     {
-      id: 6,
-      tipo: "Analista Responsável",
-    },
-    {
-      id: 7,
-      tipo: "Solicitante",
-    },
-    {
       id: 8,
       tipo: "Atribuído à",
     },
@@ -106,6 +94,18 @@ export default function TemporaryDrawer(props) {
     {
       id: 10,
       tipo: "Publicada",
+    },
+    {
+      id: 2,
+      tipo: "Gerente Responsável",
+    },
+    {
+      id: 6,
+      tipo: "Analista Responsável",
+    },
+    {
+      id: 7,
+      tipo: "Solicitante",
     },
   ];
 
@@ -388,83 +388,95 @@ function Input(props) {
     props.setFiltro({ ...props.filtro, analista: value });
   };
 
+  const gerentes = {
+    options: props.listaGerentes,
+    getOptionLabel: (option) => option.nome,
+  };
+
+  const analistas = {
+    options: props.listaAnalistas,
+    getOptionLabel: (option) => option.nome,
+  };
+
+  const solicitantes = {
+    options: props.listaSolicitantes,
+    getOptionLabel: (option) => option.nome,
+  };
+
   return (
     <Box className="flex flex-col items-center w-full mb-5">
       {props.opcao.id == 2 ? (
-        // <Box sx={{ width: "85%", position: "relative" }}>
-        //   <BookmarkBorderOutlinedIcon className="absolute" sx={{top: "27%", left: "5%"}} />
+        <Box className="w-full flex justify-start">
           <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={props.listaGerentes}
+            {...gerentes}
+            sx={{ width: "72%", marginLeft: "8%" }}
             noOptionsText={texts.modalFiltroGerencia.semResultados}
-            sx={{ width: "85%" }}
             value={props.filtro.gerente}
+            id="disable-close-on-select"
+            disableCloseOnSelect
             onInputChange={(e) => {
               pesquisarGerentes(e);
             }}
             onChange={(e, value) => {
               selecionarGerente(e, value);
             }}
-            getOptionLabel={(option) => {
-              return option?.nome || "";
-            }}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label={texts.modalFiltroGerencia.gerenteResponsavel}
+                variant="standard"
               />
             )}
           />
-        // </Box>
+        </Box>
       ) : props.opcao.id == 6 ? (
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          options={props.listaAnalistas}
-          noOptionsText={texts.modalFiltroGerencia.semResultados}
-          sx={{ width: "85%" }}
-          value={props.filtro.analista}
-          onInputChange={(e) => {
-            pesquisarAnalistas(e);
-          }}
-          onChange={(e, value) => {
-            selecionarAnalista(e, value);
-          }}
-          getOptionLabel={(option) => {
-            return option?.nome || "";
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label={texts.modalFiltroGerencia.analistaResponsavel}
-            />
-          )}
-        />
+        <Box className="w-full flex justify-start">
+          <Autocomplete
+            {...analistas}
+            sx={{ width: "72%", marginLeft: "8%" }}
+            noOptionsText={texts.modalFiltroGerencia.semResultados}
+            value={props.filtro.analista}
+            id="disable-close-on-select"
+            disableCloseOnSelect
+            onInputChange={(e) => {
+              pesquisarAnalistas(e);
+            }}
+            onChange={(e, value) => {
+              selecionarAnalista(e, value);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={texts.modalFiltroGerencia.analistaResponsavel}
+                variant="standard"
+              />
+            )}
+          />
+        </Box>
       ) : props.opcao.id == 7 ? (
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          options={props.listaSolicitantes}
-          noOptionsText={texts.modalFiltroGerencia.semResultados}
-          sx={{ width: 240 }}
-          value={props.filtro.solicitante}
-          onInputChange={(e) => {
-            pesquisarSolicitantes(e);
-          }}
-          onChange={(e, value) => {
-            selecionarSolicitante(e, value);
-          }}
-          getOptionLabel={(option) => {
-            return option?.nome || "";
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label={texts.modalFiltroGerencia.labelSolicitante}
-            />
-          )}
-        />
+        <Box className="w-full flex justify-start">
+          <Autocomplete
+            {...solicitantes}
+            sx={{ width: "72%", marginLeft: "8%" }}
+            noOptionsText={texts.modalFiltroGerencia.semResultados}
+            value={props.filtro.solicitante}
+            id="disable-close-on-select"
+            disableCloseOnSelect
+            onInputChange={(e) => {
+              pesquisarSolicitantes(e);
+            }}
+            onChange={(e, value) => {
+              selecionarSolicitante(e, value);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={texts.modalFiltroGerencia.labelSolicitante}
+                variant="standard"
+              />
+            )}
+          />
+        </Box>
       ) : (
         <FormControl sx={{ width: "85%" }} size="small">
           <InputLabel
