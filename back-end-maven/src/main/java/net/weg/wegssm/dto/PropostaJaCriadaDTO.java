@@ -50,4 +50,5 @@ public class PropostaJaCriadaDTO {
     private List<Historico> historicoProposta;
     private String presenteEm;
     private Double score;
+    private String motivoRecusa;
 }
