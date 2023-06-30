@@ -46,7 +46,6 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import ExportPdfService from "../../service/exportPdfService";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
-import ModalFiltroAtas from "../../components/Modais/Modal-filtroAtas/ModalFiltroAtas";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
