@@ -834,6 +834,8 @@ const DetalhesPropostaEditMode = ({
     setProposta({
       ...proposta,
       beneficios: [...beneficiosAux],
+      inicioExecucao: DateService.getDateValue(proposta.inicioExecucao),
+      fimExecucao: DateService.getDateValue(proposta.fimExecucao)
     });
   }, []);
 
@@ -922,22 +924,23 @@ const DetalhesPropostaEditMode = ({
               color="primary"
               fontWeight="bold"
               fontSize={FontConfig.big}
-              onClick={() => {
-                lerTexto(texts.detalhesProposta.data);
-              }}
+              onClick={() =>
+                lerTexto(
+                  texts.detalhesProposta.data +
+                  " " +
+                  DateService.getTodaysDateUSFormat(
+                    DateService.getDateByMySQLFormat(proposta.data),
+                    texts.linguagem
+                  )
+                )
+              }
             >
-              {texts.detalhesProposta.data}:
-              <Asterisco />
+              {texts.detalhesProposta.data}{" "}
+              {DateService.getTodaysDateUSFormat(
+                DateService.getDateByMySQLFormat(proposta.data),
+                texts.linguagem
+              )}
             </Typography>
-            {/* input da data */}
-            <TextField
-              variant="standard"
-              size="small"
-              value={DateService.getTodaysDateUSFormat(proposta.data)}
-              onChange={handleOnDataChange}
-              type="date"
-              sx={{ width: "8rem" }}
-            />
           </Box>
           {/* Publicada */}
           {proposta.publicada != null && (
@@ -1518,9 +1521,7 @@ const DetalhesPropostaEditMode = ({
               <TextField
                 variant="standard"
                 size="small"
-                value={DateService.getTodaysDateUSFormat(
-                  proposta.inicioExecucao
-                )}
+                value={proposta.inicioExecucao}
                 onChange={handleOnInicioExecucaoChange}
                 type="date"
               />
@@ -1528,7 +1529,7 @@ const DetalhesPropostaEditMode = ({
               <TextField
                 variant="standard"
                 size="small"
-                value={DateService.getTodaysDateUSFormat(proposta.fimExecucao)}
+                value={proposta.fimExecucao}
                 onChange={handleOnFimExecucaoChange}
                 type="date"
               />

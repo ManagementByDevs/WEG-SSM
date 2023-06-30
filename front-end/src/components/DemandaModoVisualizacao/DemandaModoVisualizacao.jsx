@@ -300,7 +300,7 @@ const DemandaTable = ({
               {/* data da demanda */}
               <td
                 className="text-center p-3"
-                title={DateService.getTodaysDateUSFormat(
+                title={DateService.getFullDateUSFormat(
                   row.data,
                   texts.linguagem
                 )}
@@ -312,7 +312,7 @@ const DemandaTable = ({
                     if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(
-                        DateService.getTodaysDateUSFormat(
+                        DateService.getFullDateUSFormat(
                           row.data,
                           texts.linguagem
                         )
@@ -320,7 +320,7 @@ const DemandaTable = ({
                     }
                   }}
                 >
-                  {DateService.getTodaysDateUSFormat(row.data, texts.linguagem)}
+                  {DateService.getFullDateUSFormat(row.data, texts.linguagem)}
                 </Typography>
               </td>
             </TableRow>
