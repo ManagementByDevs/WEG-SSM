@@ -89,8 +89,8 @@ const PropostaList = ({
       >
         <DialogContent>
           <DetalhesProposta
-            onlyView
             propostaId={modalDetalhesProposta.propostaId}
+            onlyView
           />
         </DialogContent>
       </Dialog>
@@ -110,6 +110,9 @@ const PropostaList = ({
                   fontSize={FontConfig.default}
                   fontWeight={500}
                   color="primary"
+                  onClick={() => {
+                    lerTexto(proposta.codigoPPM + "/" + getAno(proposta.data));
+                  }}
                 >
                   {proposta.codigoPPM}/{getAno(proposta.data)}
                 </Typography>
@@ -120,6 +123,9 @@ const PropostaList = ({
                   fontWeight={500}
                   color="text.primary"
                   className="overflow-hidden text-ellipsis whitespace-nowrap"
+                  onClick={() => {
+                    lerTexto(proposta.titulo);
+                  }}
                 >
                   {proposta.titulo}
                 </Typography>
@@ -129,7 +135,11 @@ const PropostaList = ({
               {inDiscussion ? (
                 <Box className="flex items-center gap-2">
                   <Tooltip
-                    title={proposta.publicada ? "Publicada" : "Não Publicada"}
+                    title={
+                      proposta.publicada
+                        ? texts.criarPauta.publicada
+                        : texts.criarPauta.naoPublicada
+                    }
                   >
                     <IconButton
                       size="small"
@@ -143,7 +153,7 @@ const PropostaList = ({
                       )}
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Expandir">
+                  <Tooltip title={texts.criarPauta.expandir}>
                     <IconButton
                       size="small"
                       onClick={() => expandProposta(proposta)}
@@ -151,7 +161,7 @@ const PropostaList = ({
                       <FullscreenIcon />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Remover">
+                  <Tooltip title={texts.criarPauta.remover}>
                     <IconButton
                       size="small"
                       color="primary"
@@ -165,7 +175,7 @@ const PropostaList = ({
                 </Box>
               ) : (
                 <>
-                  <Tooltip title="Expandir">
+                  <Tooltip title={texts.criarPauta.expandir}>
                     <IconButton
                       size="small"
                       onClick={() => expandProposta(proposta)}
@@ -173,7 +183,7 @@ const PropostaList = ({
                       <FullscreenIcon />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Adicionar">
+                  <Tooltip title={texts.criarPauta.adicionar}>
                     <IconButton
                       size="small"
                       onClick={() => addProposta(proposta)}
