@@ -271,6 +271,9 @@ const HomeGerencia = () => {
   /** Feedback ativado quando uma pauta é criada */
   const [feedbackPautaCriada, setFeedbackPautaCriada] = useState(false);
 
+  /** Feedback utilizado quando não há dados para realizar o download do excel */
+  const [feedbackSemDadosExcel, setFeedbackSemDadosExcel] = useState(false);
+
   /** Variável para verificação se é do tipo GERENTE */
   const isGerente = !(usuario.tipoUsuario == "GERENTE");
 
@@ -669,7 +672,9 @@ const HomeGerencia = () => {
   const verificarFeedbacks = () => {
     let tipoNotficacao = localStorage.getItem("tipoFeedback");
 
-    if (tipoNotficacao == "2") {
+    if (tipoNotficacao == "1") {
+      setFeedbackDemandaCriada(true);
+    } else if (tipoNotficacao == "2") {
       setFeedbackDemandaAceita(true);
     } else if (tipoNotficacao == "3") {
       setFeedbackDemandaDevolvida(true);
@@ -713,27 +718,27 @@ const HomeGerencia = () => {
   const formatarOrdenacao = () => {
     let textoNovo = "";
     if (ordenacaoTitulo[1]) {
-        textoNovo += "sort=titulo,asc&";
+      textoNovo += "sort=titulo,asc&";
     }
     if (ordenacaoTitulo[0]) {
-        textoNovo += "sort=titulo,desc&";
+      textoNovo += "sort=titulo,desc&";
     }
-    if(valorAba > 4) {
+    if (valorAba > 4) {
 
       if (ordenacaoNum[1]) {
-          textoNovo += "sort=numeroSequencial,asc&";
+        textoNovo += "sort=numeroSequencial,asc&";
       }
       if (ordenacaoNum[0]) {
-          textoNovo += "sort=numeroSequencial,desc&";
+        textoNovo += "sort=numeroSequencial,desc&";
       }
     }
-    if(valorAba == 4) {
+    if (valorAba == 4) {
 
       if (ordenacaoNum[1]) {
-          textoNovo += "sort=codigoPPM,asc&";
+        textoNovo += "sort=codigoPPM,asc&";
       }
       if (ordenacaoNum[0]) {
-          textoNovo += "sort=codigoPPM,desc&";
+        textoNovo += "sort=codigoPPM,desc&";
       }
     }
     if (ordenacaoDate[0]) {
@@ -1060,25 +1065,23 @@ const HomeGerencia = () => {
             listaIdPautas.push(listaItens[object].id);
           }
 
-          if (listaIdPautas.length > 0) {
-            ExportExcelService.exportPautasToExcel(listaIdPautas).then(
-              (response) => {
-                let blob = new Blob([response], { type: "application/excel" });
-                let url = URL.createObjectURL(blob);
-                let link = document.createElement("a");
-                let data = new Date();
-                let dataFormatada =
-                  data.getDate() +
-                  "-" +
-                  (data.getMonth() + 1) +
-                  "-" +
-                  data.getFullYear();
-                link.href = url;
-                link.download = "pautas " + dataFormatada + " .xlsx";
-                link.click();
-              }
-            );
-          }
+          ExportExcelService.exportPautasToExcel(listaIdPautas).then(
+            (response) => {
+              let blob = new Blob([response], { type: "application/excel" });
+              let url = URL.createObjectURL(blob);
+              let link = document.createElement("a");
+              let data = new Date();
+              let dataFormatada =
+                data.getDate() +
+                "-" +
+                (data.getMonth() + 1) +
+                "-" +
+                data.getFullYear();
+              link.href = url;
+              link.download = "pautas " + dataFormatada + " .xlsx";
+              link.click();
+            }
+          );
         } else {
           let listaIdAtas = [];
 
@@ -1086,26 +1089,26 @@ const HomeGerencia = () => {
             listaIdAtas.push(listaItens[object].id);
           }
 
-          if (listaIdAtas.length > 0) {
-            ExportExcelService.exportAtasToExcel(listaIdAtas).then(
-              (response) => {
-                let blob = new Blob([response], { type: "application/excel" });
-                let url = URL.createObjectURL(blob);
-                let link = document.createElement("a");
-                let data = new Date();
-                let dataFormatada =
-                  data.getDate() +
-                  "-" +
-                  (data.getMonth() + 1) +
-                  "-" +
-                  data.getFullYear();
-                link.href = url;
-                link.download = "atas " + dataFormatada + " .xlsx";
-                link.click();
-              }
-            );
-          }
+          ExportExcelService.exportAtasToExcel(listaIdAtas).then(
+            (response) => {
+              let blob = new Blob([response], { type: "application/excel" });
+              let url = URL.createObjectURL(blob);
+              let link = document.createElement("a");
+              let data = new Date();
+              let dataFormatada =
+                data.getDate() +
+                "-" +
+                (data.getMonth() + 1) +
+                "-" +
+                data.getFullYear();
+              link.href = url;
+              link.download = "atas " + dataFormatada + " .xlsx";
+              link.click();
+            }
+          );
         }
+      } else {
+        setFeedbackSemDadosExcel(true);
       }
     }
   };
@@ -1123,7 +1126,7 @@ const HomeGerencia = () => {
             "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
         });
       });
     }
@@ -1422,6 +1425,15 @@ const HomeGerencia = () => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback7}
+        />
+        {/* Feedback não há dados para o excel */}
+        <Feedback
+          open={feedbackSemDadosExcel}
+          handleClose={() => {
+            setFeedbackSemDadosExcel(false);
+          }}
+          status={"erro"}
+          mensagem={texts.homeGerencia.feedback.feedback17}
         />
 
         {/* Div container para o conteúdo da home */}
@@ -1909,7 +1921,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Ajuda
                           onClick={() => {
