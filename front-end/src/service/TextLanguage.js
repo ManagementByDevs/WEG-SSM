@@ -478,6 +478,7 @@ const TextLanguage = (linguagem) => {
           decrescente: "Decrescente",
           dataReuniao: "Data de Reunião",
           ordenar: "Ordenar",
+          filtrar: "Filtrar",
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Motivo da recusa",
@@ -1477,6 +1478,7 @@ const TextLanguage = (linguagem) => {
           decrescente: "Descending",
           dataReuniao: "Meeting Date",
           ordenar: "Order",
+          filtrar: "Filter",
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Refusal Motive",
@@ -2467,6 +2469,7 @@ const TextLanguage = (linguagem) => {
           decrescente: "降序",
           dataReuniao: "会议日期",
           ordenar: "排序",
+          filtrar: "过滤器",
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "拒绝原因",
@@ -3421,6 +3424,7 @@ const TextLanguage = (linguagem) => {
           decrescente: "Descendente",
           dataReuniao: "Fecha de la reunión",
           ordenar: "Ordenar",
+          filtrar: "Filtrar",
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Motivo da recusa",

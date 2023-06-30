@@ -73,7 +73,6 @@ export default function ItemTest(props) {
     <>
       <ListItemButton
         onClick={handleClick}
-        sx={{ backgroundColor: "component.main" }}
       >
         <ListItemIcon>
           {props.opcao.id == 1 ? (

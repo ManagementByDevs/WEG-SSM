@@ -440,6 +440,7 @@ const TextLanguageContext = createContext({
       decrescente: "Decrescente",
       dataReuniao: "Data de Reunião",
       ordenar: "Ordenar",
+      filtrar: "Filtrar",
     },
     modalRecusarDemanda: {
       motivoDaRecusa: "Motivo da recusa",
