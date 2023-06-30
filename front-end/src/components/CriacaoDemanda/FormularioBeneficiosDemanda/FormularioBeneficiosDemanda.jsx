@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, IconButton, Tooltip, Typography, } from "@mui/material";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 import "./FormularioBeneficiosDemanda.css";
@@ -20,6 +13,7 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 /** Segunda etapa da criação de demanda, usando uma lista de benefícios dos props */
 const FormularioBeneficiosDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

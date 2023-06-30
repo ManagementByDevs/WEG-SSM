@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useContext } from "react";
 
 import { Box, Button, Typography, IconButton } from "@mui/material";
 import Table from "@mui/material/Table";
@@ -13,11 +13,11 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FontContext from "../../../service/FontContext";
 import TextLanguageContext from "../../../service/TextLanguageContext";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
-
 import AnexoService from "../../../service/anexoService";
 
 /** Terceira e última etapa da criação de demanda, com espaço para adicionar anexos numa lista */
 const FormularioAnexosDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -34,9 +34,7 @@ const FormularioAnexosDemanda = (props) => {
   const inputArquivos = useRef(null);
 
   /** Variável usada como texto da caixa de seleção de arquivos, modificado ao arrastar arquivos na caixa */
-  const [textoCaixa, setTextoCaixa] = useState(
-    texts.formularioAnexosDemanda.arrasteSolteParaAdicionarUmArquivo
-  );
+  const [textoCaixa, setTextoCaixa] = useState(texts.formularioAnexosDemanda.arrasteSolteParaAdicionarUmArquivo);
 
   /** Função para acionar o input de arquivos */
   const clickInputArquivos = () => {
@@ -97,9 +95,7 @@ const FormularioAnexosDemanda = (props) => {
         sx={{ width: "85%", height: "85%" }}
       >
         <input
-          onChange={() => {
-            salvarArquivos(inputArquivos.current?.files);
-          }}
+          onChange={() => { salvarArquivos(inputArquivos.current?.files); }}
           ref={inputArquivos}
           type="file"
           multiple
@@ -116,9 +112,7 @@ const FormularioAnexosDemanda = (props) => {
                 cursor: "default",
                 marginBottom: "1rem",
               }}
-              onClick={() => {
-                lerTexto(textoCaixa);
-              }}
+              onClick={() => { lerTexto(textoCaixa); }}
             >
               {textoCaixa}
             </Typography>
@@ -195,9 +189,7 @@ const FormularioAnexosDemanda = (props) => {
                         fontSize={FontConfig.big}
                         color="text.primary"
                         sx={{ fontWeight: "700", cursor: "default" }}
-                        onClick={() => {
-                          lerTexto(texts.formularioAnexosDemanda.remover);
-                        }}
+                        onClick={() => { lerTexto(texts.formularioAnexosDemanda.remover); }}
                       >
                         {texts.formularioAnexosDemanda.remover}
                       </Typography>

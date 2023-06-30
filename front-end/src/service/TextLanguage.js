@@ -493,6 +493,7 @@ const TextLanguage = (linguagem) => {
           reprovadaPorFaltaDeInformacoes: "devolvida por falta de informações",
           diasAtras: "dias atrás",
           hoje: "hoje",
+          ontem: "ontem",
           umaSemanaAtras: "1 semana atrás",
           duasSemanasAtras: "2 semanas atrás",
           tresSemanasAtras: "3 semanas atrás",
@@ -652,6 +653,7 @@ const TextLanguage = (linguagem) => {
           publicar: "Publicar",
           comissao: "Comissão",
           analistaResponsavel: "Analista Responsável",
+          numeroSequencialDG: "Número Sequencial da Ata da DG",
         },
         detalhesDemandaPagina: {
           tour: {
@@ -683,6 +685,7 @@ const TextLanguage = (linguagem) => {
           reuniaoDaDG: "Reunião da DG",
           analistaResponsavel: "Analista Responsável",
           nenhumaPropostaAdicionada: "Nenhuma proposta adicionada",
+          numeroSequencialAta: "Número Sequencial da Ata",
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "Adicionar à Pauta",
@@ -932,6 +935,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "Escopo vazio",
           semTabelasDeCusto: "Proposta sem tabelas de custo",
+          semComissao: "Cancelamento fora de comissão:"
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Dado inválido!",
@@ -1473,6 +1477,7 @@ const TextLanguage = (linguagem) => {
           reprovadaPorFaltaDeInformacoes: "disapproved for lack of information",
           diasAtras: "days ago",
           hoje: "today",
+          ontem: "yesterday",
           umaSemanaAtras: "1 week ago",
           duasSemanasAtras: "2 weeks ago",
           tresSemanasAtras: "3 weeks ago",
@@ -1633,6 +1638,7 @@ const TextLanguage = (linguagem) => {
           publicar: "Publish",
           comissao: "Comission",
           analistaResponsavel: "Responsable Analyst",
+          numeroSequencialDG: "DG Minutes Sequential Number",
         },
         detalhesDemandaPagina: {
           tour: {
@@ -1664,6 +1670,7 @@ const TextLanguage = (linguagem) => {
           reuniaoDaDG: "DG meeting",
           analistaResponsavel: "Responsible Analyst",
           nenhumaPropostaAdicionada: "No proposal added",
+          numeroSequencialAta: "Minutes Sequential Number",
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "Add to Agenda",
@@ -1910,6 +1917,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "Empty scope",
           semTabelasDeCusto: "Proposal without cost tables",
+          semComissao: "Out of commission cancellation:"
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Invalid data!",
@@ -2444,6 +2452,7 @@ const TextLanguage = (linguagem) => {
           reprovadaPorFaltaDeInformacoes: "因缺乏信息而被拒绝",
           diasAtras: "天前",
           hoje: "今天",
+          ontem: "昨天",
           umaSemanaAtras: "1周前",
           duasSemanasAtras: "2周前",
           tresSemanasAtras: "3周前",
@@ -2595,6 +2604,7 @@ const TextLanguage = (linguagem) => {
           publicar: "发布",
           comissao: "委员会",
           analistaResponsavel: "负责分析师",
+          numeroSequencialDG: "DG 会议纪要序号",
         },
         detalhesDemandaPagina: {
           tour: {
@@ -2625,6 +2635,7 @@ const TextLanguage = (linguagem) => {
           reuniaoDaDG: "总干事会议",
           analistaResponsavel: "责任分析师",
           nenhumaPropostaAdicionada: "未添加提案",
+          numeroSequencialAta: "分钟序号",
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "添加到议程",
@@ -2855,6 +2866,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "空范围",
           semTabelasDeCusto: "没有成本表的提案",
+          semComissao: "佣金外取消："
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "无效数据",
@@ -3380,6 +3392,7 @@ const TextLanguage = (linguagem) => {
           reprovadaPorFaltaDeInformacoes: "rechazada por falta de información",
           diasAtras: "días atrás",
           hoje: "hoy",
+          ontem: "ayer",
           umaSemanaAtras: "1 semana atrás",
           duasSemanasAtras: "2 semanas atrás",
           tresSemanasAtras: "3 semanas atrás",
@@ -3540,6 +3553,7 @@ const TextLanguage = (linguagem) => {
           publicar: "Publicar",
           comissao: "Comisión",
           analistaResponsavel: "Analista Responsable",
+          numeroSequencialDG: "Número secuencial de actas del GD",
         },
         detalhesDemandaPagina: {
           tour: {
@@ -3571,6 +3585,7 @@ const TextLanguage = (linguagem) => {
           reuniaoDaDG: "reunión del DG",
           analistaResponsavel: "Analista Responsable",
           nenhumaPropostaAdicionada: "No se ha añadido ninguna propuesta",
+          numeroSequencialAta: "Número secuencial de minutos",
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "Agregar a la pauta",
@@ -3829,6 +3844,7 @@ const TextLanguage = (linguagem) => {
           },
           escopoVazio: "Alcance vacío",
           semTabelasDeCusto: "Propuesta sin tablas de costos",
+          semComissao: "Cancelación fuera de comisión:"
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "¡Datos inválidos!",

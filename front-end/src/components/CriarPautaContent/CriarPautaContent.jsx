@@ -1,4 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useDeferredValue,
+} from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -10,8 +15,6 @@ import {
   Select,
   MenuItem,
   Button,
-  Dialog,
-  DialogContent,
   TextField,
 } from "@mui/material";
 
@@ -34,8 +37,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import CookieService from "../../service/cookieService";
 import PautaService from "../../service/pautaService";
 import ExportPdfService from "../../service/exportPdfService";
-import DetalhesProposta from "../DetalhesProposta/DetalhesProposta";
-import { useDeferredValue } from "react";
+import Paginacao from "../Paginacao/Paginacao";
 
 const CriarPautaContent = () => {
   /** Context para alterar o tamanho da fonte */
@@ -74,6 +76,9 @@ const CriarPautaContent = () => {
   /** Armazena o usuário logado no sistema */
   const [usuarioLogado, setUsuarioLogado] = useState(CookieService.getUser());
 
+  /** Número de páginas totais recebido nas buscas de itens para paginação */
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
   /** String para ordenação dos itens atualizada com o valor dos checkboxes a cada busca de itens */
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
 
@@ -99,8 +104,6 @@ const CriarPautaContent = () => {
 
   /** Variável para controlar o input de pesquisa */
   const [search, setSearch] = useState("");
-
-  const deferredSearch = useDeferredValue(search);
 
   /** Lista de comissões disponíveis */
   const [listaComissoes, setListaComissoes] = useState([
@@ -190,6 +193,7 @@ const CriarPautaContent = () => {
   /** Adiciona a proposta na lista de propostas a serem apreciadas */
   const addProposta = (propostaAux = EntitiesObjectService.proposta()) => {
     let listAux = [];
+    propostaAux.publicada = false;
 
     if (isEmpty(listaPropostas)) {
       listAux = [propostaAux];
@@ -243,6 +247,7 @@ const CriarPautaContent = () => {
       (proposta) => !idsListaPropostas.has(proposta.id)
     );
 
+    console.log("aqui");
     setListaPropostasData(novaListaPropostasData);
   };
 
@@ -260,13 +265,17 @@ const CriarPautaContent = () => {
       dataReuniao,
       comissao,
       usuarioLogado.id,
-      listaPropostas
+      listaPropostas.map((propostaAux) => {
+        return { id: propostaAux.id };
+      })
     );
 
     console.log("Nova pauta:", newPauta);
 
     PautaService.post(newPauta).then((res) => {
+      console.log("Pauta criada:", res);
       for (let proposta of listaPropostas) {
+        console.log("Proposta:", proposta);
         PropostaService.atualizacaoPauta(proposta.id, proposta.publicada).then(
           (response) => {
             // Salvamento de histórico
@@ -295,25 +304,30 @@ const CriarPautaContent = () => {
   }, []);
 
   useEffect(() => {
-    // console.log("Número seq:", numeroSequencial);
-    // console.log("Data:", dataReuniao == "");
-    // console.log("Forum:", comissao);
-  }, [numeroSequencial, dataReuniao, comissao]);
-
-  useEffect(() => {
-    // console.log("Lista propostas data:", listaPropostasData);
-  }, [listaPropostasData]);
-
-  useEffect(() => {
-    // console.log("Lista de propostas:", listaPropostas);
+    console.log("Lista de propostas:", listaPropostas);
 
     PropostaService.getPage(
       params,
       ordenacao + "size=" + tamanhoPagina + "&page=" + 0
     ).then((data) => {
+      setTotalPaginas(data.totalPages);
       handleListPropostasData(listaPropostas, data.content);
     });
-  }, [listaPropostas]);
+  }, [listaPropostas, tamanhoPagina, paginaAtual, params]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      PropostaService.getPage(
+        { ...params, titulo: search },
+        ordenacao + "size=" + tamanhoPagina + "&page=" + 0
+      ).then((data) => {
+        setTotalPaginas(data.totalPages);
+        handleListPropostasData(listaPropostas, data.content);
+      });
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search]);
 
   return (
     <>
@@ -433,7 +447,6 @@ const CriarPautaContent = () => {
                 <PropostaList
                   listaPropostas={listaPropostas}
                   setListaPropostas={setListaPropostas}
-                  searchText={deferredSearch}
                   inDiscussion
                 />
               ) : (
@@ -452,45 +465,67 @@ const CriarPautaContent = () => {
             </Box>
           </Box>
         </Box>
+
         {/* Lista de propostas */}
-        <Box className="w-1/2 border rounded p-2">
-          {isLoading ? (
-            <Box className="w-full mt-4 flex justify-center">
-              <ClipLoader color="#00579D" size={80} />
-            </Box>
-          ) : !isEmpty(listaPropostasData) ? (
-            <Box className="flex flex-col gap-2">
-              <TextField
-                value={search}
-                onChange={handleOnSearchChange}
-                label="Pesquisar por nome ou PPM"
-                fullWidth
-                variant="standard"
-              />
-              <Box>
-                <PropostaList
-                  draggable
-                  onDragStart={handleOnPropostaDragStart}
-                  listaPropostas={listaPropostasData}
-                  setListaPropostas={setListaPropostasData}
-                  addProposta={addProposta}
-                  searchText={deferredSearch}
-                />
+        <Box className="w-1/2 border rounded">
+          <Box className="p-2">
+            {isLoading ? (
+              <Box className="w-full mt-4 flex justify-center">
+                <ClipLoader color="#00579D" size={80} />
               </Box>
-            </Box>
-          ) : (
-            <Box className="w-full h-full flex justify-center items-center">
-              <Typography
-                fontSize={FontConfig.big}
-                sx={{ color: "text.secondary", mb: 1 }}
-                onClick={() => {
-                  lerTexto("");
-                }}
-              >
-                Não há propostas para serem adicionadas
-              </Typography>
-            </Box>
-          )}
+            ) : (
+              <Box className="flex w-full flex-col gap-2">
+                <TextField
+                  value={search}
+                  onChange={handleOnSearchChange}
+                  label="Pesquisar por nome ou PPM"
+                  fullWidth
+                  variant="standard"
+                />
+                {!isEmpty(listaPropostasData) ? (
+                  <>
+                    <Box className="w-full">
+                      <PropostaList
+                        draggable
+                        onDragStart={handleOnPropostaDragStart}
+                        listaPropostas={listaPropostasData}
+                        setListaPropostas={setListaPropostasData}
+                        addProposta={addProposta}
+                      />
+                    </Box>
+                    {totalPaginas > 1 && (
+                      <Box className="w-full flex flex-col mt-4 gap-3">
+                        <Divider />
+                        <Box className="w-full flex justify-end">
+                          <Paginacao
+                            totalPaginas={totalPaginas}
+                            setTamanho={setTamanhoPagina}
+                            tamanhoPagina={tamanhoPagina}
+                            setPaginaAtual={setPaginaAtual}
+                          />
+                        </Box>
+                      </Box>
+                    )}
+                  </>
+                ) : (
+                  <Box className="w-full mt-2">
+                    <Typography
+                      className="text-center"
+                      fontSize={FontConfig.big}
+                      sx={{
+                        color: "text.secondary",
+                      }}
+                      onClick={() => {
+                        lerTexto("");
+                      }}
+                    >
+                      Não há propostas para serem adicionadas
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
     </>

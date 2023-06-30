@@ -1,20 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Paper,
-  Typography,
-  Box,
-  Tooltip,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
-} from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, Tooltip, FormControl, Select, MenuItem, InputLabel, } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -29,6 +15,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente utilizado para representar a tabela de custos utilizada na proposta */
 const Custos = (props) => {
+
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -173,7 +160,7 @@ const Custos = (props) => {
         <Box>
           {/* Dropdown tipo despesa */}
           <Box>
-            <FormControl variant="standard" sx={{minWidth: "9rem" }}>
+            <FormControl variant="standard" sx={{ minWidth: "9rem" }}>
               <InputLabel id="demo-simple-select-standard-label">
                 {texts.custos.tipoDaDespesa}
               </InputLabel>

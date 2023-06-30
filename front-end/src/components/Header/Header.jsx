@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { Paper, Tooltip } from "@mui/material/";
@@ -16,7 +16,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Header padrão usado no topo de todas as páginas do sistema */
 const Header = () => {
-  
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

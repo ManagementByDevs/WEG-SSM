@@ -6,10 +6,11 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
+// Componente utilizado para ler um texto
 const LerTexto = () => {
-  const { lendoTexto, setLendoTexto } = useContext(SpeechSynthesisContext);
 
-  // ********************************************** Funções de ler texto **********************************************
+  /**  Variável utilizada para ler o texto */
+  const { lendoTexto, setLendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Variável utilizada pra setar a cor do botao */
   const [corButton, setCorButton] = useState("linear-gradient(to right, #0083B4, #00579D)");
@@ -27,8 +28,6 @@ const LerTexto = () => {
       setCorButton("linear-gradient(to right, #0083B4, #00579D)");
     }
   }, [lendoTexto]);
-
-  // ********************************************** Fim Funções de ler texto **********************************************
 
   return (
     <Tooltip title="Ouvir Texto" placement="left">

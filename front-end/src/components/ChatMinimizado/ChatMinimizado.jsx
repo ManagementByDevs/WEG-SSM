@@ -25,10 +25,10 @@ import AnexoService from "../../service/anexoService";
 import { MensagemService } from "../../service/MensagemService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import { WebSocketContext } from "../../service/WebSocketService";
-import anexoService from "../../service/anexoService";
 
 /** Componente utilizado para representar a versão minimizada do chat */
 const ChatMinimizado = () => {
+
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -77,9 +77,7 @@ const ChatMinimizado = () => {
   const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
 
   /** Todas as mensagens do chat selecionado */
-  const [mensagens, setMensagens] = useState([
-    EntitiesObjectService.mensagem(),
-  ]);
+  const [mensagens, setMensagens] = useState([EntitiesObjectService.mensagem(),]);
 
   /** Usuário logado */
   const [user, setUser] = useState(UsuarioService.getUserCookies());
@@ -306,7 +304,7 @@ const ChatMinimizado = () => {
           );
           inputRef.current.value = "";
         })
-        .catch((error) => {});
+        .catch((error) => { });
     } else {
       setFeedbackAnexoGrande(true);
     }
@@ -372,14 +370,10 @@ const ChatMinimizado = () => {
   // // ********************************************** Gravar audio **********************************************
 
   /** Variável para abrir o feedbcak de navegador incompatível */
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel,] = useState(false);
 
   /** Variável para abrir o feedback de erro ao reconhecer voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
@@ -417,7 +411,7 @@ const ChatMinimizado = () => {
           break;
       }
 
-      recognition.onstart = () => {};
+      recognition.onstart = () => { };
 
       recognition.onresult = (event) => {
         const transcript =

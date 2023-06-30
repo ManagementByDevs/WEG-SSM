@@ -1,13 +1,6 @@
 import React, { useContext } from "react";
 
-import {
-  Box,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Box, Select, FormControl, InputLabel, MenuItem, Typography, } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
@@ -15,12 +8,13 @@ import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import "./Beneficios.css";
-import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente de benefício editável utilizado na segunda etapa da criação da demanda */
 const Beneficios = (props) => {
+
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -78,9 +72,7 @@ const Beneficios = (props) => {
             >
               <Typography
                 fontSize={FontConfig.medium}
-                onClick={() => {
-                  lerTexto(texts.beneficios.beneficios);
-                }}
+                onClick={() => { lerTexto(texts.beneficios.beneficios); }}
               >
                 {texts.beneficios.beneficios}
               </Typography>
@@ -116,7 +108,7 @@ const Beneficios = (props) => {
 
         {/* Verificação para mostar o input de valor mensal */}
         {props.dados?.tipoBeneficio === "Real" ||
-        props.dados?.tipoBeneficio === "Potencial" ? (
+          props.dados?.tipoBeneficio === "Potencial" ? (
           <Box className="flex items-end" sx={{ minWidth: "275px" }}>
             <Box
               className="flex items-end"
@@ -144,9 +136,7 @@ const Beneficios = (props) => {
                   >
                     <Typography
                       fontSize={FontConfig.default}
-                      onClick={() => {
-                        lerTexto(texts.beneficios.moeda);
-                      }}
+                      onClick={() => { lerTexto(texts.beneficios.moeda); }}
                     >
                       {texts.beneficios.moeda}
                     </Typography>
@@ -178,8 +168,8 @@ const Beneficios = (props) => {
 
       {/* Verificação para mostar o input de memória de cálculo */}
       {props.dados?.tipoBeneficio === "Real" ||
-      props.dados?.tipoBeneficio === "Potencial" ||
-      props.dados?.tipoBeneficio === "Qualitativo" ? (
+        props.dados?.tipoBeneficio === "Potencial" ||
+        props.dados?.tipoBeneficio === "Qualitativo" ? (
         <Box className="flex items-center" sx={{ width: "65%" }}>
           {/* Input que permite estilização para a memória de cálculo do benefício */}
           <Box className="flex flex-col overflow-auto w-full h-full">
@@ -187,9 +177,7 @@ const Beneficios = (props) => {
               <Typography
                 fontSize={FontConfig.default}
                 fontWeight={600}
-                onClick={() => {
-                  lerTexto(texts.beneficios.memoriaCalculo);
-                }}
+                onClick={() => { lerTexto(texts.beneficios.memoriaCalculo); }}
               >
                 {texts.beneficios.memoriaCalculo}
               </Typography>
@@ -213,9 +201,7 @@ const Beneficios = (props) => {
               <CaixaTextoQuill
                 placeholder={texts.beneficios.digiteMemoriaCalculo}
                 texto={props.dados?.memoriaCalculo}
-                onChange={(value) => {
-                  salvarMemoriaCalculo(value);
-                }}
+                onChange={(value) => { salvarMemoriaCalculo(value); }}
                 label="memoriaCalculo"
               />
             </Box>

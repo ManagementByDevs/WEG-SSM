@@ -1,9 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, } from "react";
 import { useAutocomplete } from "@mui/material";
 
 import { styled } from "@mui/system";
 
-import DemandaService from "../../service/demandaService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import debounce from "lodash/debounce";

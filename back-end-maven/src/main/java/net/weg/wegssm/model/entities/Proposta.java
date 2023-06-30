@@ -144,6 +144,12 @@ public class Proposta {
     private String tamanho;
 
     /**
+     * Motivo da recusa da proposta
+     */
+    @Column(length = 1000)
+    private String motivoRecusa;
+
+    /**
      * String para saber se está em uma pauta, ata ou não está em nenhuma
      */
     @Column(nullable = false)

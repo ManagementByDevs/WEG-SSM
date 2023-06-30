@@ -192,23 +192,7 @@ const Notificacao = (props) => {
 
   /** Formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd */
   const formatDate = (fullDate) => {
-    const data = DateService.getDateByPreviousDate(fullDate);
-    const dd = String(data.getDate()).padStart(2, "0");
-    const mm = String(data.getMonth() + 1).padStart(2, "0");
-    const yyyy = data.getFullYear();
-
-    switch (texts.linguagem) {
-      case "pt":
-        return dd + "/" + mm + "/" + yyyy;
-      case "en":
-        return mm + "/" + dd + "/" + yyyy;
-      case "es":
-        return dd + "/" + mm + "/" + yyyy;
-      case "ch":
-        return yyyy + "/" + mm + "/" + dd;
-      default:
-        return dd + "/" + mm + "/" + yyyy;
-    }
+    return DateService.getTodaysDateUSFormat(fullDate, texts.linguagem);
   };
 
   /** Atualiza o estado da linha ao clicar no checkbox */
@@ -384,7 +368,7 @@ const Notificacao = (props) => {
         setOpen={setOpenModalConfirmDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onDeleteClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         textoBotao={"sim"}
       />
       <ModalConfirmacao
@@ -392,7 +376,7 @@ const Notificacao = (props) => {
         setOpen={setOpenModalConfirmMultiDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onMultiDeleteRowClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         textoBotao={"sim"}
       />
 
@@ -501,7 +485,7 @@ const Notificacao = (props) => {
                           {texts.notificacao.titulo}
                         </Typography>
                       </th>
-                      <th className="w-1/10 text-white">
+                      <th className="w-4/10 text-white">
                         <Typography
                           fontSize={FontConfig.big}
                           onClick={() => {

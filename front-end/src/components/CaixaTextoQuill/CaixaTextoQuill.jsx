@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -87,8 +87,8 @@ function CaixaTextoQuill({
           useScroll
             ? { height: "5rem", overflowY: "scroll" }
             : setScroll
-            ? { height: "5rem", overflowY: "scroll" }
-            : {}
+              ? { height: "5rem", overflowY: "scroll" }
+              : {}
         }
       />
       {/* Ícone de gravar audio */}

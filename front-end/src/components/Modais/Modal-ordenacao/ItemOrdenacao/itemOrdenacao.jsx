@@ -39,12 +39,12 @@ export default function ItemTest(props) {
     props.setOrdenacaoScore([false, !props.ordenacaoScore[1]]);
   };
 
-  /** Função para mudar o valor do checkbox de ordenação por título "Z-A" ou por número sequencial "Decrescente" */
+  /** Função para mudar o valor do checkbox de ordenação por título "Z-A"  */
   const mudarCheck3 = () => {
     props.setOrdenacaoTitulo([!props.ordenacaoTitulo[0], false]);
   };
 
-  /** Função para mudar o valor do checkbox de ordenação por título "A-Z" ou por número sequencial "Crescente" */
+  /** Função para mudar o valor do checkbox de ordenação por título "A-Z"  */
   const mudarCheck4 = () => {
     props.setOrdenacaoTitulo([false, !props.ordenacaoTitulo[1]]);
   };
@@ -57,6 +57,16 @@ export default function ItemTest(props) {
   /** Função para mudar o valor do checkbox de ordenação por data "Mais Nova" */
   const mudarCheck6 = () => {
     props.setOrdenacaoDate([false, !props.ordenacaoDate[1]]);
+  };
+
+  /** Função para mudar o valor do checkbox de ordenação por número sequencial "Decrescente" */
+  const mudarCheck7 = () => {
+    props.setOrdenacaoNum([!props.ordenacaoNum[0], false]);
+  };
+
+  /** Função para mudar o valor do checkbox de ordenação por número sequencial "Crescente" */
+  const mudarCheck8 = () => {
+    props.setOrdenacaoNum([false, !props.ordenacaoNum[1]]);
   };
 
   return (
@@ -75,9 +85,7 @@ export default function ItemTest(props) {
             <CalendarMonthOutlinedIcon />
           ) : props.opcao.id == 5 ? (
             <TodayOutlinedIcon />
-          ) : (
-            <Box />
-          )}
+          ) : null}
         </ListItemIcon>
         {props.valorAba == 4 && props.opcao.id == 2 ? (
           <ListItemText
@@ -114,8 +122,8 @@ export default function ItemTest(props) {
               />
             ) : props.opcao.id == 2 ? (
               <FormControlLabel
-                checked={props.ordenacaoTitulo[1]}
-                onChange={mudarCheck4}
+                checked={props.ordenacaoNum[1]}
+                onChange={mudarCheck8}
                 control={<Checkbox />}
                 label={texts.modalOrdenacao.crescente}
                 onClick={() => {
@@ -180,8 +188,8 @@ export default function ItemTest(props) {
               />
             ) : props.opcao.id == 2 ? (
               <FormControlLabel
-                checked={props.ordenacaoTitulo[0]}
-                onChange={mudarCheck3}
+                checked={props.ordenacaoNum[0]}
+                onChange={mudarCheck7}
                 control={<Checkbox />}
                 label={texts.modalOrdenacao.decrescente}
                 onClick={() => {

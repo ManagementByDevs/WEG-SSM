@@ -1,12 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import {
-  Menu,
-  MenuItem,
-  Tooltip,
-  IconButton,
-  Typography,
-} from "@mui/material/";
+import {Menu,MenuItem,Tooltip,IconButton,Typography,} from "@mui/material/";
 
 import Brasil from "../../../assets/brasil.jpg";
 import China from "../../../assets/china.png";
@@ -16,13 +10,13 @@ import Espanha from "../../../assets/espanha.png";
 import FontContext from "../../../service/FontContext";
 import TextLanguageContext from "../../../service/TextLanguageContext";
 import TextLanguage from "../../../service/TextLanguage";
-
 import UsuarioService from "../../../service/usuarioService";
 import CookieService from "../../../service/cookieService";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 // Modal para selecionar o idioma do sistema
 const IdiomaModal = () => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 

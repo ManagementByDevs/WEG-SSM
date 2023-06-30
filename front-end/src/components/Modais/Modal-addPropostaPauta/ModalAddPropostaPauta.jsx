@@ -51,129 +51,18 @@ const ModalAddPropostaPauta = (props) => {
   // Navigate utilizado para navegação entre as páginas
   const navigate = useNavigate();
 
-  // variáveis de estilo para os itens do componente
-  const cssModal = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 500,
-    height: 500,
-    bgcolor: "background.paper",
-    borderRadius: "5px",
-    borderTop: "10px solid #00579D",
-    boxShadow: 24,
-    p: 2,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "column",
-  };
-
-  const parteCheck = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    p: 1.5,
-  };
-
-  const botaoCriar = {
-    width: "7rem",
-    border: "solid 1px",
-    color: "tertiary.main",
-    p: 1,
-  };
-
-  const botaoDesabilitado = {
-    width: "7rem",
-    border: "solid 1px",
-    p: 1,
-  };
-
-  const listaPropostas = {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    overflow: "auto",
-    width: "100%",
-    height: "80%",
-    p: 1.5,
-  };
-
-  const containerGeral = {
-    width: "90%",
-    height: "6rem",
-    border: "1px solid",
-    borderLeft: "solid 6px",
-    borderColor: "primary.main",
-    borderRadius: "5px",
-    p: 4,
-    margin: "1%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    cursor: "pointer",
-  };
-
-  const parteCima = {
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  };
-
-  const parteBaixo = {
-    display: "flex",
-    alignItems: "flex-end",
-    width: "100%",
-    marginTop: "2%",
-  };
-
-  const data = {
-    border: "solid 1px",
-    color: "grey",
-    textAlign: "center",
-    borderRadius: "3px",
-    color: "primary.secondary",
-    background: "transparent",
-    filter: "white",
-  };
-
-  // Exemplo de um objeto proposta
-  const propostaExample = EntitiesObjectService.proposta();
-
-  // props para abrir o modal através de outra tela
-  let open = false;
-  open = props.open;
-  const setOpen = props.setOpen;
-
-  // useState para abrir e fechar o modal
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // useState para fechar o modal
+  const handleClose = () => props.setOpen(false);
 
   // veriricação para marcar apenas um check
   const [check, setCheck] = useState([false, false]);
 
-  function mudarCheck1() {
-    if (check[0]) {
-      setCheck([false, false]);
-    } else {
-      setCheck([true, false]);
-    }
-  }
+  // Feedback para preencher todos os campos
+  const [feedbackPreenchaTodosCampos, setFeedbackPreenchaTodosCampos] =
+    useState(false);
 
-  function mudarCheck2() {
-    if (check[1]) {
-      setCheck([false, false]);
-    } else {
-      setCheck([false, true]);
-    }
-  }
-
-  // UseState para habilitar ou desabilitar o botão de adicionar
-  const [habilitadoAdd, setHabilitadoAdd] = useState(false);
+  // Feedback pauta atualizada
+  const [feedbackPautaAtualizada, setFeedbackPautaAtualizada] = useState(false);
 
   // UseState index para selecionar a pauta
   const [indexPautaSelecionada, setIndexPautaSelecionada] = useState(null);
@@ -207,12 +96,7 @@ const ModalAddPropostaPauta = (props) => {
   // UseState para armazenar a comissão
   const [comissao, setComissao] = useState(comissaoEstatico);
 
-  // Provavelmente não possui uso no componente ( verificar depois )
-
-  // useEffect(() => {
-
-  // }, [habilitadoAdd])
-
+  // useEffect utilizado para obter as pautas e os foruns
   useEffect(() => {
     PautaService.get().then((res) => {
       setListaPautas(res);
@@ -223,6 +107,13 @@ const ModalAddPropostaPauta = (props) => {
     });
   }, []);
 
+  // UseEffect para deselecionar a nova pauta quando selecionar outra pauta
+  useEffect(() => {
+    if (indexPautaSelecionada != null) {
+      setnovaPautaSelecionada(false);
+    }
+  }, [indexPautaSelecionada]);
+
   // função para adicionar uma nova pauta
   const addPauta = () => {
     setnovaPauta(true);
@@ -231,6 +122,24 @@ const ModalAddPropostaPauta = (props) => {
   // função para mudar o valor do select na nova pauta criada
   const handleChange = (event) => {
     setComissao(event.target.value);
+  };
+
+  // Função para mudar o check do input
+  const mudarCheck1 = () => {
+    if (check[0]) {
+      setCheck([false, false]);
+    } else {
+      setCheck([true, false]);
+    }
+  };
+
+  // Função para mudar o check do input
+  const mudarCheck2 = () => {
+    if (check[1]) {
+      setCheck([false, false]);
+    } else {
+      setCheck([false, true]);
+    }
   };
 
   // função para selecionar a nova pauta
@@ -257,10 +166,6 @@ const ModalAddPropostaPauta = (props) => {
   const getIdAnalistaResponsavel = () => {
     return CookieService.getUser().id;
   };
-
-  const [feedbackPreenchaTodosCampos, setFeedbackPreenchaTodosCampos] =
-    useState(false);
-  const [feedbackPautaAtualizada, setFeedbackPautaAtualizada] = useState(false);
 
   /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
   const retornarIdsObjetos = (listaObjetos) => {
@@ -356,13 +261,6 @@ const ModalAddPropostaPauta = (props) => {
     );
   };
 
-  // UseEffect para deselecionar a nova pauta quando selecionar outra pauta
-  useEffect(() => {
-    if (indexPautaSelecionada != null) {
-      setnovaPautaSelecionada(false);
-    }
-  }, [indexPautaSelecionada]);
-
   // Verifica se a proposta já se encontra em alguma pauta;
   const isPropostaInPauta = () => {
     let isPropostaInPauta = false;
@@ -399,14 +297,28 @@ const ModalAddPropostaPauta = (props) => {
         mensagem={texts.modalAddPropostaPauta.feedbacks.feedback2}
       />
       <Modal
-        open={open}
+        open={props.open}
         onClose={handleClose}
         closeAfterTransition
         sx={{ minWidth: "40rem" }}
       >
-        <Fade in={open}>
+        <Fade in={props.open}>
           {/* Início conteúdo modal */}
-          <Box sx={cssModal}>
+          <Box
+            className="absolute flex justify-between items-center flex-col"
+            sx={{
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 500,
+              height: 500,
+              bgcolor: "background.paper",
+              borderRadius: "5px",
+              borderTop: "10px solid #00579D",
+              boxShadow: 24,
+              p: 2,
+            }}
+          >
             {/* Título do modal */}
             <Typography
               fontWeight={650}
@@ -452,7 +364,10 @@ const ModalAddPropostaPauta = (props) => {
               }}
             />
 
-            <Box sx={listaPropostas}>
+            <Box
+              className="flex items-center flex-col overflow-auto"
+              sx={{ width: "100%", height: "80%", p: 1.5 }}
+            >
               {/* Exibe as pautas do sistema */}
               {listaPautas.length > 0 || novaPauta ? (
                 listaPautas.map((pauta, index) => {
@@ -492,13 +407,24 @@ const ModalAddPropostaPauta = (props) => {
               {/* Nova pauta criada */}
               {novaPauta && (
                 <Paper
+                  className="flex justify-center items-center flex-col cursor-pointer"
                   sx={{
-                    ...containerGeral,
+                    width: "90%",
+                    height: "6rem",
+                    border: "1px solid",
+                    borderLeft: "solid 6px",
+                    borderColor: "primary.main",
+                    borderRadius: "5px",
+                    p: 4,
+                    margin: "1%",
                     backgroundColor: getBackgroundColor(),
                   }}
                   onClick={selecionarNovaPauta}
                 >
-                  <Box sx={{ ...parteCima, colorScheme: mode }}>
+                  <Box
+                    className="flex justify-between items-center"
+                    sx={{ width: "100%", colorScheme: mode }}
+                  >
                     <Typography
                       fontSize={FontConfig.medium}
                       onClick={() => {
@@ -508,14 +434,25 @@ const ModalAddPropostaPauta = (props) => {
                       {texts.modalAddPropostaPauta.propostas}:
                     </Typography>
                     <input
-                      style={data}
+                      style={{
+                        border: "solid 1px",
+                        color: "grey",
+                        textAlign: "center",
+                        borderRadius: "3px",
+                        color: "primary.secondary",
+                        background: "transparent",
+                        filter: "white",
+                      }}
                       value={inputDataReuniao}
                       onChange={(e) => setInputDataReuniao(e.target.value)}
                       type="datetime-local"
                     />
                   </Box>
 
-                  <Box className="gap-4 justify-between" sx={parteBaixo}>
+                  <Box
+                    className="flex items-end gap-4 justify-between"
+                    sx={{ width: "100%", marginTop: "2%" }}
+                  >
                     <Box className="w-1/2">
                       <TextField
                         value={numSequencial}
@@ -557,7 +494,10 @@ const ModalAddPropostaPauta = (props) => {
 
             {/* Parte de baixo do componente, com a opção de selecionar se é uma pauta publicada ou não publicada, 
                         assim como opção de criar nova pauta ou adicionar em alguma pauta */}
-            <Box sx={parteCheck}>
+            <Box
+              className="flex justify-center items-center flex-col"
+              sx={{ p: 1.5 }}
+            >
               <Typography
                 fontWeight={650}
                 fontSize={FontConfig.veryBig}
@@ -601,7 +541,12 @@ const ModalAddPropostaPauta = (props) => {
                 }}
               >
                 <Button
-                  sx={botaoCriar}
+                  sx={{
+                    width: "7rem",
+                    border: "solid 1px",
+                    color: "tertiary.main",
+                    p: 1,
+                  }}
                   disableElevation
                   onClick={addPauta}
                   disabled={novaPauta}
@@ -616,7 +561,7 @@ const ModalAddPropostaPauta = (props) => {
                   </Typography>
                 </Button>
                 <Button
-                  sx={botaoDesabilitado}
+                  sx={{ width: "7rem", border: "solid 1px", p: 1 }}
                   disableElevation
                   disabled={
                     indexPautaSelecionada == null && !novaPautaSelecionada

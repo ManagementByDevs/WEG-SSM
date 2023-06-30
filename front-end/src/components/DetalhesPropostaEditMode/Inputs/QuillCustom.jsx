@@ -10,13 +10,15 @@ import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 import TextLanguageContext from "../../../service/TextLanguageContext";
 import { SpeechRecognitionContext } from "../../../service/SpeechRecognitionService";
 
+// Componente de input customizado
 const QuillCustom = ({
   defaultText = "",
-  saveProposal = () => {},
+  saveProposal = () => { },
   label = "",
   modules = {},
-  handleOnMicChange = () => {},
+  handleOnMicChange = () => { },
 }) => {
+
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 

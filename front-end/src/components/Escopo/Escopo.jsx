@@ -10,6 +10,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente para mostrar os dados do escopo
 const Escopo = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

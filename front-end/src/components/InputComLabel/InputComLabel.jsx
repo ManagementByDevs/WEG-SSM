@@ -11,6 +11,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 /** Input padrão usado no sistema, com label acima */
 const InputComLabel = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -27,6 +28,7 @@ const InputComLabel = (props) => {
     props.saveInputValue(e.target.value);
   };
 
+  /** useEffect utilizado para ouvir áudio */
   useEffect(() => {
     if (escutar && localClique == props.label) {
       props.saveInputValue(palavrasJuntas);

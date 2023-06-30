@@ -13,6 +13,7 @@ import DateService from "../../service/dateService";
  * Objeto de histórico recebido pelo props (props.historico)
  */
 const ContainerHistorico = (props) => {
+
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -118,9 +119,7 @@ const ContainerHistorico = (props) => {
         sx={{ width: "40%" }}
         fontWeight={650}
         fontSize={FontConfig.veryBig}
-        onClick={() => {
-          lerTexto(props.historico?.autor.nome);
-        }}
+        onClick={() => { lerTexto(props.historico?.autor.nome); }}
       >
         {props.historico?.autor.nome}
       </Typography>

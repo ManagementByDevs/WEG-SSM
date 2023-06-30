@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { TableRow, Box, TextareaAutosize, Tooltip } from "@mui/material";
 
@@ -13,6 +13,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 // Componente para criar uma linha na tabela de custos
 const LinhaTabelaCustos = (props) => {
+
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -89,6 +90,7 @@ const LinhaTabelaCustos = (props) => {
     props.custos[props.indexCusto].custos[props.index].valorHora,
   ]);
 
+  // UseEffect utilizado para ouvir áudio do local clicado
   useEffect(() => {
     let aux = [...props.custos];
     switch (localClique) {

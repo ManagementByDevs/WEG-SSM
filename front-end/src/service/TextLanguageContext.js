@@ -455,6 +455,7 @@ const TextLanguageContext = createContext({
       reprovadaPorFaltaDeInformacoes: "reprovada por falta de informações",
       diasAtras: "dias atrás",
       hoje: "hoje",
+      ontem: "ontem",
       umaSemanaAtras: "1 semana atrás",
       duasSemanasAtras: "2 semanas atrás",
       tresSemanasAtras: "3 semanas atrás",
@@ -596,6 +597,9 @@ const TextLanguageContext = createContext({
       publicarAta: "Publicar Ata",
       proximo: "Próximo",
       publicar: "Publicar",
+      comissao: "Comissão",
+      analistaResponsavel: "Analista Responsável",
+      numeroSequencialDG: "Número Sequencial da Ata da DG",
     },
     detalhesDemandaPagina: {
       tour: {
@@ -622,6 +626,7 @@ const TextLanguageContext = createContext({
       proximo: "Próximo",
       navegacao: "Navegação",
       criarAta: "Criar Ata",
+      numeroSequencialAta: "Número Sequencial da Ata",
     },
     detalhesPropostaPagina: {
       adicionarAPauta: "Adicionar à Pauta",
@@ -854,6 +859,7 @@ const TextLanguageContext = createContext({
         cancelled: "Cancelada",
         done: "Concluída",
       },
+      semComissao: "Cancelamento fora de comissão:"
     },
     modalAddPropostaPauta: {
       feedbacks: {
@@ -876,7 +882,7 @@ const TextLanguageContext = createContext({
       gravarAudio: "Gravar áudio",
     },
   },
-  setTexts: () => {},
+  setTexts: () => { },
 });
 
 export default TextLanguageContext;

@@ -12,6 +12,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente utilizado para mostrar o caminho atual do usuário no sistema */
 const Caminho = (props) => {
+
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -65,9 +66,7 @@ const Caminho = (props) => {
         <HomeOutlinedIcon
           className="cursor-pointer"
           sx={{ fontSize: "32px" }}
-          onClick={() => {
-            navigate("/");
-          }}
+          onClick={() => { navigate("/"); }}
         />
       </Tooltip>
       <ArrowForwardIosOutlinedIcon sx={{ fontSize: "20px" }} />
