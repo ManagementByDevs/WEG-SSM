@@ -142,6 +142,9 @@ const HomeGerencia = () => {
   /** Valores dos checkboxes de título no modal de ordenação (0 - "Z-A" | 1 - "A-Z") */
   const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
 
+  /** Valores dos checkboxes de número sequencial no modal de ordenação (0 - "Decrescente" | 1 - "Crescente") */
+  const [ordenacaoNum, setOrdenacaoNum] = useState([false, false]);
+
   /** Valores dos checkboxes de data no modal de ordenação (0 - "Mais Antiga" | 1 - "Mais Recente") */
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
@@ -655,7 +658,7 @@ const HomeGerencia = () => {
   /** UseEffect para chamar a função "formatarOrdenacao" quando o modal de ordenação for editado */
   useEffect(() => {
     formatarOrdenacao();
-  }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
+  }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate, ordenacaoNum]);
 
   /**  UseEffect para retirar o ícone de carregamento quando os itens forem buscados do banco de dados */
   useEffect(() => {
@@ -710,17 +713,27 @@ const HomeGerencia = () => {
   const formatarOrdenacao = () => {
     let textoNovo = "";
     if (ordenacaoTitulo[1]) {
-      if (valorAba < 5) {
         textoNovo += "sort=titulo,asc&";
-      } else {
-        textoNovo += "sort=numeroSequencial,asc&";
-      }
     }
     if (ordenacaoTitulo[0]) {
-      if (valorAba < 5) {
         textoNovo += "sort=titulo,desc&";
-      } else {
-        textoNovo += "sort=numeroSequencial,desc&";
+    }
+    if(valorAba > 4) {
+
+      if (ordenacaoNum[1]) {
+          textoNovo += "sort=numeroSequencial,asc&";
+      }
+      if (ordenacaoNum[0]) {
+          textoNovo += "sort=numeroSequencial,desc&";
+      }
+    }
+    if(valorAba == 4) {
+
+      if (ordenacaoNum[1]) {
+          textoNovo += "sort=codigoPPM,asc&";
+      }
+      if (ordenacaoNum[0]) {
+          textoNovo += "sort=codigoPPM,desc&";
       }
     }
     if (ordenacaoDate[0]) {
@@ -1511,8 +1524,7 @@ const HomeGerencia = () => {
                   )}
                 </TabList>
                 <Box className="absolute right-0 top-2">
-                  {/* Ícone de ordenação */}
-
+                  {/* Ícone e sidebar para ordenação */}
                   <React.Fragment key="right">
                     <Tooltip title={texts.homeGerencia.ordenacao}>
                       <IconButton onClick={toggleDrawer("right", true)}>
@@ -1531,6 +1543,8 @@ const HomeGerencia = () => {
                       <ModalOrdenacao
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
+                        ordenacaoNum={ordenacaoNum}
+                        setOrdenacaoNum={setOrdenacaoNum}
                         ordenacaoScore={ordenacaoScore}
                         setOrdenacaoScore={setOrdenacaoScore}
                         ordenacaoDate={ordenacaoDate}
@@ -1789,7 +1803,7 @@ const HomeGerencia = () => {
                     <TabPanel sx={{ padding: 0 }} value="1">
                       <Ajuda
                         onClick={() => {
-                          setIsTourMinhasDemandasOpen(true)
+                          setIsTourMinhasDemandasOpen(true);
                           setState({ ...state, ["right"]: false });
                         }}
                       />
@@ -1838,7 +1852,7 @@ const HomeGerencia = () => {
                     <TabPanel sx={{ padding: 0 }} value="2">
                       <Ajuda
                         onClick={() => {
-                          setIsTourDemandasOpen(true)
+                          setIsTourDemandasOpen(true);
                           setState({ ...state, ["right"]: false });
                         }}
                       />
@@ -1888,8 +1902,8 @@ const HomeGerencia = () => {
                       >
                         <Ajuda
                           onClick={() => {
-                            setIsTourCriarPropostasOpen(true)
-                              setState({ ...state, ["right"]: false });
+                            setIsTourCriarPropostasOpen(true);
+                            setState({ ...state, ["right"]: false });
                           }}
                         />
                         <Box id="primeiroCriarPropostas">
@@ -1934,8 +1948,8 @@ const HomeGerencia = () => {
                         <Box id="primeiroPropostas">
                           <Ajuda
                             onClick={() => {
-                              setIsTourPropostasOpen(true)
-                                setState({ ...state, ["right"]: false });
+                              setIsTourPropostasOpen(true);
+                              setState({ ...state, ["right"]: false });
                             }}
                           />
                           {isTourPropostasOpen ? (
@@ -1982,8 +1996,8 @@ const HomeGerencia = () => {
                         <TabPanel sx={{ padding: 0 }} value="5">
                           <Ajuda
                             onClick={() => {
-                              setIsTourPautasOpen(true)
-                                setState({ ...state, ["right"]: false });
+                              setIsTourPautasOpen(true);
+                              setState({ ...state, ["right"]: false });
                             }}
                           />
                           {isTourPautasOpen ? (
@@ -2013,7 +2027,7 @@ const HomeGerencia = () => {
                         <TabPanel sx={{ padding: 0 }} value="6">
                           <Ajuda
                             onClick={() => {
-                              setIsTourAtasOpen(true)
+                              setIsTourAtasOpen(true);
                               setState({ ...state, ["right"]: false });
                             }}
                           />

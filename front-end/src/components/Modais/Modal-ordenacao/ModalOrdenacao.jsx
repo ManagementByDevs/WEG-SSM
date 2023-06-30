@@ -8,7 +8,6 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 import ItemOrdenacao from "./ItemOrdenacao/itemOrdenacao";
 
 export default function TemporaryDrawer(props) {
-
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -44,7 +43,7 @@ export default function TemporaryDrawer(props) {
 
   return (
     <List
-      sx={{ width: "18rem", bgcolor: "background.paper", padding: "0", }}
+      sx={{ width: "18rem", bgcolor: "background.paper", padding: "0" }}
       component="nav"
       aria-labelledby="nested-list-subheader"
     >
@@ -65,12 +64,28 @@ export default function TemporaryDrawer(props) {
       <Box className="h-full">
         {opcoesFiltrar.map((opcao, index) => (
           <>
-            {props.valorAba != 5 && props.valorAba != 6 && opcao.id != 4 ? (
+            {props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
               <ItemOrdenacao
                 opcao={opcao}
                 key={index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                ordenacaoNum={props.ordenacaoNum}
+                setOrdenacaoNum={props.setOrdenacaoNum}
+                ordenacaoScore={props.ordenacaoScore}
+                setOrdenacaoScore={props.setOrdenacaoScore}
+                ordenacaoDate={props.ordenacaoDate}
+                setOrdenacaoDate={props.setOrdenacaoDate}
+                valorAba={props.valorAba}
+              />
+            ) : props.valorAba == 4 && opcao.id != 4 ? (
+              <ItemOrdenacao
+                opcao={opcao}
+                key={index}
+                ordenacaoTitulo={props.ordenacaoTitulo}
+                setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                ordenacaoNum={props.ordenacaoNum}
+                setOrdenacaoNum={props.setOrdenacaoNum}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
                 ordenacaoDate={props.ordenacaoDate}
@@ -78,13 +93,15 @@ export default function TemporaryDrawer(props) {
                 valorAba={props.valorAba}
               />
             ) : (
-              (props.valorAba == 5 || props.valorAba == 6) &&
+              props.valorAba > 4 &&
               opcao.id != 1 && (
                 <ItemOrdenacao
                   opcao={opcao}
                   key={index}
                   ordenacaoTitulo={props.ordenacaoTitulo}
                   setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                  ordenacaoNum={props.ordenacaoNum}
+                  setOrdenacaoNum={props.setOrdenacaoNum}
                   ordenacaoScore={props.ordenacaoScore}
                   setOrdenacaoScore={props.setOrdenacaoScore}
                   ordenacaoDate={props.ordenacaoDate}
