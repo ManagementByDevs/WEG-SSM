@@ -83,8 +83,8 @@ public class PautaController {
     /**
      * Método GET para listar uma pauta específica através de um id
      *
-     * @param id
-     * @return
+     * @param id - ID da pauta a ser buscada
+     * @return - Retorno da pauta
      */
     @GetMapping("/id/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -93,62 +93,6 @@ public class PautaController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(pautaService.findById(id).get());
-    }
-
-    /**
-     * Método GET para ordenar as pautas a partir da DATA DE INÍCIO, da mais recente para a mais antiga
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarDataInicioRecente")
-    public ResponseEntity<Page<Pauta>> findAllDataInicioRecente(@PageableDefault(
-            page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.DESC
-    ) Pageable pageable) {
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findAll(pageable));
-    }
-
-    /**
-     * Método GET para ordenar as pautas a partir da DATA DE INÍCIO, da mais antiga para a mais recente
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarDataInicioAntiga")
-    public ResponseEntity<Page<Pauta>> findAllDataInicioAntiga(@PageableDefault(
-            page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.ASC
-    ) Pageable pageable) {
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findAll(pageable));
-    }
-
-    /**
-     * Método GET para ordenar as pautas a partir da DATA DE FIM, da mais recente para a mais antiga
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarDataFimRecente")
-    public ResponseEntity<Page<Pauta>> findAllDataFimRecente(@PageableDefault(
-            page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.DESC
-    ) Pageable pageable) {
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findAll(pageable));
-    }
-
-    /**
-     * Método GET para ordenar as pautas a partir da DATA DE FIM, da mais antiga para a mais recente
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarDataFimAntiga")
-    public ResponseEntity<Page<Pauta>> findAllDataFimAntiga(@PageableDefault(
-            page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.ASC
-    ) Pageable pageable) {
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findAll(pageable));
     }
 
     /**
@@ -172,6 +116,7 @@ public class PautaController {
      * Método POST para criar uma pauta no banco de dados
      *
      * @param pautaDto ( Objeto a ser cadastrado = req.body )
+     * @return - Retorna o objeto criado
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid PautaDTO pautaDto) {
@@ -186,6 +131,7 @@ public class PautaController {
      * Método PUT para atualizar uma pauta no banco de dados, através de um id
      *
      * @param pautaDto ( Novos dados da pauta = req.body )
+     * @return - Retorna o objeto editado
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody PautaDTO pautaDto) {
@@ -205,8 +151,8 @@ public class PautaController {
     /**
      * Método DELETE para deletar uma pauta do banco de dados
      *
-     * @param id
-     * @return
+     * @param id - ID da pauta a ser deletada
+     * @return - Mensagem de sucesso ou erro
      */
     @Transactional
     @DeleteMapping("/{id}")
@@ -217,25 +163,6 @@ public class PautaController {
         pautaService.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body("Pauta deletada com sucesso.");
-    }
-
-    /**
-     * Método DELETE para deletar uma pauta, colocando sua visibilidade como false
-     *
-     * @param id
-     * @return
-     */
-    @Transactional
-    @DeleteMapping("/visibilidade/{id}")
-    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
-        if (!pautaService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma pauta com este id.");
-        }
-
-        Pauta pauta = pautaService.findById(id).get();
-        pautaService.save(pauta);
-
-        return ResponseEntity.status(HttpStatus.OK).body(pauta);
     }
 
 }

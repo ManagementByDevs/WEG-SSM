@@ -30,7 +30,7 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
      * Lista as notificações do usuário
      *
      * @param usuario
-     * @return lista de notificações
+     * @return
      */
     Page<Notificacao> findByUsuario(Usuario usuario, Pageable pageable);
 

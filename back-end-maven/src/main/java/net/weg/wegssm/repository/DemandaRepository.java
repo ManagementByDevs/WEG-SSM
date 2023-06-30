@@ -55,9 +55,9 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
     /**
      * Função para buscar todas as demandas excluindo dois status recebidos como parâmetros, assim como recebendo as demandas contendo
      * seus respectivos benefícios por conta do "LEFT JOIN"
-     * @param status Primeiro status para filtragem da demanda
-     * @param statusSecundario Segundo status para filtragem da demanda
-     * @return Lista com as demandas filtradas
+     * @param status
+     * @param statusSecundario
+     * @return
      */
     @Query("SELECT d FROM Demanda d LEFT JOIN FETCH d.beneficios WHERE d.status != :status and d.status != :status_secundario")
     List<Demanda> findByStatusNotAndStatusNot(@Param("status") Status status, @Param("status_secundario") Status statusSecundario);
@@ -1067,4 +1067,5 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
     Page<Demanda> findByIdAndSolicitante(Long id, Usuario solicitante, Pageable pageable);
 
     Page<Demanda> findByIdAndStatus(Long id, Status status, Pageable pageable);
+
 }

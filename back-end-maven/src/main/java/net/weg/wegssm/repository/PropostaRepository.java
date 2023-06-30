@@ -1080,6 +1080,14 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
 
     Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable);
 
+    /**
+     * Função utilizada para buscar uma lista de propostas que não estejam com o status passado como parâmetro
+     *
+     * @param status
+     * @param statusSecundario
+     * @return
+     */
     @Query("SELECT d FROM Proposta d LEFT JOIN FETCH d.beneficios WHERE d.status != :status and d.status != :status_secundario")
     List<Proposta> findByStatusNotAndStatusNot(@Param("status") Status status, @Param("status_secundario") Status statusSecundario);
+
 }

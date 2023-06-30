@@ -32,8 +32,4 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
      */
     List<Chat> findByIdPropostaAndUsuariosChat(Proposta proposta, Usuario usuario);
 
-//    Boolean existsByUsuario(Usuario usuario);
-
-//    List<Chat> findBySolicitante(Usuario user);
-
 }

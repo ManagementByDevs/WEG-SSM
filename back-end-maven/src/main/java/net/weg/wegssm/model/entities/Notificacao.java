@@ -55,6 +55,9 @@ public class Notificacao {
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
+    /**
+     * Usuário que enviou a notificação
+     */
     @ManyToOne
     @JoinColumn(name = "id_remetente", nullable = false)
     private Usuario remetente;

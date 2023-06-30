@@ -23,7 +23,6 @@ public class PropostaService {
 
     /**
      * Função para buscar todas as propostas
-     *
      * @return
      */
     public List<Proposta> findAll() {
@@ -32,7 +31,6 @@ public class PropostaService {
 
     /**
      * Função para buscar todas as propostas com paginação
-     *
      * @param pageable
      * @return
      */
@@ -42,7 +40,6 @@ public class PropostaService {
 
     /**
      * Função para buscar uma proposta por id
-     *
      * @param id
      * @return
      */
@@ -52,7 +49,6 @@ public class PropostaService {
 
     /**
      * Função para buscar uma proposta por demanda
-     *
      * @param id
      * @return
      */
@@ -62,7 +58,6 @@ public class PropostaService {
 
     /**
      * Função para buscar uma proposta por código ppm
-     *
      * @param ppm
      * @param pageable
      * @return
@@ -73,7 +68,6 @@ public class PropostaService {
 
     /**
      * Função para verificar se existe uma proposta por id
-     *
      * @param id
      * @return
      */
@@ -83,7 +77,6 @@ public class PropostaService {
 
     /**
      * Função para verificar se existe uma proposta com aquela demanda
-     *
      * @param id
      * @return
      */
@@ -93,7 +86,6 @@ public class PropostaService {
 
     /**
      * Função para verificar se existe uma proposta por ppm
-     *
      * @param ppm
      * @return
      */
@@ -103,7 +95,6 @@ public class PropostaService {
 
     /**
      * Função para salvar uma proposta
-     *
      * @param entity
      * @param <S>
      * @return
@@ -114,7 +105,6 @@ public class PropostaService {
 
     /**
      * Função para deletar uma proposta por id
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -2188,4 +2178,5 @@ public class PropostaService {
     public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
         return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(b, status, analista, titulo, gerente, departamento, pageable);
     }
+
 }

@@ -29,8 +29,8 @@ public class ResponsavelNegocioController {
     /**
      * Função para criar um novo responsável de negócio
      *
-     * @param responsavelNegocioDTO
-     * @return
+     * @param responsavelNegocioDTO - Objeto utilizado para criação de um responsável de negócio
+     * @return - Retorno do objeto cadastrado
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid ResponsavelNegocioDTO responsavelNegocioDTO) {
@@ -43,8 +43,8 @@ public class ResponsavelNegocioController {
     /**
      * Função para atualizar um responsável de negócio
      *
-     * @param responsavelNegocio
-     * @return
+     * @param responsavelNegocio - Objeto para editar um responsável de negócio
+     * @return - Retorno do objeto editado
      */
     @PutMapping
     public ResponseEntity<Object> update(@RequestBody ResponsavelNegocio responsavelNegocio) {
@@ -54,8 +54,8 @@ public class ResponsavelNegocioController {
     /**
      * Função para excluir um responsável de negócio pelo seu ID
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para deletar um responsável de negócio
+     * @return - Retorno da mensagem de sucesso ou erro
      */
     @Transactional
     @DeleteMapping("/{id}")

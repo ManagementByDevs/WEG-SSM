@@ -14,12 +14,9 @@ import java.util.Date;
 public class HistoricoDTO {
 
     private Date data;
-
     @NotNull
     private String acaoRealizada;
-
     private DocumentoHistorico documentoHistorico;
-
     @NotNull
     private Usuario autor;
 

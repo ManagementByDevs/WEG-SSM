@@ -26,7 +26,7 @@ public class ForumController {
     /**
      * Método GET para buscar todos os fóruns salvos
      *
-     * @return
+     * @return - Retorno da lista de foruns
      */
     @GetMapping
     public ResponseEntity<List<Forum>> findAll() {

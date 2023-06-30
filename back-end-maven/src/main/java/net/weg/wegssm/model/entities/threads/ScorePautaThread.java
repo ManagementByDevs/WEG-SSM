@@ -79,4 +79,5 @@ public class ScorePautaThread extends Thread implements Runnable {
 
         return scoreFinal;
     }
+
 }

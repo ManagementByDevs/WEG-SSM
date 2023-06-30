@@ -24,7 +24,6 @@ public class DemandaService {
 
     /**
      * Função para buscar todas as demandas
-     *
      * @return
      */
     public List<Demanda> findAll() {
@@ -33,7 +32,6 @@ public class DemandaService {
 
     /**
      * Função para buscar todas as demandas com paginação
-     *
      * @param pageable
      * @return
      */
@@ -43,7 +41,6 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo ID
-     *
      * @param id
      * @return
      */
@@ -53,7 +50,6 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo ID com paginação
-     *
      * @param id
      * @param pageable
      * @return
@@ -64,7 +60,6 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo seu status com paginação
-     *
      * @param status
      * @param pageable
      * @return
@@ -75,7 +70,6 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo fórum com paginação
-     *
      * @param forum
      * @param pageable
      * @return
@@ -86,7 +80,6 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo departamento com paginação
-     *
      * @param departamento
      * @param pageable
      * @return
@@ -97,7 +90,6 @@ public class DemandaService {
 
     /**
      * Função para verificar se uma demanda existe pelo ID
-     *
      * @param id
      * @return
      */
@@ -107,7 +99,6 @@ public class DemandaService {
 
     /**
      * Função para salvar uma demanda
-     *
      * @param entity
      * @param <S>
      * @return
@@ -118,7 +109,6 @@ public class DemandaService {
 
     /**
      * Função para deletar uma demanda pelo ID
-     *
      * @param id
      */
     public void deleteById(Long id) {

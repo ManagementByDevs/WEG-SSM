@@ -13,6 +13,7 @@ import java.util.List;
  */
 @Data
 public class AtaDTO {
+
     private Date dataReuniao;
     private String numeroSequencial;
     private Forum comissao;
@@ -22,4 +23,5 @@ public class AtaDTO {
     private Boolean publicadaDg;
     private Boolean publicada;
     private String numeroSequencialDG;
+
 }

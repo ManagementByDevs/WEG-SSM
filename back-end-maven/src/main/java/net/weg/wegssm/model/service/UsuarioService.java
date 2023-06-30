@@ -25,7 +25,6 @@ public class UsuarioService {
 
     /**
      * Função para buscar um usuário pelo seu ID
-     *
      * @param id
      * @return
      */
@@ -35,7 +34,6 @@ public class UsuarioService {
 
     /**
      * Função booleana de verificação caso exista um usuário com o email recebido
-     *
      * @param email
      * @return
      */
@@ -45,7 +43,6 @@ public class UsuarioService {
 
     /**
      * Função booleana de verificação caso exista um usuário com o ID recebido
-     *
      * @param id
      * @return
      */
@@ -55,7 +52,6 @@ public class UsuarioService {
 
     /**
      * Função para salvar um usuário no banco
-     *
      * @param entity
      * @param <S>
      * @return
@@ -66,7 +62,6 @@ public class UsuarioService {
 
     /**
      * Função para excluir um usuário pelo seu ID
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -75,7 +70,6 @@ public class UsuarioService {
 
     /**
      * Função para buscar uma lisa de usuários pelo seu nome e tipo de usuário
-     *
      * @param nome
      * @param tipo_usuario
      * @param pageable
@@ -87,7 +81,6 @@ public class UsuarioService {
 
     /**
      * Função para buscar um usuário pelo seu departamento e tipo de usuário
-     *
      * @param departamento
      * @param tipoUsuario
      * @return
@@ -98,7 +91,6 @@ public class UsuarioService {
 
     /**
      * Função para buscar um usuário pelo seu email
-     *
      * @param email
      * @return
      */

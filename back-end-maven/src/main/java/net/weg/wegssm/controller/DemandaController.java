@@ -49,6 +49,8 @@ public class DemandaController {
 
     /**
      * Método GET para buscar todas as demandas
+     *
+     * @return - Retorno da lista de demandas
      */
     @GetMapping
     public ResponseEntity<List<Demanda>> findAll() {
@@ -57,6 +59,12 @@ public class DemandaController {
 
     /**
      * Método GET para buscar uma demanda específica através do id
+     *
+     * @param pageable    - Objeto que contém as informações da paginação
+     * @param id          - ID da demanda
+     * @param usuarioJson - Solicitante que está buscando a demanda
+     * @param status      - Status da demanda
+     * @return - Retorno da paginação filtrada
      */
     @GetMapping("/{id}")
     public ResponseEntity<Page<Demanda>> findById(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
@@ -66,14 +74,14 @@ public class DemandaController {
         UsuarioUtil usuarioUtil = new UsuarioUtil();
         Usuario usuario = usuarioUtil.convertJsonToModel(usuarioJson);
 
-        if(usuario != null) {
-            if(status != null) {
+        if (usuario != null) {
+            if (status != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(demandaService.findByIdAndSolicitanteAndStatus(id, usuario, status, pageable));
             } else {
                 return ResponseEntity.status(HttpStatus.OK).body(demandaService.findByIdAndSolicitante(id, usuario, pageable));
             }
         } else {
-            if(status != null) {
+            if (status != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(demandaService.findByIdAndStatus(id, status, pageable));
             } else {
                 return ResponseEntity.status(HttpStatus.OK).body(demandaService.findById(id, pageable));
@@ -3443,6 +3451,9 @@ public class DemandaController {
 
     /**
      * Método POST para criar uma demanda adicionado um ou vários anexos
+     *
+     * @param demandaJSON - Objeto da demanda a ser criada
+     * @return - Retorno da demanda criada
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestParam("demanda") String demandaJSON) {
@@ -3463,18 +3474,18 @@ public class DemandaController {
     /**
      * Função para calcular e retornar o score de uma demanda
      *
-     * @param demanda Demanda usada para o cálculo de seu Score
-     * @return Score calculado da demanda recebida
+     * @param demanda - Demanda usada para o cálculo de seu Score
+     * @return - Score calculado da demanda recebida
      */
     private Double calcularScore(Demanda demanda) {
         Double valorBeneficiosReais = 0.0;
         Double valorBeneficiosPotenciais = 0.0;
 
-        if(demanda.getBeneficios().size() > 0) {
+        if (demanda.getBeneficios().size() > 0) {
             for (Beneficio beneficio : demanda.getBeneficios()) {
                 beneficio = beneficioService.findById(beneficio.getId()).get();
 
-                if(beneficio.getTipoBeneficio() != null) {
+                if (beneficio.getTipoBeneficio() != null) {
                     if (beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
                         valorBeneficiosReais += beneficio.getValor_mensal();
                     }
@@ -3521,6 +3532,9 @@ public class DemandaController {
 
     /**
      * Método PUT para editar uma demanda já existente
+     *
+     * @param demandaJSON - Objeto da demanda a ser editada
+     * @return - Retorno da demanda editada
      */
     @PutMapping
     public ResponseEntity<Object> update(@RequestParam("demanda") String demandaJSON) {
@@ -3534,6 +3548,10 @@ public class DemandaController {
     /**
      * Função utilizada para somente atualizar o status de uma demanda, recebendo como parâmetros o id e o novo status da demanda.
      * Usada na aceitação/recusa do gerente e na criação/edição de propostas para acompanhamento do status da demanda
+     *
+     * @param id     - ID da demanda
+     * @param status - Novo status da demanda
+     * @return - Retorno da demanda editada
      */
     @PutMapping("/status/{id}/{status}")
     public ResponseEntity<Object> atualizarStatus(@PathVariable(value = "id") Long id,
@@ -3545,17 +3563,18 @@ public class DemandaController {
 
     /**
      * Função para adicionar um novo objeto Historico em uma demanda, salvando sua edição
-     * @param idDemanda ID da demanda a receber o histórico
-     * @param historicoJson Objeto com os dados principais do histórico em formato String
-     * @param documento Arquivo para ser transferido em DocumentoHistorico e salvo no histórico
-     * @return ResponseEntity com a demanda atualizada
+     *
+     * @param idDemanda     - ID da demanda a receber o histórico
+     * @param historicoJson - Objeto com os dados principais do histórico em formato String
+     * @param documento     - Arquivo para ser transferido em DocumentoHistorico e salvo no histórico
+     * @return - ResponseEntity com a demanda atualizada
      */
     @PutMapping("/add-historico/{idDemanda}")
     public ResponseEntity<Object> addHistorico(@PathVariable(value = "idDemanda") Long idDemanda,
-                                                @RequestParam(value = "historico") String historicoJson,
-                                                @RequestParam(value = "documento") MultipartFile documento) {
+                                               @RequestParam(value = "historico") String historicoJson,
+                                               @RequestParam(value = "documento") MultipartFile documento) {
         Optional<Demanda> demandaOptional = demandaService.findById(idDemanda);
-        if(demandaOptional.isEmpty()) {
+        if (demandaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Demanda não encontrada!");
         }
         Demanda demanda = demandaOptional.get();
@@ -3581,8 +3600,9 @@ public class DemandaController {
 
     /**
      * Função para excluir uma demanda a partir do seu ID, sendo passado como variável
-     * @param id ID da demanda a ser excluída
-     * @return ResponseEntity com uma String indicando o resultado da exclusão
+     *
+     * @param id - ID da demanda a ser excluída
+     * @return - ResponseEntity com uma String indicando o resultado da exclusão
      */
     @Transactional
     @DeleteMapping("/{id}")

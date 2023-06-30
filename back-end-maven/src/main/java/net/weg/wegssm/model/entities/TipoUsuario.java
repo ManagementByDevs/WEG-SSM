@@ -2,6 +2,9 @@ package net.weg.wegssm.model.entities;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Classe ENUM para definir os tipos de usuário do sistema
+ */
 @AllArgsConstructor
 public enum TipoUsuario {
 
@@ -11,4 +14,5 @@ public enum TipoUsuario {
     GESTOR("Gestor");
 
     String tipo;
+
 }

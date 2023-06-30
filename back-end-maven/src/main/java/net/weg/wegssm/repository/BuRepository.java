@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
  * Classe repository para as BUs
  */
 @Repository
-public interface BuRepository extends JpaRepository<Bu, Long> {
-
-}
+public interface BuRepository extends JpaRepository<Bu, Long> { }

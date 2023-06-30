@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -24,7 +25,8 @@ public class BuController {
 
     /**
      * Método GET para buscar todas as BUs salvas
-     * @return
+     *
+     * @return - Retorno da lista de bus
      */
     @GetMapping
     public ResponseEntity<List<Bu>> findAll() {

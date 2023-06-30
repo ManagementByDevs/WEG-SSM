@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
  * Classe repository para os fóruns
  */
 @Repository
-public interface ForumRepository extends JpaRepository<Forum, Long> {
-
-}
+public interface ForumRepository extends JpaRepository<Forum, Long> { }

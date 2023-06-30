@@ -21,7 +21,6 @@ public class TabelaCustoService {
 
     /**
      * Função para salvar uma tabela de custos no banco de dados
-     *
      * @param tabelaCusto
      * @return
      */
@@ -31,7 +30,6 @@ public class TabelaCustoService {
 
     /**
      * Função booleana para verificação se uma tabela de custos existe pelo seu ID
-     *
      * @param id
      * @return
      */
@@ -41,7 +39,6 @@ public class TabelaCustoService {
 
     /**
      * Função para excluir uma tabela de custos pelo seu ID
-     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -50,7 +47,6 @@ public class TabelaCustoService {
 
     /**
      * Função para buscar uma tabela de custos pelo seu ID
-     *
      * @param aLong
      * @return
      */

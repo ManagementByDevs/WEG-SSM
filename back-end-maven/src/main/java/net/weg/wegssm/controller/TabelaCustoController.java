@@ -44,8 +44,8 @@ public class TabelaCustoController {
     /**
      * Função para criar uma nova tabela de custos, recebendo o objeto como body
      *
-     * @param tabelaCustoDTO
-     * @return
+     * @param tabelaCustoDTO - Objeto da tabela de custos
+     * @return - Retorno do objeto cadastrado
      */
     @PostMapping
     public ResponseEntity<TabelaCusto> save(@RequestBody @Valid TabelaCustoDTO tabelaCustoDTO) {
@@ -70,8 +70,8 @@ public class TabelaCustoController {
     /**
      * Função para atualizar uma tabela de custos, recebendo o objeto no body
      *
-     * @param tabelaCusto
-     * @return
+     * @param tabelaCusto - Objeto utilizado para atualizar a tabela de custos
+     * @return - Retorno do objeto atualizado
      */
     @PutMapping
     public ResponseEntity<TabelaCusto> update(@RequestBody TabelaCusto tabelaCusto) {
@@ -89,8 +89,8 @@ public class TabelaCustoController {
     /**
      * Função para excluir uma tabela de custos pelo ID, recebido como variável
      *
-     * @param id
-     * @return
+     * @param id -ID utilizado para deletar uma tabela de custos
+     * @return - Retorno da mensagem de sucesso ou erro
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {

@@ -13,17 +13,13 @@ import javax.validation.constraints.NotNull;
 public class UsuarioDTO {
 
     private Long id;
-
     @NotNull
     private String nome;
-
     @NotNull
     private String senha;
-
     @NotNull
     private String email;
     private Boolean visibilidade;
-
     @NotNull
     private TipoUsuario tipoUsuario;
     private String preferencias;

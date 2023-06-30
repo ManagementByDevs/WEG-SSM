@@ -26,7 +26,7 @@ public class DepartamentoController {
     /**
      * Função para procurar todos os departamentos salvos
      *
-     * @return
+     * @return - Retorno dos departamentos
      */
     @GetMapping
     public ResponseEntity<List<Departamento>> findAll() {

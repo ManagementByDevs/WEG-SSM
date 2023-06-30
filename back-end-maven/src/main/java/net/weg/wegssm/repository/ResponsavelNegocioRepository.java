@@ -8,7 +8,5 @@ import org.springframework.stereotype.Repository;
  * Classe repository para os responsáveis de negócio
  */
 @Repository
-public interface ResponsavelNegocioRepository extends JpaRepository<ResponsavelNegocio, Long> {
-
-}
+public interface ResponsavelNegocioRepository extends JpaRepository<ResponsavelNegocio, Long> { }
 

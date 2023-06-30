@@ -29,7 +29,8 @@ public class BeneficioController {
 
     /**
      * Método POST para salvar um benefício, recebendo o objeto no body
-     * @return
+     *
+     * @return - Retorno do objeto cadastrado
      */
     @PostMapping
     public ResponseEntity<Object> createNew() {
@@ -40,9 +41,9 @@ public class BeneficioController {
     /**
      * Método PUT para atualizar um benefício já existente, recebendo ele atualizado no body
      *
-     * @param id
-     * @param beneficioDTO
-     * @return
+     * @param id           - ID utillizado para buscar o benefício a ser atualizado
+     * @param beneficioDTO - Objeto com os dados atualizados
+     * @return - Retorno do objeto atualizado
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,
@@ -62,8 +63,8 @@ public class BeneficioController {
     /**
      * Método DELETE para excluir um benefício, recebendo seu ID como variável
      *
-     * @param id
-     * @return
+     * @param id - ID utilizado para deletara o objeto
+     * @return - Retorno da mensagem de sucesso ou de erro
      */
     @Transactional
     @DeleteMapping("/{id}")

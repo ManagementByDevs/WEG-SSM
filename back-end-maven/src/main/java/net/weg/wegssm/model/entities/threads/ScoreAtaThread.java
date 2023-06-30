@@ -79,4 +79,5 @@ public class ScoreAtaThread extends Thread implements Runnable {
 
         return scoreFinal;
     }
+
 }
