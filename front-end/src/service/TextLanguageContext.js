@@ -882,6 +882,22 @@ const TextLanguageContext = createContext({
     CaixaTextoQuill: {
       gravarAudio: "Gravar áudio",
     },
+    SideBarFiltro: {
+      status: "Status",
+      forum: "Fórum",
+      departamento: "Departamento",
+      tamanho: "Tamanho",
+      atribuidoA: "Atribuído à",
+      apreciada: "Apreciada",
+      publicada: "Publicada",
+      gerenteResponsavel: "Gerente Responsável",
+      analistaResponsavel: "Analista Responsável",
+      solicitante: "Solicitante",
+      semFiltro: "Sem filtro",
+      naoApreciada: "Não Apreciada",
+      publicado: "Publicado",
+      naoPublicado: "Não Publicado",
+    }
   },
   setTexts: () => { },
 });

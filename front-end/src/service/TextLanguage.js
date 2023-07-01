@@ -1032,6 +1032,22 @@ const TextLanguage = (linguagem) => {
           "Detalhes pauta",
           "Criar pauta",
         ],
+        SideBarFiltro: {
+          status: "Status",
+          forum: "Fórum",
+          departamento: "Departamento",
+          tamanho: "Tamanho",
+          atribuidoA: "Atribuído à",
+          apreciada: "Apreciada",
+          publicada: "Publicada",
+          gerenteResponsavel: "Gerente Responsável",
+          analistaResponsavel: "Analista Responsável",
+          solicitante: "Solicitante",
+          semFiltro: "Sem Filtro",
+          naoApreciada: "Não Apreciada",
+          publicado: "Publicado",
+          naoPublicado: "Não Publicado",
+        }
       }
     : linguagem == "en"
     ? {
@@ -2031,6 +2047,22 @@ const TextLanguage = (linguagem) => {
           "Agenda details",
           "Create Agenda",
         ],
+        SideBarFiltro: {
+          status: "Status",
+          forum: "Forum",
+          departamento: "Department",
+          tamanho: "Size",
+          atribuidoA: "Assigned to",
+          apreciada: "Appreciated",
+          publicada: "Published",
+          gerenteResponsavel: "Responsible Manager",
+          analistaResponsavel: "Responsible Analyst",
+          solicitante: "Requester",
+          semFiltro: "No filter",
+          naoApreciada: "Not appreciated",
+          publicado: "Published",
+          naoPublicado: "Not published",
+        }
       }
     : linguagem == "ch"
     ? {
@@ -2995,6 +3027,22 @@ const TextLanguage = (linguagem) => {
           "分钟细节",
           "创建议程",
         ],
+        SideBarFiltro: {
+          status: "状态",
+          forum: "论坛",
+          departamento: "部门",
+          tamanho: "尺寸",
+          atribuidoA: "分配给",
+          apreciada: "赞赏",
+          publicada: "已发布",
+          gerenteResponsavel: "负责经理",
+          analistaResponsavel: "负责分析师",
+          solicitante: "请求者",
+          semFiltro: "无过滤器",
+          naoApreciada: "不赞赏",
+          publicado: "已发布",
+          naoPublicado: "未发布",
+        }
       }
     : linguagem == "es"
     ? {
@@ -3990,6 +4038,22 @@ const TextLanguage = (linguagem) => {
           "Detalles del minuto",
           "Crear Agenda",
         ],
+        SideBarFiltro: {
+          status: "Status",
+          forum: "Foro",
+          departamento: "Departamento",
+          tamanho: "Tamaño",
+          atribuidoA: "Asignado a",
+          apreciada: "Apreciada",
+          publicada: "Publicada",
+          gerenteResponsavel: "Gerente Responsable",
+          analistaResponsavel: "Analista Responsable",
+          solicitante: "Solicitante",
+          semFiltro: "Sin filtro",
+          naoApreciada: "No apreciada",
+          publicado: "Publicado",
+          naoPublicado: "No publicado",
+        }
       }
     : null;
 };

@@ -21,7 +21,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
-import ModalOrdenacao from "../../components/Modais/Modal-ordenacao/ModalOrdenacao";
+import SideBarFiltro from "../../components/SideBarFiltro/SideBarFiltro";
 import ModalFiltro from "../../components/Modais/Modal-filtro/ModalFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
@@ -37,7 +37,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 /** Página principal do solicitante */
-const Home = (props) => {
+const Home = () => {
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
@@ -617,7 +617,8 @@ const Home = (props) => {
                       open={state["right"]}
                       onClose={toggleDrawer("right", false)}
                     >
-                      <ModalOrdenacao
+                      <SideBarFiltro  
+                        tipoUsuario={usuario.tipo_usuario}
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
                         ordenacaoScore={ordenacaoScore}

@@ -7,7 +7,6 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
 
-import SwapVertIcon from "@mui/icons-material/SwapVert";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -19,8 +18,7 @@ import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 
 import Pauta from "../../components/Pauta/Pauta";
-import ModalFiltroGerencia from "../../components/Modais/Modal-filtroGerencia/ModalFiltroGerencia";
-import ModalOrdenacao from "../../components/Modais/Modal-ordenacao/ModalOrdenacao";
+import SideBarFiltro from "../../components/SideBarFiltro/SideBarFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
@@ -156,12 +154,6 @@ const HomeGerencia = () => {
 
   /** Variável booleana que determina se o input de pesquisa está vazio ou não, usado para a limpagem do input */
   const [inputPreenchido, setInputPreenchido] = useState(false);
-
-  /** Variável booleana que determina se o modal de ordenação está aberto */
-  const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
-
-  /** Variável para definir se o modal filtro está aberto */
-  const [modalFiltro, setModalFiltro] = useState(false);
 
   /** Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas */
   const [isFirstTime, setIsFirstTime] = useState(false);
@@ -1676,7 +1668,8 @@ const HomeGerencia = () => {
                       open={state["right"]}
                       onClose={toggleDrawer("right", false)}
                     >
-                      <ModalOrdenacao
+                      <SideBarFiltro
+                        tipoUsuario={usuario.tipoUsuario}
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
                         ordenacaoNum={ordenacaoNum}

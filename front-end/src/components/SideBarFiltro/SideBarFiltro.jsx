@@ -18,9 +18,9 @@ import {
   Box,
 } from "@mui/material";
 
-import TextLanguageContext from "../../../service/TextLanguageContext";
-import FontContext from "../../../service/FontContext";
-import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
+import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -41,9 +41,9 @@ import ContentPasteSearchOutlinedIcon from "@mui/icons-material/ContentPasteSear
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 
-import UsuarioService from "../../../service/usuarioService";
+import UsuarioService from "../../service/usuarioService";
 
-export default function SiddeBar(props) {
+export default function SliderBar(props) {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -81,43 +81,43 @@ export default function SiddeBar(props) {
   const opcoesFiltrar = [
     {
       id: 1,
-      tipo: "Status",
+      tipo: texts.SideBarFiltro.status,
     },
     {
       id: 3,
-      tipo: "Fórum",
+      tipo: texts.SideBarFiltro.forum,
     },
     {
       id: 4,
-      tipo: "Departamento",
+      tipo: texts.SideBarFiltro.departamento,
     },
     {
       id: 5,
-      tipo: "Tamanho",
+      tipo: texts.SideBarFiltro.tamanho,
     },
     {
       id: 8,
-      tipo: "Atribuído à",
+      tipo: texts.SideBarFiltro.atribuidoA,
     },
     {
       id: 9,
-      tipo: "Apreciada",
+      tipo: texts.SideBarFiltro.apreciada,
     },
     {
       id: 10,
-      tipo: "Publicada",
+      tipo: texts.SideBarFiltro.publicada,
     },
     {
       id: 2,
-      tipo: "Gerente Responsável",
+      tipo: texts.SideBarFiltro.gerenteResponsavel,
     },
     {
       id: 6,
-      tipo: "Analista Responsável",
+      tipo: texts.SideBarFiltro.analistaResponsavel,
     },
     {
       id: 7,
-      tipo: "Solicitante",
+      tipo: texts.SideBarFiltro.solicitante,
     },
   ];
 
@@ -142,6 +142,9 @@ export default function SiddeBar(props) {
             fontSize: FontConfig.big,
             fontWeight: 600,
             color: "text.white",
+          }}
+          onClick={() => {
+            lerTexto(texts.modalOrdenacao.filtrar);
           }}
         >
           {texts.modalOrdenacao.filtrar}
@@ -246,8 +249,11 @@ export default function SiddeBar(props) {
               fontWeight: 600,
               color: "text.secondary",
             }}
+            onClick={() => {
+              lerTexto(texts.SideBarFiltro.semFiltro);
+            }}
           >
-            Sem Filtro...
+            {texts.SideBarFiltro.semFiltro}
           </Typography>
         </Box>
       )}
@@ -260,6 +266,9 @@ export default function SiddeBar(props) {
             fontSize: FontConfig.big,
             fontWeight: 600,
             color: "text.white",
+          }}
+          onClick={() => {
+            lerTexto(texts.modalOrdenacao.ordenar);
           }}
         >
           {texts.modalOrdenacao.ordenar}
@@ -509,7 +518,7 @@ function ItemOrdenacao(props) {
                 checked={props.ordenacaoScore[0]}
                 onChange={mudarCheck1}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.menorScore}
+                label={texts.modalOrdenacao.menorScorlerTextotextssse}
                 onClick={() => {
                   if (lendoTexto) {
                     lerTexto(texts.modalOrdenacao.menorScore);
@@ -554,12 +563,6 @@ function ItemOrdenacao(props) {
 function Input(props) {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
-
-  // Context para alterar o tamanho da fonte
-  const { FontConfig } = useContext(FontContext);
-
-  /** Context para ler o texto da tela */
-  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Pesquisa de solicitantes feita quando algum input é digitado */
   const pesquisarSolicitantes = (event) => {
@@ -823,7 +826,7 @@ function Input(props) {
                 onChange={selecionarStatus}
               >
                 <MenuItem selected value={""}>
-                  {texts.modalFiltroGerencia.selecionar}
+                  {texts.SideBarFiltro.semFiltro}
                 </MenuItem>
                 <MenuItem value={"CANCELLED"}>
                   {texts.modalFiltroGerencia.reprovada}
@@ -856,7 +859,7 @@ function Input(props) {
                 onChange={selecionarStatus}
               >
                 <MenuItem selected value={""}>
-                  {texts.modalFiltroGerencia.selecionar}
+                  {texts.SideBarFiltro.semFiltro}
                 </MenuItem>
                 <MenuItem value={"CANCELLED"}>
                   {texts.modalFiltroGerencia.cancelled}
@@ -890,7 +893,7 @@ function Input(props) {
               onChange={selecionarForum}
             >
               <MenuItem selected value={""}>
-                {texts.modalFiltroGerencia.selecionar}
+                {texts.SideBarFiltro.semFiltro}
               </MenuItem>
               {props.listaForuns.map((forum) => {
                 return (
@@ -909,7 +912,7 @@ function Input(props) {
               onChange={selecionarDepartamento}
             >
               <MenuItem selected value={""}>
-                {texts.modalFiltroGerencia.selecionar}
+                {texts.SideBarFiltro.semFiltro}
               </MenuItem>
               {props.listaDepartamentos.map((departamento) => {
                 return (
@@ -928,7 +931,7 @@ function Input(props) {
               onChange={selecionarTamanho}
             >
               <MenuItem selected value={""}>
-                {texts.modalFiltroGerencia.selecionar}
+                {texts.SideBarFiltro.semFiltro}
               </MenuItem>
               <MenuItem value={"Muito Pequeno"}>
                 {texts.modalFiltroGerencia.muitoPequeno}
@@ -955,7 +958,7 @@ function Input(props) {
               onChange={selecionarAtribuicao}
             >
               <MenuItem selected value={""}>
-                {texts.modalFiltroGerencia.selecionar}
+                {texts.SideBarFiltro.semFiltro}
               </MenuItem>
               <MenuItem value={"Ata"}>{texts.modalFiltroGerencia.ata}</MenuItem>
               <MenuItem value={"Pauta"}>
@@ -974,10 +977,14 @@ function Input(props) {
               onChange={selecionarApreciacao}
             >
               <MenuItem value="">
-                <em>Sem filtro</em>
+                <em>{texts.SideBarFiltro.semFiltro}</em>
               </MenuItem>
-              <MenuItem value={"Apreciada"}>Apreciada</MenuItem>
-              <MenuItem value={"NaoApreciada"}>Não Apreciada</MenuItem>
+              <MenuItem value={"Apreciada"}>
+                {texts.SideBarFiltro.apreciada}
+              </MenuItem>
+              <MenuItem value={"NaoApreciada"}>
+                {texts.SideBarFiltro.naoApreciada}
+              </MenuItem>
             </Select>
           ) : props.opcao.id == 10 ? (
             <Select
@@ -988,10 +995,14 @@ function Input(props) {
               onChange={selecionarPublicidade}
             >
               <MenuItem value="">
-                <em>Sem filtro</em>
+                <em>{texts.SideBarFiltro.semFiltro}</em>
               </MenuItem>
-              <MenuItem value={"Publicado"}>Publicado</MenuItem>
-              <MenuItem value={"NaoPublicado"}>Não Publicado</MenuItem>
+              <MenuItem value={"Publicado"}>
+                {texts.SideBarFiltro.publicado}
+              </MenuItem>
+              <MenuItem value={"NaoPublicado"}>
+                {texts.SideBarFiltro.naoPublicado}
+              </MenuItem>
             </Select>
           ) : null}
         </FormControl>

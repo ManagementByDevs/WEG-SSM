@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useMemo, useState, useContext } from "react";
+import React, { useMemo, useState, useContext, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -66,6 +66,23 @@ const App = () => {
     if (lendoTexto) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
+      switch (textLanguage.texts.linguagem) {
+        case "pt":
+          utterance.lang = "pt-BR";
+          break;
+        case "en":
+          utterance.lang = "en-US";
+          break;
+        case "ch":
+          utterance.lang = "zh-CN";
+          break;
+        case "es":
+          utterance.lang = "es-ES";
+          break;
+        default:
+          utterance.lang = "pt-BR";
+          break;
+      }
 
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
@@ -119,6 +136,10 @@ const App = () => {
     [lendoTexto]
   );
 
+  useEffect(() => {
+    setLendoTexto(false);
+  }, [Texts]);
+
   /*
   Tipos possíveis de usuários:
   [SOLICITANTE, ANALISTA, GERENTE, GETOR]
@@ -136,7 +157,7 @@ const App = () => {
                     <GlobalStyles
                       styles={{
                         "div[vw].enabled": {
-                          top: "53.5rem !important",
+                          top: "87.7% !important",
                           marginRight: "0px !important",
                         },
                       }}
