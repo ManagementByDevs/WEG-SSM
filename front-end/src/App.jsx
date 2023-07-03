@@ -153,24 +153,17 @@ const App = () => {
               <SpeechRecognitionService>
                 <SpeechSynthesisContext.Provider value={speechSynthesis}>
                   <Router>
-                    <Box
-                      className=""
-                      sx={{
-                        position: "fixed",
-                        bottom: 0,
-                        right: 0,
-                        width: "8%",
-                        height: "100%",
-                      }}
-                    >
                       <Box
                         sx={{
-                          width: "100%",
-                          height: "100%",
                           display: "flex",
                           flexDirection: "column",
                           justifyContent: "start",
                           alignItems: "end",
+                          position: "fixed",
+                          bottom: "0",
+                          right: "0",
+                          width: "0rem",
+                          zIndex: "999",
                         }}
                       >
                         <Box
@@ -179,9 +172,8 @@ const App = () => {
                             flexDirection: "column",
                             alignItems: "end",
                             justifyContent: "end",
-                            height: "100%",
-                            width: "50%",
                             paddingBottom: "3.5rem",
+                            width: "1px",
                           }}
                         >
                           <LerTexto />
@@ -191,13 +183,13 @@ const App = () => {
                                 marginRight: "0px !important",
                                 marginTop: "2rem !important",
                                 position: "unset",
+                                zIndex: "999",
                               },
                             }}
                           />
                           <VLibras forceOnload />
                         </Box>
                       </Box>
-                    </Box>
                     <Routes>
                       <Route path="/login" element={<Login />} />
                       <Route element={<ProtectedRoute />}>

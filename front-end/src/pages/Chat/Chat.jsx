@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
-import VLibras from "@djpfs/react-vlibras";
+ 
 
 import {
   Box,
@@ -634,8 +634,6 @@ const Chat = (props) => {
 
   return (
     <>
-      {/* API para tradução em libras */}
-      <VLibras forceOnload />
       {/* Botão de ajuda/tour */}
       <Ajuda onClick={() => setIsTourOpen(true)} />
       <Tour

@@ -4,7 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
 
-import VLibras from "@djpfs/react-vlibras";
+ 
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
@@ -67,7 +67,6 @@ const DetalhesPropostaPagina = () => {
 
   return (
     <FundoComHeader>
-      <VLibras forceOnload />
       {/* Feedback edição bem sucedida */}
       <Feedback
         open={feedbackEditSuccess}

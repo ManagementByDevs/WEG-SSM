@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras";
+ 
 
 import { Typography, Box, Button } from "@mui/material";
 
@@ -36,7 +36,6 @@ const NotFound = () => {
 
   return (
     <Box className="flex justify-center items-center w-screen h-screen">
-      <VLibras forceOnload />
       {/* Componente com informações da página */}
       <Box className="flex justify-evenly flex-col items-center h-1/2">
         <img src={Error} />
