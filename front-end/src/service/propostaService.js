@@ -184,9 +184,7 @@ class PropostaService {
     propostaObj = EntitiesObjectService.proposta(),
     idProposta,
     novasTabelasCusto = [],
-    novosBeneficios = [],
-    novosAnexos = [],
-    listaIdsAnexos = []
+    novosBeneficios = []
   ) {
     let form = new FormData();
     let propostaNovosDados = { ...propostaObj };
@@ -196,16 +194,6 @@ class PropostaService {
 
     form.append("proposta", JSON.stringify(propostaObj));
     form.append("propostaComDadosNovos", JSON.stringify(propostaNovosDados));
-
-    if (novosAnexos.length > 0) {
-      for (let anexo of novosAnexos) {
-        form.append("listaAnexosNovos", anexo);
-      }
-    }
-
-    for (let idAnexo of listaIdsAnexos) {
-      form.append("listaIdsAnexos", idAnexo);
-    }
 
     return (
       await axios.put(`${proposta}/update-novos-dados/${idProposta}`, form, {

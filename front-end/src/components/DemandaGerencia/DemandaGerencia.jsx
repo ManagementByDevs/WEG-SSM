@@ -33,6 +33,8 @@ const DemandaGerencia = (props) => {
   // Variável pare receber o tipo ( proposta ou demanda )
   const tipo = props.tipo;
 
+  const isChatVisible = props.isChatVisible;
+
   // Variável para obter o usuário logado
   const [user] = useState(UsuarioService.getUserCookies());
 
@@ -74,42 +76,60 @@ const DemandaGerencia = (props) => {
     }
   };
 
+  // Função que lida com o resultado da pesquisa do chat por demanda ou proposta
+  const handleOnResultChat = (response) => {
+    let chat = response;
+    if (chat.length > 0) {
+      if (chat[0].conversaEncerrada == true) {
+        ChatService.put(
+          {
+            ...chat[0],
+            conversaEncerrada: false,
+          },
+          chat[0].id
+        ).then((response) => {
+          chat = response;
+        });
+      }
+      navigate(`/chat/${chat[0].id}`);
+    } else {
+      let newChat = {
+        usuariosChat: [
+          { id: user.usuario.id },
+          { id: props.dados.solicitante.id },
+        ],
+      };
+
+      if (tipo == "proposta") {
+        newChat.idProposta = { id: props.dados.id };
+      } else {
+        newChat.idDemanda = { id: props.dados.id };
+      }
+
+      ChatService.post(newChat).then((response) => {
+        chat = response;
+        navigate(`/chat/${chat.id}`);
+      });
+    }
+  };
+
   // Função para abrir o chat caso o solicitante da demanda/proposta não seja o usuario
   const entrarChat = (e) => {
     e.stopPropagation();
     if (props.dados.solicitante.id !== user.usuario.id) {
-      let chat;
-      ChatService.getByPropostaAndUser(props.dados.id, user.usuario.id).then(
-        (response) => {
-          chat = response;
-          if (chat.length > 0) {
-            if (chat[0].conversaEncerrada == true) {
-              ChatService.put(
-                {
-                  ...chat[0],
-                  conversaEncerrada: false,
-                },
-                chat[0].id
-              ).then((response) => {
-                chat = response;
-              });
-            }
-            navigate(`/chat/${chat[0].id}`);
-          } else {
-            let newChat = {
-              idProposta: { id: props.dados.id },
-              usuariosChat: [
-                { id: user.usuario.id },
-                { id: props.dados.solicitante.id },
-              ],
-            };
-            ChatService.post(newChat).then((response) => {
-              chat = response;
-              navigate(`/chat/${chat.id}`);
-            });
+      if (tipo == "proposta") {
+        ChatService.getByPropostaAndUser(props.dados.id, user.usuario.id).then(
+          (response) => {
+            handleOnResultChat(response);
           }
-        }
-      );
+        );
+      } else {
+        ChatService.getByDemandaAndUser(props.dados.id, user.usuario.id).then(
+          (response) => {
+            handleOnResultChat(response);
+          }
+        );
+      }
     } else {
       props.setFeedbackAbrirChat(true);
     }
@@ -417,7 +437,7 @@ const DemandaGerencia = (props) => {
                 <Box id="terceiroCriarPropostas" className="flex relative">
                   {
                     // Se for uma proposta, mostra o icone de chat
-                    tipo === "proposta" || props.dados.solicitante.tour && (
+                    (tipo === "proposta" || isChatVisible) || props.dados.solicitante.tour && (
                       <Tooltip title={texts.demandaGerencia.chat}>
                         <IconButton onClick={entrarChat}>
                           <ChatOutlinedIcon

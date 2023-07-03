@@ -1085,23 +1085,21 @@ const HomeGerencia = () => {
             listaIdAtas.push(listaItens[object].id);
           }
 
-          ExportExcelService.exportAtasToExcel(listaIdAtas).then(
-            (response) => {
-              let blob = new Blob([response], { type: "application/excel" });
-              let url = URL.createObjectURL(blob);
-              let link = document.createElement("a");
-              let data = new Date();
-              let dataFormatada =
-                data.getDate() +
-                "-" +
-                (data.getMonth() + 1) +
-                "-" +
-                data.getFullYear();
-              link.href = url;
-              link.download = "atas " + dataFormatada + " .xlsx";
-              link.click();
-            }
-          );
+          ExportExcelService.exportAtasToExcel(listaIdAtas).then((response) => {
+            let blob = new Blob([response], { type: "application/excel" });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            let data = new Date();
+            let dataFormatada =
+              data.getDate() +
+              "-" +
+              (data.getMonth() + 1) +
+              "-" +
+              data.getFullYear();
+            link.href = url;
+            link.download = "atas " + dataFormatada + " .xlsx";
+            link.click();
+          });
         }
       } else {
         setFeedbackSemDadosExcel(true);
@@ -1122,7 +1120,7 @@ const HomeGerencia = () => {
             "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
         });
       });
     }
@@ -1879,7 +1877,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <Ajuda
                           onClick={() => {
@@ -1921,6 +1919,7 @@ const HomeGerencia = () => {
                               onDemandaClick={verDemanda}
                               setFeedbackAbrirChat={setFeedbackAbrirChat}
                               nextModoVisualizacao={nextModoVisualizacao}
+                              isChatVisible
                             />
                           )}
                         </Box>

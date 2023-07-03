@@ -15,6 +15,7 @@ public class ChatDTO {
 
     private Boolean conversaEncerrada;
     private Proposta idProposta;
+    private Demanda idDemanda;
     private List<Usuario> usuariosChat;
 
 }

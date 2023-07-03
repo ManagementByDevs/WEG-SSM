@@ -16,11 +16,11 @@ import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 import propostaService from "../../service/propostaService";
 
-/** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
+/**
+ * Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 

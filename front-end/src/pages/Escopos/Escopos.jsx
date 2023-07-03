@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Box, IconButton, Tooltip } from "@mui/material";
 
-import VLibras from "@djpfs/react-vlibras";
+ 
 import ClipLoader from "react-spinners/ClipLoader";
 import Tour from "reactour";
 
@@ -255,7 +255,6 @@ const Escopos = () => {
 
   return (
     <FundoComHeader>
-      <VLibras forceOnload />
       {/* Modal de confirmação de exclusão de escopo */}
       <ModalConfirmacao
         textoModal={"descartarRascunho"}

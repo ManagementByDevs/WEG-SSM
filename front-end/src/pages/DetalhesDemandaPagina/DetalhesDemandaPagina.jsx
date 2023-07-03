@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import { Box, IconButton } from "@mui/material";
 
-import VLibras from "@djpfs/react-vlibras";
+ 
 import Tour from "reactour";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
@@ -137,7 +137,6 @@ const DetalhesDemandaPagina = () => {
 
   return (
     <FundoComHeader>
-      <VLibras forceOnload />
       {/* Tour ao usuário */}
       <Tour
         steps={steps}

@@ -36,8 +36,9 @@ class DateService {
   }
 
   /**
-   * Retona data passada por parâmetro formatada no padrão americano, não importando se é um Objeto Date ou String MySQL Date, se não passado nada, retorna a data de hoje no mesmo formato
-   * @returns Data no padrão americano
+   * Retona data passada por parâmetro formatada de acordo com a linguagem recebida, não importando se é um Objeto Date ou String MySQL Date, 
+   * se não passado nada, retorna a data de hoje no mesmo formato
+   * @returns Data formatada de acordo com a linguagem
    */
   getTodaysDateUSFormat(linguagem) {
     const today = new Date();
@@ -57,6 +58,29 @@ class DateService {
         return ChineseLanguageService.formatarDataCompleta(yyyy + "/" + mm + "/" + dd + "/null");
       default:
         return yyyy + "-" + mm + "-" + dd;
+    }
+  }
+
+  /** Função para retornar uma data formatada de acordo com a linguagem,
+   *  sem as horas presentes
+   */
+  getOnlyDate(date, linguagem) {
+    const newDate = new Date(date);
+    const dd = String(newDate.getDate()).padStart(2, "0");
+    const mm = String(newDate.getMonth() + 1).padStart(2, "0");
+    const yyyy = newDate.getFullYear();
+
+    switch (linguagem) {
+      case "pt":
+        return dd + "/" + mm + "/" + yyyy;
+      case "en":
+        return mm + "/" + dd + "/" + yyyy;
+      case "es":
+        return dd + "/" + mm + "/" + yyyy;
+      case "ch":
+        return ChineseLanguageService.formatarDataCompleta(yyyy + "/" + mm + "/" + dd + "/null");
+      default:
+        return dd + "/" + mm + "/" + yyyy;
     }
   }
 
@@ -95,9 +119,9 @@ class DateService {
   }
 
   /**
-   * Retorna a data passada por parâmetro com padrão MySQL para o padrão americano
+   * Retorna a data passada por parâmetro com padrão MySQL formatada por uma linguagem recebida
    * @param {DateMySQL} date
-   * @returns Data no padrão americano com hora
+   * @returns Data formatada de acordo com a linguagem
    */
   getFullDateUSFormat(date, linguagem) {
     const newDate = new Date(date);
@@ -145,11 +169,16 @@ class DateService {
     let dataFormatada = new Date(this.getDateByMySQLFormat(data));
 
     return `${dataFormatada.getHours()}:${dataFormatada.getMinutes() < 10
-        ? "0" + dataFormatada.getMinutes()
-        : dataFormatada.getMinutes()
+      ? "0" + dataFormatada.getMinutes()
+      : dataFormatada.getMinutes()
       }
     `;
   };
+
+  formatarDataRequisicao = (data) => {
+    data = new Date(data);
+    return data.toISOString();
+  }
 }
 
 export default new DateService();

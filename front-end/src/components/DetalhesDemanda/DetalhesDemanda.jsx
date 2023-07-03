@@ -1,7 +1,15 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Typography, Button, Divider, Paper, IconButton, Tooltip, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Paper,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -33,7 +41,6 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -44,7 +51,9 @@ const DetalhesDemanda = (props) => {
   const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
@@ -104,7 +113,8 @@ const DetalhesDemanda = (props) => {
   const [openModal, setOpenModal] = useState(false);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
+    useState(false);
 
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
@@ -172,7 +182,7 @@ const DetalhesDemanda = (props) => {
   }, [palavrasJuntas]);
 
   /** Função para abrir o modal de confirmação de edição de demanda, caso esteja em modo de edição, ou
-   * abrir o modo de edição, caso esteja em modo de visualização 
+   * abrir o modo de edição, caso esteja em modo de visualização
    */
   function editarDemanda() {
     if (editar) {
@@ -202,7 +212,7 @@ const DetalhesDemanda = (props) => {
     excluirAnexosAdicionados();
     setBeneficiosExcluidos([]);
     setVisualizarTexto(true);
-  }
+  };
 
   /** Função para receber os benefícios do banco de dados, adicionando o atributo "visible" neles */
   const receberBeneficios = (listaBeneficios) => {
@@ -211,7 +221,7 @@ const DetalhesDemanda = (props) => {
       listaNova.push({ ...beneficio, visible: true });
     }
     return listaNova;
-  }
+  };
 
   // Função para alterar o texto de algum dos campos da demanda
   const alterarTexto = (e, input) => {
@@ -255,7 +265,7 @@ const DetalhesDemanda = (props) => {
   const removerAnexo = (index) => {
     if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
       removeAnexosNovos(anexosDemanda[index]);
-      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { });
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => {});
     } else {
       setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     }
@@ -302,7 +312,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosExcluidos([]);
   };
@@ -310,7 +320,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosNovos([]);
   };
@@ -318,7 +328,7 @@ const DetalhesDemanda = (props) => {
   /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
   const excluirAnexosAdicionados = () => {
     for (let anexo of novosAnexos) {
-      AnexoService.deleteById(anexo.id).then(() => { });
+      AnexoService.deleteById(anexo.id).then(() => {});
     }
     setNovosAnexos([]);
   };
@@ -338,7 +348,10 @@ const DetalhesDemanda = (props) => {
 
     atualizarBeneficios(beneficios);
 
-    const demandaAtualizada = { ...retornarObjetoDemanda(), status: "BACKLOG_REVISAO" };
+    const demandaAtualizada = {
+      ...retornarObjetoDemanda(),
+      status: "BACKLOG_REVISAO",
+    };
     DemandaService.put(demandaAtualizada).then((response) => {
       setEditar(false);
       excluirBeneficiosRemovidos();
@@ -346,7 +359,7 @@ const DetalhesDemanda = (props) => {
 
       salvarHistorico("Demanda Editada");
       setFeedbackDemandaEditada(true);
-    })
+    });
 
     if (anexosRemovidos.length > 0) {
       for (let anexoRemovido of anexosRemovidos) {
@@ -360,10 +373,10 @@ const DetalhesDemanda = (props) => {
   const atualizarBeneficios = (listaBeneficios) => {
     for (const beneficio of listaBeneficios) {
       if (beneficio.visible) {
-        BeneficioService.put(beneficio).then((response) => { });
+        BeneficioService.put(beneficio).then((response) => {});
       }
     }
-  }
+  };
 
   // Função que verifica se o usuário adicionou algum benefício
   const checkIfBeneficiosChanged = () => {
@@ -374,12 +387,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-        props.dados.beneficios[index].moeda.toLowerCase() &&
+          props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo?.toLowerCase() ==
-        props.dados.beneficios[index].memoriaCalculo?.toLowerCase()
+          props.dados.beneficios[index].memoriaCalculo?.toLowerCase()
       );
     });
   };
@@ -704,10 +717,11 @@ const DetalhesDemanda = (props) => {
         textoModal="aceitarDemanda"
         textoBotao="aceitar"
       />
+      <Box></Box>
       <Box
         id="primeiro"
-        className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
-        sx={{ width: "55rem" }}
+        className="flex flex-col gap-3 border rounded px-10 py-4 border-t-6 relative"
+        sx={{ width: "55rem", borderTopColor: "primary.main" }}
       >
         {/* Mostrar o icone de edição caso siga os requisitos */}
         <Box
@@ -716,8 +730,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            !editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -726,8 +740,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -746,8 +760,9 @@ const DetalhesDemanda = (props) => {
                 onClick={() => {
                   lerTexto(props.dados.id);
                 }}
+                color="text.secondary"
               >
-                #{props.dados.id}
+                {texts.demandaGerenciaModoVisualizacao.codigo}: {props.dados.id}
               </Typography>
               {/* o titulo */}
               <Typography
@@ -771,7 +786,7 @@ const DetalhesDemanda = (props) => {
             {/* o problema */}
             <Box>
               <Typography
-                fontSize={FontConfig.veryBig}
+                fontSize={FontConfig.big}
                 fontWeight="600"
                 color="text.primary"
                 onClick={() => {
@@ -797,7 +812,7 @@ const DetalhesDemanda = (props) => {
             {/* a proposta */}
             <Box>
               <Typography
-                fontSize={FontConfig.veryBig}
+                fontSize={FontConfig.big}
                 fontWeight="600"
                 color="text.primary"
                 onClick={() => {
@@ -823,7 +838,7 @@ const DetalhesDemanda = (props) => {
             <Box>
               <Box>
                 <Typography
-                  fontSize={FontConfig.veryBig}
+                  fontSize={FontConfig.big}
                   fontWeight="600"
                   color="text.primary"
                   onClick={() => {
@@ -850,7 +865,7 @@ const DetalhesDemanda = (props) => {
             {/* A frequencia de uso */}
             <Box>
               <Typography
-                fontSize={FontConfig.veryBig}
+                fontSize={FontConfig.big}
                 fontWeight="600"
                 color="text.primary"
                 onClick={() => {
@@ -877,7 +892,7 @@ const DetalhesDemanda = (props) => {
                 {/* Tamanho da demanda */}
                 <Box className="flex items-center">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig.big}
                     fontWeight="600"
                     color="text.primary"
                     onClick={() => {
@@ -901,7 +916,7 @@ const DetalhesDemanda = (props) => {
                 {/* Seção de TI */}
                 <Box className="flex items-center">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig.big}
                     fontWeight="600"
                     color="text.primary"
                     onClick={() => {
@@ -930,7 +945,7 @@ const DetalhesDemanda = (props) => {
               <Box className="flex justify-between items-center">
                 <Box className="flex items-center">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig.big}
                     fontWeight="600"
                     color="text.primary"
                     onClick={() => {
@@ -952,8 +967,9 @@ const DetalhesDemanda = (props) => {
                   </Typography>
                 </Box>
                 <Box className="flex items-center">
+                  {/* BUs beneficiadas */}
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig.big}
                     fontWeight="600"
                     color="text.primary"
                     onClick={() => {
@@ -981,7 +997,7 @@ const DetalhesDemanda = (props) => {
               // Mostra o forum
               <Box className="flex items-center">
                 <Typography
-                  fontSize={FontConfig.veryBig}
+                  fontSize={FontConfig.big}
                   fontWeight="600"
                   color="text.primary"
                   onClick={() => {
@@ -1006,7 +1022,7 @@ const DetalhesDemanda = (props) => {
             {/* Anexos */}
             <Box>
               <Typography
-                fontSize={FontConfig.veryBig}
+                fontSize={FontConfig.big}
                 fontWeight="600"
                 color="text.primary"
                 onClick={() => {
@@ -1017,19 +1033,19 @@ const DetalhesDemanda = (props) => {
               </Typography>
               {/* caso tenha um anexo, irá aparecer os anexos aqui */}
               {props.dados.anexo != null && props.dados.anexo.length > 0 ? (
-                <Box className="flex flex-col gap-2">
+                <Box className="flex flex-col gap-2 mt-2">
                   {props.dados.anexo.map((anexo, index) => (
                     <Paper
                       key={index}
-                      className="flex justify-between items-center"
+                      className="flex justify-between items-center px-2 border border-l-4"
                       sx={{
                         borderLeftWidth: "4px",
                         borderLeftColor: "primary.main",
                         borderLeftStyle: "solid",
                         backgroundColor: "background.default",
-                        padding: "0.2rem 1rem",
                       }}
                       elevation={0}
+                      square
                     >
                       <Typography
                         sx={{
@@ -1129,7 +1145,7 @@ const DetalhesDemanda = (props) => {
             {/* Problema da demanda */}
             <Box>
               <Typography
-                fontSize={FontConfig.veryBig}
+                fontSize={FontConfig.big}
                 fontWeight="600"
                 color="text.primary"
                 onClick={() => {
@@ -1150,7 +1166,7 @@ const DetalhesDemanda = (props) => {
             {/* Proposta da demanda */}
             <Box>
               <Typography
-                fontSize={FontConfig.veryBig}
+                fontSize={FontConfig.big}
                 fontWeight="600"
                 color="text.primary"
                 onClick={() => {
@@ -1173,7 +1189,7 @@ const DetalhesDemanda = (props) => {
             <Box>
               <Box className="flex items-center">
                 <Typography
-                  fontSize={FontConfig.veryBig}
+                  fontSize={FontConfig.big}
                   fontWeight="600"
                   color="text.primary"
                   onClick={() => {
@@ -1210,7 +1226,7 @@ const DetalhesDemanda = (props) => {
             {/* Frequencia de uso */}
             <Box>
               <Typography
-                fontSize={FontConfig.veryBig}
+                fontSize={FontConfig.big}
                 fontWeight="600"
                 color="text.primary"
                 onClick={() => {
@@ -1272,7 +1288,7 @@ const DetalhesDemanda = (props) => {
             <Box>
               <Box className="flex items-center">
                 <Typography
-                  fontSize={FontConfig.veryBig}
+                  fontSize={FontConfig.big}
                   fontWeight="600"
                   color="text.primary"
                   onClick={() => {
@@ -1295,25 +1311,25 @@ const DetalhesDemanda = (props) => {
                 />
               </Box>
               {anexosDemanda.length > 0 ? (
-                <Box className="flex flex-col gap-2">
+                <Box className="flex flex-col gap-2 mt-2">
                   {anexosDemanda?.map((anexo, index) => (
                     <Paper
                       key={index}
-                      className="flex justify-between items-center"
+                      className="flex justify-between items-center px-2 border border-l-4"
                       sx={{
                         borderLeftWidth: "4px",
                         borderLeftColor: "primary.main",
                         borderLeftStyle: "solid",
                         backgroundColor: "background.default",
-                        padding: "0.2rem 1rem",
                       }}
                       elevation={0}
+                      square
                     >
                       <Typography
                         sx={{
                           color: "text.primary",
-                          fontSize: FontConfig.default,
                         }}
+                        fontSize={FontConfig.default}
                         onClick={() => {
                           if (anexo.nome) {
                             lerTexto(anexo.nome);

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras";
+ 
 
 import { Box, Typography, Divider, Tooltip, IconButton, Input } from "@mui/material";
 
@@ -428,7 +428,7 @@ const DetalhesPauta = (props) => {
   return (
     <FundoComHeader>
       {/* Tradução para libras */}
-      <VLibras forceOnload />
+      
 
       {/* Tour de ajuda para a criação da pauta*/}
       <Tour
