@@ -181,7 +181,7 @@ const App = () => {
                             justifyContent: "end",
                             height: "100%",
                             width: "50%",
-                            paddingBottom: "4rem",
+                            paddingBottom: "3rem",
                           }}
                         >
                           <LerTexto />
