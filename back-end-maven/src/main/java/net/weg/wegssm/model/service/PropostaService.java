@@ -115,6 +115,10 @@ public class PropostaService {
      * Funções utilizadas para o filtro
      */
 
+    public Page<Proposta> findByVisibilidadeAndCodigoPPMAndStatus(Boolean visibilidade, Long ppm, Status status, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndCodigoPPMAndStatus(visibilidade, ppm, status, pageable);
+    }
+
     public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Boolean visibilidade, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
         return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(visibilidade, status, titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
     }
