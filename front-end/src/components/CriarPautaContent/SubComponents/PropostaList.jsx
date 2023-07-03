@@ -24,11 +24,12 @@ import DetalhesProposta from "../../DetalhesProposta/DetalhesProposta";
 
 const PropostaList = ({
   draggable = false,
-  onDragStart = () => {},
+  onDragStart = () => { },
   listaPropostas = [EntitiesObjectService.proposta()],
-  setListaPropostas = () => {},
-  addProposta = () => {},
+  setListaPropostas = () => { },
+  addProposta = () => { },
   inDiscussion = false,
+  idTour = "",
 }) => {
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
@@ -155,6 +156,7 @@ const PropostaList = ({
                   </Tooltip>
                   <Tooltip title={texts.criarPauta.expandir}>
                     <IconButton
+                      id="quinto"
                       size="small"
                       onClick={() => expandProposta(proposta)}
                     >
@@ -177,6 +179,7 @@ const PropostaList = ({
                 <>
                   <Tooltip title={texts.criarPauta.expandir}>
                     <IconButton
+                      id="quinto"
                       size="small"
                       onClick={() => expandProposta(proposta)}
                     >
@@ -185,6 +188,7 @@ const PropostaList = ({
                   </Tooltip>
                   <Tooltip title={texts.criarPauta.adicionar}>
                     <IconButton
+                      id="sexto"
                       size="small"
                       onClick={() => addProposta(proposta)}
                       color="primary"

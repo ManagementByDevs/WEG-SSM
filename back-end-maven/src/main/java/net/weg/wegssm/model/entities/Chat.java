@@ -40,8 +40,12 @@ public class Chat {
      * Proposta que o chat está relacionado
      */
     @OneToOne
-    @JoinColumn(name = "id_proposta", nullable = false)
+    @JoinColumn(name = "id_proposta")
     private Proposta idProposta;
+
+    @OneToOne
+    @JoinColumn(name = "id_demanda")
+    private Demanda idDemanda;
 
     /**
      * Lista de usuários que pertencem ao chat

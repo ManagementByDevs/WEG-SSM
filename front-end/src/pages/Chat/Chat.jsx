@@ -292,16 +292,21 @@ const Chat = (props) => {
   /** useEffect para armazenar o contato selecionado */
   useEffect(() => {
     let listaChatsAux = listaChats.filter((chat) => {
+      let demanda = chat.idProposta ? chat.idProposta : chat.idDemanda;
       // Pesquisa por código PPM
-      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
-        return true;
+      if (demanda.codigoPPM) {
+        if (demanda.codigoPPM.toString().startsWith(pesquisaContato)) {
+          return true;
+        }
+      } else {
+        if (demanda.id.toString().startsWith(pesquisaContato)) {
+          return true;
+        }
       }
 
       // Pesquisa pelo título da proposta
       if (
-        chat.idProposta.titulo
-          .toLowerCase()
-          .includes(pesquisaContato.toLowerCase())
+        demanda.titulo.toLowerCase().includes(pesquisaContato.toLowerCase())
       ) {
         return true;
       }
@@ -482,13 +487,16 @@ const Chat = (props) => {
   /** Verifica se o chat está encerrado */
   const isConversaEncerrada = () => {
     for (let chatInput of listaChats) {
+      let demanda = chatInput.idProposta
+        ? chatInput.idProposta
+        : chatInput.idDemanda;
       if (chatInput.id == idChat) {
         if (chatInput.conversaEncerrada) {
           console.log("entrou");
           return true;
         } else if (
-          chatInput.idProposta.status == "CANCELLED" ||
-          chatInput.idProposta.status == "Cancelled"
+          demanda.status == "CANCELLED" ||
+          demanda.status == "Cancelled"
         ) {
           ChatService.getByIdChat(idChat).then((e) => {
             ChatService.put(
@@ -548,8 +556,11 @@ const Chat = (props) => {
     ChatService.getByRemetente(user.usuario.id).then((chatResponse) => {
       if (chatResponse) {
         for (let chatEspecifico of chatResponse) {
+          let demanda = chatEspecifico.idProposta
+            ? chatEspecifico.idProposta
+            : chatEspecifico.idDemanda;
           if (
-            chatEspecifico.idProposta.status == "Cancelled" &&
+            demanda.status == "Cancelled" &&
             !chatEspecifico.conversaEncerrada
           ) {
             console.log("Tem conversa encerrada");
@@ -1073,11 +1084,11 @@ const Chat = (props) => {
                         <Typography fontSize={FontConfig.small}>
                           {listaChats.map((chat) => {
                             let cargoChat;
+                            let demanda = chat.idProposta
+                              ? chat.idProposta
+                              : chat.idDemanda;
                             if (chat.id == idChat) {
-                              if (
-                                chat.idProposta.solicitante.id ==
-                                user.usuario.id
-                              ) {
+                              if (demanda.solicitante.id == user.usuario.id) {
                                 cargoChat = texts.chat.analista;
                               } else {
                                 cargoChat = texts.chat.solicitante;
@@ -1135,14 +1146,17 @@ const Chat = (props) => {
                             </Typography>
                           </MenuItem>
 
-                          {listaChats.some(
-                            (chat) =>
+                          {listaChats.some((chat) => {
+                            let demanda = chat.idProposta
+                              ? chat.idProposta
+                              : chat.idDemanda;
+                            return (
                               chat.id == idChat &&
-                              (chat.idProposta.solicitante.id !=
-                                user.usuario.id &&
-                                (chat.idProposta.status != "CANCELLED" &&
-                                  chat.idProposta.status != "Cancelled"))
-                          ) && (
+                              demanda.solicitante.id != user.usuario.id &&
+                              demanda.status != "CANCELLED" &&
+                              demanda.status != "Cancelled"
+                            );
+                          }) && (
                             <>
                               <div className="w-full flex justify-center">
                                 <hr className="w-10/12 my-1.5" />
@@ -1217,7 +1231,6 @@ const Chat = (props) => {
                     <Box
                       ref={boxRef}
                       className="flex flex-col"
-                      
                       sx={{
                         width: "100%",
                         height: "85%",

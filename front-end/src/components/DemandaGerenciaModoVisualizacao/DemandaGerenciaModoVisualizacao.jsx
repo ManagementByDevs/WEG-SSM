@@ -1,7 +1,16 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography, } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
@@ -26,15 +35,15 @@ const DemandaGerenciaModoVisualizacao = ({
   onDemandaClick,
   nextModoVisualizacao,
   isProposta = false,
+  isChatVisible = false,
   setFeedbackAbrirChat,
 }) => {
-
-  // verificação para ver se retorna algo, caso não retorne nada, mostre o componente "NadaEncontrado"
+  // Verificação para ver se retorna algo, caso não retorne nada, mostre o componente "NadaEncontrado"
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
   }
 
-  // verificação para ver se o próximo modo de visualização é "TABLE", caso seja, mostre o componente "DemandaGrid"
+  // Verificação para ver se o próximo modo de visualização é "TABLE", caso seja, mostre o componente "DemandaGrid"
   // caso não seja, mostre o componente "DemandaTable"
   if (nextModoVisualizacao == "TABLE")
     return (
@@ -43,6 +52,7 @@ const DemandaGerenciaModoVisualizacao = ({
         onDemandaClick={onDemandaClick}
         isProposta={isProposta}
         setFeedbackAbrirChat={setFeedbackAbrirChat}
+        isChatVisible={isChatVisible}
       />
     );
   return (
@@ -51,6 +61,7 @@ const DemandaGerenciaModoVisualizacao = ({
       onDemandaClick={onDemandaClick}
       isProposta={isProposta}
       setFeedbackAbrirChat={setFeedbackAbrirChat}
+      isChatVisible={isChatVisible}
     />
   );
 };
@@ -83,9 +94,9 @@ const DemandaTable = ({
   ],
   onDemandaClick,
   isProposta = false,
+  isChatVisible = false,
   setFeedbackAbrirChat,
 }) => {
-
   // Variável utilizada para navegação no sistema
   const navigate = useNavigate();
 
@@ -142,42 +153,51 @@ const DemandaTable = ({
     setModalHistorico(true);
   };
 
+  // Função que lida com o resultado da pesquisa do chat por demanda ou proposta
+  const handleOnResultChat = (response, dados) => {
+    let chat = response;
+    if (chat.length > 0) {
+      if (chat[0].conversaEncerrada == true) {
+        ChatService.put(
+          {
+            ...chat[0],
+            conversaEncerrada: false,
+          },
+          chat[0].id
+        ).then((response) => {
+          chat = response;
+        });
+      }
+      navigate(`/chat/${chat[0].id}`);
+    } else {
+      let newChat = {
+        idProposta: { id: dados.id },
+        usuariosChat: [{ id: user.usuario.id }, { id: dados.solicitante.id }],
+      };
+      ChatService.post(newChat).then((response) => {
+        chat = response;
+        navigate(`/chat/${chat.id}`);
+      });
+    }
+  };
+
   // Função para entrar em um chat se o usuario atual não seja o usuario solicitante da demanda/proposta
   const entrarChat = (e, dados) => {
     e.stopPropagation();
     if (dados.solicitante.id !== user.usuario.id) {
-      let chat;
-      ChatService.getByPropostaAndUser(dados.id, user.usuario.id).then(
-        (response) => {
-          chat = response;
-          if (chat.length > 0) {
-            if (chat[0].conversaEncerrada == true) {
-              ChatService.put(
-                {
-                  ...chat[0],
-                  conversaEncerrada: false,
-                },
-                chat[0].id
-              ).then((response) => {
-                chat = response;
-              });
-            }
-            navigate(`/chat/${chat[0].id}`);
-          } else {
-            let newChat = {
-              idProposta: { id: dados.id },
-              usuariosChat: [
-                { id: user.usuario.id },
-                { id: dados.solicitante.id },
-              ],
-            };
-            ChatService.post(newChat).then((response) => {
-              chat = response;
-              navigate(`/chat/${chat.id}`);
-            });
+      if (isProposta) {
+        ChatService.getByPropostaAndUser(dados.id, user.usuario.id).then(
+          (response) => {
+            handleOnResultChat(response, dados);
           }
-        }
-      );
+        );
+      } else {
+        ChatService.getByDemandaAndUser(dados.id, user.usuario.id).then(
+          (response) => {
+            handleOnResultChat(response, dados);
+          }
+        );
+      }
     } else {
       setFeedbackAbrirChat(true);
     }
@@ -511,7 +531,7 @@ const DemandaTable = ({
                       />
                     </Tooltip>
                     {/*Icone de Chat caso seja uma proposta */}
-                    {isProposta && (
+                    {(isProposta || isChatVisible) && (
                       <Tooltip
                         title={texts.demandaGerenciaModoVisualizacao.chat}
                       >
@@ -544,6 +564,7 @@ const DemandaGrid = ({
   listaDemandas,
   onDemandaClick,
   isProposta = false,
+  isChatVisible = false,
   setFeedbackAbrirChat,
 }) => {
   return (
@@ -565,6 +586,7 @@ const DemandaGrid = ({
             onClick={() => {
               onDemandaClick(demanda);
             }}
+            isChatVisible={isChatVisible}
           />
         );
       })}
@@ -574,7 +596,6 @@ const DemandaGrid = ({
 
 // Componente para exibição de nada encontrado
 const NadaEncontrado = () => {
-  
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 

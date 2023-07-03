@@ -1016,6 +1016,17 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "Adicione uma data de reunião!",
           addComissao: "Adicione uma comissão!",
           addProposta: "Adicione pelo menos uma proposta!",
+          tour:{
+            tour1: "Nesta parte ficam os dados gerais para a criação de uma nova pauta.",
+            tour2: "Aqui você preenche o número sequencial e a data de reunião da pauta.",
+            tour3: "E aqui você seleciona o fórum da pauta.",
+            tour4: "Aqui ficam as propostas que serão adicionadas na pauta.",
+            tour5: "Clicando aqui é possível ter uma visualização da proposta.",
+            tour6: "Já aqui é possível adicionar a proposta na pauta, sendo também possível arrastá-la para o campo de propostas ao lado.",
+            tour7: "Neste campo ficam as propostas que estão adicionadas na pauta.",
+            tour8: "Clicando aqui é possível remover a proposta da pauta.",
+            tour9: "Clicando aqui é possível mudar a visualização da proposta, publicada ou não pubicada",
+          }
         },
         rotas: [
           "Login",
