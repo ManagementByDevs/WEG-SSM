@@ -1,5 +1,4 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import ClipLoader from "react-spinners/ClipLoader";
 import {
   Box,
   Divider,
@@ -15,6 +14,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import ClipLoader from "react-spinners/ClipLoader";
 
 import LogoWEG from "../../assets/logo-weg.png";
 

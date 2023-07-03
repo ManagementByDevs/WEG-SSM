@@ -16,11 +16,11 @@ import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 import propostaService from "../../service/propostaService";
 
-/** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
+/**
+ * Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -73,26 +73,26 @@ const Demanda = (props) => {
     let chat;
     propostaService.getByDemanda(props.demanda.id).then((proposta) => {
       console.log(proposta);
-    ChatService.getByPropostaAndUser(proposta.id, user.usuario.id).then(
-      (response) => {
-        chat = response;
-        if (chat.length > 0) {
-          navigate(`/chat/${chat[0].id}`);
-        } else {
-          let newChat = {
-            idProposta: { id: proposta.id },
-            usuariosChat: [
-              { id: user.usuario.id },
-              { id: proposta.analista.id },
-            ],
-          };
-          ChatService.post(newChat).then((response) => {
-            chat = response;
-            navigate(`/chat/${chat.id}`);
-          });
+      ChatService.getByPropostaAndUser(proposta.id, user.usuario.id).then(
+        (response) => {
+          chat = response;
+          if (chat.length > 0) {
+            navigate(`/chat/${chat[0].id}`);
+          } else {
+            let newChat = {
+              idProposta: { id: proposta.id },
+              usuariosChat: [
+                { id: user.usuario.id },
+                { id: proposta.analista.id },
+              ],
+            };
+            ChatService.post(newChat).then((response) => {
+              chat = response;
+              navigate(`/chat/${chat.id}`);
+            });
+          }
         }
-      }
-    );
+      );
     });
   };
 
