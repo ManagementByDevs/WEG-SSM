@@ -13,13 +13,15 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente contato utilizado para representar os contatos do chat */
 const Contato = ({
-  onClick = () => { },
+  onClick = () => {},
   idChat = 0,
   chat = EntitiesObjectService.chat(),
 }) => {
-
   /** UseState para saber se o contato foi selecionado ou não */
   const [corSelecionado, setCorSelecionado] = useState("transparent");
+
+  /** Demanda do chat */
+  const demanda = chat.idProposta ? chat.idProposta : chat.idDemanda;
 
   /** UseEffect para alterar a cor do contato quando ele for selecionado */
   useEffect(() => {
@@ -44,7 +46,7 @@ const Contato = ({
 
   return (
     <>
-      <Tooltip title={chat.idProposta.titulo} placement="right">
+      <Tooltip title={demanda.titulo} placement="right">
         <Box
           id="segundo"
           onClick={onClick}
@@ -71,7 +73,6 @@ const Contato = ({
 
 /** Informações do contato */
 const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
-
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -86,6 +87,9 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
 
   /** Variável para buscar o nome do contato */
   const [nomeContato, setNomeContato] = useState("");
+
+  /** Demanda do chat */
+  const demanda = chat.idProposta ? chat.idProposta : chat.idDemanda;
 
   /** useEffect para chamar a função de buscar o nome do contato */
   useEffect(() => {
@@ -156,7 +160,9 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
             lerTexto(texts.contato.ppm);
           }}
         >
-          {texts.contato.ppm}: #{chat.idProposta.codigoPPM}
+          {demanda.codigoPPM
+            ? texts.contato.ppm + ": #" + demanda.codigoPPM
+            : "ID: #" + demanda.id}
         </Typography>
         <Typography
           fontSize={FontConfig.small}
@@ -167,7 +173,7 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
             lerTexto(texts.contato.demanda);
           }}
         >
-          {texts.contato.demanda}: {chat.idProposta.titulo}
+          {texts.contato.demanda}: {demanda.titulo}
         </Typography>
       </Box>
     </>

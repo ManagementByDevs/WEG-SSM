@@ -2,6 +2,7 @@ package net.weg.wegssm.model.service;
 
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.Chat;
+import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.repository.ChatRepository;
@@ -86,4 +87,13 @@ public class ChatService {
         return chatRepository.findByIdPropostaAndUsuariosChat(proposta, usuario);
     }
 
+    /**
+     * Função para buscar um chat pela demanda e pelos usuários que fazem parte
+     * @param demanda
+     * @param usuario
+     * @return
+     */
+    public List<Chat> findByIdDemandaAndUsuariosChat(Demanda demanda, Usuario usuario) {
+        return chatRepository.findByIdDemandaAndUsuariosChat(demanda, usuario);
+    }
 }
