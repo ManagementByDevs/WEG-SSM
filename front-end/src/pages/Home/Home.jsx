@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras";
+ 
 
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -522,8 +522,6 @@ const Home = () => {
 
   return (
     <FundoComHeader>
-      {/* Tradução para libras */}
-      <VLibras forceOnload />
       {/* Div container */}
       {/* Tour de ajuda para as minhas demandas*/}
       <Tour

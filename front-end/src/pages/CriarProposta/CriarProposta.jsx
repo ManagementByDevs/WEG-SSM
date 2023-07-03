@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras";
+ 
 
 import { Box } from "@mui/material";
 
@@ -24,7 +24,6 @@ const CriarProposta = () => {
 
   return (
     <FundoComHeader>
-      <VLibras forceOnload />
       <Box className="p-2">
         <Caminho />
         <Box className="w-full flex justify-center">

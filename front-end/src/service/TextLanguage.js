@@ -1004,8 +1004,7 @@ const TextLanguage = (linguagem) => {
           forum: "Fórum",
           propostas: "Propostas",
           arrasteSoltePropostaAqui: "Arraste e Solte uma Proposta Aqui",
-          // pesquisarPropostas: "Pesquisar por nome ou PPM",
-          pesquisarPropostas: "Pesquisar por nome",
+          pesquisarPropostas: "Pesquisar por nome ou PPM",
           naoHaPropostasParaSeremAdicionadas:
             "Não há propostas para serem adicionadas!",
           publicada: "Publicada",
@@ -1017,6 +1016,17 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "Adicione uma data de reunião!",
           addComissao: "Adicione uma comissão!",
           addProposta: "Adicione pelo menos uma proposta!",
+          tour:{
+            tour1: "Nesta parte ficam os dados gerais para a criação de uma nova pauta.",
+            tour2: "Aqui você preenche o número sequencial e a data de reunião da pauta.",
+            tour3: "E aqui você seleciona o fórum da pauta.",
+            tour4: "Aqui ficam as propostas que serão adicionadas na pauta.",
+            tour5: "Clicando aqui é possível ter uma visualização da proposta.",
+            tour6: "Já aqui é possível adicionar a proposta na pauta, sendo também possível arrastá-la para o campo de propostas ao lado.",
+            tour7: "Neste campo ficam as propostas que estão adicionadas na pauta.",
+            tour8: "Clicando aqui é possível remover a proposta da pauta.",
+            tour9: "Clicando aqui é possível mudar a visualização da proposta, publicada ou não pubicada",
+          }
         },
         rotas: [
           "Login",
@@ -1047,7 +1057,7 @@ const TextLanguage = (linguagem) => {
           naoApreciada: "Não Apreciada",
           publicado: "Publicado",
           naoPublicado: "Não Publicado",
-        }
+        },
       }
     : linguagem == "en"
     ? {
@@ -2019,8 +2029,7 @@ const TextLanguage = (linguagem) => {
           forum: "Forum",
           propostas: "Proposals",
           arrasteSoltePropostaAqui: "Drag and Drop a Proposal Here",
-          // pesquisarPropostas: "Search by name or PPM",
-          pesquisarPropostas: "Search by name",
+          pesquisarPropostas: "Search by name or PPM",
           naoHaPropostasParaSeremAdicionadas:
             "There are no proposals to be added!",
           publicada: "Published",
@@ -2062,7 +2071,7 @@ const TextLanguage = (linguagem) => {
           naoApreciada: "Not appreciated",
           publicado: "Published",
           naoPublicado: "Not published",
-        }
+        },
       }
     : linguagem == "ch"
     ? {
@@ -3000,8 +3009,7 @@ const TextLanguage = (linguagem) => {
           forum: "论坛",
           propostas: "提案",
           arrasteSoltePropostaAqui: "将提案拖放到此处",
-          // pesquisarPropostas: "按名称或 PPM 搜索",
-          pesquisarPropostas: "按名称搜索",
+          pesquisarPropostas: "按名称或 PPM 搜索",
           naoHaPropostasParaSeremAdicionadas: "没有要添加的提案！",
           publicada: "已发表",
           naoPublicada: "未发表",
@@ -3042,7 +3050,7 @@ const TextLanguage = (linguagem) => {
           naoApreciada: "不赞赏",
           publicado: "已发布",
           naoPublicado: "未发布",
-        }
+        },
       }
     : linguagem == "es"
     ? {
@@ -4011,8 +4019,7 @@ const TextLanguage = (linguagem) => {
           forum: "Foro",
           propostas: "Propuestas",
           arrasteSoltePropostaAqui: "Arrastre y suelte una propuesta aquí",
-          // pesquisarPropostas: "Buscar por nombre o PPM",
-          pesquisarPropostas: "Buscar por nombre",
+          pesquisarPropostas: "Buscar por nombre o PPM",
           naoHaPropostasParaSeremAdicionadas: "¡No hay propuestas para añadir!",
           publicada: "Publicada",
           naoPublicada: "Inédita",
@@ -4053,7 +4060,7 @@ const TextLanguage = (linguagem) => {
           naoApreciada: "No apreciada",
           publicado: "Publicado",
           naoPublicado: "No publicado",
-        }
+        },
       }
     : null;
 };

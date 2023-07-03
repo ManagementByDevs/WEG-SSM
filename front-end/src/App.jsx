@@ -8,7 +8,7 @@ import {
   Outlet,
 } from "react-router-dom";
 
-import { GlobalStyles } from "@mui/material";
+import { GlobalStyles, Box } from "@mui/material";
 
 import VLibras from "@djpfs/react-vlibras";
 
@@ -153,16 +153,43 @@ const App = () => {
               <SpeechRecognitionService>
                 <SpeechSynthesisContext.Provider value={speechSynthesis}>
                   <Router>
-                    <LerTexto />
-                    <GlobalStyles
-                      styles={{
-                        "div[vw].enabled": {
-                          top: "87.7% !important",
-                          marginRight: "0px !important",
-                        },
-                      }}
-                    />
-                    <VLibras forceOnload />
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "start",
+                          alignItems: "end",
+                          position: "fixed",
+                          bottom: "0",
+                          right: "0",
+                          width: "0rem",
+                          zIndex: "999",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "end",
+                            justifyContent: "end",
+                            paddingBottom: "3.5rem",
+                            width: "1px",
+                          }}
+                        >
+                          <LerTexto />
+                          <GlobalStyles
+                            styles={{
+                              "div[vw].enabled": {
+                                marginRight: "0px !important",
+                                marginTop: "2rem !important",
+                                position: "unset",
+                                zIndex: "999",
+                              },
+                            }}
+                          />
+                          <VLibras forceOnload />
+                        </Box>
+                      </Box>
                     <Routes>
                       <Route path="/login" element={<Login />} />
                       <Route element={<ProtectedRoute />}>

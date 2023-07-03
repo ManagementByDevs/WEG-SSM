@@ -1,6 +1,7 @@
 package net.weg.wegssm.repository;
 
 import net.weg.wegssm.model.entities.Chat;
+import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,5 +32,13 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
      * @return
      */
     List<Chat> findByIdPropostaAndUsuariosChat(Proposta proposta, Usuario usuario);
+
+    /**
+     * Método para listar os chats através de uma demanda e um usuário
+     * @param demanda
+     * @param usuario
+     * @return
+     */
+    List<Chat> findByIdDemandaAndUsuariosChat(Demanda demanda, Usuario usuario);
 
 }

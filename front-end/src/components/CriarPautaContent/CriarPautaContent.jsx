@@ -322,9 +322,8 @@ const CriarPautaContent = () => {
       PropostaService.getPage(
         {
           ...params,
-          titulo: search,
-          // titulo: !parseInt(search) ? search : null,
-          // codigoPPM: parseInt(search) ? parseInt(search) : null,
+          titulo: !parseInt(search) ? search : null,
+          codigoPPM: parseInt(search) ? parseInt(search) : null,
         },
         ordenacao + "size=" + tamanhoPagina + "&page=" + 0
       ).then((data) => {
@@ -362,8 +361,8 @@ const CriarPautaContent = () => {
 
       <Box className="w-full gap-4 flex mt-4 mb-4">
         {/* Formulário pauta */}
-        <Box className="w-1/2">
-          <Box className="w-full gap-2 flex justify-between">
+        <Box id="primeiro" className="w-1/2">
+          <Box id="segundo" className="w-full gap-2 flex justify-between">
             {/* Numero sequencial */}
             <Box className="w-2/3">
               <Typography
@@ -385,6 +384,7 @@ const CriarPautaContent = () => {
                 fullWidth
               />
             </Box>
+
             {/* Data da reunião  */}
             <Box className="w-1/3 flex justify-end">
               <Box className="w-full">
@@ -409,8 +409,9 @@ const CriarPautaContent = () => {
               </Box>
             </Box>
           </Box>
+
           {/* Comissão */}
-          <Box className="w-full mt-4">
+          <Box id="terceiro" className="w-full mt-4">
             <Box>
               <Typography
                 fontSize={FontConfig.default}
@@ -445,6 +446,7 @@ const CriarPautaContent = () => {
 
           {/* Propostas a serem discutidas */}
           <Box
+            id="setimo"
             className="mt-10 w-full"
             onDrop={onPropostaDrop}
             onDragOver={allowDrop}
@@ -484,7 +486,7 @@ const CriarPautaContent = () => {
         </Box>
 
         {/* Lista de propostas */}
-        <Box className="w-1/2 border rounded">
+        <Box id="quarto" className="w-1/2 border rounded">
           <Box className="p-2">
             {isLoading ? (
               <Box className="w-full mt-4 flex justify-center">

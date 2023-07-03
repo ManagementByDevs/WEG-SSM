@@ -42,6 +42,11 @@ public class ChatController {
     private PropostaService propostaService;
 
     /**
+     * Service da demanda
+     */
+    private DemandaService demandaService;
+
+    /**
      * Service do chat
      */
     private ChatService chatService;
@@ -71,8 +76,15 @@ public class ChatController {
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid ChatDTO chatDto) {
-        if (!propostaService.existsById(chatDto.getIdProposta().getId())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
+        if (chatDto.getIdProposta() != null) {
+            if (!propostaService.existsById(chatDto.getIdProposta().getId())) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma proposta com este id.");
+
+            }
+        } else {
+            if (!demandaService.existsById((chatDto.getIdDemanda().getId()))) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
+            }
         }
 
         Chat chat = new Chat();
@@ -125,6 +137,25 @@ public class ChatController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findByIdPropostaAndUsuariosChat(proposta.get(), usuario.get()));
+    }
+
+    /**
+     * Método GET para buscar um chat através do id do usuário e da demanda
+     *
+     * @param idUser    - ID do usuário relacionado ao chat
+     * @param idDemanda - ID da demanda relacionada ao chat
+     * @return - Retorno do chat ou mensagem de erro
+     */
+    @GetMapping("/user/{idUser}/demanda/{idDemanda}")
+    public ResponseEntity<List<Chat>> findByDemandaAndUser(@PathVariable(value = "idUser") Long idUser, @PathVariable(value = "idDemanda") Long idDemanda) {
+        Optional<Usuario> usuario = usuarioService.findById(idUser);
+        Optional<Demanda> demanda = demandaService.findById(idDemanda);
+
+        if (usuario.isEmpty() || demanda.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(chatService.findByIdDemandaAndUsuariosChat(demanda.get(), usuario.get()));
     }
 
     /**
