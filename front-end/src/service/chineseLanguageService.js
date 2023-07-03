@@ -1,5 +1,13 @@
+/**
+ * Service para formatações de escritas chinesas, que não podem ser facilmente traduzidas
+ */
 class ChineseLanguageService {
 
+    /**
+     * Função para formatar um dígito de um número para o padrão chinês
+     * @param {int} number 
+     * @returns Dígito numeral formatado para chinês
+     */
     formatSingularNumber(number) {
         switch (number) {
             case 0:
@@ -25,6 +33,11 @@ class ChineseLanguageService {
         }
     }
 
+    /**
+     * Função para formatar um número para chinês
+     * @param {int} numero 
+     * @returns Número traduzido para chinês
+     */
     formatNumber(numero) {
         let numeroFinal = "";
 
@@ -98,6 +111,11 @@ class ChineseLanguageService {
         return numeroFinal;
     }
 
+    /**
+     * Função para formatar um ano para chinês
+     * @param {string} ano 
+     * @returns Ano formatado para chinês
+     */
     formatAno(ano) {
         let anoFinal = "";
         let numeros = ano.split("");
@@ -109,14 +127,29 @@ class ChineseLanguageService {
         return anoFinal;
     }
 
+    /**
+     * Função para formatar um mês para chinês
+     * @param {string} mes 
+     * @returns Mês formatado para chinês
+     */
     formatMes(mes) {
         return this.formatNumber(parseInt(mes)) + "月";
     }
 
+    /**
+     * Função para formatar um dia do mês para chinês
+     * @param {string} dia 
+     * @returns Dia formatado para chinês
+     */
     formatDia(dia) {
         return this.formatNumber(parseInt(dia)) + "号";
     }
 
+    /**
+     * Função para formatar uma hora para chinês
+     * @param {string} hora 
+     * @returns Hora formatada para chinês
+     */
     formatHora(hora) {
         let arrayHora = hora.split("-");
         let horaFinal = "";
@@ -127,6 +160,11 @@ class ChineseLanguageService {
         return horaFinal;
     }
 
+    /**
+     * Função para formatar uma data completa para chinês, utilizando as outras funções de conversão
+     * @param {Date} data 
+     * @returns Data completa formatada para chinês
+     */
     formatarDataCompleta(data) {
         let dataString = data.toString()
         let arrayData = dataString.split("/");

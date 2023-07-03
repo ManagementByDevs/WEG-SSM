@@ -33,8 +33,11 @@ import SecaoTIService from "../../service/secaoTIService";
 import PropostaService from "../../service/propostaService";
 import ExportPdfService from "../../service/exportPdfService";
 import CookieService from "../../service/cookieService";
+import AnexoService from "../../service/anexoService";
+
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
+import dateService from "../../service/dateService";
 
 // Variável de exemplo de proposta
 const propostaExample = EntitiesObjectService.proposta();
@@ -356,6 +359,15 @@ const DetalhesPropostaEditMode = ({
     return true;
   };
 
+  /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
+  const retornarIdsObjetos = (listaObjetos) => {
+    let listaNova = [];
+    for (let objeto of listaObjetos) {
+      listaNova.push({ id: objeto.id });
+    }
+    return listaNova;
+  };
+
   /** Salva as edições da proposta no banco de dados */
   const saveProposal = () => {
     // Verificação dos campos
@@ -393,40 +405,23 @@ const DetalhesPropostaEditMode = ({
       }
     });
 
-    let listaIdsAnexos = [];
-    JSON.parse(JSON.stringify(propostaAux.anexo)).filter((anexo) => {
-      if (anexo.id) {
-        // Se existir ID ele já existia
-        propostaAux.anexo.splice(
-          propostaAux.anexo.findIndex((element) => element == anexo),
-          1
-        );
-        listaIdsAnexos.push(anexo.id);
-      }
-    });
+    propostaAux.anexo = retornarIdsObjetos(propostaAux.anexo);
+    propostaAux.demanda = { id: propostaAux.demanda.id }
 
-    // Verifica se o anexo não existia antes de ser editado e o adiciona na lista de novos anexos
-    let novosAnexos = [];
-    for (let anexo of proposta.anexo) {
-      if (!anexo.id) {
-        novosAnexos.push(anexo);
-      }
-    }
-
-    propostaAux.anexo = []; // Setando como lista vazia porque os anexos estão sendo mandados em outras variáveis
+    propostaAux.inicioExecucao = dateService.formatarDataRequisicao(propostaAux.inicioExecucao);
+    propostaAux.fimExecucao = dateService.formatarDataRequisicao(propostaAux.fimExecucao);
 
     // Se o usuário quiser setar algum parecer como NONE, deve-se apagar o parecer no banco
     if (propostaAux.parecerComissao == "NONE")
       propostaAux.parecerComissao = null;
     if (propostaAux.parecerDG == "NONE") propostaAux.parecerDG = null;
 
+    console.log(propostaAux);
     PropostaService.putComNovosDados(
       propostaAux,
       proposta.id,
       novasTabelasCusto,
-      novosBeneficios,
-      novosAnexos,
-      listaIdsAnexos
+      novosBeneficios
     ).then((response) => {
       setPropostaData(response);
       setIsEditing(false);
@@ -652,10 +647,13 @@ const DetalhesPropostaEditMode = ({
   /** Handler para quando for selecionado um ou mais arquivos */
   const handleOnFilesSelect = () => {
     if (!existsInAnexos(inputFile.current.files)) {
-      setProposta({
-        ...proposta,
-        anexo: [...proposta.anexo, ...inputFile.current.files],
-      });
+
+      const listaAnexos = [...inputFile.current.files];
+      for (const anexo of listaAnexos) {
+        AnexoService.save(anexo).then((response) => {
+          setProposta({ ...proposta, anexo: [...proposta.anexo, response] });
+        })
+      }
       inputFile.current.value = "";
     } else {
       // Feedback de anexo já existente
@@ -697,10 +695,8 @@ const DetalhesPropostaEditMode = ({
   /** Handler para deletar um anexo */
   const handleOnDeleteAnexo = (file) => {
     let anexosAux = [...proposta.anexo];
-    anexosAux.splice(
-      anexosAux.findIndex((oldFile) => oldFile == file),
-      1
-    );
+    anexosAux.splice(anexosAux.findIndex((oldFile) => oldFile == file), 1);
+    AnexoService.deleteById(file.id).then(() => { })
 
     setProposta({ ...proposta, anexo: [...anexosAux] });
   };

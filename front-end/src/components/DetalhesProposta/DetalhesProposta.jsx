@@ -679,26 +679,26 @@ const DetalhesProposta = ({
                 fontSize={FontConfig.medium}
                 onClick={() =>
                   lerTexto(
-                    DateService.getTodaysDateUSFormat(
+                    DateService.getOnlyDate(
                       DateService.getDateByMySQLFormat(proposta.inicioExecucao),
                       texts.linguagem
                     ) +
                       " " +
                       texts.detalhesProposta.ate +
                       " " +
-                      DateService.getTodaysDateUSFormat(
+                      DateService.getOnlyDate(
                         DateService.getDateByMySQLFormat(proposta.fimExecucao),
                         texts.linguagem
                       )
                   )
                 }
               >
-                {DateService.getTodaysDateUSFormat(
+                {DateService.getOnlyDate(
                   DateService.getDateByMySQLFormat(proposta.inicioExecucao),
                   texts.linguagem
                 )}{" "}
                 {texts.detalhesProposta.ate}{" "}
-                {DateService.getTodaysDateUSFormat(
+                {DateService.getOnlyDate(
                   DateService.getDateByMySQLFormat(proposta.fimExecucao),
                   texts.linguagem
                 )}

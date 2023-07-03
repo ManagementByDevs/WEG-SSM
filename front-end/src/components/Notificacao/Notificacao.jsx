@@ -51,7 +51,7 @@ const Notificacao = ({
 
   const formatarData = (data) => {
     let dataAtual = DateService.getTodaysDate();
-    let dataNotificacao = DateService.getDateByPreviousDate(notificacao.data);
+    let dataNotificacao = DateService.getDateByPreviousDate(data);
 
     if (dataAtual.getDate() == dataNotificacao.getDate() &&
       dataAtual.getMonth() == dataNotificacao.getMonth() &&
@@ -67,7 +67,7 @@ const Notificacao = ({
         minutos = "0" + minutos.toString();
       }
 
-      if(texts.linguagem != "ch") {
+      if (texts.linguagem != "ch") {
         return hora + ":" + minutos;
       } else {
         return ChineseLanguageService.formatHora(hora + "-" + minutos);
@@ -83,7 +83,7 @@ const Notificacao = ({
       const mm = String(dataNotificacao.getMonth() + 1).padStart(2, "0");
       let yyyy = "null";
 
-      if(dataNotificacao.getFullYear() != dataAtual.getFullYear()) {
+      if (dataNotificacao.getFullYear() != dataAtual.getFullYear()) {
         yyyy = dataNotificacao.getFullYear();
       }
 
@@ -104,7 +104,7 @@ const Notificacao = ({
           dataFinal += dd + "/" + mm;
       }
 
-      if(yyyy != "null") {
+      if (yyyy != "null") {
         dataFinal += yyyy;
       }
       return dataFinal;
@@ -202,43 +202,10 @@ const Notificacao = ({
           onClick={(e) => {
             if (lendoTexto) {
               e.preventDefault();
-              // if (diferencaDias < 7 && diferencaDias > 1) {
-              //   lerTexto(
-              //     `${diferencaDias.toFixed(0) * 1 - 1} ${texts.notificacaoComponente.diasAtras
-              //     }`
-              //   );
-              // } else if (diferencaDias < 1 && diferencaDias > 0) {
-              //   lerTexto(texts.notificacaoComponente.hoje);
-              // } else if (diferencaDias > 7 && diferencaDias < 14) {
-              //   lerTexto(texts.notificacaoComponente.umaSemanaAtras);
-              // } else if (diferencaDias > 14 && diferencaDias < 21) {
-              //   lerTexto(texts.notificacaoComponente.duasSemanasAtras);
-              // } else if (diferencaDias > 21 && diferencaDias < 28) {
-              //   lerTexto(texts.notificacaoComponente.tresSemanasAtras);
-              // } else if (diferencaDias > 28 && diferencaDias < 30) {
-              //   lerTexto(texts.notificacaoComponente.quatroSemanasAtras);
-              // } else if (diferencaDias > 30) {
-              //   lerTexto(texts.notificacaoComponente.maisDeUmMesAtras);
-              // }
+              lerTexto(formatarData(notificacao.data))
             }
           }}
         >
-          {/* {diferencaDias < 7 && diferencaDias > 1
-            ? `${diferencaDias.toFixed(0) * 1 - 1} ${texts.notificacaoComponente.diasAtras
-            }`
-            : diferencaDias < 1 && diferencaDias > 0
-              ? texts.notificacaoComponente.hoje
-              : diferencaDias > 7 && diferencaDias < 14
-                ? texts.notificacaoComponente.umaSemanaAtras
-                : diferencaDias > 14 && diferencaDias < 21
-                  ? texts.notificacaoComponente.duasSemanasAtras
-                  : diferencaDias > 21 && diferencaDias < 28
-                    ? texts.notificacaoComponente.tresSemanasAtras
-                    : diferencaDias > 28 && diferencaDias < 30
-                      ? texts.notificacaoComponente.quatroSemanasAtras
-                      : diferencaDias > 31
-                        ? texts.notificacaoComponente.maisDeUmMesAtras
-                        : null} */}
           {formatarData(notificacao.data)}
         </Typography>
       </Box>
