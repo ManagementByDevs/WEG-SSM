@@ -54,6 +54,8 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
      * Métodos utilizados pelo filtro
      */
 
+    Page<Proposta> findByVisibilidadeAndCodigoPPMAndStatus(Boolean visibilidade, Long ppm, Status status, Pageable pageable);
+
     Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Boolean visibilidade, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
 
     Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(Boolean visibilidade, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable);

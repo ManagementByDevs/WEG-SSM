@@ -170,7 +170,11 @@ public class PropostaController {
         Departamento departamento = new DepartamentoUtil().convertJsonToModel(departamentoJson);
 
         if (codigoPPM != null) {
-            return findByPpm(pageable, codigoPPM);
+            if (status != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(propostaService.findByVisibilidadeAndCodigoPPMAndStatus(true, codigoPPM, status, pageable));
+            } else {
+                return findByPpm(pageable, codigoPPM);
+            }
         }
 
         if (presenteEm != null && !presenteEm.isEmpty()) {

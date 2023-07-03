@@ -56,7 +56,7 @@ class PropostaService {
     if (params.presenteEm != null) {
       newParams.presenteEm = params.presenteEm;
     }
-    if(params.codigoPPM != null) {
+    if (params.codigoPPM != null) {
       newParams.codigoPPM = params.codigoPPM;
     }
 
@@ -84,7 +84,7 @@ class PropostaService {
   async atualizarStatus(idProposta, statusNovo, motivoRecusa) {
     let form = new FormData();
     form.append("status", statusNovo);
-    if(motivoRecusa) {
+    if (motivoRecusa) {
       form.append("motivo", motivoRecusa);
     }
 
