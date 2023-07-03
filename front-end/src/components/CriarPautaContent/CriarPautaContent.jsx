@@ -322,9 +322,8 @@ const CriarPautaContent = () => {
       PropostaService.getPage(
         {
           ...params,
-          titulo: search,
-          // titulo: !parseInt(search) ? search : null,
-          // codigoPPM: parseInt(search) ? parseInt(search) : null,
+          titulo: !parseInt(search) ? search : null,
+          codigoPPM: parseInt(search) ? parseInt(search) : null,
         },
         ordenacao + "size=" + tamanhoPagina + "&page=" + 0
       ).then((data) => {

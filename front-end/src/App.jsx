@@ -8,7 +8,7 @@ import {
   Outlet,
 } from "react-router-dom";
 
-import { GlobalStyles } from "@mui/material";
+import { GlobalStyles, Box } from "@mui/material";
 
 import VLibras from "@djpfs/react-vlibras";
 
@@ -153,16 +153,51 @@ const App = () => {
               <SpeechRecognitionService>
                 <SpeechSynthesisContext.Provider value={speechSynthesis}>
                   <Router>
-                    <LerTexto />
-                    <GlobalStyles
-                      styles={{
-                        "div[vw].enabled": {
-                          top: "87.7% !important",
-                          marginRight: "0px !important",
-                        },
+                    <Box
+                      className=""
+                      sx={{
+                        position: "fixed",
+                        bottom: 0,
+                        right: 0,
+                        width: "8%",
+                        height: "100%",
                       }}
-                    />
-                    <VLibras forceOnload />
+                    >
+                      <Box
+                        sx={{
+                          width: "100%",
+                          height: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "start",
+                          alignItems: "end",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "end",
+                            justifyContent: "end",
+                            height: "100%",
+                            width: "50%",
+                            paddingBottom: "3.5rem",
+                          }}
+                        >
+                          <LerTexto />
+                          <GlobalStyles
+                            styles={{
+                              "div[vw].enabled": {
+                                marginRight: "0px !important",
+                                marginTop: "2rem !important",
+                                position: "unset",
+                              },
+                            }}
+                          />
+                          <VLibras forceOnload />
+                        </Box>
+                      </Box>
+                    </Box>
                     <Routes>
                       <Route path="/login" element={<Login />} />
                       <Route element={<ProtectedRoute />}>
