@@ -34,6 +34,10 @@ import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalCon
 import { WebSocketContext } from "../../service/WebSocketService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
+import Tour from "reactour";
+
+import Ajuda from "../../components/Ajuda/Ajuda";
+
 /** Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf */
 const DetalhesAta = (props) => {
 
@@ -81,6 +85,44 @@ const DetalhesAta = (props) => {
 
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
+
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  const stepsTour = [
+    {
+      selector: "#primeiro",
+      content: texts.detalhesAta.tour.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: texts.detalhesAta.tour.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: texts.detalhesAta.tour.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.detalhesAta.tour.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
   /** useEffect utilizado para mostrar uma proposta pelo seu index */
   useEffect(() => {
@@ -323,6 +365,18 @@ const DetalhesAta = (props) => {
     // Começo com o header da página
     <FundoComHeader>
       <VLibras forceOnload />
+      {/* Tour de ajuda para a publicação da ata*/}
+      <Tour
+        steps={stepsTour}
+        isOpen={isTourOpen}
+        onRequestClose={() => setIsTourOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+
+      <Ajuda onClick={() => setIsTourOpen(true)} />
+
       {/* Feedback campos faltantes */}
       <Feedback
         open={feedbackCamposFaltantes}
@@ -358,6 +412,7 @@ const DetalhesAta = (props) => {
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
+            id="segundo"
           >
             <SaveAltOutlinedIcon
               fontSize="large"
@@ -374,6 +429,7 @@ const DetalhesAta = (props) => {
           <Box
             className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
             sx={{ width: "55rem" }}
+            id="primeiro"
           >
             <Box className="flex justify-center flex-col">
               <Typography
@@ -613,13 +669,14 @@ const DetalhesAta = (props) => {
           {/* Botões de navegação entre as propostas da ata */}
           <Box
             className="flex fixed justify-end items-center"
-            sx={{ width: "22rem", bottom: "20px", right: "20px", gap: "1rem" }}
+            sx={{ width: "22rem", bottom: "20px", right: "80px", gap: "1rem" }}
           >
             <Box>
               <SpeedDial
                 ariaLabel="SpeedDial playground example"
                 icon={<DensitySmallIcon />}
                 direction="left"
+                id="terceiro"
               >
                 {actions.map((action) => (
                   <SpeedDialAction
@@ -646,6 +703,7 @@ const DetalhesAta = (props) => {
                         backgroundColor: "rgb(0, 60, 109)",
                       },
                     }}
+                    id="quarto"
                     onClick={verificarPublicarAta}
                   >
                     <DoneOutlinedIcon sx={{ color: "white " }} />

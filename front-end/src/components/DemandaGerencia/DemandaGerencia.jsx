@@ -14,6 +14,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import ChatService from "../../service/chatService";
 import UsuarioService from "../../service/usuarioService";
+import { useEffect } from "react";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
@@ -416,7 +417,7 @@ const DemandaGerencia = (props) => {
                 <Box id="terceiroCriarPropostas" className="flex relative">
                   {
                     // Se for uma proposta, mostra o icone de chat
-                    tipo === "proposta" && (
+                    tipo === "proposta" || props.dados.solicitante.tour && (
                       <Tooltip title={texts.demandaGerencia.chat}>
                         <IconButton onClick={entrarChat}>
                           <ChatOutlinedIcon

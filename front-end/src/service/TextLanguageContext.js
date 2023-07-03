@@ -461,6 +461,9 @@ const TextLanguageContext = createContext({
       tresSemanasAtras: "3 semanas atrás",
       quatroSemanasAtras: "4 semanas atrás",
       maisDeUmMesAtras: "mais de 1 mês atrás",
+      tour:{
+        tour1: "Aqui fica as notificações, podendo clicar em uma notificação para ver mais detalhes.",
+      }
     },
     notificacaoModal: {
       notificacaoLidaComSucesso: "Notificação lida com sucesso!",

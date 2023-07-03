@@ -159,8 +159,7 @@ const HomeGerencia = () => {
   const [isFirstTime, setIsFirstTime] = useState(false);
 
   /** Variável para verificar se o toru de minhas demandas foi aberto */
-  const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] =
-    useState(false);
+  const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] = useState(false);
 
   /** Objeto contendo os filtros selecionados no sistema, usado no modal de filtro */
   const [filtrosAtuais, setFiltrosAtuais] = useState({
@@ -279,14 +278,6 @@ const HomeGerencia = () => {
       },
     },
     {
-      selector: "#segundoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
       selector: "#terceiroDemandas",
       content: texts.homeGerencia.toursDemandas.tour3,
       style: {
@@ -313,6 +304,22 @@ const HomeGerencia = () => {
     {
       selector: "#sextoMinhasDemandas",
       content: texts.homeGerencia.toursMinhasDemandas.tour6,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#decimoMinhasDemandas",
+      content: texts.homeGerencia.toursDemandas.tour10,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoPropostas",
+      content: texts.homeGerencia.toursDemandas.tour11,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -1646,7 +1653,7 @@ const HomeGerencia = () => {
                   </Box>
 
                   {/* Botão de filtrar */}
-                    <React.Fragment key="right">
+                  <React.Fragment key="right">
                     <Button
                       id="terceiroDemandas"
                       className="flex"
@@ -1804,6 +1811,7 @@ const HomeGerencia = () => {
                               data: "",
                               solicitante: {
                                 nome: texts.homeGerencia.demandaParaTour,
+                                tour: true
                               },
                             }}
                             semHistorico={true}
