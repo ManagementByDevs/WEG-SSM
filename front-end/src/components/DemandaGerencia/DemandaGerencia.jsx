@@ -14,7 +14,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import ChatService from "../../service/chatService";
 import UsuarioService from "../../service/usuarioService";
-import { useEffect } from "react";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
@@ -33,6 +32,7 @@ const DemandaGerencia = (props) => {
   // Variável pare receber o tipo ( proposta ou demanda )
   const tipo = props.tipo;
 
+  // Props para verificar se o chat está visível
   const isChatVisible = props.isChatVisible;
 
   // Variável para obter o usuário logado
@@ -226,7 +226,7 @@ const DemandaGerencia = (props) => {
                       height: "10px",
                       backgroundColor: getCorStatus(),
                     }}
-                  ></Box>
+                  />
                 </Box>
               </Box>
 
@@ -437,21 +437,23 @@ const DemandaGerencia = (props) => {
                 <Box id="terceiroCriarPropostas" className="flex relative">
                   {
                     // Se for uma proposta, mostra o icone de chat
-                    (tipo === "proposta" || isChatVisible) || props.dados.solicitante.tour && (
-                      <Tooltip title={texts.demandaGerencia.chat}>
-                        <IconButton onClick={entrarChat}>
-                          <ChatOutlinedIcon
-                            id="segundoPropostas"
-                            className="delay-120 hover:scale-110 duration-300"
-                            sx={{
-                              color: "icon.main",
-                              cursor: "pointer",
-                              fontSize: "30px",
-                            }}
-                          />
-                        </IconButton>
-                      </Tooltip>
-                    )
+                    tipo === "proposta" ||
+                      isChatVisible ||
+                      (props.dados.solicitante.tour && (
+                        <Tooltip title={texts.demandaGerencia.chat}>
+                          <IconButton onClick={entrarChat}>
+                            <ChatOutlinedIcon
+                              id="segundoPropostas"
+                              className="delay-120 hover:scale-110 duration-300"
+                              sx={{
+                                color: "icon.main",
+                                cursor: "pointer",
+                                fontSize: "30px",
+                              }}
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      ))
                   }
                   {props.semHistorico == false ||
                     (props.semHistorico == null && (
