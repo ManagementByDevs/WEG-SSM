@@ -1,19 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
-import {
-  Box,
-  Typography,
-  Divider,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Paper,
-  Checkbox,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import Tour from "reactour";
+
+import { Box, Typography, Divider, Table, TableBody, TableHead, TableRow, Paper, Checkbox, IconButton, Tooltip, } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
@@ -28,6 +18,7 @@ import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalCon
 import Paginacao from "../../components/Paginacao/Paginacao";
 import NotificacaoDetermineIcon from "../../components/NotificacaoDetermineIcon/NotificacaoDetermineIcon";
 import Feedback from "../../components/Feedback/Feedback";
+import Ajuda from "../../components/Ajuda/Ajuda";
 
 import NotificacaoService from "../../service/notificacaoService";
 import DateService from "../../service/dateService";
@@ -39,6 +30,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Tela para mostrar as notificações do usuário no sistema */
 const Notificacao = (props) => {
+
   /** useContext para alterar o idioma do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -351,8 +343,57 @@ const Notificacao = (props) => {
     buscarNotificacoes();
   };
 
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  const stepsTour = [
+    {
+      selector: "#primeiro",
+      content: texts.notificacaoComponente.tour.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: texts.notificacaoComponente.tour.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: texts.notificacaoComponente.tour.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.notificacaoComponente.tour.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ]
+
   return (
     <FundoComHeader>
+      {/* Tour de ajuda para as notificações*/}
+      <Tour
+        steps={stepsTour}
+        isOpen={isTourOpen}
+        onRequestClose={() => setIsTourOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+
+      <Ajuda onClick={() => setIsTourOpen(true)} />
       {/* Feedbacks do sistema */}
       <Feedback
         open={feedback.visibilidade}
@@ -434,7 +475,7 @@ const Notificacao = (props) => {
               <Box />
             )}
             <Tooltip title={texts.notificacao.atualizar}>
-              <IconButton color="primary" onClick={handleOnRefreshClick}>
+              <IconButton id="segundo" color="primary" onClick={handleOnRefreshClick}>
                 <RefreshIcon />
               </IconButton>
             </Tooltip>
@@ -444,13 +485,14 @@ const Notificacao = (props) => {
               <ClipLoader color="#00579D" size={110} />
             </Box>
           ) : totalPaginas >= 1 ? (
-            <Box className="w-10/12 flex justify-center">
+            <Box id="primeiro" className="w-10/12 flex justify-center">
               <Paper sx={{ width: "100%" }} square>
                 <Table className="mb-8" sx={{ width: "100%" }}>
                   <TableHead>
                     <TableRow sx={{ backgroundColor: "primary.main" }}>
                       <th className="w-1/12">
                         <Checkbox
+                          id="terceiro"
                           sx={{
                             color: "white",
                             "&.Mui-checked": {
@@ -580,7 +622,7 @@ const Notificacao = (props) => {
                   </TableBody>
                 </Table>
                 {totalPaginas >= 1 && (
-                  <Box className="flex justify-end">
+                  <Box id="quarto" className="flex justify-end">
                     <Paginacao
                       totalPaginas={totalPaginas}
                       setPage={setPage}

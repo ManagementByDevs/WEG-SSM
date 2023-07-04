@@ -24,7 +24,7 @@ const Ajuda = (props) => {
       onClick={props.onClick}
       className="flex absolute items-center "
       sx={{
-        zIndex: 9999,
+        zIndex: 700,
         width: "2.5rem",
         height: "2.5rem",
         backgroundColor: "primary.main",

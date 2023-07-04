@@ -1,5 +1,4 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import ClipLoader from "react-spinners/ClipLoader";
 import {
   Box,
   Divider,
@@ -15,6 +14,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import ClipLoader from "react-spinners/ClipLoader";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -227,6 +228,7 @@ const DetalhesProposta = ({
       <Box
         className="border rounded px-10 py-4 border-t-6 relative"
         sx={{ width: "55rem", borderTopColor: "primary.main" }}
+        id="primeiro"
       >
         {/* Componente da bandeirinha do status da proposta */}
         {!onlyView && (
@@ -679,26 +681,26 @@ const DetalhesProposta = ({
                 fontSize={FontConfig.medium}
                 onClick={() =>
                   lerTexto(
-                    DateService.getTodaysDateUSFormat(
+                    DateService.getOnlyDate(
                       DateService.getDateByMySQLFormat(proposta.inicioExecucao),
                       texts.linguagem
                     ) +
                       " " +
                       texts.detalhesProposta.ate +
                       " " +
-                      DateService.getTodaysDateUSFormat(
+                      DateService.getOnlyDate(
                         DateService.getDateByMySQLFormat(proposta.fimExecucao),
                         texts.linguagem
                       )
                   )
                 }
               >
-                {DateService.getTodaysDateUSFormat(
+                {DateService.getOnlyDate(
                   DateService.getDateByMySQLFormat(proposta.inicioExecucao),
                   texts.linguagem
                 )}{" "}
                 {texts.detalhesProposta.ate}{" "}
-                {DateService.getTodaysDateUSFormat(
+                {DateService.getOnlyDate(
                   DateService.getDateByMySQLFormat(proposta.fimExecucao),
                   texts.linguagem
                 )}

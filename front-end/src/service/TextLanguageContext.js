@@ -482,6 +482,9 @@ const TextLanguageContext = createContext({
       assessment: "Assessment",
       cancelled: "Cancelled",
       done: "Done",
+      tour:{
+        tour1: "Aqui fica as notificações, podendo clicar em uma notificação para ver mais detalhes.",
+      }
     },
     notificacaoModal: {
       notificacaoLidaComSucesso: "Notificação lida com sucesso!",

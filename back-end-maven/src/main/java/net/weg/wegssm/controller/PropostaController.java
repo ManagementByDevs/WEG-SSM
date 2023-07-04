@@ -4151,15 +4151,12 @@ public class PropostaController {
      * @param id               - ID da proposta a ser atualizada
      * @param propostaJSON     - Proposta com os novos dados
      * @param novaPropostaJSON - Proposta com Benefícios e Tabelas de Custos a serem salvas no banco de dados
-     * @param listaIdsAnexos   - Lista de IDs de anexos que já pertenciam à proposta
      * @return ResponseEntity<Object> - Proposta atualizada ou mensagem de erro
      */
     @PutMapping("/update-novos-dados/{id}")
     public ResponseEntity<Object> updateComNovosDados(@PathVariable(value = "id") Long id,
                                                       @RequestParam(value = "proposta") String propostaJSON,
-                                                      @RequestParam(value = "propostaComDadosNovos", required = false) String novaPropostaJSON,
-                                                      @RequestParam(value = "listaIdsAnexos", required = false) List<String> listaIdsAnexos,
-                                                      @RequestParam(value = "listaAnexosNovos", required = false) List<MultipartFile> files
+                                                      @RequestParam(value = "propostaComDadosNovos", required = false) String novaPropostaJSON
     ) {
         Optional<Proposta> propostaOptional = propostaService.findById(id);
 
@@ -4169,7 +4166,7 @@ public class PropostaController {
 
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJaCriadaJsonToModel(propostaJSON);
-
+        
         proposta.setId(id);
 
         deleteTabelaCustosRows(propostaOptional.get(), proposta);
@@ -4235,26 +4232,6 @@ public class PropostaController {
         // Salvando os novos dados dos benefícios
         for (Beneficio beneficio : proposta.getBeneficios()) {
             beneficioService.save(beneficio);
-        }
-
-        // Colocando dados da PropostaAux para a Proposta a ser atualizada
-        if (listaIdsAnexos != null) {
-            for (String idAnexo : listaIdsAnexos) {
-                proposta.getAnexo().add(anexoService.findById(Long.parseLong(idAnexo)));
-            }
-        }
-
-        // Salvando os novos anexos adicionados na proposta
-        if (files != null) {
-            Proposta propostaAux = new Proposta();
-            propostaAux.setAnexos(files);
-
-            // Salvando os anexos no banco de dados
-            for (Anexo anexo : propostaAux.getAnexo()) {
-                anexo.setId((anexoService.save(anexo)).getId());
-            }
-
-            proposta.getAnexo().addAll(propostaAux.getAnexo());
         }
 
         if (novaPropostaJSON != null) {

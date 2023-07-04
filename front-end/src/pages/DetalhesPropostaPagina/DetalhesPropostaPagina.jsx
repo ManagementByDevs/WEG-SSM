@@ -4,8 +4,6 @@ import { useLocation, useParams } from "react-router-dom";
 
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
 
- 
-
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 
@@ -19,8 +17,13 @@ import ExportPdfService from "../../service/exportPdfService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import PropostaService from "../../service/propostaService";
 
+import Tour from "reactour";
+
+import Ajuda from "../../components/Ajuda/Ajuda";
+
 /** Página que mostra os detalhes da proposta selecionada, com opção de download para pdf */
 const DetalhesPropostaPagina = () => {
+
   /** Location utilizado para pegar os dados da proposta */
   const location = useLocation();
 
@@ -40,6 +43,36 @@ const DetalhesPropostaPagina = () => {
   /** variável para armazenar o titulo da proposta  */
   const [tituloProposta, setTituloProposta] = useState();
 
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  const stepsTour = [
+    {
+      selector: "#primeiro",
+      content: texts.detalhesProposta.tour.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: texts.detalhesProposta.tour.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: texts.detalhesProposta.tour.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
   /** useEffect utilizado para buscar o nome da proposta para colocar no arquivo pdf */
   useEffect(() => {
     // Buscando os dados da proposta usando o propostaId
@@ -47,7 +80,7 @@ const DetalhesPropostaPagina = () => {
       setTituloProposta(proposal.titulo);
     });
   }, []);
-  
+
   /** Função para abrir o modal de adicionar a pauta */
   const adicionarAPauta = () => {
     setOpenModalAddPropostaPauta(true);
@@ -67,6 +100,18 @@ const DetalhesPropostaPagina = () => {
 
   return (
     <FundoComHeader>
+
+      <Tour
+        steps={stepsTour}
+        isOpen={isTourOpen}
+        onRequestClose={() => setIsTourOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+
+      <Ajuda onClick={() => setIsTourOpen(true)} />
+
       {/* Feedback edição bem sucedida */}
       <Feedback
         open={feedbackEditSuccess}
@@ -107,13 +152,14 @@ const DetalhesPropostaPagina = () => {
       {location.state.status != "CANCELLED" &&
         location.state.presenteEm != "Pauta" &&
         location.state.presenteEm != "Ata" && (
-          <Box className="absolute bottom-4 right-6  p-1">
+          <Box className="absolute bottom-4 right-20 p-1">
             {/* Botão de adicionar proposta em pauta */}
             <Tooltip title={texts.detalhesPropostaPagina.adicionarAPauta}>
               <Button
                 variant="contained"
                 sx={{ borderRadius: "9999px" }}
                 onClick={adicionarAPauta}
+                id="terceiro"
               >
                 <PostAddOutlinedIcon
                   sx={{ fontSize: "28px", color: "text.white" }}

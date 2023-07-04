@@ -10,6 +10,7 @@ import {
   Autocomplete,
   TextField,
   Box,
+  Button,
 } from "@mui/material";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -119,6 +120,7 @@ export default function SliderBar(props) {
     <List
       sx={{ width: "18rem", bgcolor: "background.paper", padding: "0" }}
       component="nav"
+      className="h-full flex flex-col justify-between"
       aria-labelledby="nested-list-subheader"
     >
       <Box className="p-2" sx={{ backgroundColor: "primary.main" }}>
@@ -229,20 +231,27 @@ export default function SliderBar(props) {
         </Box>
       ) : (
         <Box className="flex flex-col w-full items-center mt-1">
-          <Typography
-            sx={{
-              marginY: "0.3rem",
-              textAlign: "center",
-              fontSize: FontConfig.medium,
-              fontWeight: 600,
-              color: "text.secondary",
-            }}
-            onClick={() => {
-              lerTexto(texts.sideBarFiltro.semFiltro);
-            }}
-          >
-            {texts.sideBarFiltro.semFiltro}
-          </Typography>
+          <Box>
+            <Box key={"Box Principal"} className="p-2" sx={{ backgroundColor: "primary.main" }}>
+              <Divider key={"Divisor"} />
+              <Typography
+                key={"Título Filtrar"}
+                sx={{
+                  marginY: "0.3rem",
+                  textAlign: "center",
+                  fontSize: FontConfig.big,
+                  fontWeight: 600,
+                  color: "text.white",
+                }}
+                onClick={() => {
+                  lerTexto(texts.modalOrdenacao.filtrar);
+                }}
+              >
+                {texts.modalOrdenacao.filtrar}
+              </Typography>
+              <Divider key={"Divisor 2"} />
+            </Box>
+          </Box>
         </Box>
       )}
       <Box className="my-1 p-2" sx={{ backgroundColor: "primary.main" }}>
@@ -269,10 +278,9 @@ export default function SliderBar(props) {
             {props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
               <SideBarOrdenacao
                 opcao={opcao}
-                key={index}
+                key={"Ordenação" + index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                ordenacaoNum={props.ordenacaoNum}
                 setOrdenacaoNum={props.setOrdenacaoNum}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
@@ -283,10 +291,9 @@ export default function SliderBar(props) {
             ) : props.valorAba == 4 && opcao.id != 4 ? (
               <SideBarOrdenacao
                 opcao={opcao}
-                key={index}
+                key={"Ordenação" + index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                ordenacaoNum={props.ordenacaoNum}
                 setOrdenacaoNum={props.setOrdenacaoNum}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
@@ -299,10 +306,9 @@ export default function SliderBar(props) {
               opcao.id != 1 && (
                 <SideBarOrdenacao
                   opcao={opcao}
-                  key={index}
+                  key={"Ordenação" + index}
                   ordenacaoTitulo={props.ordenacaoTitulo}
                   setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                  ordenacaoNum={props.ordenacaoNum}
                   setOrdenacaoNum={props.setOrdenacaoNum}
                   ordenacaoScore={props.ordenacaoScore}
                   setOrdenacaoScore={props.setOrdenacaoScore}
@@ -312,8 +318,24 @@ export default function SliderBar(props) {
                 />
               )
             )}
-          </>
-        ))}
+            </>
+          ))}
+        </Box>
+      <Box className="mt-4 mb-8 flex justify-center">
+        <Button
+          id="terceiroDemandas"
+          className="flex"
+          sx={{
+            backgroundColor: "primary.main",
+            color: "text.white",
+            fontSize: FontConfig.default,
+          }}
+          onClick={props.limparFiltro}
+          variant="contained"
+          disableElevation
+        >
+          {texts.modalOrdenacao.limparFiltro}
+        </Button>
       </Box>
     </List>
   );
@@ -656,7 +678,7 @@ function Input(props) {
               </MenuItem>
               {props.listaForuns.map((forum) => {
                 return (
-                  <MenuItem key={forum.idForum} value={forum}>
+                  <MenuItem key={"Fórum" + forum.idForum} value={forum}>
                     {forum.nomeForum}
                   </MenuItem>
                 );
@@ -675,7 +697,7 @@ function Input(props) {
               </MenuItem>
               {props.listaDepartamentos.map((departamento) => {
                 return (
-                  <MenuItem key={departamento.id} value={departamento}>
+                  <MenuItem key={"Departamento" + departamento.id} value={departamento}>
                     {departamento.nome}
                   </MenuItem>
                 );

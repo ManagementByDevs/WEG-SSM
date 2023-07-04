@@ -1,6 +1,19 @@
 import React, { useState, useContext, useEffect, useRef, memo } from "react";
 
-import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, FormControl, Select, MenuItem, Tooltip, } from "@mui/material";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  Typography,
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -17,7 +30,6 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 /** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
-
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -28,7 +40,9 @@ const BeneficiosDetalheDemanda = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, palavrasJuntas, localClique } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, palavrasJuntas, localClique } = useContext(
+    SpeechRecognitionContext
+  );
 
   /** UseState utilizado para mudar a cor do textArea */
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -92,12 +106,12 @@ const BeneficiosDetalheDemanda = (props) => {
 
   /** Função para formatar o tipo de benefício */
   const formatarTipoBeneficio = (tipoBeneficio) => {
-    const novoTipo = tipoBeneficio?.charAt(0) +
-      tipoBeneficio
-        ?.substring(1, tipoBeneficio?.length)
-        ?.toLowerCase() || texts.DetalhesDemanda.real;
+    const novoTipo =
+      tipoBeneficio?.charAt(0) +
+        tipoBeneficio?.substring(1, tipoBeneficio?.length)?.toLowerCase() ||
+      texts.DetalhesDemanda.real;
     return novoTipo;
-  }
+  };
 
   return (
     <Box className="flex items-center">
@@ -114,63 +128,55 @@ const BeneficiosDetalheDemanda = (props) => {
             }}
           />
           {/* Tabela que contem os beneficios */}
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} square>
             <Table sx={{ minWidth: 750 }} aria-label="customized table">
               {/* Criação do esqueleto da tabela */}
               <TableHead sx={{ backgroundColor: "primary.main" }}>
                 <TableRow>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "10%" }}
-                  >
+                  <th align="center" className="p-2" style={{ width: "10%" }}>
                     <Typography
-                      fontSize={FontConfig.big}
+                      fontSize={FontConfig.medium}
                       fontWeight="800"
                       color="text.white"
-                      onClick={() => { lerTexto(texts.BeneficiosDetalheDemanda.tipo); }}
+                      onClick={() => {
+                        lerTexto(texts.BeneficiosDetalheDemanda.tipo);
+                      }}
                     >
                       {texts.BeneficiosDetalheDemanda.tipo}
                     </Typography>
                   </th>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "15%" }}
-                  >
+                  <th align="center" className="p-2" style={{ width: "15%" }}>
                     <Typography
-                      fontSize={FontConfig.big}
+                      fontSize={FontConfig.medium}
                       fontWeight="800"
                       color="text.white"
-                      onClick={() => { lerTexto(texts.BeneficiosDetalheDemanda.valorMensal); }}
+                      onClick={() => {
+                        lerTexto(texts.BeneficiosDetalheDemanda.valorMensal);
+                      }}
                     >
                       {texts.BeneficiosDetalheDemanda.valorMensal}
                     </Typography>
                   </th>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "10%" }}
-                  >
+                  <th align="center" className="p-2" style={{ width: "10%" }}>
                     <Typography
-                      fontSize={FontConfig.big}
+                      fontSize={FontConfig.medium}
                       fontWeight="800"
                       color="text.white"
-                      onClick={() => { lerTexto(texts.BeneficiosDetalheDemanda.moeda); }}
+                      onClick={() => {
+                        lerTexto(texts.BeneficiosDetalheDemanda.moeda);
+                      }}
                     >
                       {texts.BeneficiosDetalheDemanda.moeda}
                     </Typography>
                   </th>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "30%" }}
-                  >
+                  <th align="center" className="p-2" style={{ width: "30%" }}>
                     <Typography
-                      fontSize={FontConfig.big}
+                      fontSize={FontConfig.medium}
                       fontWeight="800"
                       color="text.white"
-                      onClick={() => { lerTexto(texts.BeneficiosDetalheDemanda.memoriaCalculo); }}
+                      onClick={() => {
+                        lerTexto(texts.BeneficiosDetalheDemanda.memoriaCalculo);
+                      }}
                     >
                       {texts.BeneficiosDetalheDemanda.memoriaCalculo}
                     </Typography>
@@ -180,7 +186,7 @@ const BeneficiosDetalheDemanda = (props) => {
               <TableBody>
                 {/* Colocando as informações na tabela */}
                 <TableRow>
-                  <td align="center">
+                  <td align="center" className="p-2">
                     <FormControl
                       variant="standard"
                       sx={{ marginRight: "10px", minWidth: 90 }}
@@ -224,7 +230,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       </Select>
                     </FormControl>
                   </td>
-                  <td align="center">
+                  <td align="center" className="p-2">
                     {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
                       props.beneficio.tipoBeneficio != "Qualitativo" && (
                         <>
@@ -283,7 +289,7 @@ const BeneficiosDetalheDemanda = (props) => {
                         </>
                       )}
                   </td>
-                  <td align="center">
+                  <td align="center" className="p-2">
                     {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
                       props.beneficio.tipoBeneficio != "Qualitativo" && (
                         <FormControl
@@ -309,7 +315,7 @@ const BeneficiosDetalheDemanda = (props) => {
                         </FormControl>
                       )}
                   </td>
-                  <td className="p-5 flex justify-center overflow-auto">
+                  <td className="p-2 px-5 flex justify-center overflow-auto">
                     <Box sx={{ height: "10rem" }}>
                       {/* Caixa de texto para edição da memória cálculo */}
                       <CaixaTextoQuill
@@ -328,25 +334,25 @@ const BeneficiosDetalheDemanda = (props) => {
         </>
       ) : (
         // Benefícios não editáveis
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} square>
           <Table sx={{ minWidth: 750 }} aria-label="customized table">
             <TableHead sx={{ backgroundColor: "primary.main" }}>
               <TableRow>
-                <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
+                <th align="center" className="p-2" style={{ width: "10%" }}>
                   <Typography
-                    fontSize={FontConfig.big}
+                    fontSize={FontConfig.medium}
                     fontWeight="800"
                     color="text.white"
                     onClick={() => {
-                      lerTexto(texts.BeneficiosDetalheDemanda.tipo)
+                      lerTexto(texts.BeneficiosDetalheDemanda.tipo);
                     }}
                   >
                     {texts.BeneficiosDetalheDemanda.tipo}
                   </Typography>
                 </th>
-                <th align="center" className="p-4 w-0" style={{ width: "15%" }}>
+                <th align="center" className="p-2" style={{ width: "15%" }}>
                   <Typography
-                    fontSize={FontConfig.big}
+                    fontSize={FontConfig.medium}
                     fontWeight="800"
                     color="text.white"
                     onClick={() => {
@@ -356,9 +362,9 @@ const BeneficiosDetalheDemanda = (props) => {
                     {texts.BeneficiosDetalheDemanda.valorMensal}
                   </Typography>
                 </th>
-                <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
+                <th align="center" className="p-2" style={{ width: "10%" }}>
                   <Typography
-                    fontSize={FontConfig.big}
+                    fontSize={FontConfig.medium}
                     fontWeight="800"
                     color="text.white"
                     onClick={() => {
@@ -368,9 +374,9 @@ const BeneficiosDetalheDemanda = (props) => {
                     {texts.BeneficiosDetalheDemanda.moeda}
                   </Typography>
                 </th>
-                <th align="center" className="p-4 w-0" style={{ width: "30%" }}>
+                <th align="center" style={{ width: "30%" }}>
                   <Typography
-                    fontSize={FontConfig.big}
+                    fontSize={FontConfig.medium}
                     fontWeight="800"
                     color="text.white"
                     onClick={() => {
@@ -384,19 +390,21 @@ const BeneficiosDetalheDemanda = (props) => {
             </TableHead>
             <TableBody>
               <StyledTableRow className="flex">
-                <td align="center">
+                <td align="center" className="p-2">
                   {/* Tipo do benefício */}
                   <Typography
                     fontSize={FontConfig.medium}
                     color="text.primary"
                     onClick={() => {
-                      lerTexto(formatarTipoBeneficio(props.beneficio.tipoBeneficio));
+                      lerTexto(
+                        formatarTipoBeneficio(props.beneficio.tipoBeneficio)
+                      );
                     }}
                   >
                     {formatarTipoBeneficio(props.beneficio.tipoBeneficio)}
                   </Typography>
                 </td>
-                <td align="center">
+                <td align="center" className="p-2">
                   {/* Valor mensal */}
                   <Typography
                     fontSize={FontConfig.medium}
@@ -408,7 +416,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     {props.beneficio.valor_mensal}
                   </Typography>
                 </td>
-                <td align="center">
+                <td align="center" className="p-2">
                   {/* Moeda do benefício */}
                   <Typography
                     fontSize={FontConfig.medium}
@@ -420,12 +428,8 @@ const BeneficiosDetalheDemanda = (props) => {
                     {props.beneficio.moeda}
                   </Typography>
                 </td>
-                <td
-                  align="center"
-                  className="p-3 pl-5 pr-5 flex justify-center"
-                >
+                <td align="center" className="p-2 px-5">
                   {/* Memória de cálculo */}
-
                   <Typography
                     className="text-center"
                     fontSize={FontConfig.medium}

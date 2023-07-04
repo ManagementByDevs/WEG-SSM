@@ -32,6 +32,7 @@ const DemandaGerencia = (props) => {
   // Variável pare receber o tipo ( proposta ou demanda )
   const tipo = props.tipo;
 
+  // Props para verificar se o chat está visível
   const isChatVisible = props.isChatVisible;
 
   // Variável para obter o usuário logado
@@ -225,7 +226,7 @@ const DemandaGerencia = (props) => {
                       height: "10px",
                       backgroundColor: getCorStatus(),
                     }}
-                  ></Box>
+                  />
                 </Box>
               </Box>
 
@@ -436,7 +437,9 @@ const DemandaGerencia = (props) => {
                 <Box id="terceiroCriarPropostas" className="flex relative">
                   {
                     // Se for uma proposta, mostra o icone de chat
-                    (tipo === "proposta" || isChatVisible) && (
+                    (tipo === "proposta" ||
+                      isChatVisible ||
+                      props.dados.solicitante.tour) && (
                       <Tooltip title={texts.demandaGerencia.chat}>
                         <IconButton onClick={entrarChat}>
                           <ChatOutlinedIcon

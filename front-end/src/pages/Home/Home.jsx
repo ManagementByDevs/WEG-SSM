@@ -157,14 +157,6 @@ const Home = () => {
       },
     },
     {
-      selector: "#segundo",
-      content: texts.home.tourAjuda.iconeOredenar,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
       selector: "#terceiro",
       content: texts.home.tourAjuda.botaoFiltrar,
       style: {
@@ -212,6 +204,14 @@ const Home = () => {
         color: "#000000",
       },
     },
+    {
+      selector: "#nono",
+      content: texts.home.tourAjuda.botaoChat,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
   ];
 
   /** Passos do tour da aba de departamento */
@@ -219,14 +219,6 @@ const Home = () => {
     {
       selector: "#primeiro",
       content: texts.home.tourAjuda.barraDePesquisa,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundo",
-      content: texts.home.tourAjuda.iconeOredenar,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -809,7 +801,6 @@ const Home = () => {
                               data: "10/10/10",
                               solicitante: {
                                 id: 1,
-                                nome: texts.home.nomeDoSolicitante,
                                 tour: true,
                               },
                             }}
@@ -842,7 +833,7 @@ const Home = () => {
                               solicitante: {
                                 id: 1,
                                 nome: texts.home.nomeDoSolicitante,
-                                tour: true,
+                                tour: false,
                               },
                             }}
                           />
