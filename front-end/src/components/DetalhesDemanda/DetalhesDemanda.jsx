@@ -265,7 +265,7 @@ const DetalhesDemanda = (props) => {
   const removerAnexo = (index) => {
     if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
       removeAnexosNovos(anexosDemanda[index]);
-      AnexoService.deleteById(anexosDemanda[index].id).then((response) => {});
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { });
     } else {
       setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     }
@@ -312,7 +312,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -320,7 +320,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosNovos([]);
   };
@@ -328,7 +328,7 @@ const DetalhesDemanda = (props) => {
   /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
   const excluirAnexosAdicionados = () => {
     for (let anexo of novosAnexos) {
-      AnexoService.deleteById(anexo.id).then(() => {});
+      AnexoService.deleteById(anexo.id).then(() => { });
     }
     setNovosAnexos([]);
   };
@@ -373,7 +373,7 @@ const DetalhesDemanda = (props) => {
   const atualizarBeneficios = (listaBeneficios) => {
     for (const beneficio of listaBeneficios) {
       if (beneficio.visible) {
-        BeneficioService.put(beneficio).then((response) => {});
+        BeneficioService.put(beneficio).then((response) => { });
       }
     }
   };
@@ -387,12 +387,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-          props.dados.beneficios[index].moeda.toLowerCase() &&
+        props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo?.toLowerCase() ==
-          props.dados.beneficios[index].memoriaCalculo?.toLowerCase()
+        props.dados.beneficios[index].memoriaCalculo?.toLowerCase()
       );
     });
   };
@@ -730,8 +730,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -740,8 +740,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -1382,7 +1382,7 @@ const DetalhesDemanda = (props) => {
         className="flex fixed justify-end"
         sx={{ width: "15rem", bottom: "20px", right: "80px" }}
       >
-        {props.usuario?.tipoUsuario == "ANALISTA" &&
+        {(props.usuario?.tipoUsuario == "ANALISTA" || props.usuario?.tipoUsuario == "GESTOR") &&
           props.botao &&
           !editar &&
           props.dados.status == "BACKLOG_REVISAO" && (

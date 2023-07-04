@@ -32,6 +32,7 @@ import SideBarOrdenacao from "../SideBarOrdenacao/SideBarOrdenacao";
 
 import UsuarioService from "../../service/usuarioService";
 
+/** SliderBar para os filtros e ordenações */
 export default function SliderBar(props) {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -46,23 +47,23 @@ export default function SliderBar(props) {
   const opcoesOrdenar = [
     {
       id: 1,
-      tipo: texts.sideBarFiltro.titulo,
+      tipo: texts.sideBarFiltro?.titulo,
     },
     {
       id: 2,
-      tipo: texts.sideBarFiltro.numeroSequencial,
+      tipo: texts.sideBarFiltro?.numeroSequencial,
     },
     {
       id: 3,
-      tipo: texts.sideBarFiltro.score,
+      tipo: texts.sideBarFiltro?.score,
     },
     {
       id: 4,
-      tipo: texts.sideBarFiltro.dataReuniao,
+      tipo: texts.sideBarFiltro?.dataReuniao,
     },
     {
       id: 5,
-      tipo: texts.sideBarFiltro.dataDeCriacao,
+      tipo: texts.sideBarFiltro?.dataDeCriacao,
     },
   ];
 
@@ -70,43 +71,43 @@ export default function SliderBar(props) {
   const opcoesFiltrar = [
     {
       id: 1,
-      tipo: texts.sideBarFiltro.status,
+      tipo: texts.sideBarFiltro?.status,
     },
     {
       id: 3,
-      tipo: texts.sideBarFiltro.forum,
+      tipo: texts.sideBarFiltro?.forum,
     },
     {
       id: 4,
-      tipo: texts.sideBarFiltro.departamento,
+      tipo: texts.sideBarFiltro?.departamento,
     },
     {
       id: 5,
-      tipo: texts.sideBarFiltro.tamanho,
+      tipo: texts.sideBarFiltro?.tamanho,
     },
     {
       id: 8,
-      tipo: texts.sideBarFiltro.atribuidoA,
+      tipo: texts.sideBarFiltro?.atribuidoA,
     },
     {
       id: 9,
-      tipo: texts.sideBarFiltro.apreciada,
+      tipo: texts.sideBarFiltro?.apreciada,
     },
     {
       id: 10,
-      tipo: texts.sideBarFiltro.publicada,
+      tipo: texts.sideBarFiltro?.publicada,
     },
     {
       id: 2,
-      tipo: texts.sideBarFiltro.gerenteResponsavel,
+      tipo: texts.sideBarFiltro?.gerenteResponsavel,
     },
     {
       id: 6,
-      tipo: texts.sideBarFiltro.analistaResponsavel,
+      tipo: texts.sideBarFiltro?.analistaResponsavel,
     },
     {
       id: 7,
-      tipo: texts.sideBarFiltro.solicitante,
+      tipo: texts.sideBarFiltro?.solicitante,
     },
   ];
 
@@ -134,10 +135,10 @@ export default function SliderBar(props) {
             color: "text.white",
           }}
           onClick={() => {
-            lerTexto(texts.sideBarFiltro.filtrar);
+            lerTexto(texts.sideBarFiltro?.filtrar);
           }}
         >
-          {texts.sideBarFiltro.filtrar}
+          {texts.sideBarFiltro?.filtrar}
         </Typography>
         <Divider />
       </Box>
@@ -238,7 +239,7 @@ export default function SliderBar(props) {
               fontWeight: 600,
               color: "text.secondary",
             }}
-          >{texts.sideBarFiltro.semFiltro}</Typography>
+          >{texts.sideBarFiltro?.semFiltro}</Typography>
         </Box>
       )}
       <Box className="my-1 p-2" sx={{ backgroundColor: "primary.main" }}>
@@ -252,10 +253,10 @@ export default function SliderBar(props) {
             color: "text.white",
           }}
           onClick={() => {
-            lerTexto(texts.sideBarFiltro.ordenar);
+            lerTexto(texts.sideBarFiltro?.ordenar);
           }}
         >
-          {texts.sideBarFiltro.ordenar}
+          {texts.sideBarFiltro?.ordenar}
         </Typography>
         <Divider />
       </Box>
@@ -324,7 +325,7 @@ export default function SliderBar(props) {
           variant="contained"
           disableElevation
         >
-          {texts.sideBarFiltro.limparFilros}
+          {texts.sideBarFiltro?.limparFilros}
         </Button>
       </Box>
     </List>
@@ -487,11 +488,13 @@ function Input(props) {
   return (
     <Box className="flex flex-col items-center w-full mb-5">
       {props.opcao.id == 2 ? (
+
+        // Input de gerente
         <Box className="w-full flex justify-start">
           <Autocomplete
             {...gerentes}
-            sx={{ width: "72%", marginLeft: "8%" }}
-            noOptionsText={texts.sideBarFiltro.semResultados}
+            sx={{ width: "82%", marginLeft: "8%" }}
+            noOptionsText={texts.modalFiltroGerencia?.semResultados}
             value={props.filtro.gerente}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -501,21 +504,24 @@ function Input(props) {
             onChange={(e, value) => {
               selecionarGerente(e, value);
             }}
+            isOptionEqualToValue={(option, value) => option.id == value.id}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={texts.sideBarFiltro.gerenteResponsavel}
+                label={texts.sideBarFiltro?.gerenteResponsavel}
                 variant="standard"
               />
             )}
           />
         </Box>
       ) : props.opcao.id == 6 ? (
+
+        // Input de analista responsável
         <Box className="w-full flex justify-start">
           <Autocomplete
             {...analistas}
-            sx={{ width: "72%", marginLeft: "8%" }}
-            noOptionsText={texts.sideBarFiltro.semResultados}
+            sx={{ width: "82%", marginLeft: "8%" }}
+            noOptionsText={texts.modalFiltroGerencia?.semResultados}
             value={props.filtro.analista}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -525,21 +531,24 @@ function Input(props) {
             onChange={(e, value) => {
               selecionarAnalista(e, value);
             }}
+            isOptionEqualToValue={(option, value) => option.id == value.id}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={texts.sideBarFiltro.analistaResponsavel}
+                label={texts.sideBarFiltro?.analistaResponsavel}
                 variant="standard"
               />
             )}
           />
         </Box>
       ) : props.opcao.id == 7 ? (
+
+        // Input de solicitante
         <Box className="w-full flex justify-start">
           <Autocomplete
             {...solicitantes}
-            sx={{ width: "72%", marginLeft: "8%" }}
-            noOptionsText={texts.sideBarFiltro.semResultados}
+            sx={{ width: "82%", marginLeft: "8%" }}
+            noOptionsText={texts.modalFiltroGerencia?.semResultados}
             value={props.filtro.solicitante}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -549,10 +558,11 @@ function Input(props) {
             onChange={(e, value) => {
               selecionarSolicitante(e, value);
             }}
+            isOptionEqualToValue={(option, value) => option.id == value.id}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={texts.sideBarFiltro.labelSolicitante}
+                label={texts.sideBarFiltro?.labelSolicitante}
                 variant="standard"
               />
             )}
@@ -589,80 +599,86 @@ function Input(props) {
           </InputLabel>
           {props.opcao.id == 1 ? (
             props?.valorAba == "1" ? (
+
+              // Input de status para a aba "Minhas Demandas"
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={props.filtro.status}
-                label={"Icon" + texts.sideBarFiltro.status}
+                label={"Icon" + texts.sideBarFiltro?.status}
                 onChange={selecionarStatus}
               >
                 <MenuItem selected value={""}>
-                  {texts.sideBarFiltro.semFiltro}
+                  {texts.sideBarFiltro?.semFiltro}
                 </MenuItem>
                 <MenuItem value={"CANCELLED"}>
-                  {texts.sideBarFiltro.reprovada}
+                  {texts.sideBarFiltro?.reprovada}
                 </MenuItem>
                 <MenuItem value={"BACKLOG_REVISAO"}>
-                  {texts.sideBarFiltro.aguardandoRevisao}
+                  {texts.sideBarFiltro?.aguardandoRevisao}
                 </MenuItem>
                 <MenuItem value={"BACKLOG_EDICAO"}>
-                  {texts.sideBarFiltro.aguardandoEdicao}
+                  {texts.sideBarFiltro?.aguardandoEdicao}
                 </MenuItem>
                 <MenuItem value={"BACKLOG_APROVACAO"}>
-                  {texts.sideBarFiltro.emAprovacao}
+                  {texts.sideBarFiltro?.emAprovacao}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT"}>
-                  {texts.sideBarFiltro.aprovada}
+                  {texts.sideBarFiltro?.aprovada}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_APROVACAO"}>
-                  {texts.sideBarFiltro.emAndamento}
+                  {texts.sideBarFiltro?.emAndamento}
                 </MenuItem>
                 <MenuItem value={"DONE"}>
-                  {texts.sideBarFiltro.emDesenvolvimento}
+                  {texts.sideBarFiltro?.emDesenvolvimento}
                 </MenuItem>
               </Select>
             ) : (
+
+              // Input de status para a aba "Propostas"
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={props.filtro.status}
-                label={"Icon" + texts.sideBarFiltro.status}
+                label={"Icon" + texts.sideBarFiltro?.status}
                 onChange={selecionarStatus}
               >
                 <MenuItem selected value={""}>
-                  {texts.sideBarFiltro.semFiltro}
+                  {texts.sideBarFiltro?.semFiltro}
                 </MenuItem>
                 <MenuItem value={"CANCELLED"}>
-                  {texts.sideBarFiltro.cancelled}
+                  {texts.sideBarFiltro?.cancelled}
                 </MenuItem>
                 <MenuItem value={"BUSINESS_CASE"}>
-                  {texts.sideBarFiltro.businessCase}
+                  {texts.sideBarFiltro?.businessCase}
                 </MenuItem>
-                <MenuItem value={"DONE"}>{texts.sideBarFiltro.done}</MenuItem>
+                <MenuItem value={"DONE"}>{texts.sideBarFiltro?.done}</MenuItem>
                 <MenuItem value={"ASSESSMENT_APROVACAO"}>
-                  {texts.sideBarFiltro.assessment}
+                  {texts.sideBarFiltro?.assessment}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_EDICAO"}>
-                  {texts.sideBarFiltro.assessmentEdicao}
+                  {texts.sideBarFiltro?.assessmentEdicao}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_COMISSAO"}>
-                  {texts.sideBarFiltro.assessmentComissao}
+                  {texts.sideBarFiltro?.assessmentComissao}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_DG"}>
-                  {texts.sideBarFiltro.assessmentDg}
+                  {texts.sideBarFiltro?.assessmentDg}
                 </MenuItem>
               </Select>
             )
           ) : props.opcao.id == 3 ? (
+
+            // Input de fórum
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.filtro.forum}
-              label={"Icon" + texts.sideBarFiltro.forum}
+              label={"Icon" + texts.sideBarFiltro?.forum}
               onChange={selecionarForum}
             >
               <MenuItem selected value={""}>
-                {texts.sideBarFiltro.semFiltro}
+                {texts.sideBarFiltro?.semFiltro}
               </MenuItem>
               {props.listaForuns.map((forum) => {
                 return (
@@ -673,6 +689,8 @@ function Input(props) {
               })}
             </Select>
           ) : props.opcao.id == 4 ? (
+
+            // Input de departamento
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -681,7 +699,7 @@ function Input(props) {
               onChange={selecionarDepartamento}
             >
               <MenuItem selected value={""}>
-                {texts.sideBarFiltro.semFiltro}
+                {texts.sideBarFiltro?.semFiltro}
               </MenuItem>
               {props.listaDepartamentos.map((departamento) => {
                 return (
@@ -695,21 +713,23 @@ function Input(props) {
               })}
             </Select>
           ) : props.opcao.id == 5 ? (
+
+            // Input de tamanho
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.filtro.tamanho}
-              label={"Icon" + texts.sideBarFiltro.tamanho}
+              label={"Icon" + texts.sideBarFiltro?.tamanho}
               onChange={selecionarTamanho}
             >
               <MenuItem selected value={""}>
-                {texts.sideBarFiltro.semFiltro}
+                {texts.sideBarFiltro?.semFiltro}
               </MenuItem>
               <MenuItem value={"Muito Pequeno"}>
-                {texts.sideBarFiltro.muitoPequeno}
+                {texts.sideBarFiltro?.muitoPequeno}
               </MenuItem>
               <MenuItem value={"Pequeno"}>
-                {texts.sideBarFiltro.pequeno}
+                {texts.sideBarFiltro?.pequeno}
               </MenuItem>
               <MenuItem value={"Médio"}>
                 {texts.modalAceitarDemanda.medio}
@@ -722,23 +742,27 @@ function Input(props) {
               </MenuItem>
             </Select>
           ) : props.opcao.id == 8 ? (
+
+            // Input de "presenteEm/AtribuidoA"
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.filtro.presenteEm}
-              label={"Icon" + texts.sideBarFiltro.atribuido}
+              label={"Icon" + texts.sideBarFiltro?.atribuido}
               onChange={selecionarAtribuicao}
             >
               <MenuItem selected value={""}>
-                {texts.sideBarFiltro.semFiltro}
+                {texts.sideBarFiltro?.semFiltro}
               </MenuItem>
-              <MenuItem value={"Ata"}>{texts.sideBarFiltro.ata}</MenuItem>
-              <MenuItem value={"Pauta"}>{texts.sideBarFiltro.pauta}</MenuItem>
+              <MenuItem value={"Ata"}>{texts.sideBarFiltro?.ata}</MenuItem>
+              <MenuItem value={"Pauta"}>{texts.sideBarFiltro?.pauta}</MenuItem>
               <MenuItem value={"Solta"}>
-                {texts.sideBarFiltro.semAtribuicao}
+                {texts.sideBarFiltro?.semAtribuicao}
               </MenuItem>
             </Select>
           ) : props.opcao.id == 9 ? (
+
+            // Input de "apreciada" (atas)
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
@@ -747,16 +771,18 @@ function Input(props) {
               onChange={selecionarApreciacao}
             >
               <MenuItem value="">
-                <em>{texts.sideBarFiltro.semFiltro}</em>
+                <em>{texts.sideBarFiltro?.semFiltro}</em>
               </MenuItem>
               <MenuItem value={"Apreciada"}>
-                {texts.sideBarFiltro.apreciada}
+                {texts.sideBarFiltro?.apreciada}
               </MenuItem>
               <MenuItem value={"NaoApreciada"}>
-                {texts.sideBarFiltro.naoApreciada}
+                {texts.sideBarFiltro?.naoApreciada}
               </MenuItem>
             </Select>
           ) : props.opcao.id == 10 ? (
+
+            // Input de "publicada" (atas)
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
@@ -765,13 +791,13 @@ function Input(props) {
               onChange={selecionarPublicidade}
             >
               <MenuItem value="">
-                <em>{texts.sideBarFiltro.semFiltro}</em>
+                <em>{texts.sideBarFiltro?.semFiltro}</em>
               </MenuItem>
               <MenuItem value={"Publicado"}>
-                {texts.sideBarFiltro.publicado}
+                {texts.sideBarFiltro?.publicado}
               </MenuItem>
               <MenuItem value={"NaoPublicado"}>
-                {texts.sideBarFiltro.naoPublicado}
+                {texts.sideBarFiltro?.naoPublicado}
               </MenuItem>
             </Select>
           ) : null}

@@ -63,6 +63,52 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
+// Personalizar o slider da fonte
+const SliderMark = styled(Slider)(({ theme }) => ({
+  color: theme.palette.mode === "dark" ? "#3880ff" : "#3880ff",
+  height: 4,
+  padding: "15px 0",
+  "& .MuiSlider-thumb": {
+    height: 18,
+    width: 18,
+    backgroundColor: "#fff",
+    "&:focus, &:hover, &.Mui-active": {
+      boxShadow:
+        "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)",
+    },
+  },
+  "& .MuiSlider-valueLabel": {
+    fontSize: 13,
+    fontWeight: "normal",
+    top: 0,
+    backgroundColor: "unset",
+    color: theme.palette.text.primary,
+    "&:before": {
+      display: "none",
+    },
+    "& *": {
+      background: "transparent",
+      color: theme.palette.mode === "dark" ? "#fff" : "#000",
+    },
+  },
+  "& .MuiSlider-track": {
+    border: "none",
+  },
+  "& .MuiSlider-rail": {
+    opacity: 0.5,
+    backgroundColor: "#bfbfbf",
+  },
+  "& .MuiSlider-mark": {
+    backgroundColor: "#bfbfbf",
+    height: 9,
+    width: 2,
+    "&.MuiSlider-markActive": {
+      opacity: 1,
+      backgroundColor: "currentColor",
+    },
+  },
+}));
+
 // Modal com as preferências do usuário
 const UserModal = () => {
   //useContext para alterar o tamanho da fonte
@@ -290,64 +336,18 @@ const UserModal = () => {
     navigate("/");
   };
 
-  // Personalizar o slider da fonte
-  const SliderMark = styled(Slider)(({ theme }) => ({
-    color: theme.palette.mode === "dark" ? "#3880ff" : "#3880ff",
-    height: 4,
-    padding: "15px 0",
-    "& .MuiSlider-thumb": {
-      height: 18,
-      width: 18,
-      backgroundColor: "#fff",
-      "&:focus, &:hover, &.Mui-active": {
-        boxShadow:
-          "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)",
-      },
-    },
-    "& .MuiSlider-valueLabel": {
-      fontSize: 13,
-      fontWeight: "normal",
-      top: 0,
-      backgroundColor: "unset",
-      color: theme.palette.text.primary,
-      "&:before": {
-        display: "none",
-      },
-      "& *": {
-        background: "transparent",
-        color: theme.palette.mode === "dark" ? "#fff" : "#000",
-      },
-    },
-    "& .MuiSlider-track": {
-      border: "none",
-    },
-    "& .MuiSlider-rail": {
-      opacity: 0.5,
-      backgroundColor: "#bfbfbf",
-    },
-    "& .MuiSlider-mark": {
-      backgroundColor: "#bfbfbf",
-      height: 9,
-      width: 2,
-      "&.MuiSlider-markActive": {
-        opacity: 1,
-        backgroundColor: "currentColor",
-      },
-    },
-  }));
-
   // Mudar o value para texto
   function valuetext(value) {
     if (value === 0) {
-      return texts.userModal.normal;
+      return texts.userModal?.normal;
     } else if (value === -1) {
-      return texts.userModal.pequeno;
+      return texts.userModal?.pequeno;
     } else if (value === -2) {
-      return texts.userModal.muitoPequeno;
+      return texts.userModal?.muitoPequeno;
     } else if (value === 1) {
-      return texts.userModal.grande;
+      return texts.userModal?.grande;
     } else if (value === 2) {
-      return texts.userModal.muitoGrande;
+      return texts.userModal?.muitoGrande;
     }
   }
 
@@ -474,7 +474,7 @@ const UserModal = () => {
   return (
     <>
       {/* Botão para abrir o menu */}
-      <Tooltip title={texts.userModal.configuracoes}>
+      <Tooltip title={texts.userModal?.configuracoes}>
         <IconButton
           onClick={handleClick}
           size="small"
@@ -534,7 +534,7 @@ const UserModal = () => {
             className="gap-2"
             onClick={() => {
               if (lendoTexto) {
-                lerTexto(texts.userModal.escopos);
+                lerTexto(texts.userModal?.escopos);
               } else {
                 handleClose();
                 navigate("/escopos");
@@ -547,7 +547,7 @@ const UserModal = () => {
               fontSize={FontConfig?.medium}
               sx={{ fontWeight: 500 }}
             >
-              {texts.userModal.escopos}
+              {texts.userModal?.escopos}
             </Typography>
           </MenuItem>
 
@@ -560,7 +560,7 @@ const UserModal = () => {
             className="gap-2"
             onClick={() => {
               if (lendoTexto) {
-                lerTexto(texts.userModal.chats);
+                lerTexto(texts.userModal?.chats);
               } else {
                 handleClose();
                 navigate("/chat", { state: { userChat: true } });
@@ -577,7 +577,7 @@ const UserModal = () => {
               fontSize={FontConfig?.medium}
               sx={{ fontWeight: 500 }}
             >
-              {texts.userModal.chats}
+              {texts.userModal?.chats}
             </Typography>
           </MenuItem>
 
@@ -588,13 +588,13 @@ const UserModal = () => {
               sx={{ width: "85%" }}
             >
               {/* Letra A pequena, para diminuir a fonto */}
-              <Tooltip title={texts.userModal.diminuirFonte}>
+              <Tooltip title={texts.userModal?.diminuirFonte}>
                 <IconButton onClick={diminuirValue} size="small">
                   <Typography
                     fontSize={FontConfig?.default}
                     sx={{ cursor: "pointer" }}
                   >
-                    {texts.userModal.A}
+                    {texts.userModal?.A}
                   </Typography>
                 </IconButton>
               </Tooltip>
@@ -614,13 +614,13 @@ const UserModal = () => {
                 />
               </Box>
               {/* Letra A grande, para aumentar a fonte */}
-              <Tooltip title={texts.userModal.aumentarFonte}>
+              <Tooltip title={texts.userModal?.aumentarFonte}>
                 <IconButton onClick={aumentarValue} size="small">
                   <Typography
                     fontSize={FontConfig?.veryBig}
                     sx={{ cursor: "pointer" }}
                   >
-                    {texts.userModal.A}
+                    {texts.userModal?.A}
                   </Typography>
                 </IconButton>
               </Tooltip>
@@ -628,7 +628,7 @@ const UserModal = () => {
           </Box>
 
           <Box className="w-full flex gap-2 px-4 items-center justify-center ml-4">
-            <Tooltip title={texts.userModal.modoClaroEscuro}>
+            <Tooltip title={texts.userModal?.modoClaroEscuro}>
               <FormControlLabel
                 control={
                   <MaterialUISwitch
@@ -655,15 +655,15 @@ const UserModal = () => {
             fontSize={FontConfig?.medium}
             align="right"
             sx={{ fontWeight: 600, mt: "-16px" }}
-            onClick={() => { lerTexto(texts.userModal.sair); }}
+            onClick={() => { lerTexto(texts.userModal?.sair); }}
           >
             {
               // Se estiver lendo, o texto é o padrão, se não, é o texto de sair
               lendoTexto ? (
-                texts.userModal.sair
+                texts.userModal?.sair
               ) : (
                 <Link to={"/login"} onClick={sair}>
-                  {texts.userModal.sair}
+                  {texts.userModal?.sair}
                 </Link>
               )
             }
