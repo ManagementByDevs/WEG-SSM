@@ -86,7 +86,7 @@ export default function SliderBar(props) {
         </Typography>
         <Divider />
       </Box>
-      <Box className="flex flex-col w-full items-center mt-5">
+      <Box className="flex flex-col w-full items-center">
         {opcoesFiltrar.map((opcao, index) =>
           props.valorAba == 1 && opcao.id == 1 ? (
             <Input
@@ -95,7 +95,20 @@ export default function SliderBar(props) {
               listaFiltros={props.listaFiltros}
               setListaFiltros={props.setListaFiltros}
             />
-          ) : null
+          ) : (
+            <Box className="flex flex-col w-full items-center my-3">
+              <Typography
+                sx={{
+                  textAlign: "center",
+                  fontSize: FontConfig.big,
+                  fontWeight: 600,
+                  color: "text.secondary",
+                }}
+              >
+                {texts.sideBarFiltro.semFiltro}
+              </Typography>
+            </Box>
+          )
         )}
       </Box>
       <Box className="my-1 p-2" sx={{ backgroundColor: "primary.main" }}>
@@ -274,7 +287,7 @@ function Input(props) {
   };
 
   return (
-    <Box className="flex flex-col items-center w-full mb-5">
+    <Box className="flex flex-col items-center w-full my-5">
       <FormControl sx={{ width: "85%" }} size="small">
         <InputLabel id="demo-select-small-label" className="flex items-center">
           <BookmarkBorderOutlinedIcon className="mr-2" />
@@ -290,9 +303,7 @@ function Input(props) {
           <MenuItem selected value={""}>
             {texts.sideBarFiltro.semFiltro}
           </MenuItem>
-          <MenuItem value={"Aprovado"}>
-            {texts.sideBarFiltro.aprovada}
-          </MenuItem>
+          <MenuItem value={"Aprovado"}>{texts.sideBarFiltro.aprovada}</MenuItem>
           <MenuItem value={"Reprovado"}>
             {texts.sideBarFiltro.reprovada}
           </MenuItem>

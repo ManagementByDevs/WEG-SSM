@@ -120,7 +120,7 @@ export default function SliderBar(props) {
     <List
       sx={{ width: "18rem", bgcolor: "background.paper", padding: "0" }}
       component="nav"
-      className="h-full flex flex-col justify-between"
+      className="h-full flex flex-col"
       aria-labelledby="nested-list-subheader"
     >
       <Box className="p-2" sx={{ backgroundColor: "primary.main" }}>
@@ -230,28 +230,15 @@ export default function SliderBar(props) {
           )}
         </Box>
       ) : (
-        <Box className="flex flex-col w-full items-center mt-1">
-          <Box>
-            <Box key={"Box Principal"} className="p-2" sx={{ backgroundColor: "primary.main" }}>
-              <Divider key={"Divisor"} />
-              <Typography
-                key={"Título Filtrar"}
-                sx={{
-                  marginY: "0.3rem",
-                  textAlign: "center",
-                  fontSize: FontConfig.big,
-                  fontWeight: 600,
-                  color: "text.white",
-                }}
-                onClick={() => {
-                  lerTexto(texts.modalOrdenacao.filtrar);
-                }}
-              >
-                {texts.modalOrdenacao.filtrar}
-              </Typography>
-              <Divider key={"Divisor 2"} />
-            </Box>
-          </Box>
+        <Box className="flex flex-col w-full items-center my-3">
+          <Typography
+            sx={{
+              textAlign: "center",
+              fontSize: FontConfig.big,
+              fontWeight: 600,
+              color: "text.secondary",
+            }}
+          >{texts.sideBarFiltro.semFiltro}</Typography>
         </Box>
       )}
       <Box className="my-1 p-2" sx={{ backgroundColor: "primary.main" }}>
@@ -281,6 +268,7 @@ export default function SliderBar(props) {
                 key={"Ordenação" + index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                ordenacaoNum={props.ordenacaoNum}
                 setOrdenacaoNum={props.setOrdenacaoNum}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
@@ -294,6 +282,7 @@ export default function SliderBar(props) {
                 key={"Ordenação" + index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                ordenacaoNum={props.ordenacaoNum}
                 setOrdenacaoNum={props.setOrdenacaoNum}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
@@ -309,6 +298,7 @@ export default function SliderBar(props) {
                   key={"Ordenação" + index}
                   ordenacaoTitulo={props.ordenacaoTitulo}
                   setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                  ordenacaoNum={props.ordenacaoNum}
                   setOrdenacaoNum={props.setOrdenacaoNum}
                   ordenacaoScore={props.ordenacaoScore}
                   setOrdenacaoScore={props.setOrdenacaoScore}
@@ -318,10 +308,10 @@ export default function SliderBar(props) {
                 />
               )
             )}
-            </>
-          ))}
-        </Box>
-      <Box className="mt-4 mb-8 flex justify-center">
+          </>
+        ))}
+      </Box>
+      <Box className="mt-4 flex justify-center">
         <Button
           id="terceiroDemandas"
           className="flex"
@@ -334,7 +324,7 @@ export default function SliderBar(props) {
           variant="contained"
           disableElevation
         >
-          {texts.modalOrdenacao.limparFiltro}
+          {texts.sideBarFiltro.limparFilros}
         </Button>
       </Box>
     </List>
@@ -648,9 +638,7 @@ function Input(props) {
                 <MenuItem value={"BUSINESS_CASE"}>
                   {texts.sideBarFiltro.businessCase}
                 </MenuItem>
-                <MenuItem value={"DONE"}>
-                  {texts.sideBarFiltro.done}
-                </MenuItem>
+                <MenuItem value={"DONE"}>{texts.sideBarFiltro.done}</MenuItem>
                 <MenuItem value={"ASSESSMENT_APROVACAO"}>
                   {texts.sideBarFiltro.assessment}
                 </MenuItem>
@@ -697,7 +685,10 @@ function Input(props) {
               </MenuItem>
               {props.listaDepartamentos.map((departamento) => {
                 return (
-                  <MenuItem key={"Departamento" + departamento.id} value={departamento}>
+                  <MenuItem
+                    key={"Departamento" + departamento.id}
+                    value={departamento}
+                  >
                     {departamento.nome}
                   </MenuItem>
                 );
@@ -742,9 +733,7 @@ function Input(props) {
                 {texts.sideBarFiltro.semFiltro}
               </MenuItem>
               <MenuItem value={"Ata"}>{texts.sideBarFiltro.ata}</MenuItem>
-              <MenuItem value={"Pauta"}>
-                {texts.sideBarFiltro.pauta}
-              </MenuItem>
+              <MenuItem value={"Pauta"}>{texts.sideBarFiltro.pauta}</MenuItem>
               <MenuItem value={"Solta"}>
                 {texts.sideBarFiltro.semAtribuicao}
               </MenuItem>

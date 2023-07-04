@@ -1657,6 +1657,8 @@ const HomeGerencia = () => {
                       <SideBarFiltro
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
+                        ordenacaoNum={ordenacaoNum}
+                        setOrdenacaoNum={setOrdenacaoNum}
                         ordenacaoScore={ordenacaoScore}
                         setOrdenacaoScore={setOrdenacaoScore}
                         ordenacaoDate={ordenacaoDate}
