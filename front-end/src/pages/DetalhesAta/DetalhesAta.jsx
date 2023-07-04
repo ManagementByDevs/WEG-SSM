@@ -6,7 +6,15 @@ import Tour from "reactour";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 
-import { Box, Typography, Divider, Tooltip, ButtonBase, Input } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Tooltip,
+  ButtonBase,
+  Input,
+  Chip,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -37,7 +45,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf */
 const DetalhesAta = (props) => {
-
   /** Context para trocar a liguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -78,7 +85,8 @@ const DetalhesAta = (props) => {
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   /** Modal de confirmação para a publicação de uma ata */
-  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] = useState(false);
+  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] =
+    useState(false);
 
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
@@ -208,7 +216,8 @@ const DetalhesAta = (props) => {
           proposta.parecerDG != null &&
           numeroSequencialAtaDG != null &&
           numeroSequencialAtaDG != undefined &&
-          numeroSequencialAtaDG != "")
+          numeroSequencialAtaDG != ""
+        );
       } else {
         return (
           proposta.parecerDG != null &&
@@ -280,11 +289,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -292,9 +301,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => { }
+                () => {}
               );
               break;
           }
@@ -332,7 +341,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
+    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
 
     navigate("/", { state: { feedback: true } });
   };
@@ -349,12 +358,11 @@ const DetalhesAta = (props) => {
   /** Função para salvar o número sequencial da ata da dg digitado no input */
   const salvarNumeroSequencialAtaDG = (event) => {
     setNumeroSequencialAtaDG(event.target.value);
-  }
+  };
 
   return (
     // Começo com o header da página
     <FundoComHeader>
-
       {/* Tour de ajuda para a publicação da ata*/}
       <Tour
         steps={stepsTour}
@@ -418,141 +426,200 @@ const DetalhesAta = (props) => {
         <Box className="flex flex-col justify-center relative items-center mt-5">
           {/* container da folha */}
           <Box
-            className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
-            sx={{ width: "55rem" }}
+            className="flex flex-col gap-5 border rounded p-10 pt-6 border-t-6 relative"
+            sx={{ width: "60rem", borderTopColor: "primary.main" }}
             id="primeiro"
           >
             <Box className="flex justify-center flex-col">
-              <Typography
-                fontSize={FontConfig.title}
-                sx={{
-                  fontWeight: "600",
-                  cursor: "default",
-                  inlineSize: "800px",
-                  overflowWrap: "break-word",
-                  textAlign: "center",
-                  color: "primary.main",
-                }}
-                onClick={() => {
-                  lerTexto(texts.detalhesAta.ata);
-                }}
-              >
-                {texts.detalhesAta.ata}
-              </Typography>
-              <Typography
-                className="cursor-default mt-2"
-                fontWeight={600}
-                onClick={() => {
-                  lerTexto(
-                    texts.detalhesAta.numeroSequencial +
-                    ": " +
-                    ata.numeroSequencial
-                  );
-                }}
-              >
-                {texts.detalhesAta.numeroSequencial}: {ata.numeroSequencial}
-              </Typography>
-              <Typography
-                className="cursor-default mt-2"
-                fontWeight={600}
-                onClick={() => {
-                  lerTexto(
-                    texts.detalhesAta.dataReuniao +
-                    ": " +
-                    DateService.getTodaysDateUSFormat(
-                      ata.dataReuniao,
-                      texts.linguagem
-                    )
-                  );
-                }}
-              >
-                {/* {data reunião} */}
-                {texts.detalhesAta.dataReuniao}:{" "}
-                {DateService.getTodaysDateUSFormat(
-                  ata.dataReuniao,
-                  texts.linguagem
-                )}
-              </Typography>
-              <Typography
-                className="cursor-default mt-2"
-                fontWeight={600}
-                onClick={() => {
-                  lerTexto(
-                    texts.detalhesAta.horaReuniao +
-                    ": " +
-                    trazerHoraData(ata.dataReuniao)
-                  );
-                }}
-              >
-                {/* {Hora reunião} */}
-                {texts.detalhesAta.horaReuniao}:{" "}
-                {trazerHoraData(ata.dataReuniao)}
-              </Typography>
-              <Typography
-                className="cursor-default mt-2"
-                fontWeight={600}
-                onClick={() => {
-                  lerTexto(
-                    texts.detalhesAta.analistaResponsavel +
-                    ": " +
-                    ata.analistaResponsavel.nome
-                  );
-                }}
-              >
-                {/* {analista responsavel} */}
-                {texts.detalhesAta.analistaResponsavel}:{" "}
-                {ata.analistaResponsavel.nome}
-              </Typography>
-              <Typography
-                className="cursor-default mt-2"
-                fontWeight={600}
-                onClick={() => {
-                  lerTexto(
-                    texts.detalhesAta.comissao + ": " + ata.comissao.nomeForum
-                  );
-                }}
-              >
-                {texts.detalhesAta.comissao}: {ata.comissao.siglaForum} -{" "}
-                {ata.comissao.nomeForum}
-              </Typography>
-
-              {!ata.publicadaDg ? (
-                <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
-                  <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}>
-                    {texts.detalhesAta.numeroSequencialDG}:
-                  </Typography>
+              <Box className="w-full flex justify-between items-center mb-2">
+                <Typography
+                  fontSize={FontConfig.title}
+                  sx={{
+                    fontWeight: "600",
+                    cursor: "default",
+                    overflowWrap: "break-word",
+                    color: "primary.main",
+                  }}
+                  onClick={() => {
+                    lerTexto(texts.detalhesAta.ata);
+                  }}
+                >
+                  {texts.detalhesAta.ata}
+                </Typography>
+                <Box className="flex flex-col items-end">
                   <Typography
-                    fontSize={props.fontConfig}
-                    sx={{ fontWeight: "800", cursor: "default" }}
-                    className="text-red-600"
-                    gutterBottom
+                    className="cursor-default mt-2"
+                    fontWeight={600}
+                    onClick={() => {
+                      lerTexto(
+                        texts.detalhesAta.numeroSequencial +
+                          ": " +
+                          ata.numeroSequencial
+                      );
+                    }}
                   >
-                    *
+                    {texts.detalhesAta.numeroSequencial}: {ata.numeroSequencial}
                   </Typography>
-
-                  <Input
-                    sx={{ width: "5rem", marginLeft: "2%" }}
-                    onChange={salvarNumeroSequencialAtaDG}
+                  <Chip
+                    label={
+                      ata.publicada
+                        ? texts.pauta.publicada
+                        : texts.pauta.naoPublicada
+                    }
                   />
                 </Box>
-              ) : (
-                <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
-                  <Typography
-                    sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
-                    onClick={() => { lerTexto(texts.detalhesAta.numeroSequencialDG); }}
-                  >
-                    {texts.detalhesAta.numeroSequencialDG}:
-                  </Typography>
+              </Box>
 
-                  <Typography
-                    sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", marginLeft: "1%" }}
-                    onClick={() => { lerTexto(ata.numeroSequencialDG); }}
-                  >
-                    {ata.numeroSequencialDG}
+              <Divider />
+
+              <Box className="mt-2">
+                <Typography
+                  className="cursor-default"
+                  sx={{ marginTop: "1%" }}
+                  fontWeight={600}
+                  onClick={() => {
+                    lerTexto(
+                      texts.detalhesAta.dataReuniao +
+                        ": " +
+                        DateService.getTodaysDateUSFormat(
+                          ata.dataReuniao,
+                          texts.linguagem
+                        )
+                    );
+                  }}
+                >
+                  {/* {data reunião} */}
+                  {texts.detalhesAta.dataReuniao}:{" "}
+                  <Typography component="span">
+                    {DateService.getTodaysDateUSFormat(
+                      ata.dataReuniao,
+                      texts.linguagem
+                    )}
                   </Typography>
-                </Box>
-              )
-              }
+                </Typography>
+                <Typography
+                  className="cursor-default"
+                  sx={{ marginTop: "1%" }}
+                  fontWeight={600}
+                  onClick={() => {
+                    lerTexto(
+                      texts.detalhesAta.horaReuniao +
+                        ": " +
+                        trazerHoraData(ata.dataReuniao)
+                    );
+                  }}
+                >
+                  {/* {Hora reunião} */}
+                  {texts.detalhesAta.horaReuniao}:{" "}
+                  <Typography component="span">
+                    {trazerHoraData(ata.dataReuniao)}
+                  </Typography>
+                </Typography>
+                <Typography
+                  className="cursor-default"
+                  sx={{ marginTop: "1%" }}
+                  fontWeight={600}
+                  onClick={() => {
+                    lerTexto(
+                      texts.detalhesAta.analistaResponsavel +
+                        ": " +
+                        ata.analistaResponsavel.nome
+                    );
+                  }}
+                >
+                  {/* {analista responsavel} */}
+                  {texts.detalhesAta.analistaResponsavel}:{" "}
+                  <Typography component="span">
+                    {ata.analistaResponsavel.nome}
+                  </Typography>
+                </Typography>
+                <Typography
+                  className="cursor-default"
+                  sx={{ marginTop: "1%" }}
+                  fontWeight={600}
+                  onClick={() => {
+                    lerTexto(
+                      texts.detalhesAta.comissao + ": " + ata.comissao.nomeForum
+                    );
+                  }}
+                >
+                  {texts.detalhesAta.comissao}:{" "}
+                  <Typography component="span">
+                    {ata.comissao.siglaForum} - {ata.comissao.nomeForum}
+                  </Typography>
+                </Typography>
+
+                {!ata.publicadaDg ? (
+                  <Box
+                    className="flex"
+                    sx={{
+                      width: "80%",
+                      height: "5%",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        marginTop: "1%",
+                        fontWeight: "600",
+                        cursor: "default",
+                      }}
+                    >
+                      {texts.detalhesAta.numeroSequencialDG}:
+                    </Typography>
+                    <Typography
+                      fontSize={props.fontConfig}
+                      sx={{ fontWeight: "800", cursor: "default" }}
+                      className="text-red-600"
+                      gutterBottom
+                    >
+                      *
+                    </Typography>
+
+                    <Input
+                      size="small"
+                      sx={{ width: "5rem", marginLeft: "1%" }}
+                      onChange={salvarNumeroSequencialAtaDG}
+                    />
+                  </Box>
+                ) : (
+                  <Box
+                    sx={{
+                      marginBottom: "1%",
+                      width: "80%",
+                      height: "5%",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: "600",
+                        cursor: "default",
+                        marginTop: "1%",
+                      }}
+                      onClick={() => {
+                        lerTexto(texts.detalhesAta.numeroSequencialDG);
+                      }}
+                    >
+                      {texts.detalhesAta.numeroSequencialDG}:
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        fontWeight: "600",
+                        cursor: "default",
+                        marginTop: "1%",
+                        marginLeft: "1%",
+                      }}
+                      onClick={() => {
+                        lerTexto(ata.numeroSequencialDG);
+                      }}
+                    >
+                      {ata.numeroSequencialDG}
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
 
@@ -560,39 +627,29 @@ const DetalhesAta = (props) => {
             {!proposta ? (
               <Box>
                 <Typography
-                  fontSize={FontConfig.title}
+                  className="text-center cursor-default border-b"
+                  fontSize={FontConfig.smallTitle}
+                  fontWeight={600}
                   sx={{
-                    fontWeight: "600",
-                    cursor: "default",
-                    inlineSize: "800px",
                     overflowWrap: "break-word",
-                    textAlign: "center",
                   }}
                   color="primary.main"
-                  onClick={() => { lerTexto(texts.detalhesAta.sumario); }}
+                  onClick={() => {
+                    lerTexto(texts.detalhesAta.sumario);
+                  }}
                 >
                   {texts.detalhesAta.sumario}
                 </Typography>
-                <Box
-                  sx={{
-                    display: "grid",
-                    textAlign: "center",
-                    marginTop: "2%",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(30%, 1fr))",
-                  }}
-                >
+                <Box className="flex flex-col items-center justify-center">
                   {ata.propostas?.map((proposta, index) => {
                     return (
                       <Box
                         key={index}
-                        className="w-full border-solid border border-l-4 px-4 drop-shadow-sm rounded flex items-center mt-4"
+                        className="w-full flex items-center border-solid border border-l-4 px-4 py-2 mt-4 cursor-pointer"
                         sx={{
-                          height: "2.5rem",
                           borderLeftColor: "primary.main",
                           backgroundColor: "background.default",
                           fontWeight: "300",
-                          cursor: "pointer",
                           "&:hover": { backgroundColor: "component.main" },
                         }}
                         onClick={() => {
@@ -605,12 +662,8 @@ const DetalhesAta = (props) => {
                       >
                         <Typography
                           fontSize={FontConfig.medium}
-                          sx={{
-                            color: "primary.main",
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            textOverflow: "ellipsis",
-                          }}
+                          className="truncate"
+                          color="primary"
                         >
                           {index + 1} - {proposta.titulo}
                         </Typography>
@@ -622,21 +675,10 @@ const DetalhesAta = (props) => {
             ) : (
               // Mostrar uma proposta e seus dados
               <Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+                <Box className="flex justify-center items-center border-b mb-4">
                   <Typography
-                    sx={{
-                      marginBottom: "2%",
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                    fontSize={FontConfig.title}
-                    fontWeight={650}
+                    fontSize={FontConfig.smallTitle}
+                    fontWeight={500}
                     onClick={() => {
                       lerTexto(texts.detalhesAta.proposta);
                     }}

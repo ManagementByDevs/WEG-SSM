@@ -9,12 +9,6 @@ import {
   Select,
   Autocomplete,
   TextField,
-  ListItemIcon,
-  ListItemText,
-  ListItemButton,
-  Collapse,
-  Checkbox,
-  FormControlLabel,
   Box,
   Button,
 } from "@mui/material";
@@ -23,14 +17,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-
-import AbcOutlinedIcon from "@mui/icons-material/AbcOutlined";
-import PinOutlinedIcon from "@mui/icons-material/PinOutlined";
-import OutlinedFlagIcon from "@mui/icons-material/OutlinedFlag";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import TodayOutlinedIcon from "@mui/icons-material/TodayOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
@@ -42,8 +28,11 @@ import ContentPasteSearchOutlinedIcon from "@mui/icons-material/ContentPasteSear
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 
+import SideBarOrdenacao from "../SideBarOrdenacao/SideBarOrdenacao";
+
 import UsuarioService from "../../service/usuarioService";
 
+/** SliderBar para os filtros e ordenações */
 export default function SliderBar(props) {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -58,19 +47,23 @@ export default function SliderBar(props) {
   const opcoesOrdenar = [
     {
       id: 1,
-      tipo: texts.modalOrdenacao.titulo,
+      tipo: texts.sideBarFiltro?.titulo,
+    },
+    {
+      id: 2,
+      tipo: texts.sideBarFiltro?.numeroSequencial,
     },
     {
       id: 3,
-      tipo: texts.modalOrdenacao.score,
+      tipo: texts.sideBarFiltro?.score,
     },
     {
       id: 4,
-      tipo: texts.modalOrdenacao.dataReuniao,
+      tipo: texts.sideBarFiltro?.dataReuniao,
     },
     {
       id: 5,
-      tipo: texts.modalOrdenacao.dataDeCriacao,
+      tipo: texts.sideBarFiltro?.dataDeCriacao,
     },
   ];
 
@@ -78,43 +71,43 @@ export default function SliderBar(props) {
   const opcoesFiltrar = [
     {
       id: 1,
-      tipo: texts.SideBarFiltro.status,
+      tipo: texts.sideBarFiltro?.status,
     },
     {
       id: 3,
-      tipo: texts.SideBarFiltro.forum,
+      tipo: texts.sideBarFiltro?.forum,
     },
     {
       id: 4,
-      tipo: texts.SideBarFiltro.departamento,
+      tipo: texts.sideBarFiltro?.departamento,
     },
     {
       id: 5,
-      tipo: texts.SideBarFiltro.tamanho,
+      tipo: texts.sideBarFiltro?.tamanho,
     },
     {
       id: 8,
-      tipo: texts.SideBarFiltro.atribuidoA,
+      tipo: texts.sideBarFiltro?.atribuidoA,
     },
     {
       id: 9,
-      tipo: texts.SideBarFiltro.apreciada,
+      tipo: texts.sideBarFiltro?.apreciada,
     },
     {
       id: 10,
-      tipo: texts.SideBarFiltro.publicada,
+      tipo: texts.sideBarFiltro?.publicada,
     },
     {
       id: 2,
-      tipo: texts.SideBarFiltro.gerenteResponsavel,
+      tipo: texts.sideBarFiltro?.gerenteResponsavel,
     },
     {
       id: 6,
-      tipo: texts.SideBarFiltro.analistaResponsavel,
+      tipo: texts.sideBarFiltro?.analistaResponsavel,
     },
     {
       id: 7,
-      tipo: texts.SideBarFiltro.solicitante,
+      tipo: texts.sideBarFiltro?.solicitante,
     },
   ];
 
@@ -128,163 +121,155 @@ export default function SliderBar(props) {
     <List
       sx={{ width: "18rem", bgcolor: "background.paper", padding: "0" }}
       component="nav"
-      className="h-full flex flex-col justify-between"
+      className="h-full flex flex-col"
       aria-labelledby="nested-list-subheader"
     >
+      <Box className="p-2" sx={{ backgroundColor: "primary.main" }}>
+        <Divider />
+        <Typography
+          sx={{
+            marginY: "0.3rem",
+            textAlign: "center",
+            fontSize: FontConfig.big,
+            fontWeight: 600,
+            color: "text.white",
+          }}
+          onClick={() => {
+            lerTexto(texts.sideBarFiltro?.filtrar);
+          }}
+        >
+          {texts.sideBarFiltro?.filtrar}
+        </Typography>
+        <Divider />
+      </Box>
+      {props.valorAba != 5 ? (
+        <Box className="flex flex-col w-full items-center mt-5">
+          {opcoesFiltrar.map((opcao, index) =>
+            props.valorAba == 1 && opcao.id <= 6 ? (
+              <Input
+                key={index}
+                age={age}
+                handleChange={handleChange}
+                opcao={opcao}
+                filtro={props.filtro}
+                setFiltro={props.setFiltro}
+                filtroAtas={props.filtroAtas}
+                setFiltroAtas={props.setFiltroAtas}
+                listaForuns={props.listaForuns}
+                listaDepartamentos={props.listaDepartamentos}
+                listaSolicitantes={props.listaSolicitantes}
+                setListaSolicitantes={props.setListaSolicitantes}
+                listaGerentes={props.listaGerentes}
+                setListaGerentes={props.setListaGerentes}
+                listaAnalistas={props.listaAnalistas}
+                setListaAnalistas={props.setListaAnalistas}
+                filtroProposta={props.filtroProposta}
+              />
+            ) : (props.valorAba == 2 || props.valorAba == 3) &&
+              opcao.id > 1 &&
+              opcao.id <= 6 ? (
+              <Input
+                key={index}
+                age={age}
+                handleChange={handleChange}
+                opcao={opcao}
+                filtro={props.filtro}
+                setFiltro={props.setFiltro}
+                filtroAtas={props.filtroAtas}
+                setFiltroAtas={props.setFiltroAtas}
+                listaForuns={props.listaForuns}
+                listaDepartamentos={props.listaDepartamentos}
+                listaSolicitantes={props.listaSolicitantes}
+                setListaSolicitantes={props.setListaSolicitantes}
+                listaGerentes={props.listaGerentes}
+                setListaGerentes={props.setListaGerentes}
+                listaAnalistas={props.listaAnalistas}
+                setListaAnalistas={props.setListaAnalistas}
+                filtroProposta={props.filtroProposta}
+              />
+            ) : props.valorAba == 4 && opcao.id <= 8 ? (
+              <Input
+                key={index}
+                age={age}
+                handleChange={handleChange}
+                opcao={opcao}
+                filtro={props.filtro}
+                setFiltro={props.setFiltro}
+                filtroAtas={props.filtroAtas}
+                setFiltroAtas={props.setFiltroAtas}
+                listaForuns={props.listaForuns}
+                listaDepartamentos={props.listaDepartamentos}
+                listaSolicitantes={props.listaSolicitantes}
+                setListaSolicitantes={props.setListaSolicitantes}
+                listaGerentes={props.listaGerentes}
+                setListaGerentes={props.setListaGerentes}
+                listaAnalistas={props.listaAnalistas}
+                setListaAnalistas={props.setListaAnalistas}
+                filtroProposta={props.filtroProposta}
+              />
+            ) : props.valorAba == 6 && (opcao.id == 9 || opcao.id == 10) ? (
+              <Input
+                key={index}
+                age={age}
+                handleChange={handleChange}
+                opcao={opcao}
+                filtro={props.filtro}
+                setFiltro={props.setFiltro}
+                filtroAtas={props.filtroAtas}
+                setFiltroAtas={props.setFiltroAtas}
+                listaForuns={props.listaForuns}
+                listaDepartamentos={props.listaDepartamentos}
+                listaSolicitantes={props.listaSolicitantes}
+                setListaSolicitantes={props.setListaSolicitantes}
+                listaGerentes={props.listaGerentes}
+                setListaGerentes={props.setListaGerentes}
+                listaAnalistas={props.listaAnalistas}
+                setListaAnalistas={props.setListaAnalistas}
+                filtroProposta={props.filtroProposta}
+              />
+            ) : null
+          )}
+        </Box>
+      ) : (
+        <Box className="flex flex-col w-full items-center my-3">
+          <Typography
+            sx={{
+              textAlign: "center",
+              fontSize: FontConfig.big,
+              fontWeight: 600,
+              color: "text.secondary",
+            }}
+          >{texts.sideBarFiltro?.semFiltro}</Typography>
+        </Box>
+      )}
+      <Box className="my-1 p-2" sx={{ backgroundColor: "primary.main" }}>
+        <Divider />
+        <Typography
+          sx={{
+            marginY: "0.3rem",
+            textAlign: "center",
+            fontSize: FontConfig.big,
+            fontWeight: 600,
+            color: "text.white",
+          }}
+          onClick={() => {
+            lerTexto(texts.sideBarFiltro?.ordenar);
+          }}
+        >
+          {texts.sideBarFiltro?.ordenar}
+        </Typography>
+        <Divider />
+      </Box>
       <Box>
-        <Box key={"Box Principal"} className="p-2" sx={{ backgroundColor: "primary.main" }}>
-          <Divider key={"Divisor"} />
-          <Typography
-            key={"Título Filtrar"}
-            sx={{
-              marginY: "0.3rem",
-              textAlign: "center",
-              fontSize: FontConfig.big,
-              fontWeight: 600,
-              color: "text.white",
-            }}
-            onClick={() => {
-              lerTexto(texts.modalOrdenacao.filtrar);
-            }}
-          >
-            {texts.modalOrdenacao.filtrar}
-          </Typography>
-          <Divider key={"Divisor 2"} />
-        </Box>
-        {props.valorAba != 5 ? (
-          <Box key={"Caixa Inputs Filtro"} className="flex flex-col w-full items-center mt-5">
-            {opcoesFiltrar.map((opcao, index) =>
-              props.valorAba == 1 && opcao.id <= 6 ? (
-                <Input
-                  key={"Filtro" + index}
-                  age={age}
-                  handleChange={handleChange}
-                  opcao={opcao}
-                  filtro={props.filtro}
-                  setFiltro={props.setFiltro}
-                  filtroAtas={props.filtroAtas}
-                  setFiltroAtas={props.setFiltroAtas}
-                  listaForuns={props.listaForuns}
-                  listaDepartamentos={props.listaDepartamentos}
-                  listaSolicitantes={props.listaSolicitantes}
-                  setListaSolicitantes={props.setListaSolicitantes}
-                  listaGerentes={props.listaGerentes}
-                  setListaGerentes={props.setListaGerentes}
-                  listaAnalistas={props.listaAnalistas}
-                  setListaAnalistas={props.setListaAnalistas}
-                  filtroProposta={props.filtroProposta}
-                />
-              ) : (props.valorAba == 2 || props.valorAba == 3) &&
-                opcao.id > 1 &&
-                opcao.id <= 7 ? (
-                <Input
-                  key={"Filtro" + index}
-                  age={age}
-                  handleChange={handleChange}
-                  opcao={opcao}
-                  filtro={props.filtro}
-                  setFiltro={props.setFiltro}
-                  filtroAtas={props.filtroAtas}
-                  setFiltroAtas={props.setFiltroAtas}
-                  listaForuns={props.listaForuns}
-                  listaDepartamentos={props.listaDepartamentos}
-                  listaSolicitantes={props.listaSolicitantes}
-                  setListaSolicitantes={props.setListaSolicitantes}
-                  listaGerentes={props.listaGerentes}
-                  setListaGerentes={props.setListaGerentes}
-                  listaAnalistas={props.listaAnalistas}
-                  setListaAnalistas={props.setListaAnalistas}
-                  filtroProposta={props.filtroProposta}
-                />
-              ) : props.valorAba == 4 && opcao.id <= 8 ? (
-                <Input
-                  key={"Filtro" + index}
-                  age={age}
-                  handleChange={handleChange}
-                  opcao={opcao}
-                  filtro={props.filtro}
-                  setFiltro={props.setFiltro}
-                  filtroAtas={props.filtroAtas}
-                  setFiltroAtas={props.setFiltroAtas}
-                  listaForuns={props.listaForuns}
-                  listaDepartamentos={props.listaDepartamentos}
-                  listaSolicitantes={props.listaSolicitantes}
-                  setListaSolicitantes={props.setListaSolicitantes}
-                  listaGerentes={props.listaGerentes}
-                  setListaGerentes={props.setListaGerentes}
-                  listaAnalistas={props.listaAnalistas}
-                  setListaAnalistas={props.setListaAnalistas}
-                  filtroProposta={props.filtroProposta}
-                />
-              ) : props.valorAba == 6 && (opcao.id == 9 || opcao.id == 10) ? (
-                <Input
-                  key={"Filtro" + index}
-                  age={age}
-                  handleChange={handleChange}
-                  opcao={opcao}
-                  filtro={props.filtro}
-                  setFiltro={props.setFiltro}
-                  filtroAtas={props.filtroAtas}
-                  setFiltroAtas={props.setFiltroAtas}
-                  listaForuns={props.listaForuns}
-                  listaDepartamentos={props.listaDepartamentos}
-                  listaSolicitantes={props.listaSolicitantes}
-                  setListaSolicitantes={props.setListaSolicitantes}
-                  listaGerentes={props.listaGerentes}
-                  setListaGerentes={props.setListaGerentes}
-                  listaAnalistas={props.listaAnalistas}
-                  setListaAnalistas={props.setListaAnalistas}
-                  filtroProposta={props.filtroProposta}
-                />
-              ) : null
-            )}
-          </Box>
-        ) : (
-          <Box key={"Caixa Sem Filtro"} className="flex flex-col w-full items-center mt-1">
-            <Typography
-              key={"Texto Sem Filtro"}
-              sx={{
-                marginY: "0.3rem",
-                textAlign: "center",
-                fontSize: FontConfig.medium,
-                fontWeight: 600,
-                color: "text.secondary",
-              }}
-              onClick={() => {
-                lerTexto(texts.SideBarFiltro.semFiltro);
-              }}
-            >
-              {texts.SideBarFiltro.semFiltro}
-            </Typography>
-          </Box>
-        )}
-        <Box key={"Caixa Ordenação"} className="my-1 p-2" sx={{ backgroundColor: "primary.main" }}>
-          <Divider key={"Divisor 3"} />
-          <Typography
-            key={"Título ordenação"}
-            sx={{
-              marginY: "0.3rem",
-              textAlign: "center",
-              fontSize: FontConfig.big,
-              fontWeight: 600,
-              color: "text.white",
-            }}
-            onClick={() => {
-              lerTexto(texts.modalOrdenacao.ordenar);
-            }}
-          >
-            {texts.modalOrdenacao.ordenar}
-          </Typography>
-          <Divider key={"Divisor 4"} />
-        </Box>
-        <Box key={"Caixa Itens Ordenação"}>
-          {opcoesOrdenar.map((opcao, index) =>
-            props.valorAba < 4 && opcao.id != 4 ? (
-              <ItemOrdenacao
+        {opcoesOrdenar.map((opcao, index) => (
+          <>
+            {props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
+              <SideBarOrdenacao
                 opcao={opcao}
                 key={"Ordenação" + index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                ordenacaoNum={props.ordenacaoNum}
                 setOrdenacaoNum={props.setOrdenacaoNum}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
@@ -293,11 +278,12 @@ export default function SliderBar(props) {
                 valorAba={props.valorAba}
               />
             ) : props.valorAba == 4 && opcao.id != 4 ? (
-              <ItemOrdenacao
+              <SideBarOrdenacao
                 opcao={opcao}
                 key={"Ordenação" + index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                ordenacaoNum={props.ordenacaoNum}
                 setOrdenacaoNum={props.setOrdenacaoNum}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
@@ -308,11 +294,12 @@ export default function SliderBar(props) {
             ) : (
               props.valorAba > 4 &&
               opcao.id != 1 && (
-                <ItemOrdenacao
+                <SideBarOrdenacao
                   opcao={opcao}
                   key={"Ordenação" + index}
                   ordenacaoTitulo={props.ordenacaoTitulo}
                   setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                  ordenacaoNum={props.ordenacaoNum}
                   setOrdenacaoNum={props.setOrdenacaoNum}
                   ordenacaoScore={props.ordenacaoScore}
                   setOrdenacaoScore={props.setOrdenacaoScore}
@@ -321,11 +308,11 @@ export default function SliderBar(props) {
                   valorAba={props.valorAba}
                 />
               )
-            )
-          )}
-        </Box>
+            )}
+          </>
+        ))}
       </Box>
-      <Box className="mt-4 mb-8 flex justify-center">
+      <Box className="mt-4 flex justify-center">
         <Button
           id="terceiroDemandas"
           className="flex"
@@ -338,205 +325,10 @@ export default function SliderBar(props) {
           variant="contained"
           disableElevation
         >
-          {texts.modalOrdenacao.limparFiltro}
+          {texts.sideBarFiltro?.limparFilros}
         </Button>
       </Box>
     </List>
-  );
-}
-
-function ItemOrdenacao(props) {
-  // Context para alterar a linguagem do sistema
-  const { texts } = useContext(TextLanguageContext);
-
-  /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
-
-  // useState utilizado para abrir o modal
-  const [open, setOpen] = useState(false);
-
-  // handleClick para fechar o modal
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por score "Menor Score" */
-  const mudarCheck1 = () => {
-    props.setOrdenacaoScore([!props.ordenacaoScore[0], false]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por score "Maior Score" */
-  const mudarCheck2 = () => {
-    props.setOrdenacaoScore([false, !props.ordenacaoScore[1]]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por título "Z-A"  */
-  const mudarCheck3 = () => {
-    props.setOrdenacaoTitulo([!props.ordenacaoTitulo[0], false]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por título "A-Z"  */
-  const mudarCheck4 = () => {
-    props.setOrdenacaoTitulo([false, !props.ordenacaoTitulo[1]]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por data "Mais Velha" */
-  const mudarCheck5 = () => {
-    props.setOrdenacaoDate([!props.ordenacaoDate[0], false]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por data "Mais Nova" */
-  const mudarCheck6 = () => {
-    props.setOrdenacaoDate([false, !props.ordenacaoDate[1]]);
-  };
-
-  return (
-    <>
-      <ListItemButton onClick={handleClick}>
-        <ListItemIcon>
-          {props.opcao.id == 1 ? (
-            <AbcOutlinedIcon />
-          ) : props.opcao.id == 2 ? (
-            <PinOutlinedIcon />
-          ) : props.opcao.id == 3 ? (
-            <OutlinedFlagIcon />
-          ) : props.opcao.id == 4 ? (
-            <CalendarMonthOutlinedIcon />
-          ) : props.opcao.id == 5 ? (
-            <TodayOutlinedIcon />
-          ) : null}
-        </ListItemIcon>
-        {props.valorAba == 4 && props.opcao.id == 2 ? (
-          <ListItemText
-            onClick={() => {
-              lerTexto("PPM");
-            }}
-            primary="PPM"
-          />
-        ) : (
-          <ListItemText
-            onClick={() => {
-              lerTexto(props.opcao.tipo);
-            }}
-            primary={props.opcao.tipo}
-          />
-        )}
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Divider />
-      <Collapse in={open}>
-        <List component="div">
-          <ListItemButton>
-            {props.opcao.id == 1 ? (
-              <FormControlLabel
-                checked={props.ordenacaoTitulo[1]}
-                onChange={mudarCheck4}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.az}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.az);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 3 ? (
-              <FormControlLabel
-                checked={props.ordenacaoScore[1]}
-                onChange={mudarCheck2}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maiorScore}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maiorScore);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 4 ? (
-              <FormControlLabel
-                checked={props.ordenacaoDate[1]}
-                onChange={mudarCheck6}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maisRecente}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisRecente);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 5 ? (
-              <FormControlLabel
-                checked={props.ordenacaoDate[1]}
-                onChange={mudarCheck6}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maisRecente}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisRecente);
-                  }
-                }}
-              />
-            ) : (
-              <Box />
-            )}
-          </ListItemButton>
-          <Divider />
-          <ListItemButton>
-            {props.opcao.id == 1 ? (
-              <FormControlLabel
-                checked={props.ordenacaoTitulo[0]}
-                onChange={mudarCheck3}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.za}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.za);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 3 ? (
-              <FormControlLabel
-                checked={props.ordenacaoScore[0]}
-                onChange={mudarCheck1}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.menorScore}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.menorScore);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 4 ? (
-              <FormControlLabel
-                checked={props.ordenacaoDate[0]}
-                onChange={mudarCheck5}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maisAntiga}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisAntiga);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 5 ? (
-              <FormControlLabel
-                checked={props.ordenacaoDate[0]}
-                onChange={mudarCheck5}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maisAntiga}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisAntiga);
-                  }
-                }}
-              />
-            ) : (
-              <Box />
-            )}
-          </ListItemButton>
-          <Divider />
-        </List>
-      </Collapse>
-    </>
   );
 }
 
@@ -696,11 +488,13 @@ function Input(props) {
   return (
     <Box className="flex flex-col items-center w-full mb-5">
       {props.opcao.id == 2 ? (
+
+        // Input de gerente
         <Box className="w-full flex justify-start">
           <Autocomplete
             {...gerentes}
-            sx={{ width: "72%", marginLeft: "8%" }}
-            noOptionsText={texts.modalFiltroGerencia.semResultados}
+            sx={{ width: "82%", marginLeft: "8%" }}
+            noOptionsText={texts.modalFiltroGerencia?.semResultados}
             value={props.filtro.gerente}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -710,21 +504,24 @@ function Input(props) {
             onChange={(e, value) => {
               selecionarGerente(e, value);
             }}
+            isOptionEqualToValue={(option, value) => option.id == value.id}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={texts.modalFiltroGerencia.gerenteResponsavel}
+                label={texts.sideBarFiltro?.gerenteResponsavel}
                 variant="standard"
               />
             )}
           />
         </Box>
       ) : props.opcao.id == 6 ? (
+
+        // Input de analista responsável
         <Box className="w-full flex justify-start">
           <Autocomplete
             {...analistas}
-            sx={{ width: "72%", marginLeft: "8%" }}
-            noOptionsText={texts.modalFiltroGerencia.semResultados}
+            sx={{ width: "82%", marginLeft: "8%" }}
+            noOptionsText={texts.modalFiltroGerencia?.semResultados}
             value={props.filtro.analista}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -734,21 +531,24 @@ function Input(props) {
             onChange={(e, value) => {
               selecionarAnalista(e, value);
             }}
+            isOptionEqualToValue={(option, value) => option.id == value.id}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={texts.modalFiltroGerencia.analistaResponsavel}
+                label={texts.sideBarFiltro?.analistaResponsavel}
                 variant="standard"
               />
             )}
           />
         </Box>
       ) : props.opcao.id == 7 ? (
+
+        // Input de solicitante
         <Box className="w-full flex justify-start">
           <Autocomplete
             {...solicitantes}
-            sx={{ width: "72%", marginLeft: "8%" }}
-            noOptionsText={texts.modalFiltroGerencia.semResultados}
+            sx={{ width: "82%", marginLeft: "8%" }}
+            noOptionsText={texts.modalFiltroGerencia?.semResultados}
             value={props.filtro.solicitante}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -758,10 +558,11 @@ function Input(props) {
             onChange={(e, value) => {
               selecionarSolicitante(e, value);
             }}
+            isOptionEqualToValue={(option, value) => option.id == value.id}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={texts.modalFiltroGerencia.labelSolicitante}
+                label={texts.sideBarFiltro?.labelSolicitante}
                 variant="standard"
               />
             )}
@@ -798,82 +599,86 @@ function Input(props) {
           </InputLabel>
           {props.opcao.id == 1 ? (
             props?.valorAba == "1" ? (
+
+              // Input de status para a aba "Minhas Demandas"
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={props.filtro.status}
-                label={"Icon" + texts.modalFiltroGerencia.status}
+                label={"Icon" + texts.sideBarFiltro?.status}
                 onChange={selecionarStatus}
               >
                 <MenuItem selected value={""}>
-                  {texts.SideBarFiltro.semFiltro}
+                  {texts.sideBarFiltro?.semFiltro}
                 </MenuItem>
                 <MenuItem value={"CANCELLED"}>
-                  {texts.modalFiltroGerencia.reprovada}
+                  {texts.sideBarFiltro?.reprovada}
                 </MenuItem>
                 <MenuItem value={"BACKLOG_REVISAO"}>
-                  {texts.modalFiltroGerencia.aguardandoRevisao}
+                  {texts.sideBarFiltro?.aguardandoRevisao}
                 </MenuItem>
                 <MenuItem value={"BACKLOG_EDICAO"}>
-                  {texts.modalFiltroGerencia.aguardandoEdicao}
+                  {texts.sideBarFiltro?.aguardandoEdicao}
                 </MenuItem>
                 <MenuItem value={"BACKLOG_APROVACAO"}>
-                  {texts.modalFiltroGerencia.emAprovacao}
+                  {texts.sideBarFiltro?.emAprovacao}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT"}>
-                  {texts.modalFiltroGerencia.aprovada}
+                  {texts.sideBarFiltro?.aprovada}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_APROVACAO"}>
-                  {texts.modalFiltroGerencia.emAndamento}
+                  {texts.sideBarFiltro?.emAndamento}
                 </MenuItem>
                 <MenuItem value={"DONE"}>
-                  {texts.modalFiltroGerencia.emDesenvolvimento}
+                  {texts.sideBarFiltro?.emDesenvolvimento}
                 </MenuItem>
               </Select>
             ) : (
+
+              // Input de status para a aba "Propostas"
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={props.filtro.status}
-                label={"Icon" + texts.modalFiltroGerencia.status}
+                label={"Icon" + texts.sideBarFiltro?.status}
                 onChange={selecionarStatus}
               >
                 <MenuItem selected value={""}>
-                  {texts.SideBarFiltro.semFiltro}
+                  {texts.sideBarFiltro?.semFiltro}
                 </MenuItem>
                 <MenuItem value={"CANCELLED"}>
-                  {texts.modalFiltroGerencia.cancelled}
+                  {texts.sideBarFiltro?.cancelled}
                 </MenuItem>
                 <MenuItem value={"BUSINESS_CASE"}>
-                  {texts.modalFiltroGerencia.businessCase}
+                  {texts.sideBarFiltro?.businessCase}
                 </MenuItem>
-                <MenuItem value={"DONE"}>
-                  {texts.modalFiltroGerencia.done}
-                </MenuItem>
+                <MenuItem value={"DONE"}>{texts.sideBarFiltro?.done}</MenuItem>
                 <MenuItem value={"ASSESSMENT_APROVACAO"}>
-                  {texts.modalFiltroGerencia.assessment}
+                  {texts.sideBarFiltro?.assessment}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_EDICAO"}>
-                  {texts.modalFiltroGerencia.assessmentEdicao}
+                  {texts.sideBarFiltro?.assessmentEdicao}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_COMISSAO"}>
-                  {texts.modalFiltroGerencia.assessmentComissao}
+                  {texts.sideBarFiltro?.assessmentComissao}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_DG"}>
-                  {texts.modalFiltroGerencia.assessmentDg}
+                  {texts.sideBarFiltro?.assessmentDg}
                 </MenuItem>
               </Select>
             )
           ) : props.opcao.id == 3 ? (
+
+            // Input de fórum
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.filtro.forum}
-              label={"Icon" + texts.modalFiltroGerencia.forum}
+              label={"Icon" + texts.sideBarFiltro?.forum}
               onChange={selecionarForum}
             >
               <MenuItem selected value={""}>
-                {texts.SideBarFiltro.semFiltro}
+                {texts.sideBarFiltro?.semFiltro}
               </MenuItem>
               {props.listaForuns.map((forum) => {
                 return (
@@ -884,6 +689,8 @@ function Input(props) {
               })}
             </Select>
           ) : props.opcao.id == 4 ? (
+
+            // Input de departamento
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -892,32 +699,37 @@ function Input(props) {
               onChange={selecionarDepartamento}
             >
               <MenuItem selected value={""}>
-                {texts.SideBarFiltro.semFiltro}
+                {texts.sideBarFiltro?.semFiltro}
               </MenuItem>
               {props.listaDepartamentos.map((departamento) => {
                 return (
-                  <MenuItem key={"Departamento" + departamento.id} value={departamento}>
+                  <MenuItem
+                    key={"Departamento" + departamento.id}
+                    value={departamento}
+                  >
                     {departamento.nome}
                   </MenuItem>
                 );
               })}
             </Select>
           ) : props.opcao.id == 5 ? (
+
+            // Input de tamanho
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.filtro.tamanho}
-              label={"Icon" + texts.modalFiltroGerencia.tamanho}
+              label={"Icon" + texts.sideBarFiltro?.tamanho}
               onChange={selecionarTamanho}
             >
               <MenuItem selected value={""}>
-                {texts.SideBarFiltro.semFiltro}
+                {texts.sideBarFiltro?.semFiltro}
               </MenuItem>
               <MenuItem value={"Muito Pequeno"}>
-                {texts.modalFiltroGerencia.muitoPequeno}
+                {texts.sideBarFiltro?.muitoPequeno}
               </MenuItem>
               <MenuItem value={"Pequeno"}>
-                {texts.modalFiltroGerencia.pequeno}
+                {texts.sideBarFiltro?.pequeno}
               </MenuItem>
               <MenuItem value={"Médio"}>
                 {texts.modalAceitarDemanda.medio}
@@ -930,25 +742,27 @@ function Input(props) {
               </MenuItem>
             </Select>
           ) : props.opcao.id == 8 ? (
+
+            // Input de "presenteEm/AtribuidoA"
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.filtro.presenteEm}
-              label={"Icon" + texts.modalFiltroGerencia.atribuido}
+              label={"Icon" + texts.sideBarFiltro?.atribuido}
               onChange={selecionarAtribuicao}
             >
               <MenuItem selected value={""}>
-                {texts.SideBarFiltro.semFiltro}
+                {texts.sideBarFiltro?.semFiltro}
               </MenuItem>
-              <MenuItem value={"Ata"}>{texts.modalFiltroGerencia.ata}</MenuItem>
-              <MenuItem value={"Pauta"}>
-                {texts.modalFiltroGerencia.pauta}
-              </MenuItem>
+              <MenuItem value={"Ata"}>{texts.sideBarFiltro?.ata}</MenuItem>
+              <MenuItem value={"Pauta"}>{texts.sideBarFiltro?.pauta}</MenuItem>
               <MenuItem value={"Solta"}>
-                {texts.modalFiltroGerencia.semAtribuicao}
+                {texts.sideBarFiltro?.semAtribuicao}
               </MenuItem>
             </Select>
           ) : props.opcao.id == 9 ? (
+
+            // Input de "apreciada" (atas)
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
@@ -957,16 +771,18 @@ function Input(props) {
               onChange={selecionarApreciacao}
             >
               <MenuItem value="">
-                <em>{texts.SideBarFiltro.semFiltro}</em>
+                <em>{texts.sideBarFiltro?.semFiltro}</em>
               </MenuItem>
               <MenuItem value={"Apreciada"}>
-                {texts.SideBarFiltro.apreciada}
+                {texts.sideBarFiltro?.apreciada}
               </MenuItem>
               <MenuItem value={"NaoApreciada"}>
-                {texts.SideBarFiltro.naoApreciada}
+                {texts.sideBarFiltro?.naoApreciada}
               </MenuItem>
             </Select>
           ) : props.opcao.id == 10 ? (
+
+            // Input de "publicada" (atas)
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
@@ -975,13 +791,13 @@ function Input(props) {
               onChange={selecionarPublicidade}
             >
               <MenuItem value="">
-                <em>{texts.SideBarFiltro.semFiltro}</em>
+                <em>{texts.sideBarFiltro?.semFiltro}</em>
               </MenuItem>
               <MenuItem value={"Publicado"}>
-                {texts.SideBarFiltro.publicado}
+                {texts.sideBarFiltro?.publicado}
               </MenuItem>
               <MenuItem value={"NaoPublicado"}>
-                {texts.SideBarFiltro.naoPublicado}
+                {texts.sideBarFiltro?.naoPublicado}
               </MenuItem>
             </Select>
           ) : null}

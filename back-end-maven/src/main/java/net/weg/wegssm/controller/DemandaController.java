@@ -121,7 +121,6 @@ public class DemandaController {
         Forum forum = new ForumUtil().convertJsonToModel(forumJson);
         Departamento departamento = new DepartamentoUtil().convertJsonToModel(departamentoJson);
 
-        System.out.println(tamanho);
         if (id != null) {
             if (analista != null) {
                 if (titulo != null && !titulo.isEmpty()) {

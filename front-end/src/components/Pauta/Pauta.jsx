@@ -10,7 +10,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import DateService from "../../service/dateService";
 
 const Pautas = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -33,13 +32,13 @@ const Pautas = (props) => {
   const getDataFormatada = (dataReuniao) => {
     return props.tipo == "pauta"
       ? DateService.getTodaysDateUSFormat(
-        DateService.getDateByMySQLFormat(dataReuniao),
-        texts.linguagem
-      )
+          DateService.getDateByMySQLFormat(dataReuniao),
+          texts.linguagem
+        )
       : DateService.getFullDateUSFormat(
-        DateService.getDateByMySQLFormat(dataReuniao),
-        texts.linguagem
-      );
+          DateService.getDateByMySQLFormat(dataReuniao),
+          texts.linguagem
+        );
   };
 
   // Função que retorna a cor do status da ata
@@ -59,10 +58,12 @@ const Pautas = (props) => {
 
   return (
     <Paper
-      onClick={(e) => { props.onItemClick(props.dados); }}
+      onClick={(e) => {
+        props.onItemClick(props.dados);
+      }}
       className="flex flex-col border-t-4 pt-2 pb-3 pl-6 pr-4"
       sx={{
-        "&:hover": { backgroundColor: "hover.main", },
+        "&:hover": { backgroundColor: "hover.main" },
         borderColor: "primary.main",
         cursor: "pointer",
       }}
@@ -118,7 +119,11 @@ const Pautas = (props) => {
             </Box>
           ) : (
             <Tooltip
-              title={isApreciada || !props.dados.publicada ? texts.pauta.jaApreciada : texts.pauta.naoApreciada}
+              title={
+                isApreciada || !props.dados.publicada
+                  ? texts.pauta.jaApreciada
+                  : texts.pauta.naoApreciada
+              }
             >
               <Box
                 className="w-6 h-4 ml-3 rounded"
@@ -130,9 +135,7 @@ const Pautas = (props) => {
       </Box>
       <Box className="w-full flex">
         <Box sx={{ width: "80%" }}>
-          <Box
-            className="flex items-center mt-3"
-          >
+          <Box className="flex items-center mt-3">
             <Typography
               fontSize={FontConfig.medium}
               fontWeight="600"

@@ -140,6 +140,9 @@ class EntitiesObjectService {
       visibilidade: true,
       propostas: [this.proposta()],
       analistaResponsavel: this.usuario(),
+      score: 0,
+      publicada: false,
+      publicadaDg: false,
     };
   }
 

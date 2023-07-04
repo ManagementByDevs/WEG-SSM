@@ -18,7 +18,7 @@ import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 
 import Pauta from "../../components/Pauta/Pauta";
-import SideBarFiltro from "../../components/SideBarFiltro/SideBarFiltro";
+import SideBarFiltro from "../../components/SideBarFiltroHomeGerencia/SideBarFiltroHomeGerencia";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
@@ -530,7 +530,7 @@ const HomeGerencia = () => {
 
     setParams({
       ...params,
-      titulo: valorPesquisa,
+      titulo: inputPesquisa.current?.value,
       gerente: paramsTemp.gerente,
       analista: paramsTemp.analista,
       forum: paramsTemp.forum,
@@ -545,7 +545,6 @@ const HomeGerencia = () => {
   /** UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada */
   useEffect(() => {
     if (inputPesquisa?.current?.value) {
-      // setValorPesquisa(inputPesquisa?.current?.value);
       valorPesquisa = inputPesquisa?.current?.value;
     }
     formatarOrdenacao();
@@ -687,21 +686,21 @@ const HomeGerencia = () => {
 
   /** Função para ativar feedbacks vindos de outras páginas, chamada quando entrar na página */
   const verificarFeedbacks = () => {
-    let tipoNotficacao = localStorage.getItem("tipoFeedback");
+    let tipoNotificacao = localStorage.getItem("tipoFeedback");
 
-    if (tipoNotficacao == "1") {
+    if (tipoNotificacao == "1") {
       setFeedbackDemandaCriada(true);
-    } else if (tipoNotficacao == "2") {
+    } else if (tipoNotificacao == "2") {
       setFeedbackDemandaAceita(true);
-    } else if (tipoNotficacao == "3") {
+    } else if (tipoNotificacao == "3") {
       setFeedbackDemandaDevolvida(true);
-    } else if (tipoNotficacao == "4") {
+    } else if (tipoNotificacao == "4") {
       setFeedbackDemandaRecusada(true);
-    } else if (tipoNotficacao == "5") {
+    } else if (tipoNotificacao == "5") {
       setFeedbackPropostaCriada(true);
-    } else if (tipoNotficacao == "6") {
+    } else if (tipoNotificacao == "6") {
       setFeedbackAdicionarPauta(true);
-    } else if (tipoNotficacao == "7") {
+    } else if (tipoNotificacao == "7") {
       setFeedbackPautaCriada(true);
     }
 
@@ -710,11 +709,7 @@ const HomeGerencia = () => {
 
   /** Função para buscar o usuário logado no sistema pelo cookie salvo no navegador */
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
-      (e) => {
-        setUsuario(e);
-      }
-    );
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((e) => { setUsuario(e) });
   };
 
   /** Função para buscar a lista de fóruns e departamentos do sistema para o modal de filtros */
@@ -898,7 +893,7 @@ const HomeGerencia = () => {
 
   /** Função para ir na tela de detalhes da demanda, salvando a demanda no location state */
   const verDemanda = (demanda) => {
-    if (demanda.status == "ASSESSMENT" && usuario.tipoUsuario == "ANALISTA") {
+    if (demanda.status == "ASSESSMENT" && (usuario.tipoUsuario == "ANALISTA" || usuario.tipoUsuario == "GESTOR")) {
       navigate("/criar-proposta", { state: demanda });
     } else {
       navigate("/detalhes-demanda", { state: demanda.id });
@@ -1675,6 +1670,8 @@ const HomeGerencia = () => {
                       <SideBarFiltro
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
+                        ordenacaoNum={ordenacaoNum}
+                        setOrdenacaoNum={setOrdenacaoNum}
                         ordenacaoScore={ordenacaoScore}
                         setOrdenacaoScore={setOrdenacaoScore}
                         ordenacaoDate={ordenacaoDate}

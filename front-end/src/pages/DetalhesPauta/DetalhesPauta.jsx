@@ -8,6 +8,7 @@ import {
   Tooltip,
   IconButton,
   Input,
+  Chip,
 } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
@@ -553,7 +554,7 @@ const DetalhesPauta = (props) => {
         <Box className="flex flex-col justify-center relative items-center mt-5">
           <Box
             className="flex flex-col gap-5 border rounded p-10 pt-6 border-t-6 relative"
-            sx={{ width: "55rem", borderTopColor: "primary.main" }}
+            sx={{ width: "60rem", borderTopColor: "primary.main" }}
             id="primeiro"
           >
             {/* Informações do header da pauta */}
@@ -564,7 +565,6 @@ const DetalhesPauta = (props) => {
                   sx={{
                     fontWeight: "600",
                     cursor: "default",
-                    inlineSize: "800px",
                     overflowWrap: "break-word",
                     color: "primary.main",
                   }}
@@ -592,20 +592,9 @@ const DetalhesPauta = (props) => {
                   {pauta.numeroSequencial}
                 </Typography>
               </Box>
-              {/* Número sequencial */}
-              {/* <Typography
-                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
-                onClick={() => {
-                  lerTexto(
-                    texts.detalhesPauta.numeroSequencial +
-                      ": " +
-                      pauta.numeroSequencial
-                  );
-                }}
-              >
-                {texts.detalhesPauta.numeroSequencial}: {pauta.numeroSequencial}
-              </Typography> */}
+
               <Divider />
+
               {/* Comissão */}
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "2%" }}
@@ -622,6 +611,7 @@ const DetalhesPauta = (props) => {
                   {pauta.comissao.siglaForum} - {pauta.comissao.nomeForum}
                 </Typography>
               </Typography>
+
               {/* Data da reunião da comissão */}
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
@@ -644,7 +634,8 @@ const DetalhesPauta = (props) => {
                   )}
                 </Typography>
               </Typography>
-              {/* Data da reunião da DG */}
+
+              {/* Analista responsável */}
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
                 onClick={() => {
@@ -663,12 +654,11 @@ const DetalhesPauta = (props) => {
 
               {/* Input para informar o número sequencial da ata */}
               <Box
+                className="flex"
                 sx={{
                   marginBottom: "1%",
                   width: "80%",
                   height: "5%",
-                  display: "flex",
-                  flexDirection: "row",
                 }}
               >
                 <Typography
@@ -700,35 +690,34 @@ const DetalhesPauta = (props) => {
             {!proposta ? (
               // Mostrar o sumário com os títulos das propostas
               <Box>
-                <Typography
-                  fontSize={FontConfig.title}
-                  sx={{
-                    fontWeight: "600",
-                    cursor: "default",
-                    inlineSize: "800px",
-                    overflowWrap: "break-word",
-                    textAlign: "center",
-                  }}
-                  color="primary.main"
-                  onClick={() => {
-                    lerTexto(texts.detalhesPauta.sumario);
-                  }}
-                >
-                  {texts.detalhesPauta.sumario}
-                </Typography>
+                <Box className="border-b">
+                  <Typography
+                    fontSize={FontConfig.smallTitle}
+                    sx={{
+                      fontWeight: "600",
+                      cursor: "default",
+                      overflowWrap: "break-word",
+                    }}
+                    color="primary.main"
+                    onClick={() => {
+                      lerTexto(texts.detalhesPauta.sumario);
+                    }}
+                    textAlign="center"
+                  >
+                    {texts.detalhesPauta.sumario}
+                  </Typography>
+                </Box>
                 <Box className="flex flex-col items-center justify-center">
                   {isSummaryVisible ? (
                     pauta.propostas?.map((proposta, index) => {
                       return (
                         <Box
                           key={index}
-                          className="w-full border-solid border border-l-4 px-4 drop-shadow-sm rounded flex items-center mt-4"
+                          className="w-full flex items-center border-solid border border-l-4 px-4 py-2 mt-4 cursor-pointer"
                           sx={{
-                            height: "2.5rem",
                             borderLeftColor: "primary.main",
                             backgroundColor: "background.default",
                             fontWeight: "300",
-                            cursor: "pointer",
                             "&:hover": { backgroundColor: "component.main" },
                           }}
                           onClick={() => {
@@ -741,12 +730,8 @@ const DetalhesPauta = (props) => {
                         >
                           <Typography
                             fontSize={FontConfig.medium}
-                            sx={{
-                              color: "primary.main",
-                              overflow: "hidden",
-                              whiteSpace: "nowrap",
-                              textOverflow: "ellipsis",
-                            }}
+                            className="truncate"
+                            color="primary"
                           >
                             {index + 1} - {proposta.titulo}
                           </Typography>
@@ -767,40 +752,28 @@ const DetalhesPauta = (props) => {
               </Box>
             ) : (
               // Mostrar uma proposta e seus dados
-              <Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+              <Box className="w-full">
+                <Box className="flex items-center justify-center relative border-b mb-4">
                   <Typography
-                    sx={{
-                      marginBottom: "2%",
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                    fontSize={FontConfig.title}
-                    fontWeight={650}
+                    className="w-full text-center"
+                    fontSize={FontConfig.smallTitle}
+                    fontWeight={500}
                     onClick={() => {
                       lerTexto(texts.detalhesPauta.proposta);
                     }}
                   >
                     {texts.detalhesPauta.proposta} {indexProposta + 1}
                   </Typography>
-                  <IconButton
-                    sx={{ position: "absolute", left: "90%" }}
-                    onClick={onDeletePropostaClick}
-                  >
-                    <DeleteIcon
-                      sx={{
-                        width: "32px",
-                        height: "32px",
-                        color: "primary.main",
-                      }}
-                    />
-                  </IconButton>
+                  <Box className="absolute right-0">
+                    <IconButton onClick={onDeletePropostaClick} color="primary">
+                      <DeleteIcon
+                        sx={{
+                          width: "32px",
+                          height: "32px",
+                        }}
+                      />
+                    </IconButton>
+                  </Box>
                 </Box>
                 <DetalhesProposta
                   setDadosProposta={setDadosProposta}
