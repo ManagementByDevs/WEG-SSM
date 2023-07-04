@@ -96,7 +96,7 @@ export default function SliderBar(props) {
               setListaFiltros={props.setListaFiltros}
             />
           ) : (
-            <Box className="flex flex-col w-full items-center my-3">
+            <Box key={index} className="flex flex-col w-full items-center my-3">
               <Typography
                 sx={{
                   textAlign: "center",
@@ -130,9 +130,38 @@ export default function SliderBar(props) {
         <Divider />
       </Box>
       <Box>
-        {opcoesOrdenar.map((opcao, index) => (
-          <>
-            {props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
+        {opcoesOrdenar.map((opcao, index) =>
+          props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
+            <SideBarOrdenacao
+              key={index}
+              opcao={opcao}
+              ordenacaoTitulo={props.ordenacaoTitulo}
+              setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+              ordenacaoNum={props.ordenacaoNum}
+              setOrdenacaoNum={props.setOrdenacaoNum}
+              ordenacaoScore={props.ordenacaoScore}
+              setOrdenacaoScore={props.setOrdenacaoScore}
+              ordenacaoDate={props.ordenacaoDate}
+              setOrdenacaoDate={props.setOrdenacaoDate}
+              valorAba={props.valorAba}
+            />
+          ) : props.valorAba == 4 && opcao.id != 4 ? (
+            <SideBarOrdenacao
+              opcao={opcao}
+              key={index}
+              ordenacaoTitulo={props.ordenacaoTitulo}
+              setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+              ordenacaoNum={props.ordenacaoNum}
+              setOrdenacaoNum={props.setOrdenacaoNum}
+              ordenacaoScore={props.ordenacaoScore}
+              setOrdenacaoScore={props.setOrdenacaoScore}
+              ordenacaoDate={props.ordenacaoDate}
+              setOrdenacaoDate={props.setOrdenacaoDate}
+              valorAba={props.valorAba}
+            />
+          ) : (
+            props.valorAba > 4 &&
+            opcao.id != 1 && (
               <SideBarOrdenacao
                 opcao={opcao}
                 key={index}
@@ -146,40 +175,9 @@ export default function SliderBar(props) {
                 setOrdenacaoDate={props.setOrdenacaoDate}
                 valorAba={props.valorAba}
               />
-            ) : props.valorAba == 4 && opcao.id != 4 ? (
-              <SideBarOrdenacao
-                opcao={opcao}
-                key={index}
-                ordenacaoTitulo={props.ordenacaoTitulo}
-                setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                ordenacaoNum={props.ordenacaoNum}
-                setOrdenacaoNum={props.setOrdenacaoNum}
-                ordenacaoScore={props.ordenacaoScore}
-                setOrdenacaoScore={props.setOrdenacaoScore}
-                ordenacaoDate={props.ordenacaoDate}
-                setOrdenacaoDate={props.setOrdenacaoDate}
-                valorAba={props.valorAba}
-              />
-            ) : (
-              props.valorAba > 4 &&
-              opcao.id != 1 && (
-                <SideBarOrdenacao
-                  opcao={opcao}
-                  key={index}
-                  ordenacaoTitulo={props.ordenacaoTitulo}
-                  setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                  ordenacaoNum={props.ordenacaoNum}
-                  setOrdenacaoNum={props.setOrdenacaoNum}
-                  ordenacaoScore={props.ordenacaoScore}
-                  setOrdenacaoScore={props.setOrdenacaoScore}
-                  ordenacaoDate={props.ordenacaoDate}
-                  setOrdenacaoDate={props.setOrdenacaoDate}
-                  valorAba={props.valorAba}
-                />
-              )
-            )}
-          </>
-        ))}
+            )
+          )
+        )}
       </Box>
     </List>
   );

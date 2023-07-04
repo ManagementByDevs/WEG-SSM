@@ -1068,6 +1068,15 @@ const TextLanguage = (linguagem) => {
           ordenar: "Ordenar",
           filtrar: "Filtrar",
           limparFiltro: "Limpar Filtros",
+
+          aprovada: "Aprovada",
+          reprovada: "Reprovada",
+          aguardandoRevisao: "Aguardando Revisão",
+          aguardandoEdicao: "Aguardando Edição",
+          emAprovacao: "Em Aprovação",
+          aprovada: "Aprovada",
+          emAndamento: "Em Andamento",
+          emDesenvolvimento: "Em Desenvolvimento",
         },
       }
     : linguagem == "en"
@@ -2102,6 +2111,15 @@ const TextLanguage = (linguagem) => {
           ordenar: "Order",
           filtrar: "Filter",
           limparFiltro: "Clear Filters",
+
+          aprovada: "Approved",
+          reprovada: "Rejected",
+          aguardandoRevisao: "Awaiting Review",
+          aguardandoEdicao: "Awaiting Edition",
+          emAprovacao: "In Approval",
+          aprovada: "Approved",
+          emAndamento: "In Progress",
+          emDesenvolvimento: "In Development",
         },
       }
     : linguagem == "ch"
@@ -3094,6 +3112,15 @@ const TextLanguage = (linguagem) => {
           ordenar: "排序",
           filtrar: "过滤器",
           limparFiltro: "清除过滤器",
+
+          aprovada: "批准",
+          reprovada: "拒绝",
+          aguardandoRevisao: "等待审查",
+          aguardandoEdicao: "等待编辑",
+          emAprovacao: "正在批准",
+          aprovada: "批准",
+          emAndamento: "进行中",
+          emDesenvolvimento: "正在开发中",
         },
       }
     : linguagem == "es"
@@ -4128,6 +4155,14 @@ const TextLanguage = (linguagem) => {
           ordenar: "Ordenar",
           filtrar: "Filtrar",
           limparFiltro: "Filtros Claros",
+
+          reprovada: "Rechazada",
+          aguardandoRevisao: "Esperando Revisión",
+          aguardandoEdicao: "Esperando Edición",
+          emAprovacao: "En Aprobación",
+          aprovada: "Aprobada",
+          emAndamento: "En Curso",
+          emDesenvolvimento: "En Desarollo",
         },
       }
     : null;

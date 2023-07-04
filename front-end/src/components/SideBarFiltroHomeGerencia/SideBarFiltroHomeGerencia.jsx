@@ -239,7 +239,9 @@ export default function SliderBar(props) {
               fontWeight: 600,
               color: "text.secondary",
             }}
-          >{texts.sideBarFiltro.semFiltro}</Typography>
+          >
+            {texts.sideBarFiltro.semFiltro}
+          </Typography>
         </Box>
       )}
       <Box className="my-1 p-2" sx={{ backgroundColor: "primary.main" }}>
@@ -264,8 +266,8 @@ export default function SliderBar(props) {
         {opcoesOrdenar.map((opcao, index) =>
           props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
             <SideBarOrdenacao
-              opcao={opcao}
               key={"Ordenação" + index}
+              opcao={opcao}
               ordenacaoTitulo={props.ordenacaoTitulo}
               setOrdenacaoTitulo={props.setOrdenacaoTitulo}
               ordenacaoNum={props.ordenacaoNum}
@@ -278,8 +280,8 @@ export default function SliderBar(props) {
             />
           ) : props.valorAba == 4 && opcao.id != 4 ? (
             <SideBarOrdenacao
-              opcao={opcao}
               key={"Ordenação" + index}
+              opcao={opcao}
               ordenacaoTitulo={props.ordenacaoTitulo}
               setOrdenacaoTitulo={props.setOrdenacaoTitulo}
               ordenacaoNum={props.ordenacaoNum}
@@ -294,8 +296,8 @@ export default function SliderBar(props) {
             props.valorAba > 4 &&
             opcao.id != 1 && (
               <SideBarOrdenacao
-                opcao={opcao}
                 key={"Ordenação" + index}
+                opcao={opcao}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
                 ordenacaoNum={props.ordenacaoNum}
@@ -486,13 +488,12 @@ function Input(props) {
   return (
     <Box className="flex flex-col items-center w-full mb-5">
       {props.opcao.id == 2 ? (
-
         // Input de gerente
         <Box className="w-full flex justify-start">
           <Autocomplete
             {...gerentes}
             sx={{ width: "82%", marginLeft: "8%" }}
-            noOptionsText={texts.modalFiltroGerencia?.semResultados}
+            noOptionsText={texts.sideBarFiltro.semResultados}
             value={props.filtro.gerente}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -513,13 +514,12 @@ function Input(props) {
           />
         </Box>
       ) : props.opcao.id == 6 ? (
-
         // Input de analista responsável
         <Box className="w-full flex justify-start">
           <Autocomplete
             {...analistas}
             sx={{ width: "82%", marginLeft: "8%" }}
-            noOptionsText={texts.modalFiltroGerencia?.semResultados}
+            noOptionsText={texts.sideBarFiltro.semResultados}
             value={props.filtro.analista}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -540,13 +540,12 @@ function Input(props) {
           />
         </Box>
       ) : props.opcao.id == 7 ? (
-
         // Input de solicitante
         <Box className="w-full flex justify-start">
           <Autocomplete
             {...solicitantes}
             sx={{ width: "82%", marginLeft: "8%" }}
-            noOptionsText={texts.modalFiltroGerencia?.semResultados}
+            noOptionsText={texts.sideBarFiltro.semResultados}
             value={props.filtro.solicitante}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -597,7 +596,6 @@ function Input(props) {
           </InputLabel>
           {props.opcao.id == 1 ? (
             props?.valorAba == "1" ? (
-
               // Input de status para a aba "Minhas Demandas"
               <Select
                 labelId="demo-simple-select-label"
@@ -632,7 +630,6 @@ function Input(props) {
                 </MenuItem>
               </Select>
             ) : (
-
               // Input de status para a aba "Propostas"
               <Select
                 labelId="demo-simple-select-label"
@@ -666,7 +663,6 @@ function Input(props) {
               </Select>
             )
           ) : props.opcao.id == 3 ? (
-
             // Input de fórum
             <Select
               labelId="demo-simple-select-label"
@@ -687,7 +683,6 @@ function Input(props) {
               })}
             </Select>
           ) : props.opcao.id == 4 ? (
-
             // Input de departamento
             <Select
               labelId="demo-simple-select-label"
@@ -711,7 +706,6 @@ function Input(props) {
               })}
             </Select>
           ) : props.opcao.id == 5 ? (
-
             // Input de tamanho
             <Select
               labelId="demo-simple-select-label"
@@ -740,7 +734,6 @@ function Input(props) {
               </MenuItem>
             </Select>
           ) : props.opcao.id == 8 ? (
-
             // Input de "presenteEm/AtribuidoA"
             <Select
               labelId="demo-simple-select-label"
@@ -759,7 +752,6 @@ function Input(props) {
               </MenuItem>
             </Select>
           ) : props.opcao.id == 9 ? (
-
             // Input de "apreciada" (atas)
             <Select
               labelId="demo-select-small-label"
@@ -779,7 +771,6 @@ function Input(props) {
               </MenuItem>
             </Select>
           ) : props.opcao.id == 10 ? (
-
             // Input de "publicada" (atas)
             <Select
               labelId="demo-select-small-label"
