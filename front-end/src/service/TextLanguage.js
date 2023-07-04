@@ -479,6 +479,7 @@ const TextLanguage = (linguagem) => {
           dataReuniao: "Data de Reunião",
           ordenar: "Ordenar",
           filtrar: "Filtrar",
+          limparFiltro: "Limpar Filtros"
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Motivo da recusa",
@@ -957,6 +958,11 @@ const TextLanguage = (linguagem) => {
           escopoVazio: "Escopo vazio",
           semTabelasDeCusto: "Proposta sem tabelas de custo",
           semComissao: "Cancelamento fora de comissão:",
+          tour: {
+            tour1: "Aqui ficam todos os detalhes da proposta",
+            tour2: "Clicando aqui é possível baixar a proposta em PDF",
+            tour3: "Clicando nesse botão é possível adicionar a proposta em uma pauta"
+          }
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Dado inválido!",
@@ -1527,6 +1533,7 @@ const TextLanguage = (linguagem) => {
           dataReuniao: "Meeting Date",
           ordenar: "Order",
           filtrar: "Filter",
+          limparFiltro: "Clear Filters"
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Refusal Motive",
@@ -2564,6 +2571,7 @@ const TextLanguage = (linguagem) => {
           dataReuniao: "会议日期",
           ordenar: "排序",
           filtrar: "过滤器",
+          limparFiltro: "清除过滤器"
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "拒绝原因",
@@ -3565,6 +3573,7 @@ const TextLanguage = (linguagem) => {
           dataReuniao: "Fecha de la reunión",
           ordenar: "Ordenar",
           filtrar: "Filtrar",
+          limparFiltro: "Filtros Claros"
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Motivo da recusa",
