@@ -143,6 +143,7 @@ const PropostaList = ({
                     }
                   >
                     <IconButton
+                      id="nono"
                       size="small"
                       color="primary"
                       onClick={() => togglePropostaPublished(proposta)}
@@ -165,6 +166,7 @@ const PropostaList = ({
                   </Tooltip>
                   <Tooltip title={texts.criarPauta.remover}>
                     <IconButton
+                      id="oitavo"
                       size="small"
                       color="primary"
                       onClick={() => {

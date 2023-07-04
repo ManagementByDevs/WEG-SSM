@@ -570,6 +570,7 @@ const CriarPautaContent = () => {
       </Box>
       <Box className="w-full flex justify-end">
         <Button
+          id="decimo"
           variant="contained"
           disableElevation
           onClick={() => {

@@ -41,6 +41,10 @@ import NotificacaoService from "../../service/notificacaoService";
 import { WebSocketContext } from "../../service/WebSocketService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
+import Tour from "reactour";
+
+import Ajuda from "../../components/Ajuda/Ajuda";
+
 /** Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf */
 const DetalhesPauta = (props) => {
   /** Context para alterar a linguagem do sistema */
@@ -102,6 +106,44 @@ const DetalhesPauta = (props) => {
 
   /** useState utilizado para armazenar o número sequencial da ata */
   const [numeroSequencialAta, setNumeroSequencialAta] = useState();
+
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  const stepsTour = [
+    {
+      selector: "#primeiro",
+      content: texts.detalhesPauta.tour.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: texts.detalhesPauta.tour.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: texts.detalhesPauta.tour.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.detalhesPauta.tour.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
   /** useEffect utilizado para mostrar uma proposta */
   useEffect(() => {
@@ -428,6 +470,20 @@ const DetalhesPauta = (props) => {
 
   return (
     <FundoComHeader>
+      {/* Tradução para libras */}
+
+      {/* Tour de ajuda para a criação da pauta*/}
+      <Tour
+        steps={stepsTour}
+        isOpen={isTourOpen}
+        onRequestClose={() => setIsTourOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+
+      <Ajuda onClick={() => setIsTourOpen(true)} />
+
       {/* Feedback campos faltantes */}
       <Feedback
         open={feedbackCamposFaltantes}
@@ -481,6 +537,7 @@ const DetalhesPauta = (props) => {
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
+            id="segundo"
           >
             <Tooltip title={texts.detalhesPauta.baixarPDF}>
               <SaveAltOutlinedIcon
@@ -497,6 +554,7 @@ const DetalhesPauta = (props) => {
           <Box
             className="flex flex-col gap-5 border rounded p-10 pt-6 border-t-6 relative"
             sx={{ width: "55rem", borderTopColor: "primary.main" }}
+            id="primeiro"
           >
             {/* Informações do header da pauta */}
             <Box className="flex justify-center flex-col">
@@ -759,13 +817,14 @@ const DetalhesPauta = (props) => {
         {/* Botões da pauta (voltar, próximo...) */}
         <Box
           className="flex fixed justify-end items-center"
-          sx={{ width: "22rem", bottom: "20px", right: "20px", gap: "1rem" }}
+          sx={{ width: "22rem", bottom: "20px", right: "80px", gap: "1rem" }}
         >
           <Box>
             <SpeedDial
               ariaLabel="SpeedDial playground example"
               icon={<DensitySmallIcon />}
               direction="left"
+              id="terceiro"
             >
               {actions.map((action) => (
                 <SpeedDialAction
@@ -780,6 +839,7 @@ const DetalhesPauta = (props) => {
           <Box>
             <Tooltip title={texts.detalhesPauta.criarAta}>
               <Box
+                id="quarto"
                 onClick={() => {
                   if (!isAllFieldsFilled()) {
                     setFeedbackCamposFaltantes(true);

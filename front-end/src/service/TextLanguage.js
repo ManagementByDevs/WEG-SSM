@@ -513,6 +513,12 @@ const TextLanguage = (linguagem) => {
           assessment: "Assessment",
           cancelled: "Cancelled",
           done: "Done",
+          tour:{
+            tour1: "Aqui você pode ver as notificações que recebeu.",
+            tour2: "Clicando aqui você pode atualizar a página para buscar novas notificações.",
+            tour3: "Clicando aqui você pode selecionar todas as notificações, podendo ler e deletá-las.",
+            tour4: "E aqui é possível alterar a paginação das notificações.",
+          }
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notificação lida com sucesso!",
@@ -654,6 +660,12 @@ const TextLanguage = (linguagem) => {
           comissao: "Comissão",
           analistaResponsavel: "Analista Responsável",
           numeroSequencialDG: "Número Sequencial da Ata da DG",
+          tour: {
+            tour1: "Aqui você pode ver os detalhes da ata e as propostas que pertencem a ela",
+            tour2: "Clicando aqui você pode baixar o PDF da ata",
+            tour3: "Esse botão permite a navegação entre as propostas da ata",
+            tour4: "Esse botão permite publicar a ata",
+          }
         },
         detalhesDemandaPagina: {
           tour: {
@@ -686,6 +698,12 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsável",
           nenhumaPropostaAdicionada: "Nenhuma proposta adicionada",
           numeroSequencialAta: "Número Sequencial da Ata",
+          tour:{
+            tour1: "Aqui você pode ver os detalhes da pauta e suas respectivas propostas",
+            tour2: "Clicando aqui você pode baixar a pauta em PDF",
+            tour3: "Esse botão permite a navegação entre as propostas da pauta",
+            tour4: "A partir desse botão é possível realizar a criação da ata",
+          }
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "Adicionar à Pauta",
@@ -708,12 +726,10 @@ const TextLanguage = (linguagem) => {
           tourAjuda: {
             barraDePesquisa:
               "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título.",
-            iconeOredenar:
-              "Neste ícone você pode ordenar as suas demandas por título (A-Z ou Z-A), Score (Maior ao menor ou Menor ao maior) e pela data (Mais nova à mais velha ou Mais velha à Mais nova).",
             botaoFiltrar:
               "Neste botão você pode filtrar suas demandas por seus status.",
             modoVisualizacao:
-              "Nesta parte você pode trocar o modo de visualização das suas demandas. Você pode escolher entre visualizar as demandas em forma de lista ou em forma de cards.",
+              "Nestes botões você consegue acessar o modal de ordenação e também consegue mudar o modo de visualização das suas demandas.",
             criarNovaDemanda:
               "Aqui você consegue iniciar a criação de uma nova demanda.",
             areaDemanda:
@@ -722,6 +738,8 @@ const TextLanguage = (linguagem) => {
               "Nesta área você consegue visualizar o status atual da demanda.",
             botaoMotivo:
               "Aqui consegue observar o motivo pelo qual foi recusado ou o motivo da edição.",
+            botaoChat:
+              "Clicando neste botão você consegue abrir o chat da demanda."
           },
           demandaCriadaComSucesso: "Demanda criada com sucesso!",
           minhasDemandas: "Minhas Demandas",
@@ -747,21 +765,23 @@ const TextLanguage = (linguagem) => {
           toursDemandas: {
             tour1:
               "Aqui é a barra de pesquisa, você pode pesquisar por algum título de alguma demanda",
-            tour2:
-              "Esse é icone de ordenação, onde poderá ordenar os itens por ordem alfabética, por score ou por data de criação",
             tour3:
-              "Aqui fica o filtro, podendo filtrar por: Solicitante, Gerente Responsável, Fórum, Departamento, Tamanho e número",
+              "Aqui fica o filtro que abre uma sidebar, permitindo a filtragem por campos e também a ordenação",
             tour4:
               "Aqui fica o lugar para exportar as demandas em formato de planilha",
             tour5:
               "Aqui pode iniciar o processo de criação de uma nova demanda",
             tour6:
-              "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes",
+              "Nesta parte ficam as demandas, podendo clicar em uma demanda para ver mais detalhes",
             tour7:
               "Clicando aqui você pode ver o histórico de alterações da demanda",
             tour8: "Nesta área você pode visualizar o status da demanda",
             tour9:
               "Clicando aqui você pode alterar o modo de visualização para tabela ou cards",
+            tour10:
+              "Aqui consegue observar o motivo pelo qual foi recusado ou o motivo da edição.",
+            tour11:
+              "Clicando neste botão você consegue abrir o chat da demanda."
           },
           toursCriarPropostas: {
             tour1:
@@ -1026,6 +1046,7 @@ const TextLanguage = (linguagem) => {
             tour7: "Neste campo ficam as propostas que estão adicionadas na pauta.",
             tour8: "Clicando aqui é possível remover a proposta da pauta.",
             tour9: "Clicando aqui é possível mudar a visualização da proposta, publicada ou não pubicada",
+            tour10: "Clicando aqui é possível criar a pauta."
           }
         },
         rotas: [
@@ -1542,6 +1563,12 @@ const TextLanguage = (linguagem) => {
           assessment: "Assessment",
           cancelled: "Cancelled",
           done: "Done",
+          tour:{
+            tour1: "Here you can see the notifications you have received.",
+            tour2: "Clicking here you can refresh the page to check for new notifications.",
+            tour3: "Clicking here you can select all the notifications, being able to read and delete them.",
+            tour4: "And here it is possible to change the pagination of the notifications.",
+          }
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notification read successfully!",
@@ -1682,6 +1709,12 @@ const TextLanguage = (linguagem) => {
           comissao: "Comission",
           analistaResponsavel: "Responsable Analyst",
           numeroSequencialDG: "DG Minutes Sequential Number",
+          tour: {
+            tour1: "Here you can see the details of the minutes and the proposals that belong to them",
+            tour2: "Click here to download the PDF of the minutes",
+            tour3: "This button allows navigation between the proposals in the minutes",
+            tour4: "This button allows you to publish the minutes",
+          }
         },
         detalhesDemandaPagina: {
           tour: {
@@ -1714,6 +1747,12 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Responsible Analyst",
           nenhumaPropostaAdicionada: "No proposal added",
           numeroSequencialAta: "Minutes Sequential Number",
+          tour:{
+            tour1: "Here you can see the details of the agenda and their respective proposals",
+            tour2: "Click here to download the agenda in PDF",
+            tour3: "This button allows navigation between agenda proposals",
+            tour4: "From this button it is possible to create the minutes",
+          }
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "Add to Agenda",
@@ -2041,6 +2080,18 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "Add a meeting date!",
           addComissao: "Add a commission!",
           addProposta: "Add at least one proposal!",
+          tour:{
+            tour1: "In this part are the general data for the creation of a new agenda",
+            tour2: "Here you fill in the sequential number and meeting date of the agenda",
+            tour3: "And here you select the agenda forum",
+            tour4: "Here are the proposals that will be added to the agenda",
+            tour5: "Click here to view the proposal",
+            tour6: "Here, it is possible to add the proposal to the agenda, and it is also possible to drag it to the proposals field on the side",
+            tour7: "In this field are the proposals that are added to the agenda",
+            tour8: "Click here to remove the proposal from the agenda",
+            tour9: "By clicking here it is possible to change the view of the proposal, published or unpublished",
+            tour10: "Click here to create the agenda"
+          }
         },
         rotas: [
           "Login",
@@ -2546,6 +2597,12 @@ const TextLanguage = (linguagem) => {
           assessment: "评估",
           cancelled: "取消",
           done: "完毕",
+          tour:{
+            tour1: "在这里您可以看到您收到的通知",
+            tour2: "单击此处您可以刷新页面以检查新通知",
+            tour3: "单击此处您可以选择所有通知，并能够阅读和删除它们",
+            tour4: "在这里可以更改通知的分页",
+          }
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "通知成功阅读！",
@@ -2680,6 +2737,12 @@ const TextLanguage = (linguagem) => {
           comissao: "委员会",
           analistaResponsavel: "负责分析师",
           numeroSequencialDG: "DG 会议纪要序号",
+          tour: {
+            tour1: "在这里您可以查看会议记录的详细信息以及属于会议记录的提案",
+            tour2: "单击此处下载会议纪要的 PDF 版本",
+            tour3: "此按钮允许在几分钟内在提案之间导航",
+            tour4: "此按钮允许您发布会议记录",
+          }
         },
         detalhesDemandaPagina: {
           tour: {
@@ -2711,6 +2774,12 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "责任分析师",
           nenhumaPropostaAdicionada: "未添加提案",
           numeroSequencialAta: "分钟序号",
+          tour:{
+            tour1: "在这里您可以看到议程的详细信息及其各自的提案",
+            tour2: "单击此处下载 PDF 格式的议程",
+            tour3: "此按钮允许在议程提案之间导航",
+            tour4: "通过此按钮可以创建会议记录",
+          }
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "添加到议程",
@@ -3020,6 +3089,18 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "添加会议日期！",
           addComissao: "增加佣金！",
           addProposta: "至少添加一项提案！",
+          tour:{
+            tour1: "这部分是创建新议程的一般数据",
+            tour2: "您可以在此处填写议程的序号和会议日期",
+            tour3: "您可以在此处选择议程论坛",
+            tour4: "以下是将添加到议程中的提案",
+            tour5: "单击此处查看提案",
+            tour6: "在这里，可以将提案添加到议程中，也可以将其拖到侧面的提案字段中",
+            tour7: "该领域的提案被添加到议程中",
+            tour8: "单击此处，您可以从议程中删除该提案",
+            tour9: "单击此处可以更改提案的视图（已发布或未发布)",
+            tour10: "单击此处，您可以创建议程"
+          }
         },
         rotas: [
           "登录",
@@ -3519,6 +3600,12 @@ const TextLanguage = (linguagem) => {
           assessment: "Assessment",
           cancelled: "Cancelled",
           done: "Done",
+          tour:{
+            tour1: "Aquí puedes ver las notificaciones que has recibido.",
+            tour2: "Al hacer clic aquí, puede actualizar la página para verificar si hay nuevas notificaciones.",
+            tour3: "Pulsando aquí puedes seleccionar todas las notificaciones, pudiendo leerlas y borrarlas.",
+            tour4: "Y aquí es posible cambiar la paginación de las notificaciones.",
+          }
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notificación leída con éxito!",
@@ -3660,6 +3747,12 @@ const TextLanguage = (linguagem) => {
           comissao: "Comisión",
           analistaResponsavel: "Analista Responsable",
           numeroSequencialDG: "Número secuencial de actas del GD",
+          tour: {
+            tour1: "Aquí puede ver el detalle de las actas y las propuestas que les corresponden",
+            tour2: "Haga clic aquí para descargar el PDF del acta",
+            tour3: "Este botón permite la navegación entre las propuestas del acta",
+            tour4: "Este botón le permite publicar las actas",
+          }
         },
         detalhesDemandaPagina: {
           tour: {
@@ -3692,6 +3785,12 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsable",
           nenhumaPropostaAdicionada: "No se ha añadido ninguna propuesta",
           numeroSequencialAta: "Número secuencial de minutos",
+          tour:{
+            tour1: "Desde este botón es posible crear los minutos",
+            tour2: "Haga clic aquí para descargar la agenda en PDF",
+            tour3: "Este botón permite la navegación entre propuestas de agenda",
+            tour4: "Desde este botón es posible crear los minutos",
+          }
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "Agregar a la pauta",
@@ -4030,6 +4129,18 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "¡Agregue una fecha de reunión!",
           addComissao: "¡Agregue una comisión!",
           addProposta: "¡Agregue al menos una propuesta!",
+          tour:{
+            tour1: "En esta parte se encuentran los datos generales para la creación de una nueva agenda",
+            tour2: "Aquí se rellena el número correlativo y fecha de reunión de la agenda",
+            tour3: "Y aquí seleccionas la agenda del foro",
+            tour4: "Aquí están las propuestas que se agregarán a la agenda",
+            tour5: "Haga clic aquí para ver la propuesta",
+            tour6: "Aquí, es posible agregar la propuesta a la agenda, y también es posible arrastrarla al campo de propuestas al costado",
+            tour7: "En este campo se encuentran las propuestas que se añaden a la agenda",
+            tour8: "Al hacer clic aquí, puede eliminar la propuesta de la agenda",
+            tour9: "Al hacer clic aquí es posible cambiar la vista de la propuesta, publicada o no publicada",
+            tour10: "Al hacer clic aquí, puede crear la agenda"
+          }
         },
         rotas: [
           "Login",
