@@ -5,8 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/CriacaoProposta/BarraProgressaoProposta/BarraProgressaoProposta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/CriacaoProposta/BarraProgressaoProposta/BarraProgressaoProposta.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/DetalhesDemanda/DetalhesDemanda.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/DetalhesDemanda/DetalhesDemanda.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/DetalhesProposta/DetalhesProposta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/DetalhesProposta/DetalhesProposta.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/HomeGerencia/HomeGerencia.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/HomeGerencia/HomeGerencia.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/service/TextLanguageContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TextLanguageContext.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,14 +46,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.keymap"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\thiago_braga\Documents\GitHub\WEG-SSM\back-end-maven\src\main\java\net\weg\wegssm\repository" />
