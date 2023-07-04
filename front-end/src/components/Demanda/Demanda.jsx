@@ -185,48 +185,48 @@ const Demanda = (props) => {
           {(props.demanda?.solicitante?.email ==
             CookieService.getCookie("jwt").sub ||
             props.demanda?.solicitante?.tour) && (
-              <Box>
+            <Box>
+              <Typography
+                fontSize={FontConfig.default}
+                fontWeight={600}
+                color="primary"
+                className="text-end"
+                onClick={(e) => {
+                  if (lendoTexto) {
+                    e.stopPropagation();
+                    lerTexto(props.demanda.id);
+                  }
+                }}
+              >
+                {texts.demandaModoVisualizacao.codigo} {props.demanda.id}
+              </Typography>
+
+              <Box id="oitavo" className={`items-center text-justify flex`}>
                 <Typography
-                  fontSize={FontConfig.default}
-                  fontWeight={600}
-                  color="primary"
-                  className="text-end"
+                  fontSize={FontConfig?.default}
+                  sx={{ fontWeight: "600" }}
                   onClick={(e) => {
                     if (lendoTexto) {
                       e.stopPropagation();
-                      lerTexto(props.demanda.id);
+                      lerTexto(formatarNomeStatus());
                     }
                   }}
                 >
-                  #{props.demanda.id}
+                  {formatarNomeStatus()}
                 </Typography>
-
-                <Box id="oitavo" className={`items-center text-justify flex`}>
-                  <Typography
-                    fontSize={FontConfig?.default}
-                    sx={{ fontWeight: "600" }}
-                    onClick={(e) => {
-                      if (lendoTexto) {
-                        e.stopPropagation();
-                        lerTexto(formatarNomeStatus());
-                      }
-                    }}
-                  >
-                    {formatarNomeStatus()}
-                  </Typography>
-                  <Box
-                    sx={{
-                      backgroundColor: getStatusColor(),
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "10px",
-                      marginLeft: "10px",
-                    }}
-                    className={`items-center h-30 text-justify`}
-                  />
-                </Box>
+                <Box
+                  sx={{
+                    backgroundColor: getStatusColor(),
+                    width: "12px",
+                    height: "12px",
+                    borderRadius: "10px",
+                    marginLeft: "10px",
+                  }}
+                  className={`items-center h-30 text-justify`}
+                />
               </Box>
-            )}
+            </Box>
+          )}
         </Box>
         <Box sx={{ height: "40%" }}>
           {/* Proposta da demanda */}
@@ -258,7 +258,7 @@ const Demanda = (props) => {
         >
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
           {props.demanda?.solicitante?.email !=
-            CookieService.getCookie("jwt").sub ? (
+          CookieService.getCookie("jwt").sub ? (
             <Typography
               fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
@@ -273,9 +273,9 @@ const Demanda = (props) => {
               {props.demanda.solicitante?.nome}
             </Typography>
           ) : (props.demanda?.status == "CANCELLED" ||
-            props.demanda?.status == "BACKLOG_EDICAO") &&
+              props.demanda?.status == "BACKLOG_EDICAO") &&
             props.demanda?.solicitante?.email ==
-            CookieService.getCookie("jwt").sub ? (
+              CookieService.getCookie("jwt").sub ? (
             <Tooltip title={texts.demanda.motivo}>
               <IconButton
                 onClick={(e) => {
@@ -301,7 +301,7 @@ const Demanda = (props) => {
           ) : null}
 
           {props.demanda?.solicitante?.email ==
-            CookieService.getCookie("jwt").sub ? (
+          CookieService.getCookie("jwt").sub ? (
             props.demanda.forum != null ? (
               <Tooltip title={texts.demandaGerencia.chat}>
                 <IconButton onClick={entrarChat}>
@@ -319,7 +319,7 @@ const Demanda = (props) => {
             ) : null
           ) : null}
 
-          { props.demanda?.solicitante?.tour && (
+          {props.demanda?.solicitante?.tour && (
             <Tooltip title={texts.demandaGerencia.chat}>
               <IconButton onClick={entrarChat}>
                 <ChatOutlinedIcon
@@ -333,8 +333,7 @@ const Demanda = (props) => {
                 />
               </IconButton>
             </Tooltip>
-          )
-          }
+          )}
         </Box>
       </Paper>
     </>
