@@ -47,6 +47,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
+
   /** Context que contém os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -80,6 +81,7 @@ const HomeGerencia = () => {
   /** Variável usada para navegação entre as páginas */
   const navigate = useNavigate();
 
+  /** Variável utilizada para o filtro */
   const [filtroProposta, setFiltroProposta] = useState(false);
 
   /** Parâmetros para pesquisa das demandas e propostas (filtros e pesquisa por título) */
@@ -368,6 +370,22 @@ const HomeGerencia = () => {
     {
       selector: "#primeiroCriarPropostas",
       content: texts.homeGerencia.toursCriarPropostas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoPropostas",
+      content: texts.homeGerencia.toursPropostas.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#setimoDemandas",
+      content: texts.homeGerencia.toursPropostas.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -1886,13 +1904,13 @@ const HomeGerencia = () => {
                                 problema: "",
                                 proposta: "",
                                 motivoRecusa: "",
-                                status: "BACKLOG_REVISAO",
+                                status: "ASSESSMENT",
                                 data: "",
                                 solicitante: {
                                   nome: texts.homeGerencia.demandaParaTour,
                                 },
                               }}
-                              tipo="demanda"
+                              tipo="proposta"
                             />
                           ) : (
                             <DemandaGerenciaModoVisualizacao

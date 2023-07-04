@@ -137,6 +137,7 @@ const DetalhesDemandaPagina = () => {
 
   return (
     <FundoComHeader>
+      
       {/* Tour ao usuário */}
       <Tour
         steps={steps}
@@ -146,7 +147,9 @@ const DetalhesDemandaPagina = () => {
         rounded={10}
         showCloseButton={false}
       />
+
       <Ajuda onClick={() => setIsTourOpen(true)} />
+
       <Box className="p-2 w-full" sx={{ minWidth: "58rem" }}>
         {carregamento ? (
           <Box className="mt-6 w-full h-full flex justify-center items-center">

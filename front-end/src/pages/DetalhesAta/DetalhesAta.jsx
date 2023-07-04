@@ -1,6 +1,8 @@
 import { React, useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import Tour from "reactour";
+
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 
@@ -17,6 +19,7 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import Feedback from "../../components/Feedback/Feedback";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
+import Ajuda from "../../components/Ajuda/Ajuda";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -31,10 +34,6 @@ import NotificacaoService from "../../service/notificacaoService";
 import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalConfirmacao";
 import { WebSocketContext } from "../../service/WebSocketService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
-
-import Tour from "reactour";
-
-import Ajuda from "../../components/Ajuda/Ajuda";
 
 /** Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf */
 const DetalhesAta = (props) => {
@@ -87,6 +86,7 @@ const DetalhesAta = (props) => {
   /** useState para abrir e fechar o tour */
   const [isTourOpen, setIsTourOpen] = useState(false);
 
+  /** lista de steps do tour de ajuda */
   const stepsTour = [
     {
       selector: "#primeiro",
@@ -107,14 +107,6 @@ const DetalhesAta = (props) => {
     {
       selector: "#terceiro",
       content: texts.detalhesAta.tour.tour3,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quarto",
-      content: texts.detalhesAta.tour.tour4,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -363,8 +355,6 @@ const DetalhesAta = (props) => {
     // Começo com o header da página
     <FundoComHeader>
 
-      
-
       {/* Tour de ajuda para a publicação da ata*/}
       <Tour
         steps={stepsTour}
@@ -375,6 +365,7 @@ const DetalhesAta = (props) => {
         showCloseButton={false}
       />
 
+      {/* Botão de ajuda para abrir o tour */}
       <Ajuda onClick={() => setIsTourOpen(true)} />
 
       {/* Feedback campos faltantes */}
@@ -670,13 +661,13 @@ const DetalhesAta = (props) => {
           <Box
             className="flex fixed justify-end items-center"
             sx={{ width: "22rem", bottom: "20px", right: "80px", gap: "1rem" }}
+            id="terceiro"
           >
             <Box>
               <SpeedDial
                 ariaLabel="SpeedDial playground example"
                 icon={<DensitySmallIcon />}
                 direction="left"
-                id="terceiro"
               >
                 {actions.map((action) => (
                   <SpeedDialAction
@@ -703,7 +694,6 @@ const DetalhesAta = (props) => {
                         backgroundColor: "rgb(0, 60, 109)",
                       },
                     }}
-                    id="quarto"
                     onClick={verificarPublicarAta}
                   >
                     <DoneOutlinedIcon sx={{ color: "white " }} />
