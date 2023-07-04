@@ -721,7 +721,7 @@ const DetalhesDemanda = (props) => {
       <Box
         id="primeiro"
         className="flex flex-col gap-3 border rounded px-10 py-4 border-t-6 relative"
-        sx={{ width: "55rem", borderTopColor: "primary.main" }}
+        sx={{ width: "60rem", borderTopColor: "primary.main" }}
       >
         {/* Mostrar o icone de edição caso siga os requisitos */}
         <Box

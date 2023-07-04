@@ -33,8 +33,10 @@ const TextLanguageContext = createContext({
       botaoVoltar: "Voltar",
       botaoCriar: "Criar",
       botaoProximo: "Próximo",
-      mensagemFeedbackCamposObrigatorios: "Preencha todos os campos obrigatórios!",
-      mensagemFeedbackCcsFaltando: "A porcentagem deve fechar 100% em cada CCs!",
+      mensagemFeedbackCamposObrigatorios:
+        "Preencha todos os campos obrigatórios!",
+      mensagemFeedbackCcsFaltando:
+        "A porcentagem deve fechar 100% em cada CCs!",
       mensagemFeedbackPPM: "PPM inválido!",
       mensagemFeedbackPayback: "Payback inválido!",
       propostaCriada: "Proposta Criada",
@@ -54,7 +56,7 @@ const TextLanguageContext = createContext({
       potencial: "Potencial",
       qualitativo: "Qualitativo",
       valorMensal: "Valor Mensal",
-      exemploValorMensal: "Ex: 1000.00",
+      exemploValorMensal: "Ex: 1000,00",
       moeda: "Moeda",
       memoriaCalculo: "Memória de cálculo",
       digiteMemoriaCalculo: "Digite a memória de cálculo...",
@@ -71,7 +73,7 @@ const TextLanguageContext = createContext({
       digiteMemoriaCalculo: "Digite a memória de cálculo...",
     },
     caminho: {
-      home: "Página Inicial",
+      home: "Home",
     },
     chatMinimizado: {
       minimizar: "Minimizar",
@@ -144,7 +146,7 @@ const TextLanguageContext = createContext({
       titulo: "Título",
       solicitante: "Solicitante",
       departamento: "Departamento",
-      gerenteResponsavel: "Gerente",
+      gerenteResponsavel: "Gerente Responsável",
       status: "Status",
       data: "Data",
       naoAtribuido: "Não atribuído",
@@ -179,7 +181,8 @@ const TextLanguageContext = createContext({
     },
     DetalhesDemanda: {
       real: "Real",
-      facaAlgumaAlteracaoParaPoderSalvar: "Faça alguma alteração para poder salvar!",
+      facaAlgumaAlteracaoParaPoderSalvar:
+        "Faça alguma alteração para poder salvar!",
       jaHaUmAnexoComEsseNome: "Já há um anexo com esse nome!",
       problema: "Problema",
       proposta: "Proposta",
@@ -208,7 +211,8 @@ const TextLanguageContext = createContext({
       titleExcluir: "Excluir",
     },
     formularioAnexosDemanda: {
-      arrasteSolteParaAdicionarUmArquivo: "Arraste & Solte para Adicionar um Arquivo",
+      arrasteSolteParaAdicionarUmArquivo:
+        "Arraste & Solte para Adicionar um Arquivo",
       solteParaAdicionarArquivo: "Solte para Adicionar um Arquivo",
       ou: "OU",
       pesquisarArquivos: "Pesquisar Arquivos",
@@ -218,8 +222,6 @@ const TextLanguageContext = createContext({
     },
     formularioBeneficiosDemanda: {
       adicionar: "Adicionar",
-      listaDeBeneficios: "Lista de Benefícios",
-      semBeneficios: "Sem Benefícios Adicionados",
     },
     formularioCustosProposta: {
       total: "Total",
@@ -264,7 +266,7 @@ const TextLanguageContext = createContext({
       digiteProblema: "Digite o problema...",
       proposta: "Proposta",
       digiteProposta: "Digite a proposta...",
-      beneficios: "Benefícios",
+      beneficios: "Beneficios",
       frequenciaDeUso: "Frequência de uso",
       digiteFrequencia: "Digite a frequência...",
       labelTamanho: "Tamanho",
@@ -336,12 +338,8 @@ const TextLanguageContext = createContext({
         aceitarDemanda: "Deseja aceitar a demanda?",
         confirmarExclusao: "Tem certeza que deseja excluir?",
         fecharChat: "Deseja realmente fechar este chat?",
-        abrirChat: "Deseja realmente reabrir este chat?",
-        tirarPropostaDePauta: "Deseja realmente tirar a proposta da pauta?",
-        alterarStatusProposta: "Essa ação pode excluir dados da proposta! Deseja mesmo alterar seu status?",
-        confirmEditar: "Deseja realmente editar? Essa ação não pode ser revertida!",
         publicarAta: "Deseja publicar a ata?",
-        criarAta: "Deseja criar a ata?",
+        criarAta: "Deseja criar a ata?"
       },
       mensagensBotao: {
         sim: "Sim",
@@ -350,6 +348,14 @@ const TextLanguageContext = createContext({
         aceitar: "Aceitar",
       },
       cancelar: "Cancelar",
+    },
+    modalCriarAta: {
+      feedback: "Preencha todos os campos obrigatórios!",
+      criacaoDaAta: "Criação da Ata",
+      digiteNumeroSequencial: "Digite o número sequencial...",
+      dataDaReuniao: "Data da reunião:",
+      botaoCancelar: "Cancelar",
+      botaoCriar: "Criar",
     },
     modalFiltro: {
       status: "Status",
@@ -363,17 +369,16 @@ const TextLanguageContext = createContext({
         emDesenvolvimento: "Em Desenvolvimento",
       },
     },
-    modalHistoricoDemanda: {
-      historico: "Histórico",
-    },
-    sideBarFiltro: {
+    modalFiltroGerencia: {
       filtros: "Filtros",
       semResultados: "Sem Resultados",
       labelSolicitante: "Solicitante",
       forum: "Fórum",
       selecionar: "Selecionar",
       tamanho: "Tamanho",
+      selecionar: "Selecionar",
       muitoPequeno: "Muito Pequeno",
+      semResultados: "Sem Resultados",
       analistaResponsavel: "Analista Responsável",
       gerenteResponsavel: "Gerente Responsável",
       status: "Status",
@@ -402,6 +407,25 @@ const TextLanguageContext = createContext({
       semAtribuicao: "Sem Atribuição",
       numero: "Número",
       limparFilros: "Limpar Filtros",
+    },
+    modalFiltroAtas: {
+      apreciada: "Apreciada",
+      naoApreciada: "Não Apreciada",
+      publicada: "Publicada",
+      naoPublicada: "Não Publicada"
+    },
+    modalHistoricoDemanda: {
+      historico: "Histórico",
+    },
+    modalInformarMotivo: {
+      informarMotivo: "Informar Motivo",
+      informeMotivo: "Informe o motivo...",
+      confirmar: "Confirmar",
+    },
+    modalMotivoRecusa: {
+      motivoDaRecusa: "Motivo da recusa",
+    },
+    modalOrdenacao: {
       score: "Score",
       maiorScore: "Maior Score",
       menorScore: "Menor Score",
@@ -417,31 +441,7 @@ const TextLanguageContext = createContext({
       dataReuniao: "Data de Reunião",
       ordenar: "Ordenar",
       filtrar: "Filtrar",
-      atribuidoA: "Atribuído à",
-      apreciada: "Apreciada",
-      publicada: "Publicada",
-      solicitante: "Solicitante",
-      semFiltro: "Sem Filtro",
-      naoApreciada: "Não Apreciada",
-      publicado: "Publicado",
-      naoPublicado: "Não Publicado",
-    },
-    modalFiltroAtas: {
-      apreciada: "Apreciada",
-      naoApreciada: "Não Apreciada",
-      publicada: "Publicada",
-      naoPublicada: "Não Publicada",
-    },
-    modalHistoricoDemanda: {
-      historico: "Histórico",
-    },
-    modalInformarMotivo: {
-      informarMotivo: "Informar Motivo",
-      informeMotivo: "Informe o motivo...",
-      confirmar: "Confirmar",
-    },
-    modalMotivoRecusa: {
-      motivoDaRecusa: "Motivo da recusa",
+      limparFiltro: "Limpar Filtros"
     },
     modalRecusarDemanda: {
       motivoDaRecusa: "Motivo da recusa",
@@ -453,7 +453,7 @@ const TextLanguageContext = createContext({
       foi: "foi",
       aprovada: "aprovada",
       reprovada: "reprovada",
-      reprovadaPorFaltaDeInformacoes: "devolvida por falta de informações",
+      reprovadaPorFaltaDeInformacoes: "reprovada por falta de informações",
       diasAtras: "dias atrás",
       hoje: "hoje",
       ontem: "ontem",
@@ -462,24 +462,8 @@ const TextLanguageContext = createContext({
       tresSemanasAtras: "3 semanas atrás",
       quatroSemanasAtras: "4 semanas atrás",
       maisDeUmMesAtras: "mais de 1 mês atrás",
-      vcRecebeuMensagem: "Você recebeu uma mensagem da demanda de PPM",
-      por: "por",
-      propostaDeDemanda: "Foi criada uma proposta da demanda de número sequencial",
-      noForum: "no fórum",
-      naDG: "na DG",
-      entrouEm: "entrou em",
-      businessCase: "Business Case",
-      oAnalistaResposnavel: "O Analista Responsável",
-      mudouStatusDemanda: "mudou o status da demanda de número sequencial",
-      para: "para",
-      assessment: "Assessment",
-      cancelled: "Cancelled",
-      done: "Done",
-      tour: {
-        tour1: "Aqui você pode ver as notificações que recebeu.",
-        tour2: "Clicando aqui você pode atualizar a página para buscar novas notificações.",
-        tour3: "Clicando aqui você pode selecionar todas as notificações, podendo ler e deletá-las.",
-        tour4: "E aqui é possível alterar a paginação das notificações.",
+      tour:{
+        tour1: "Aqui fica as notificações, podendo clicar em uma notificação para ver mais detalhes.",
       }
     },
     notificacaoModal: {
@@ -496,8 +480,6 @@ const TextLanguageContext = createContext({
       deletar: "Deletar",
       comissao: "Comissão",
       analistaResponsavel: "Analista Responsável",
-      jaApreciada: "Já Apreciada",
-      naoApreciada: "Não Apreciada",
       pautaExcluida: "Pauta excluída",
       publicada: "Publicada",
       naoPublicada: "Não Publicada",
@@ -506,7 +488,7 @@ const TextLanguageContext = createContext({
       as: "às",
       numeroSequencial: "Num. Seq.",
       comissao: "Comissão",
-      analistaResponsavel: "Analista Responsável",
+      analistaResponsavel: "Anal. Resp.",
       deletar: "Deletar",
       data: "Data",
       nadaEncontrado: "Nada encontrado",
@@ -561,10 +543,14 @@ const TextLanguageContext = createContext({
     },
     chat: {
       tour: {
-        tour1: "Neste input você pode pesquisar pelos chats por nome do usuário e pelo número sequêncial da demanda.",
-        tour2: "Aqui ficam os chats abertos, tendo o nome do usuário, o número sequêncial da demanda e de qual demanda pertence.",
-        tour3: "Neste botão você pode escolher entre minimizar o chat ou encerrar a conversa (fechando o chat).",
-        tour4: "Aqui pode escrever o que deseja enviar, podendo também anexar algum arquivo.",
+        tour1:
+          "Neste input você pode pesquisar pelos chats por nome do usuário e pelo número sequêncial da demanda.",
+        tour2:
+          "Aqui fica os chats abertos, tendo o nome do usuário, o número sequêncial da demanda e de qual demanda pertence.",
+        tour3:
+          "Neste botão pode escolher entre minimizar o chat ou encerrar a conversa (fechando o chat).",
+        tour4:
+          "Aqui pode escrever o que deseja enviar, podendo também anexar algum arquivo.",
       },
       pesquisarPorNome: "Pesquisar por usuário...",
       usuarioTour: {
@@ -572,7 +558,8 @@ const TextLanguageContext = createContext({
         gerente: "Gerente",
         mostrarNoTour: "Mostrar no tour",
         olaTudoBem: "Olá, tudo bem?",
-        tudoSimVoce: "Tudo sim, e você? Estou aqui para te mostrar como funciona o chat.",
+        tudoSimVoce:
+          "Tudo sim, e você? Estou aqui para te mostrar como funciona o chat.",
         eu: "Eu",
         bemTambemObrigado: "Bem também, obrigado.",
       },
@@ -592,7 +579,8 @@ const TextLanguageContext = createContext({
       chatEncerrado: "Chat encerrado com sucesso!",
       chatReaberto: "Chat reaberto com sucesso!",
       chatEncerradoErro: "Não é possível entrar em um chat encerrado!",
-      inputChatEncerrado: "Não é possível enviar mensagens, pois o chat foi encerrado.",
+      inputChatEncerrado:
+        "Não é possível enviar mensagens, pois o chat foi encerrado.",
       anexoMuitoPesado: "O anexo é muito pesado!",
       miniChatAberto: "Mini chat está aberto!",
       chatNaoPodeSerReaberto: "O chat não pode ser reaberto!",
@@ -616,17 +604,14 @@ const TextLanguageContext = createContext({
       comissao: "Comissão",
       analistaResponsavel: "Analista Responsável",
       numeroSequencialDG: "Número Sequencial da Ata da DG",
-      tour: {
-        tour1: "Aqui você pode ver os detalhes da ata e as propostas que pertencem a ela",
-        tour2: "Clicando aqui você pode baixar o PDF da ata",
-        tour3: "Aqui ficam os botões de navegação entre as propostas, e caso necessário um botão para publicar a ata",
-      }
     },
     detalhesDemandaPagina: {
       tour: {
-        tour1: "Essa é a página de detalhes da demanda. Aqui você pode ver todos os detalhes da demanda selecionada.",
+        tour1:
+          "Essa é a página de detalhes da demanda. Aqui você pode ver todos os detalhes da demanda selecionada.",
         tour2: "Cicando aqui, você consegue baixar em PDF essa demanda.",
-        tour3: "Clicando neste lápis, você consegue estar editando as informações.",
+        tour3:
+          "Clicando neste lápis, você consegue estar editando as informações.",
       },
     },
     detalhesPauta: {
@@ -645,29 +630,20 @@ const TextLanguageContext = createContext({
       proximo: "Próximo",
       navegacao: "Navegação",
       criarAta: "Criar Ata",
-      comissao: "Comissão",
-      reuniaoDoForum: "Reunião do fórum",
-      reuniaoDaDG: "Reunião da DG",
-      analistaResponsavel: "Analista Responsável",
-      nenhumaPropostaAdicionada: "Nenhuma proposta adicionada",
       numeroSequencialAta: "Número Sequencial da Ata",
-      tour: {
-        tour1: "Aqui você pode ver os detalhes da pauta e suas respectivas propostas",
-        tour2: "Clicando aqui você pode baixar a pauta em PDF",
-        tour3: "Esse botão permite a navegação entre as propostas da pauta",
-        tour4: "A partir desse botão é possível realizar a criação da ata",
-      }
     },
     detalhesPropostaPagina: {
       adicionarAPauta: "Adicionar à Pauta",
     },
     escopos: {
       tour: {
-        tour1: "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título",
-        tour2: "Aqui fica os escopos criados automaticamente, em cada escopo é possível abrir novamente para edição. É criado um escopo para cada projeto que você abre e não finaliza",
-        tour3: "Nesta área você consegue visualizar qual a porcentagem preenchida do formulário",
-        tour4: "Clicando na lixeira você exclui o escopo",
-        tour5: "Clicando aqui você pode mudar o estilo de visualização dos escopos"
+        tour1:
+          "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título.",
+        tour2:
+          "Aqui fica os escopos criados automaticamente, em cada escopo é possível abrir novamente para edição. É criado um escopo para cada projeto que você abre e não finaliza.",
+        tour3:
+          "Nesta área você consegue visualizar qual a porcentagem preenchida do formulário.",
+        tour4: "Clicando na lixeira você exclui o escopo.",
       },
       pesquisarPorTitulo: "Pesquisar por título...",
       pesquisar: "Pesquisar",
@@ -675,14 +651,22 @@ const TextLanguageContext = createContext({
     },
     home: {
       tourAjuda: {
-        barraDePesquisa: "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título.",
-        iconeOredenar: "Neste ícone você pode ordenar as suas demandas por título (A-Z ou Z-A), Score (Maior ao menor ou Menor ao maior) e pela data (Mais nova à mais velha ou Mais velha à Mais nova).",
-        botaoFiltrar: "Neste botão você pode filtrar suas demandas por seus status.",
-        modoVisualizacao: "Nesta parte você pode trocar o modo de visualização das suas demandas. Você pode escolher entre visualizar as demandas em forma de lista ou em forma de cards.",
-        criarNovaDemanda: "Aqui você consegue iniciar a criação de uma nova demanda.",
-        areaDemanda: "Nesta área você consegue observar suas demandas. Você pode clicar em uma demanda para ver mais detalhes.",
-        statusDemanda: "Nesta área você consegue visualizar o status atual da demanda.",
-        botaoMotivo: "Aqui consegue observar o motivo pelo qual foi recusado ou o motivo da edição.",
+        barraDePesquisa:
+          "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título.",
+        iconeOredenar:
+          "Neste ícone você pode ordenar as suas demandas por título (A-Z ou Z-A), Score (Maior ao menor ou Menor ao maior) e pela data (Mais nova à mais velha ou Mais velha à Mais nova).",
+        botaoFiltrar:
+          "Neste botão você pode filtrar suas demandas por seus status.",
+        modoVisualizacao:
+          "Nesta parte você pode trocar o modo de visualização das suas demandas. Você pode escolher entre visualizar as demandas em forma de lista ou em forma de cards.",
+        criarNovaDemanda:
+          "Aqui você consegue iniciar a criação de uma nova demanda.",
+        areaDemanda:
+          "Nesta área você consegue observar suas demandas. Você pode clicar em uma demanda para ver mais detalhes.",
+        statusDemanda:
+          "Nesta área você consegue visualizar o status atual da demanda.",
+        botaoMotivo:
+          "Aqui consegue observar o motivo pelo qual foi recusado ou o motivo da edição.",
       },
       demandaCriadaComSucesso: "Demanda criada com sucesso!",
       minhasDemandas: "Minhas Demandas",
@@ -701,35 +685,49 @@ const TextLanguageContext = createContext({
     },
     homeGerencia: {
       toursMinhasDemandas: {
-        tour6: "Nesta parte fica as suas demandas, podendo clicar em uma demanda para ver mais detalhes",
+        tour6:
+          "Nesta parte fica as suas demandas, podendo clicar em uma demanda para ver mais detalhes",
       },
       toursDemandas: {
-        tour1: "Aqui é a barra de pesquisa, você pode pesquisar por algum título de alguma demanda",
-        tour2: "Esse é icone de ordenação, onde poderá ordenar os itens por ordem alfabética, por score ou por data de criação",
-        tour3: "Aqui fica o filtro, podendo filtrar por: Solicitante, Gerente Responsável, Fórum, Departamento, Tamanho e número",
-        tour4: "Aqui fica o lugar para exportar as demandas em formato de planilha",
+        tour1:
+          "Aqui é a barra de pesquisa, você pode pesquisar por algum título de alguma demanda",
+        tour2:
+          "Esse é icone de ordenação, onde poderá ordenar os itens por ordem alfabética, por score ou por data de criação",
+        tour3:
+          "Aqui fica o filtro, podendo filtrar por: Solicitante, Gerente Responsável, Fórum, Departamento, Tamanho e número",
+        tour4:
+          "Aqui fica o lugar para exportar as demandas em formato de planilha",
         tour5: "Aqui pode iniciar o processo de criação de uma nova demanda",
-        tour6: "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes",
-        tour7: "Clicando aqui você pode ver o histórico de alterações da demanda",
+        tour6:
+          "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes",
+        tour7:
+          "Clicando aqui você pode ver o histórico de alterações da demanda",
         tour8: "Nesta área você pode visualizar o status da demanda",
-        tour9: "Clicando aqui você pode alterar o modo de visualização para tabela ou cards",
+        tour9:
+          "Clicando aqui você pode alterar o modo de visualização para tabela ou cards",
       },
       toursCriarPropostas: {
-        tour1: "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes e/ou criar uma proposta",
+        tour1:
+          "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes e/ou criar uma proposta",
         tour2: "Nesta área você pode visualizar o status da demanda",
         tour3: "Clique aqui para ver o histórico de alterações da demanda",
       },
       toursPropostas: {
-        tour1: "Nesta parte fica as propostas, podendo clicar em uma proposta para ver mais detalhes.",
-        tour2: "Clicando aqui você pode abrir o chat com o solicitante da demanda",
-        tour3: "Clicando aqui você pode ver o histórico de alterações da proposta",
+        tour1:
+          "Nesta parte fica as propostas, podendo clicar em uma proposta para ver mais detalhes.",
+        tour2:
+          "Clicando aqui você pode abrir o chat com o solicitante da demanda",
+        tour3:
+          "Clicando aqui você pode ver o histórico de alterações da proposta",
       },
       toursPautas: {
-        tour1: "Nesta parte fica as pautas, podendo clicar em uma pauta para ver mais detalhes.",
+        tour1:
+          "Nesta parte fica as pautas, podendo clicar em uma pauta para ver mais detalhes.",
         tour2: "Clicando aqui você pode excluir a pauta",
       },
       toursAtas: {
-        tour1: "Nesta parte fica as atas, podendo clicar em uma ata para ver mais detalhes",
+        tour1:
+          "Nesta parte fica as atas, podendo clicar em uma ata para ver mais detalhes",
       },
       feedback: {
         feedback1: "Ata publicada com sucesso!",
@@ -745,10 +743,9 @@ const TextLanguageContext = createContext({
         feedback11: "Você não pode abrir um chat com você mesmo!",
         feedback12: "Erro ao reconhcer a voz!",
         feedback13: "Navegador não é compatível!",
-        feedback14: "Proposta Adicionada à Pauta!",
+        feedback14: "Proposta Adicionada à Pauta",
         feedback15: "Data do período de execução inválida!",
-        feedback16: "Pauta criada com sucesso!",
-        feedback17: "Não há dados para a exportação!",
+        feedback17: "Não há dados para a exportação!"
       },
       demandas: "Demandas",
       criarPropostas: "Criar Propostas",
@@ -760,7 +757,8 @@ const TextLanguageContext = createContext({
       pesquisarPorTitulo: "Pesquisar por título...",
       pesquisarPorTituloOuNumero: "Pesquisar por título ou nº sequencial...",
       pesquisarPorTituloOuPPM: "Pesquisar por título ou PPM...",
-      pesquisarPorNumeroSequencialOuProposta: "Pesquisar por nº sequencial ou proposta...",
+      pesquisarPorNumeroSequencialOuProposta:
+        "Pesquisar por nº sequencial ou proposta...",
       pesquisar: "Pesquisar",
       gravarAudio: "Gravar Audio",
       limparBusca: "Limpar Busca",
@@ -769,7 +767,6 @@ const TextLanguageContext = createContext({
       exportar: "Exportar",
       criarDemanda: "Criar Demanda",
       demandaParaTour: "Demanda para Tour",
-      criarPauta: "Criar Pauta",
     },
     login: {
       email: "Email",
@@ -784,13 +781,17 @@ const TextLanguageContext = createContext({
     },
     notFound: {
       paginaNaoEncontrada: "Página não encontrada!",
-      desculpePaginaNaoEncontrada: "Desculpe, a página informada não foi encontrada!",
-      porfavorVolteParaPaginaPrincipal: "Por favor, volte para a página principal.",
+      desculpePaginaNaoEncontrada:
+        "Desculpe, a página informada não foi encontrada!",
+      porfavorVolteParaPaginaPrincipal:
+        "Por favor, volte para a página principal.",
       voltar: "Voltar",
     },
     notificacao: {
-      notificacaoMArcadasComoNaoLidasComSucesso: "Notificações marcadas como não lidas com sucesso!",
-      notificacaoMArcadasComoLidasComSucesso: "Notificações marcadas como lidas com sucesso!",
+      notificacaoMArcadasComoNaoLidasComSucesso:
+        "Notificações marcadas como não lidas com sucesso!",
+      notificacaoMArcadasComoLidasComSucesso:
+        "Notificações marcadas como lidas com sucesso!",
       notificacaoExcluidasComSucesso: "Notificações excluídas com sucesso!",
       notificacoes: "Notificações",
       deletar: "Deletar",
@@ -801,7 +802,6 @@ const TextLanguageContext = createContext({
       marcarComoNaoLido: "Marcar como não lido",
       marcarCommoLido: "Marcar como lido",
       naoHaNotificacoes: "Não há notificações",
-      atualizar: "Atualizar",
     },
     detalhesProposta: {
       ppm: "PPM",
@@ -852,15 +852,6 @@ const TextLanguageContext = createContext({
       direcaoGeral: "Direção Geral",
       semInformacoesAdicionais: "Sem informações adicionais",
       semParecer: "Sem parecer",
-      publicada: "Publicada",
-      naoPublicada: "Não publicada",
-      secaoTi: "Seção TI",
-      cancelarEdicao: "Cancelar Edição",
-      salvarEdicao: "Salvar Edição",
-      nenhum: "Nenhum",
-      feedbackErrorAuthority: "Usuário não possui essa permissão!",
-      editadoComSucesso: "Editado com sucesso!",
-      mesmoStatus: "A proposta já possui esse status!",
       status: {
         assessmentAprovacao: "Assessment",
         businessCase: "Business Case",
@@ -870,53 +861,10 @@ const TextLanguageContext = createContext({
       statusText: {
         assessment: "Assessment",
         bussinessCase: "Business Case",
-        cancelled: "Cancelled",
-        done: "Done",
+        cancelled: "Cancelada",
+        done: "Concluída",
       },
-      escopoVazio: "Escopo vazio",
-      semTabelasDeCusto: "Proposta sem tabelas de custo",
-      semComissao: "Cancelamento fora de comissão:",
-      tour: {
-        tour1: "Aqui ficam todos os detalhes da proposta",
-        tour2: "Clicando aqui é possível baixar a proposta em PDF",
-        tour3: "Clicando nesse botão é possível adicionar a proposta em uma pauta"
-      }
-    },
-    detalhesPropostaEditMode: {
-      dadoInvalido: "Dado inválido!",
-      ppm: "[Código PPM]",
-      data: "[Data]",
-      titulo: "[Título]",
-      solicitante: "[Solicitante]",
-      buSolicitante: "[BU Solicitante]",
-      gerente: "[Gerente]",
-      forum: "[Fórum]",
-      tamanho: "[Tamanho]",
-      secaoTi: "[Seção TI]",
-      proposta: "[Proposta]",
-      problema: "[Problema]",
-      escopo: "[Escopo]",
-      frequencia: "[Frequência]",
-      busBeneficiadas: "[BUs Beneficiadas]",
-      jira: "[Link Jira]",
-      inicioExecucao: "[Início Execução]",
-      fimExecucao: "[Fim Execução]",
-      paybackValor: "[Payback Valor]",
-      paybackTipo: "[Payback Tipo]",
-      responsavelNegocio: "[Responsável Negócio]",
-      tabelaCustos: "[Tabela de Custos]",
-      benTipo: "[Tipo - Benefício]",
-      benMemoriaCalculo: "[Memória de Cálculo - Benefício]",
-      benMoeda: "[Moeda - Benefício]",
-      benValor: "[Valor - Benefício]",
-      tipoDespesa: "[Tipo da Despesa - Tabela de Custo]",
-      perfilDespesa: "[Perfil da Despesa - Tabela de Custo]",
-      periodoExecucao: "[Período de Execução - Tabela de Custo]",
-      horas: "[Horas - Tabela de Custo]",
-      valorHora: "[Valor Hora - Tabela de Custo]",
-      codigoCC: "[Código CC - Tabela de Custo]",
-      porcentagemCC: "[Porcentagem CC - Tabela de Custo]",
-      porcentagemCC100: "[Porcentagem CC - Tabela de Custo] (100%)",
+      semComissao: "Cancelamento fora de comissão:"
     },
     modalAddPropostaPauta: {
       feedbacks: {
@@ -932,130 +880,30 @@ const TextLanguageContext = createContext({
       novaPauta: "Nova Pauta",
       adicionar: "Adicionar",
       numSequencial: "Nº Sequencial",
-      essaPropostaJaSeEncontraEmUmaPauta: "Essa proposta já se encontra em uma pauta!",
-      nenhumaPautaEncontrada: "Nenhuma pauta encontrada!",
-      pfvCrieUmaNova: "Por favor, crie uma nova",
+      essaPropostaJaSeEncontraEmUmaPauta:
+        "Essa proposta já se encontra em uma pauta!",
     },
     CaixaTextoQuill: {
       gravarAudio: "Gravar áudio",
     },
-    criarPauta: {
-      status: "Status",
-      novaPauta: "Nova Pauta",
-      criarPauta: "Criar Pauta",
-      numeroSequencial: "Número Sequencial",
-      dataReuniao: "Data da Reunião",
-      forum: "Fórum",
-      propostas: "Propostas",
-      arrasteSoltePropostaAqui: "Arraste e Solte uma Proposta Aqui",
-      pesquisarPropostas: "Pesquisar por nome ou PPM",
-      naoHaPropostasParaSeremAdicionadas: "Não há propostas para serem adicionadas!",
-      publicada: "Publicada",
-      naoPublicada: "Não publicada",
-      expandir: "Expandir",
-      remover: "Remover",
-      adicionar: "Adicionar",
-      addNumeroSequencial: "Adicione um número sequencial!",
-      addDataReuniao: "Adicione uma data de reunião!",
-      addComissao: "Adicione uma comissão!",
-      addProposta: "Adicione pelo menos uma proposta!",
-      tour: {
-        tour1: "Nesta parte ficam os dados gerais para a criação de uma nova pauta.",
-        tour2: "Aqui você preenche o número sequencial e a data de reunião da pauta.",
-        tour3: "E aqui você seleciona o fórum da pauta.",
-        tour4: "Aqui ficam as propostas que serão adicionadas na pauta.",
-        tour5: "Clicando aqui é possível ter uma visualização da proposta.",
-        tour6: "Já aqui é possível adicionar a proposta na pauta, sendo também possível arrastá-la para o campo de propostas ao lado.",
-        tour7: "Neste campo ficam as propostas que estão adicionadas na pauta.",
-        tour8: "Clicando aqui é possível remover a proposta da pauta.",
-        tour9: "Clicando aqui é possível mudar a visualização da proposta, publicada ou não pubicada",
-        tour10: "Clicando aqui é possível criar a pauta."
-      }
-    },
-    rotas: [
-      "Login",
-      "Criar demanda",
-      "Notificacao",
-      "Chat",
-      "Detalhes demanda",
-      "Editar escopo",
-      "Escopos",
-      "Criar proposta",
-      "Detalhes proposta",
-      "Detalhes ata",
-      "Detalhes pauta",
-      "Criar pauta",
-    ],
     SideBarFiltro: {
-      filtros: "Filtros",
-      semResultados: "Sem Resultados",
-      labelSolicitante: "Solicitante",
-      forum: "Fórum",
-      selecionar: "Selecionar",
-      tamanho: "Tamanho",
-      muitoPequeno: "Muito Pequeno",
-      analistaResponsavel: "Analista Responsável",
-      gerenteResponsavel: "Gerente Responsável",
       status: "Status",
-      pequeno: "Pequeno",
-      medio: "Médio",
-      grande: "Grande",
-      muitoGrande: "Muito Grande",
-      aprovada: "Aprovada",
-      reprovada: "Reprovada",
-      aguardandoEdicao: "Aguardando Edição",
-      aguardandoRevisao: "Aguardando Revisão",
-      emAprovacao: "Em Aprovação",
-      emAndamento: "Em Andamento",
-      emDesenvolvimento: "Em Desenvolvimento",
-      cancelled: "Cancelled",
-      businessCase: "Business Case",
-      done: "Done",
-      assessment: "Assessment",
-      assessmentEdicao: "Assessment - Edição",
-      assessmentComissao: "Assessment - Em Comissão",
-      assessmentDg: "Assessment - Em DG",
+      forum: "Fórum",
       departamento: "Departamento",
-      atribuido: "Atribuído à",
-      ata: "Ata",
-      pauta: "Pauta",
-      semAtribuicao: "Sem Atribuição",
-      numero: "Número",
-      limparFilros: "Limpar Filtros",
-      score: "Score",
-      maiorScore: "Maior Score",
-      menorScore: "Menor Score",
-      titulo: "Título",
-      az: "A-Z",
-      za: "Z-A",
-      dataDeCriacao: "Data de criação",
-      maisRecente: "Mais recente",
-      maisAntiga: "Mais antiga",
-      numeroSequencial: "Número Sequencial",
-      crescente: "Crescente",
-      decrescente: "Decrescente",
-      dataReuniao: "Data de Reunião",
-      ordenar: "Ordenar",
-      filtrar: "Filtrar",
+      tamanho: "Tamanho",
       atribuidoA: "Atribuído à",
       apreciada: "Apreciada",
       publicada: "Publicada",
-      solicitante: "Solicitante",
-      semFiltro: "Sem Filtro",
-      naoApreciada: "Não Apreciada",
-      publicado: "Publicado",
-      naoPublicado: "Não Publicado",
       gerenteResponsavel: "Gerente Responsável",
       analistaResponsavel: "Analista Responsável",
       solicitante: "Solicitante",
-      semFiltro: "Sem Filtro",
+      semFiltro: "Sem filtro",
       naoApreciada: "Não Apreciada",
       publicado: "Publicado",
       naoPublicado: "Não Publicado",
-    },
-    
-    setTexts: () => {},
+    }
   },
+  setTexts: () => { },
 });
 
 export default TextLanguageContext;
