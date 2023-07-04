@@ -479,34 +479,34 @@ const HomeGerencia = () => {
       status: null,
     };
 
-    if (filtrosAtuais.solicitante != "") {
+    if (filtrosAtuais.solicitante) {
       paramsTemp.solicitante = filtrosAtuais.solicitante;
     }
-    if (filtrosAtuais.forum != "") {
+    if (filtrosAtuais.forum) {
       paramsTemp.forum = filtrosAtuais.forum;
     }
-    if (filtrosAtuais.tamanho != "") {
+    if (filtrosAtuais.tamanho) {
       paramsTemp.tamanho = filtrosAtuais.tamanho;
     }
-    if (filtrosAtuais.gerente != "") {
+    if (filtrosAtuais.gerente) {
       paramsTemp.gerente = filtrosAtuais.gerente;
     }
-    if (filtrosAtuais.departamento != "") {
+    if (filtrosAtuais.departamento) {
       paramsTemp.departamento = filtrosAtuais.departamento;
     }
-    if (filtrosAtuais.analista != "") {
+    if (filtrosAtuais.analista) {
       paramsTemp.analista = filtrosAtuais.analista;
     }
-    if (filtrosAtuais.presenteEm != "") {
+    if (filtrosAtuais.presenteEm) {
       paramsTemp.presenteEm = filtrosAtuais.presenteEm;
     }
-    if (filtrosAtuais.status != "") {
+    if (filtrosAtuais.status) {
       paramsTemp.status = filtrosAtuais.status;
     }
-    if (params.status && !paramsTemp.status) {
+    if (params.status && !paramsTemp.status && (valorAba == "2" || valorAba == "3")) {
       paramsTemp.status = params.status;
     }
-    if (params.solicitante && !paramsTemp.solicitante) {
+    if (valorAba == "1") {
       paramsTemp.solicitante = params.solicitante;
     }
 
@@ -520,6 +520,7 @@ const HomeGerencia = () => {
       departamento: paramsTemp.departamento,
       presenteEm: paramsTemp.presenteEm,
       status: paramsTemp.status,
+      solicitante: paramsTemp.solicitante
     });
   }, [filtrosAtuais]);
 
@@ -771,51 +772,30 @@ const HomeGerencia = () => {
     setOrdenacao(textoNovo);
   };
 
-  /** Função booleana que compara os parâmetros de filtragem com os dados da demanda,
-   * para evitar com que as demandas tenham tido problema em sua filtragem
-   */
-  const verificarFiltragemDemanda = (demanda) => {
-    if (params.analista != null && demanda.analista?.id != params.analista.id) {
-      return false;
+  /** Função usada no SideBarFiltro para limpar todos os filtros usados */
+  const limparFiltro = () => {
+    let status = "";
+    let solicitante = null;
+
+    if (valorAba == "1") {
+      solicitante = params.solicitante;
     }
-    if (
-      params.departamento != null &&
-      demanda.departamento?.id != params.departamento.id
-    ) {
-      return false;
+    if (valorAba == "2" || valorAba == "3") {
+      status = params.status;
     }
-    if (params.forum != null && demanda.forum?.id != params.forum.id) {
-      return false;
-    }
-    if (params.gerente != null && demanda.gerente?.id != params.gerente.id) {
-      return false;
-    }
-    if (params.codigoPPM != null && demanda.codigoPPM != params.codigoPPM) {
-      return false;
-    }
-    if (params.id != null && demanda.id != params.id) {
-      return false;
-    }
-    if (params.presenteEm && demanda.presenteEm != params.presenteEm) {
-      return false;
-    }
-    if (
-      params.solicitante != null &&
-      demanda.solicitante?.id != params.solicitante.id
-    ) {
-      return false;
-    }
-    if (params.status && demanda.status != params.status) {
-      return false;
-    }
-    if (params.tamanho && demanda.tamanho != params.tamanho) {
-      return false;
-    }
-    if (params.titulo && !demanda.titulo.includes(params.titulo)) {
-      return false;
-    }
-    return true;
-  };
+
+    setFiltrosAtuais({
+      titulo: "",
+      gerente: null,
+      analista: null,
+      forum: "",
+      tamanho: "",
+      departamento: "",
+      presenteEm: "",
+      status: status,
+      solicitante: solicitante
+    })
+  }
 
   /** Função para a busca de itens das abas */
   const buscarItens = () => {
@@ -922,7 +902,6 @@ const HomeGerencia = () => {
 
   /** Função para salvar o input de pesquisa quando houver alteração */
   const salvarPesquisa = (e) => {
-    // setValorPesquisa(e);
     valorPesquisa = e;
     if (valorPesquisa != "") {
       if (!inputPreenchido) {
@@ -1120,7 +1099,7 @@ const HomeGerencia = () => {
             "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
         });
       });
     }
@@ -1670,15 +1649,14 @@ const HomeGerencia = () => {
                     </Button>
                     <Drawer
                       anchor={"right"}
+                      sx={{ zIndex: "800" }}
                       open={state["right"]}
+                      className="h-full"
                       onClose={toggleDrawer("right", false)}
                     >
                       <SideBarFiltro
-                        tipoUsuario={usuario.tipoUsuario}
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
-                        ordenacaoNum={ordenacaoNum}
-                        setOrdenacaoNum={setOrdenacaoNum}
                         ordenacaoScore={ordenacaoScore}
                         setOrdenacaoScore={setOrdenacaoScore}
                         ordenacaoDate={ordenacaoDate}
@@ -1697,6 +1675,7 @@ const HomeGerencia = () => {
                         setListaAnalistas={setListaAnalistas}
                         filtroProposta={filtroProposta}
                         valorAba={valorAba}
+                        limparFiltro={limparFiltro}
                       />
                     </Drawer>
                   </React.Fragment>
@@ -1877,7 +1856,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Ajuda
                           onClick={() => {

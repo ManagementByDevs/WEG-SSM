@@ -1,9 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
- 
-
-import { Box, Typography, Divider, Tooltip, IconButton, Input } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Tooltip,
+  IconButton,
+  Input,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -42,7 +47,6 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 
 /** Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf */
 const DetalhesPauta = (props) => {
-
   /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -62,7 +66,9 @@ const DetalhesPauta = (props) => {
   const [pauta, setPauta] = useState(EntitiesObjectService.pauta());
 
   /** Lista provisória de propostas para preencher a tela */
-  const [listaProposta, setListaProposta] = useState([EntitiesObjectService.proposta(),]);
+  const [listaProposta, setListaProposta] = useState([
+    EntitiesObjectService.proposta(),
+  ]);
 
   /** Variável de verificação utilizada para mostrar o sumário ou uma proposta */
   const [proposta, setProposta] = useState(false);
@@ -92,7 +98,8 @@ const DetalhesPauta = (props) => {
   const [feedbackSemPropostas, setFeedbackSemPropostas] = useState(false);
 
   /** Feedback para quando o usuário deletar uma proposta da pauta */
-  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] = useState(false);
+  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
+    useState(false);
 
   /** Feedback para quando o usuário não preencher todos os campos obrigatórios */
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
@@ -246,7 +253,7 @@ const DetalhesPauta = (props) => {
               "Removida da Pauta #" + newPauta.numeroSequencial,
               arquivo,
               CookieService.getUser().id
-            ).then(() => { });
+            ).then(() => {});
           });
         }
       );
@@ -317,17 +324,32 @@ const DetalhesPauta = (props) => {
 
   /** Função que inicia a criação das duas atas */
   const criarAtas = () => {
-
     let propostasAprovadas = pauta.propostas.filter((proposta) => {
-      return (proposta.parecerComissao == "APROVADO" || proposta.parecerComissao == "REPROVADO");
+      return (
+        proposta.parecerComissao == "APROVADO" ||
+        proposta.parecerComissao == "REPROVADO"
+      );
     });
 
     let propostasReprovadas = pauta.propostas.filter((proposta) => {
-      return (proposta.parecerComissao != "APROVADO" && proposta.parecerComissao != "REPROVADO");
+      return (
+        proposta.parecerComissao != "APROVADO" &&
+        proposta.parecerComissao != "REPROVADO"
+      );
     });
 
-    let ataPublicada = { ...pauta, numeroSequencial: numeroSequencialAta, publicadaDg: false, publicada: true }
-    let ataNaoPublicada = { ...pauta, numeroSequencial: numeroSequencialAta, publicadaDg: true, publicada: false }
+    let ataPublicada = {
+      ...pauta,
+      numeroSequencial: numeroSequencialAta,
+      publicadaDg: false,
+      publicada: true,
+    };
+    let ataNaoPublicada = {
+      ...pauta,
+      numeroSequencial: numeroSequencialAta,
+      publicadaDg: true,
+      publicada: false,
+    };
 
     ataPublicada.propostas = propostasAprovadas.filter((proposta) => {
       return proposta.publicada;
@@ -358,8 +380,8 @@ const DetalhesPauta = (props) => {
 
     AtaService.post(ata).then((response) => {
       atualizarPropostas(propostasAta, response.numeroSequencial);
-    })
-  }
+    });
+  };
 
   /** Cria a notificacao da demanda */
   const sendNotification = (propostaAux) => {
@@ -395,22 +417,43 @@ const DetalhesPauta = (props) => {
   /** Função para atualizar o status das propostas e adicionar históricos na criação de uma ata */
   const atualizarPropostas = (propostas, numeroSequencialAta) => {
     for (let proposta of propostas) {
-      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, formatarHtml(proposta.parecerInformacao)).then((response) => {
-
+      PropostaService.atualizacaoAta(
+        proposta.id,
+        proposta.parecerComissao,
+        formatarHtml(proposta.parecerInformacao)
+      ).then((response) => {
         //Salvamento de histórico e atualização da demanda
         ExportPdfService.exportProposta(response.id).then((file) => {
           let arquivo = new Blob([file], { type: "application/pdf" });
 
           switch (response.parecerComissao) {
             case "APROVADO":
-              PropostaService.addHistorico(response.id, "Adicionada na Ata #" + numeroSequencialAta, arquivo, CookieService.getUser().id).then(() => { });
+              PropostaService.addHistorico(
+                response.id,
+                "Adicionada na Ata #" + numeroSequencialAta,
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
               break;
             case "REPROVADO":
-              PropostaService.addHistorico(response.id, "Proposta Reprovada", arquivo, CookieService.getUser().id).then(() => { });
-              DemandaService.atualizarStatus(response.demanda.id, "CANCELLED").then(() => { });
+              PropostaService.addHistorico(
+                response.id,
+                "Proposta Reprovada",
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
+              DemandaService.atualizarStatus(
+                response.demanda.id,
+                "CANCELLED"
+              ).then(() => {});
               break;
             case "MAIS_INFORMACOES":
-              PropostaService.addHistorico(response.id, "Enviada para Edição", arquivo, CookieService.getUser().id).then(() => { });
+              PropostaService.addHistorico(
+                response.id,
+                "Enviada para Edição",
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
               break;
           }
         });
@@ -423,12 +466,11 @@ const DetalhesPauta = (props) => {
   /** Função para salvar o numero sequencial da ata digitado no input */
   const salvarNumeroSequencial = (event) => {
     setNumeroSequencialAta(event.target.value);
-  }
+  };
 
   return (
     <FundoComHeader>
       {/* Tradução para libras */}
-      
 
       {/* Tour de ajuda para a criação da pauta*/}
       <Tour
@@ -476,7 +518,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
 
       {/* Modal de confirmação para criar uma ata */}
@@ -486,7 +528,7 @@ const DetalhesPauta = (props) => {
         textoModal={"criarAta"}
         textoBotao={"sim"}
         onConfirmClick={criarAtas}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
 
       <Box className="p-2 mb-16" sx={{ minWidth: "58rem" }}>
@@ -510,54 +552,75 @@ const DetalhesPauta = (props) => {
         {/* Corpo da pauta */}
         <Box className="flex flex-col justify-center relative items-center mt-5">
           <Box
-            className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
-            sx={{ width: "55rem" }}
+            className="flex flex-col gap-5 border rounded p-10 pt-6 border-t-6 relative"
+            sx={{ width: "55rem", borderTopColor: "primary.main" }}
             id="primeiro"
           >
             {/* Informações do header da pauta */}
             <Box className="flex justify-center flex-col">
-              <Typography
-                fontSize={FontConfig.title}
-                sx={{
-                  fontWeight: "600",
-                  cursor: "default",
-                  inlineSize: "800px",
-                  overflowWrap: "break-word",
-                  textAlign: "center",
-                  color: "primary.main",
-                }}
-                onClick={() => {
-                  lerTexto(texts.detalhesPauta.pauta);
-                }}
-              >
-                {texts.detalhesPauta.pauta}
-              </Typography>
+              <Box className="w-full flex justify-between items-center">
+                <Typography
+                  fontSize={FontConfig.title}
+                  sx={{
+                    fontWeight: "600",
+                    cursor: "default",
+                    inlineSize: "800px",
+                    overflowWrap: "break-word",
+                    color: "primary.main",
+                  }}
+                  onClick={() => {
+                    lerTexto(texts.detalhesPauta.pauta);
+                  }}
+                >
+                  {texts.detalhesPauta.pauta}
+                </Typography>
+
+                {/* Número sequencial */}
+                <Typography
+                  component="span"
+                  className="whitespace-nowrap"
+                  sx={{ fontWeight: "600", cursor: "default" }}
+                  onClick={() => {
+                    lerTexto(
+                      texts.detalhesPauta.numeroSequencial +
+                        ": " +
+                        pauta.numeroSequencial
+                    );
+                  }}
+                >
+                  {texts.detalhesPauta.numeroSequencial}:{" "}
+                  {pauta.numeroSequencial}
+                </Typography>
+              </Box>
               {/* Número sequencial */}
-              <Typography
+              {/* <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.numeroSequencial +
-                    ": " +
-                    pauta.numeroSequencial
+                      ": " +
+                      pauta.numeroSequencial
                   );
                 }}
               >
                 {texts.detalhesPauta.numeroSequencial}: {pauta.numeroSequencial}
-              </Typography>
+              </Typography> */}
+              <Divider />
               {/* Comissão */}
               <Typography
-                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
+                sx={{ fontWeight: "600", cursor: "default", marginTop: "2%" }}
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.comissao +
-                    ": " +
-                    pauta.comissao.nomeForum
+                      ": " +
+                      pauta.comissao.nomeForum
                   );
                 }}
               >
-                {texts.detalhesPauta.comissao}: {pauta.comissao.siglaForum} -{" "}
-                {pauta.comissao.nomeForum}
+                {texts.detalhesPauta.comissao}:{" "}
+                <Typography component="span">
+                  {pauta.comissao.siglaForum} - {pauta.comissao.nomeForum}
+                </Typography>
               </Typography>
               {/* Data da reunião da comissão */}
               <Typography
@@ -565,19 +628,21 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.reuniaoDoForum +
-                    ": " +
-                    DateService.getFullDateUSFormat(
-                      DateService.getDateByMySQLFormat(pauta?.dataReuniao),
-                      texts.linguagem
-                    )
+                      ": " +
+                      DateService.getFullDateUSFormat(
+                        DateService.getDateByMySQLFormat(pauta?.dataReuniao),
+                        texts.linguagem
+                      )
                   );
                 }}
               >
                 {texts.detalhesPauta.reuniaoDoForum}:{" "}
-                {DateService.getFullDateUSFormat(
-                  DateService.getDateByMySQLFormat(pauta?.dataReuniao),
-                  texts.linguagem
-                )}
+                <Typography component="span">
+                  {DateService.getFullDateUSFormat(
+                    DateService.getDateByMySQLFormat(pauta?.dataReuniao),
+                    texts.linguagem
+                  )}
+                </Typography>
               </Typography>
               {/* Data da reunião da DG */}
               <Typography
@@ -585,20 +650,32 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.analistaResponsavel +
-                    ": " +
-                    pauta.analistaResponsavel.nome
+                      ": " +
+                      pauta.analistaResponsavel.nome
                   );
                 }}
               >
                 {texts.detalhesPauta.analistaResponsavel}:{" "}
-                {pauta.analistaResponsavel.nome}
+                <Typography component="span">
+                  {pauta.analistaResponsavel.nome}
+                </Typography>
               </Typography>
 
               {/* Input para informar o número sequencial da ata */}
-              <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
+              <Box
+                sx={{
+                  marginBottom: "1%",
+                  width: "80%",
+                  height: "5%",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
                 <Typography
                   sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
-                  onClick={() => { lerTexto(texts.detalhesPauta.numeroSequencialAta); }}
+                  onClick={() => {
+                    lerTexto(texts.detalhesPauta.numeroSequencialAta);
+                  }}
                 >
                   {texts.detalhesPauta.numeroSequencialAta}:
                 </Typography>
@@ -633,7 +710,9 @@ const DetalhesPauta = (props) => {
                     textAlign: "center",
                   }}
                   color="primary.main"
-                  onClick={() => { lerTexto(texts.detalhesPauta.sumario); }}
+                  onClick={() => {
+                    lerTexto(texts.detalhesPauta.sumario);
+                  }}
                 >
                   {texts.detalhesPauta.sumario}
                 </Typography>
@@ -765,7 +844,7 @@ const DetalhesPauta = (props) => {
                   if (!isAllFieldsFilled()) {
                     setFeedbackCamposFaltantes(true);
                   } else {
-                    setModalCriarAta(true)
+                    setModalCriarAta(true);
                   }
                 }}
                 className="flex justify-center items-center rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"

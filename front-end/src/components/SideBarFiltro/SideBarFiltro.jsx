@@ -16,6 +16,7 @@ import {
   Checkbox,
   FormControlLabel,
   Box,
+  Button,
 } from "@mui/material";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -58,10 +59,6 @@ export default function SliderBar(props) {
     {
       id: 1,
       tipo: texts.modalOrdenacao.titulo,
-    },
-    {
-      id: 2,
-      tipo: texts.modalOrdenacao.numeroSequencial,
     },
     {
       id: 3,
@@ -131,160 +128,163 @@ export default function SliderBar(props) {
     <List
       sx={{ width: "18rem", bgcolor: "background.paper", padding: "0" }}
       component="nav"
+      className="h-full flex flex-col justify-between"
       aria-labelledby="nested-list-subheader"
     >
-      <Box className="p-2" sx={{ backgroundColor: "primary.main" }}>
-        <Divider />
-        <Typography
-          sx={{
-            marginY: "0.3rem",
-            textAlign: "center",
-            fontSize: FontConfig.big,
-            fontWeight: 600,
-            color: "text.white",
-          }}
-          onClick={() => {
-            lerTexto(texts.modalOrdenacao.filtrar);
-          }}
-        >
-          {texts.modalOrdenacao.filtrar}
-        </Typography>
-        <Divider />
-      </Box>
-      {props.valorAba != 5 ? (
-        <Box className="flex flex-col w-full items-center mt-5">
-          {opcoesFiltrar.map((opcao, index) =>
-            props.valorAba == 1 && opcao.id <= 6 ? (
-              <Input
-                key={index}
-                age={age}
-                handleChange={handleChange}
-                opcao={opcao}
-                filtro={props.filtro}
-                setFiltro={props.setFiltro}
-                filtroAtas={props.filtroAtas}
-                setFiltroAtas={props.setFiltroAtas}
-                listaForuns={props.listaForuns}
-                listaDepartamentos={props.listaDepartamentos}
-                listaSolicitantes={props.listaSolicitantes}
-                setListaSolicitantes={props.setListaSolicitantes}
-                listaGerentes={props.listaGerentes}
-                setListaGerentes={props.setListaGerentes}
-                listaAnalistas={props.listaAnalistas}
-                setListaAnalistas={props.setListaAnalistas}
-                filtroProposta={props.filtroProposta}
-              />
-            ) : (props.valorAba == 2 || props.valorAba == 3) &&
-              opcao.id > 1 &&
-              opcao.id <= 6 ? (
-              <Input
-                key={index}
-                age={age}
-                handleChange={handleChange}
-                opcao={opcao}
-                filtro={props.filtro}
-                setFiltro={props.setFiltro}
-                filtroAtas={props.filtroAtas}
-                setFiltroAtas={props.setFiltroAtas}
-                listaForuns={props.listaForuns}
-                listaDepartamentos={props.listaDepartamentos}
-                listaSolicitantes={props.listaSolicitantes}
-                setListaSolicitantes={props.setListaSolicitantes}
-                listaGerentes={props.listaGerentes}
-                setListaGerentes={props.setListaGerentes}
-                listaAnalistas={props.listaAnalistas}
-                setListaAnalistas={props.setListaAnalistas}
-                filtroProposta={props.filtroProposta}
-              />
-            ) : props.valorAba == 4 && opcao.id <= 8 ? (
-              <Input
-                key={index}
-                age={age}
-                handleChange={handleChange}
-                opcao={opcao}
-                filtro={props.filtro}
-                setFiltro={props.setFiltro}
-                filtroAtas={props.filtroAtas}
-                setFiltroAtas={props.setFiltroAtas}
-                listaForuns={props.listaForuns}
-                listaDepartamentos={props.listaDepartamentos}
-                listaSolicitantes={props.listaSolicitantes}
-                setListaSolicitantes={props.setListaSolicitantes}
-                listaGerentes={props.listaGerentes}
-                setListaGerentes={props.setListaGerentes}
-                listaAnalistas={props.listaAnalistas}
-                setListaAnalistas={props.setListaAnalistas}
-                filtroProposta={props.filtroProposta}
-              />
-            ) : props.valorAba == 6 && (opcao.id == 9 || opcao.id == 10) ? (
-              <Input
-                key={index}
-                age={age}
-                handleChange={handleChange}
-                opcao={opcao}
-                filtro={props.filtro}
-                setFiltro={props.setFiltro}
-                filtroAtas={props.filtroAtas}
-                setFiltroAtas={props.setFiltroAtas}
-                listaForuns={props.listaForuns}
-                listaDepartamentos={props.listaDepartamentos}
-                listaSolicitantes={props.listaSolicitantes}
-                setListaSolicitantes={props.setListaSolicitantes}
-                listaGerentes={props.listaGerentes}
-                setListaGerentes={props.setListaGerentes}
-                listaAnalistas={props.listaAnalistas}
-                setListaAnalistas={props.setListaAnalistas}
-                filtroProposta={props.filtroProposta}
-              />
-            ) : null
-          )}
-        </Box>
-      ) : (
-        <Box className="flex flex-col w-full items-center mt-1">
+      <Box>
+        <Box key={"Box Principal"} className="p-2" sx={{ backgroundColor: "primary.main" }}>
+          <Divider key={"Divisor"} />
           <Typography
+            key={"Título Filtrar"}
             sx={{
               marginY: "0.3rem",
               textAlign: "center",
-              fontSize: FontConfig.medium,
+              fontSize: FontConfig.big,
               fontWeight: 600,
-              color: "text.secondary",
+              color: "text.white",
             }}
             onClick={() => {
-              lerTexto(texts.SideBarFiltro.semFiltro);
+              lerTexto(texts.modalOrdenacao.filtrar);
             }}
           >
-            {texts.SideBarFiltro.semFiltro}
+            {texts.modalOrdenacao.filtrar}
           </Typography>
+          <Divider key={"Divisor 2"} />
         </Box>
-      )}
-      <Box className="my-1 p-2" sx={{ backgroundColor: "primary.main" }}>
-        <Divider />
-        <Typography
-          sx={{
-            marginY: "0.3rem",
-            textAlign: "center",
-            fontSize: FontConfig.big,
-            fontWeight: 600,
-            color: "text.white",
-          }}
-          onClick={() => {
-            lerTexto(texts.modalOrdenacao.ordenar);
-          }}
-        >
-          {texts.modalOrdenacao.ordenar}
-        </Typography>
-        <Divider />
-      </Box>
-      <Box>
-        {opcoesOrdenar.map((opcao, index) => (
-          <>
-            {props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
+        {props.valorAba != 5 ? (
+          <Box key={"Caixa Inputs Filtro"} className="flex flex-col w-full items-center mt-5">
+            {opcoesFiltrar.map((opcao, index) =>
+              props.valorAba == 1 && opcao.id <= 6 ? (
+                <Input
+                  key={"Filtro" + index}
+                  age={age}
+                  handleChange={handleChange}
+                  opcao={opcao}
+                  filtro={props.filtro}
+                  setFiltro={props.setFiltro}
+                  filtroAtas={props.filtroAtas}
+                  setFiltroAtas={props.setFiltroAtas}
+                  listaForuns={props.listaForuns}
+                  listaDepartamentos={props.listaDepartamentos}
+                  listaSolicitantes={props.listaSolicitantes}
+                  setListaSolicitantes={props.setListaSolicitantes}
+                  listaGerentes={props.listaGerentes}
+                  setListaGerentes={props.setListaGerentes}
+                  listaAnalistas={props.listaAnalistas}
+                  setListaAnalistas={props.setListaAnalistas}
+                  filtroProposta={props.filtroProposta}
+                />
+              ) : (props.valorAba == 2 || props.valorAba == 3) &&
+                opcao.id > 1 &&
+                opcao.id <= 7 ? (
+                <Input
+                  key={"Filtro" + index}
+                  age={age}
+                  handleChange={handleChange}
+                  opcao={opcao}
+                  filtro={props.filtro}
+                  setFiltro={props.setFiltro}
+                  filtroAtas={props.filtroAtas}
+                  setFiltroAtas={props.setFiltroAtas}
+                  listaForuns={props.listaForuns}
+                  listaDepartamentos={props.listaDepartamentos}
+                  listaSolicitantes={props.listaSolicitantes}
+                  setListaSolicitantes={props.setListaSolicitantes}
+                  listaGerentes={props.listaGerentes}
+                  setListaGerentes={props.setListaGerentes}
+                  listaAnalistas={props.listaAnalistas}
+                  setListaAnalistas={props.setListaAnalistas}
+                  filtroProposta={props.filtroProposta}
+                />
+              ) : props.valorAba == 4 && opcao.id <= 8 ? (
+                <Input
+                  key={"Filtro" + index}
+                  age={age}
+                  handleChange={handleChange}
+                  opcao={opcao}
+                  filtro={props.filtro}
+                  setFiltro={props.setFiltro}
+                  filtroAtas={props.filtroAtas}
+                  setFiltroAtas={props.setFiltroAtas}
+                  listaForuns={props.listaForuns}
+                  listaDepartamentos={props.listaDepartamentos}
+                  listaSolicitantes={props.listaSolicitantes}
+                  setListaSolicitantes={props.setListaSolicitantes}
+                  listaGerentes={props.listaGerentes}
+                  setListaGerentes={props.setListaGerentes}
+                  listaAnalistas={props.listaAnalistas}
+                  setListaAnalistas={props.setListaAnalistas}
+                  filtroProposta={props.filtroProposta}
+                />
+              ) : props.valorAba == 6 && (opcao.id == 9 || opcao.id == 10) ? (
+                <Input
+                  key={"Filtro" + index}
+                  age={age}
+                  handleChange={handleChange}
+                  opcao={opcao}
+                  filtro={props.filtro}
+                  setFiltro={props.setFiltro}
+                  filtroAtas={props.filtroAtas}
+                  setFiltroAtas={props.setFiltroAtas}
+                  listaForuns={props.listaForuns}
+                  listaDepartamentos={props.listaDepartamentos}
+                  listaSolicitantes={props.listaSolicitantes}
+                  setListaSolicitantes={props.setListaSolicitantes}
+                  listaGerentes={props.listaGerentes}
+                  setListaGerentes={props.setListaGerentes}
+                  listaAnalistas={props.listaAnalistas}
+                  setListaAnalistas={props.setListaAnalistas}
+                  filtroProposta={props.filtroProposta}
+                />
+              ) : null
+            )}
+          </Box>
+        ) : (
+          <Box key={"Caixa Sem Filtro"} className="flex flex-col w-full items-center mt-1">
+            <Typography
+              key={"Texto Sem Filtro"}
+              sx={{
+                marginY: "0.3rem",
+                textAlign: "center",
+                fontSize: FontConfig.medium,
+                fontWeight: 600,
+                color: "text.secondary",
+              }}
+              onClick={() => {
+                lerTexto(texts.SideBarFiltro.semFiltro);
+              }}
+            >
+              {texts.SideBarFiltro.semFiltro}
+            </Typography>
+          </Box>
+        )}
+        <Box key={"Caixa Ordenação"} className="my-1 p-2" sx={{ backgroundColor: "primary.main" }}>
+          <Divider key={"Divisor 3"} />
+          <Typography
+            key={"Título ordenação"}
+            sx={{
+              marginY: "0.3rem",
+              textAlign: "center",
+              fontSize: FontConfig.big,
+              fontWeight: 600,
+              color: "text.white",
+            }}
+            onClick={() => {
+              lerTexto(texts.modalOrdenacao.ordenar);
+            }}
+          >
+            {texts.modalOrdenacao.ordenar}
+          </Typography>
+          <Divider key={"Divisor 4"} />
+        </Box>
+        <Box key={"Caixa Itens Ordenação"}>
+          {opcoesOrdenar.map((opcao, index) =>
+            props.valorAba < 4 && opcao.id != 4 ? (
               <ItemOrdenacao
                 opcao={opcao}
-                key={index}
+                key={"Ordenação" + index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                ordenacaoNum={props.ordenacaoNum}
                 setOrdenacaoNum={props.setOrdenacaoNum}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
@@ -295,10 +295,9 @@ export default function SliderBar(props) {
             ) : props.valorAba == 4 && opcao.id != 4 ? (
               <ItemOrdenacao
                 opcao={opcao}
-                key={index}
+                key={"Ordenação" + index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                ordenacaoNum={props.ordenacaoNum}
                 setOrdenacaoNum={props.setOrdenacaoNum}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
@@ -311,10 +310,9 @@ export default function SliderBar(props) {
               opcao.id != 1 && (
                 <ItemOrdenacao
                   opcao={opcao}
-                  key={index}
+                  key={"Ordenação" + index}
                   ordenacaoTitulo={props.ordenacaoTitulo}
                   setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                  ordenacaoNum={props.ordenacaoNum}
                   setOrdenacaoNum={props.setOrdenacaoNum}
                   ordenacaoScore={props.ordenacaoScore}
                   setOrdenacaoScore={props.setOrdenacaoScore}
@@ -323,9 +321,25 @@ export default function SliderBar(props) {
                   valorAba={props.valorAba}
                 />
               )
-            )}
-          </>
-        ))}
+            )
+          )}
+        </Box>
+      </Box>
+      <Box className="mt-4 mb-8 flex justify-center">
+        <Button
+          id="terceiroDemandas"
+          className="flex"
+          sx={{
+            backgroundColor: "primary.main",
+            color: "text.white",
+            fontSize: FontConfig.default,
+          }}
+          onClick={props.limparFiltro}
+          variant="contained"
+          disableElevation
+        >
+          {texts.modalOrdenacao.limparFiltro}
+        </Button>
       </Box>
     </List>
   );
@@ -376,16 +390,6 @@ function ItemOrdenacao(props) {
     props.setOrdenacaoDate([false, !props.ordenacaoDate[1]]);
   };
 
-  /** Função para mudar o valor do checkbox de ordenação por número sequencial "Decrescente" */
-  const mudarCheck7 = () => {
-    props.setOrdenacaoNum([!props.ordenacaoNum[0], false]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por número sequencial "Crescente" */
-  const mudarCheck8 = () => {
-    props.setOrdenacaoNum([false, !props.ordenacaoNum[1]]);
-  };
-
   return (
     <>
       <ListItemButton onClick={handleClick}>
@@ -432,18 +436,6 @@ function ItemOrdenacao(props) {
                 onClick={() => {
                   if (lendoTexto) {
                     lerTexto(texts.modalOrdenacao.az);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 2 ? (
-              <FormControlLabel
-                checked={props.ordenacaoNum[1]}
-                onChange={mudarCheck8}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.crescente}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.crescente);
                   }
                 }}
               />
@@ -501,24 +493,12 @@ function ItemOrdenacao(props) {
                   }
                 }}
               />
-            ) : props.opcao.id == 2 ? (
-              <FormControlLabel
-                checked={props.ordenacaoNum[0]}
-                onChange={mudarCheck7}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.decrescente}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.decrescente);
-                  }
-                }}
-              />
             ) : props.opcao.id == 3 ? (
               <FormControlLabel
                 checked={props.ordenacaoScore[0]}
                 onChange={mudarCheck1}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.menorScorlerTextotextssse}
+                label={texts.modalOrdenacao.menorScore}
                 onClick={() => {
                   if (lendoTexto) {
                     lerTexto(texts.modalOrdenacao.menorScore);
@@ -897,7 +877,7 @@ function Input(props) {
               </MenuItem>
               {props.listaForuns.map((forum) => {
                 return (
-                  <MenuItem key={forum.idForum} value={forum}>
+                  <MenuItem key={"Fórum" + forum.idForum} value={forum}>
                     {forum.nomeForum}
                   </MenuItem>
                 );
@@ -916,7 +896,7 @@ function Input(props) {
               </MenuItem>
               {props.listaDepartamentos.map((departamento) => {
                 return (
-                  <MenuItem key={departamento.id} value={departamento}>
+                  <MenuItem key={"Departamento" + departamento.id} value={departamento}>
                     {departamento.nome}
                   </MenuItem>
                 );
