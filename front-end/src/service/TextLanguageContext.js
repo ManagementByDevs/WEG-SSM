@@ -441,6 +441,7 @@ const TextLanguageContext = createContext({
       dataReuniao: "Data de Reunião",
       ordenar: "Ordenar",
       filtrar: "Filtrar",
+      limparFiltro: "Limpar Filtros"
     },
     modalRecusarDemanda: {
       motivoDaRecusa: "Motivo da recusa",

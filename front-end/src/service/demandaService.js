@@ -53,6 +53,9 @@ class DemandaService {
         if (params.status != null) {
             newParams.status = params.status;
         }
+        if(params.tamanho != "") {
+            newParams.tamanho = params.tamanho;
+        }
         return (await axios.get(demanda + `/page?${page}`, { params: newParams, headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
