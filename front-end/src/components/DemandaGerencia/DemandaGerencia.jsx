@@ -437,23 +437,23 @@ const DemandaGerencia = (props) => {
                 <Box id="terceiroCriarPropostas" className="flex relative">
                   {
                     // Se for uma proposta, mostra o icone de chat
-                    tipo === "proposta" ||
+                    (tipo === "proposta" ||
                       isChatVisible ||
-                      (props.dados.solicitante.tour && (
-                        <Tooltip title={texts.demandaGerencia.chat}>
-                          <IconButton onClick={entrarChat}>
-                            <ChatOutlinedIcon
-                              id="segundoPropostas"
-                              className="delay-120 hover:scale-110 duration-300"
-                              sx={{
-                                color: "icon.main",
-                                cursor: "pointer",
-                                fontSize: "30px",
-                              }}
-                            />
-                          </IconButton>
-                        </Tooltip>
-                      ))
+                      props.dados.solicitante.tour) && (
+                      <Tooltip title={texts.demandaGerencia.chat}>
+                        <IconButton onClick={entrarChat}>
+                          <ChatOutlinedIcon
+                            id="segundoPropostas"
+                            className="delay-120 hover:scale-110 duration-300"
+                            sx={{
+                              color: "icon.main",
+                              cursor: "pointer",
+                              fontSize: "30px",
+                            }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    )
                   }
                   {props.semHistorico == false ||
                     (props.semHistorico == null && (
