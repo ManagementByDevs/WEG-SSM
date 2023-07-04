@@ -957,6 +957,11 @@ const TextLanguage = (linguagem) => {
           escopoVazio: "Escopo vazio",
           semTabelasDeCusto: "Proposta sem tabelas de custo",
           semComissao: "Cancelamento fora de comissão:",
+          tour: {
+            tour1: "Aqui ficam todos os detalhes da proposta",
+            tour2: "Clicando aqui é possível baixar a proposta em PDF",
+            tour3: "Clicando nesse botão é possível adicionar a proposta em uma pauta"
+          }
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Dado inválido!",
