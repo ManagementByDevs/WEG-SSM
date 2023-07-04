@@ -16,11 +16,11 @@ import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 import propostaService from "../../service/propostaService";
 
-/** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
+/**
+ * Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -73,26 +73,26 @@ const Demanda = (props) => {
     let chat;
     propostaService.getByDemanda(props.demanda.id).then((proposta) => {
       console.log(proposta);
-    ChatService.getByPropostaAndUser(proposta.id, user.usuario.id).then(
-      (response) => {
-        chat = response;
-        if (chat.length > 0) {
-          navigate(`/chat/${chat[0].id}`);
-        } else {
-          let newChat = {
-            idProposta: { id: proposta.id },
-            usuariosChat: [
-              { id: user.usuario.id },
-              { id: proposta.analista.id },
-            ],
-          };
-          ChatService.post(newChat).then((response) => {
-            chat = response;
-            navigate(`/chat/${chat.id}`);
-          });
+      ChatService.getByPropostaAndUser(proposta.id, user.usuario.id).then(
+        (response) => {
+          chat = response;
+          if (chat.length > 0) {
+            navigate(`/chat/${chat[0].id}`);
+          } else {
+            let newChat = {
+              idProposta: { id: proposta.id },
+              usuariosChat: [
+                { id: user.usuario.id },
+                { id: proposta.analista.id },
+              ],
+            };
+            ChatService.post(newChat).then((response) => {
+              chat = response;
+              navigate(`/chat/${chat.id}`);
+            });
+          }
         }
-      }
-    );
+      );
     });
   };
 
@@ -185,48 +185,48 @@ const Demanda = (props) => {
           {(props.demanda?.solicitante?.email ==
             CookieService.getCookie("jwt").sub ||
             props.demanda?.solicitante?.tour) && (
-            <Box>
-              <Typography
-                fontSize={FontConfig.default}
-                fontWeight={600}
-                color="primary"
-                className="text-end"
-                onClick={(e) => {
-                  if (lendoTexto) {
-                    e.stopPropagation();
-                    lerTexto(props.demanda.id);
-                  }
-                }}
-              >
-                #{props.demanda.id}
-              </Typography>
-
-              <Box id="oitavo" className={`items-center text-justify flex`}>
+              <Box>
                 <Typography
-                  fontSize={FontConfig?.default}
-                  sx={{ fontWeight: "600" }}
+                  fontSize={FontConfig.default}
+                  fontWeight={600}
+                  color="primary"
+                  className="text-end"
                   onClick={(e) => {
                     if (lendoTexto) {
                       e.stopPropagation();
-                      lerTexto(formatarNomeStatus());
+                      lerTexto(props.demanda.id);
                     }
                   }}
                 >
-                  {formatarNomeStatus()}
+                  #{props.demanda.id}
                 </Typography>
-                <Box
-                  sx={{
-                    backgroundColor: getStatusColor(),
-                    width: "12px",
-                    height: "12px",
-                    borderRadius: "10px",
-                    marginLeft: "10px",
-                  }}
-                  className={`items-center h-30 text-justify`}
-                />
+
+                <Box id="oitavo" className={`items-center text-justify flex`}>
+                  <Typography
+                    fontSize={FontConfig?.default}
+                    sx={{ fontWeight: "600" }}
+                    onClick={(e) => {
+                      if (lendoTexto) {
+                        e.stopPropagation();
+                        lerTexto(formatarNomeStatus());
+                      }
+                    }}
+                  >
+                    {formatarNomeStatus()}
+                  </Typography>
+                  <Box
+                    sx={{
+                      backgroundColor: getStatusColor(),
+                      width: "12px",
+                      height: "12px",
+                      borderRadius: "10px",
+                      marginLeft: "10px",
+                    }}
+                    className={`items-center h-30 text-justify`}
+                  />
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
         </Box>
         <Box sx={{ height: "40%" }}>
           {/* Proposta da demanda */}
@@ -258,7 +258,7 @@ const Demanda = (props) => {
         >
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
           {props.demanda?.solicitante?.email !=
-          CookieService.getCookie("jwt").sub ? (
+            CookieService.getCookie("jwt").sub ? (
             <Typography
               fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
@@ -273,9 +273,9 @@ const Demanda = (props) => {
               {props.demanda.solicitante?.nome}
             </Typography>
           ) : (props.demanda?.status == "CANCELLED" ||
-              props.demanda?.status == "BACKLOG_EDICAO") &&
+            props.demanda?.status == "BACKLOG_EDICAO") &&
             props.demanda?.solicitante?.email ==
-              CookieService.getCookie("jwt").sub ? (
+            CookieService.getCookie("jwt").sub ? (
             <Tooltip title={texts.demanda.motivo}>
               <IconButton
                 onClick={(e) => {
@@ -301,7 +301,7 @@ const Demanda = (props) => {
           ) : null}
 
           {props.demanda?.solicitante?.email ==
-          CookieService.getCookie("jwt").sub ? (
+            CookieService.getCookie("jwt").sub ? (
             props.demanda.forum != null ? (
               <Tooltip title={texts.demandaGerencia.chat}>
                 <IconButton onClick={entrarChat}>
@@ -318,6 +318,23 @@ const Demanda = (props) => {
               </Tooltip>
             ) : null
           ) : null}
+
+          { props.demanda?.solicitante?.tour && (
+            <Tooltip title={texts.demandaGerencia.chat}>
+              <IconButton onClick={entrarChat}>
+                <ChatOutlinedIcon
+                  id="nono"
+                  className="delay-120 hover:scale-110 duration-300"
+                  sx={{
+                    color: "icon.main",
+                    cursor: "pointer",
+                    fontSize: "30px",
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
+          )
+          }
         </Box>
       </Paper>
     </>

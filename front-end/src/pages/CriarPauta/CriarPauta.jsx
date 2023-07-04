@@ -46,30 +46,6 @@ const CriarPauta = () => {
       },
     },
     {
-      selector: "#quarto",
-      content: texts.criarPauta.tour.tour4,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quinto",
-      content: texts.criarPauta.tour.tour5,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#sexto",
-      content: texts.criarPauta.tour.tour6,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
       selector: "#setimo",
       content: texts.criarPauta.tour.tour7,
       style: {
@@ -93,11 +69,43 @@ const CriarPauta = () => {
         color: "#000000",
       },
     },
-  ]
+    {
+      selector: "#quinto",
+      content: texts.criarPauta.tour.tour5,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.criarPauta.tour.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#sexto",
+      content: texts.criarPauta.tour.tour6,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#decimo",
+      content: texts.criarPauta.tour.tour10,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
   return (
     <FundoComHeader>
-      {/* Tour de ajuda para as minhas demandas*/}
+      {/* Tour de ajuda para a criação da pauta*/}
       <Tour
         steps={stepsTour}
         isOpen={isTourOpen}
