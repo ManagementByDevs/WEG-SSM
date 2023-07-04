@@ -606,12 +606,10 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsável",
           numeroSequencialDG: "Número Sequencial da Ata da DG",
           tour: {
-            tour1:
-              "Aqui você pode ver os detalhes da ata e as propostas que pertencem a ela",
+            tour1: "Aqui você pode ver os detalhes da ata e as propostas que pertencem a ela",
             tour2: "Clicando aqui você pode baixar o PDF da ata",
-            tour3: "Esse botão permite a navegação entre as propostas da ata",
-            tour4: "Esse botão permite publicar a ata",
-          },
+            tour3: "Aqui ficam os botões de navegação entre as propostas, e caso necessário um botão para publicar a ata",
+          }
         },
         detalhesDemandaPagina: {
           tour: {
@@ -1070,6 +1068,15 @@ const TextLanguage = (linguagem) => {
           ordenar: "Ordenar",
           filtrar: "Filtrar",
           limparFiltro: "Limpar Filtros",
+
+          aprovada: "Aprovada",
+          reprovada: "Reprovada",
+          aguardandoRevisao: "Aguardando Revisão",
+          aguardandoEdicao: "Aguardando Edição",
+          emAprovacao: "Em Aprovação",
+          aprovada: "Aprovada",
+          emAndamento: "Em Andamento",
+          emDesenvolvimento: "Em Desenvolvimento",
         },
       }
     : linguagem == "en"
@@ -1638,13 +1645,10 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Responsable Analyst",
           numeroSequencialDG: "DG Minutes Sequential Number",
           tour: {
-            tour1:
-              "Here you can see the details of the minutes and the proposals that belong to them",
+            tour1: "Here you can see the details of the minutes and the proposals that belong to them",
             tour2: "Click here to download the PDF of the minutes",
-            tour3:
-              "This button allows navigation between the proposals in the minutes",
-            tour4: "This button allows you to publish the minutes",
-          },
+            tour3: "Here are the navigation buttons between the proposals, and if necessary a button to publish the minutes",
+          }
         },
         detalhesDemandaPagina: {
           tour: {
@@ -1932,6 +1936,11 @@ const TextLanguage = (linguagem) => {
           escopoVazio: "Empty scope",
           semTabelasDeCusto: "Proposal without cost tables",
           semComissao: "Out of commission cancellation:",
+          tour: {
+            tour1: "Here are all the details of the proposal",
+            tour2: "Click here to download the proposal in PDF",
+            tour3:"By clicking on this button it is possible to add the proposal to an agenda",
+          },
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Invalid data!",
@@ -2102,6 +2111,15 @@ const TextLanguage = (linguagem) => {
           ordenar: "Order",
           filtrar: "Filter",
           limparFiltro: "Clear Filters",
+
+          aprovada: "Approved",
+          reprovada: "Rejected",
+          aguardandoRevisao: "Awaiting Review",
+          aguardandoEdicao: "Awaiting Edition",
+          emAprovacao: "In Approval",
+          aprovada: "Approved",
+          emAndamento: "In Progress",
+          emDesenvolvimento: "In Development",
         },
       }
     : linguagem == "ch"
@@ -2652,9 +2670,8 @@ const TextLanguage = (linguagem) => {
           tour: {
             tour1: "在这里您可以查看会议记录的详细信息以及属于会议记录的提案",
             tour2: "单击此处下载会议纪要的 PDF 版本",
-            tour3: "此按钮允许在几分钟内在提案之间导航",
-            tour4: "此按钮允许您发布会议记录",
-          },
+            tour3: "以下是提案之间的导航按钮，如有必要，还有用于发布会议记录的按钮",
+          }
         },
         detalhesDemandaPagina: {
           tour: {
@@ -2924,6 +2941,12 @@ const TextLanguage = (linguagem) => {
           escopoVazio: "空范围",
           semTabelasDeCusto: "没有成本表的提案",
           semComissao: "佣金外取消：",
+          tour: {
+            tour1: "以下是该提案的所有详细信息",
+            tour2: "单击此处下载 PDF 格式的提案",
+            tour3:
+              "通过单击此按钮，可以将提案添加到议程中",
+          },
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "无效数据",
@@ -3089,6 +3112,15 @@ const TextLanguage = (linguagem) => {
           ordenar: "排序",
           filtrar: "过滤器",
           limparFiltro: "清除过滤器",
+
+          aprovada: "批准",
+          reprovada: "拒绝",
+          aguardandoRevisao: "等待审查",
+          aguardandoEdicao: "等待编辑",
+          emAprovacao: "正在批准",
+          aprovada: "批准",
+          emAndamento: "进行中",
+          emDesenvolvimento: "正在开发中",
         },
       }
     : linguagem == "es"
@@ -3653,13 +3685,10 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsable",
           numeroSequencialDG: "Número secuencial de actas del GD",
           tour: {
-            tour1:
-              "Aquí puede ver el detalle de las actas y las propuestas que les corresponden",
+            tour1: "Aquí puede ver el detalle de las actas y las propuestas que les corresponden",
             tour2: "Haga clic aquí para descargar el PDF del acta",
-            tour3:
-              "Este botón permite la navegación entre las propuestas del acta",
-            tour4: "Este botón le permite publicar las actas",
-          },
+            tour3: "Aquí están los botones de navegación entre las propuestas, y si es necesario un botón para publicar el acta",
+          }
         },
         detalhesDemandaPagina: {
           tour: {
@@ -3959,6 +3988,12 @@ const TextLanguage = (linguagem) => {
           escopoVazio: "Alcance vacío",
           semTabelasDeCusto: "Propuesta sin tablas de costos",
           semComissao: "Cancelación fuera de comisión:",
+          tour: {
+            tour1: "Aquí están todos los detalles de la propuesta",
+            tour2: "Haga clic aquí para descargar la propuesta en PDF",
+            tour3:
+              "Al hacer clic en este botón, es posible agregar la propuesta a una agenda",
+          },
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "¡Datos inválidos!",
@@ -4120,6 +4155,14 @@ const TextLanguage = (linguagem) => {
           ordenar: "Ordenar",
           filtrar: "Filtrar",
           limparFiltro: "Filtros Claros",
+
+          reprovada: "Rechazada",
+          aguardandoRevisao: "Esperando Revisión",
+          aguardandoEdicao: "Esperando Edición",
+          emAprovacao: "En Aprobación",
+          aprovada: "Aprobada",
+          emAndamento: "En Curso",
+          emDesenvolvimento: "En Desarollo",
         },
       }
     : null;

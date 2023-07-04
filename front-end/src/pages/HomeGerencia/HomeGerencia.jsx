@@ -312,22 +312,6 @@ const HomeGerencia = () => {
       },
     },
     {
-      selector: "#decimoMinhasDemandas",
-      content: texts.homeGerencia.toursDemandas.tour10,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoPropostas",
-      content: texts.homeGerencia.toursDemandas.tour11,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
       selector: "#oitavoDemandas",
       content: texts.homeGerencia.toursDemandas.tour8,
       style: {
@@ -785,6 +769,14 @@ const HomeGerencia = () => {
     setOrdenacao(textoNovo);
   };
 
+  /** Função usada juntamente com "limparFiltro" para resetar a ordenação */
+  const limparOrdenacao = () => {
+    setOrdenacaoNum([false, false]);
+    setOrdenacaoDate([false, false]);
+    setOrdenacaoScore([false, false]);
+    setOrdenacaoTitulo([false, false]);
+  }
+
   /** Função usada no SideBarFiltro para limpar todos os filtros usados */
   const limparFiltro = () => {
     let status = "";
@@ -808,6 +800,7 @@ const HomeGerencia = () => {
       status: status,
       solicitante: solicitante
     })
+    limparOrdenacao();
   }
 
   /** Função para a busca de itens das abas */
