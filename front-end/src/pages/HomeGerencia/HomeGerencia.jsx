@@ -312,22 +312,6 @@ const HomeGerencia = () => {
       },
     },
     {
-      selector: "#decimoMinhasDemandas",
-      content: texts.homeGerencia.toursDemandas.tour10,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoPropostas",
-      content: texts.homeGerencia.toursDemandas.tour11,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
       selector: "#oitavoDemandas",
       content: texts.homeGerencia.toursDemandas.tour8,
       style: {
