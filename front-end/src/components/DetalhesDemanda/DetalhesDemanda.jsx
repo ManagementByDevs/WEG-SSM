@@ -1380,7 +1380,7 @@ const DetalhesDemanda = (props) => {
       </Box>
       <Box
         className="flex fixed justify-end"
-        sx={{ width: "15rem", bottom: "20px", right: "20px" }}
+        sx={{ width: "15rem", bottom: "20px", right: "80px" }}
       >
         {props.usuario?.tipoUsuario == "ANALISTA" &&
           props.botao &&

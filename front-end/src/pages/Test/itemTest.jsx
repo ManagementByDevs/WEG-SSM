@@ -114,10 +114,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoTitulo[1]}
                 onChange={mudarCheck4}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.az}
+                label={texts.sideBarFiltro.az}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.az);
+                    lerTexto(texts.sideBarFiltro.az);
                   }
                 }}
               />
@@ -126,10 +126,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoTitulo[1]}
                 onChange={mudarCheck4}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.crescente}
+                label={texts.sideBarFiltro.crescente}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.crescente);
+                    lerTexto(texts.sideBarFiltro.crescente);
                   }
                 }}
               />
@@ -138,10 +138,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoScore[1]}
                 onChange={mudarCheck2}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.maiorScore}
+                label={texts.sideBarFiltro.maiorScore}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maiorScore);
+                    lerTexto(texts.sideBarFiltro.maiorScore);
                   }
                 }}
               />
@@ -150,10 +150,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoDate[1]}
                 onChange={mudarCheck6}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.maisRecente}
+                label={texts.sideBarFiltro.maisRecente}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisRecente);
+                    lerTexto(texts.sideBarFiltro.maisRecente);
                   }
                 }}
               />
@@ -162,10 +162,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoDate[1]}
                 onChange={mudarCheck6}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.maisRecente}
+                label={texts.sideBarFiltro.maisRecente}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisRecente);
+                    lerTexto(texts.sideBarFiltro.maisRecente);
                   }
                 }}
               />
@@ -180,10 +180,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoTitulo[0]}
                 onChange={mudarCheck3}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.za}
+                label={texts.sideBarFiltro.za}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.za);
+                    lerTexto(texts.sideBarFiltro.za);
                   }
                 }}
               />
@@ -192,10 +192,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoTitulo[0]}
                 onChange={mudarCheck3}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.decrescente}
+                label={texts.sideBarFiltro.decrescente}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.decrescente);
+                    lerTexto(texts.sideBarFiltro.decrescente);
                   }
                 }}
               />
@@ -204,10 +204,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoScore[0]}
                 onChange={mudarCheck1}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.menorScore}
+                label={texts.sideBarFiltro.menorScore}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.menorScore);
+                    lerTexto(texts.sideBarFiltro.menorScore);
                   }
                 }}
               />
@@ -216,10 +216,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoDate[0]}
                 onChange={mudarCheck5}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.maisAntiga}
+                label={texts.sideBarFiltro.maisAntiga}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisAntiga);
+                    lerTexto(texts.sideBarFiltro.maisAntiga);
                   }
                 }}
               />
@@ -228,10 +228,10 @@ export default function ItemTest(props) {
                 checked={props.ordenacaoDate[0]}
                 onChange={mudarCheck5}
                 control={<Checkbox />}
-                label={texts.modalOrdenacao.maisAntiga}
+                label={texts.sideBarFiltro.maisAntiga}
                 onClick={() => {
                   if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisAntiga);
+                    lerTexto(texts.sideBarFiltro.maisAntiga);
                   }
                 }}
               />

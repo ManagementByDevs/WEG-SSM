@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
- 
-
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -21,8 +19,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
-import SideBarFiltro from "../../components/SideBarFiltro/SideBarFiltro";
-import ModalFiltro from "../../components/Modais/Modal-filtro/ModalFiltro";
+import SideBarFiltroHome from "../../components/SideBarFiltroHome/SideBarFiltroHome";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
 import Ajuda from "../../components/Ajuda/Ajuda";
@@ -589,36 +586,6 @@ const Home = () => {
                 </TabList>
 
                 <Box className="absolute right-0 top-2" id="sexto">
-                  {/* Ícone de ordenação */}
-
-                  {/* Modal de ordenação */}
-                  <React.Fragment key="right">
-                    <Tooltip title={texts.home.ordenacao}>
-                      <IconButton onClick={toggleDrawer("right", true)}>
-                        <SwapVertIcon
-                          id="segundoDemandas"
-                          className="cursor-pointer"
-                          color="primary"
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Drawer
-                      anchor={"right"}
-                      open={state["right"]}
-                      onClose={toggleDrawer("right", false)}
-                    >
-                      <SideBarFiltro  
-                        tipoUsuario={usuario.tipo_usuario}
-                        ordenacaoTitulo={ordenacaoTitulo}
-                        setOrdenacaoTitulo={setOrdenacaoTitulo}
-                        ordenacaoScore={ordenacaoScore}
-                        setOrdenacaoScore={setOrdenacaoScore}
-                        ordenacaoDate={ordenacaoDate}
-                        setOrdenacaoDate={setOrdenacaoDate}
-                        valorAba={valorAba}
-                      />
-                    </Drawer>
-                  </React.Fragment>
                   {nextModoVisualizacao == "TABLE" ? (
                     <Tooltip title={texts.home.visualizacaoEmTabela}>
                       <IconButton
@@ -745,41 +712,42 @@ const Home = () => {
                     </Box>
                   </Box>
                   <Box id="terceiro" className="flex gap-2">
-                    {/* Botão de filtrar */}
-                    {valorAba == 1 && (
+                    <React.Fragment key="right">
                       <Button
                         sx={{
                           backgroundColor: "primary.main",
                           color: "text.white",
                           fontSize: FontConfig?.default,
-                          minWidth: "5rem",
                         }}
-                        onClick={() => {
-                          if (!lendoTexto) {
-                            setFiltroAberto(true);
-                          } else {
-                            lerTexto(texts.home.filtrar);
-                          }
-                        }}
+                        onClick={toggleDrawer("right", true)}
                         variant="contained"
                         disableElevation
                       >
-                        {texts.home.filtrar} <FilterAltOutlinedIcon />
+                        <Tooltip title={texts.home.filtrar}>
+                          <FilterAltOutlinedIcon />
+                        </Tooltip>
                       </Button>
-                    )}
+                      <Drawer
+                        anchor={"right"}
+                        open={state["right"]}
+                        onClose={toggleDrawer("right", false)}
+                      >
+                        <SideBarFiltroHome
+                          listaFiltros={listaFiltros}
+                          setListaFiltros={setListaFiltros}
+                          tipoUsuario={usuario.tipo_usuario}
+                          ordenacaoTitulo={ordenacaoTitulo}
+                          setOrdenacaoTitulo={setOrdenacaoTitulo}
+                          ordenacaoScore={ordenacaoScore}
+                          setOrdenacaoScore={setOrdenacaoScore}
+                          ordenacaoDate={ordenacaoDate}
+                          setOrdenacaoDate={setOrdenacaoDate}
+                          valorAba={valorAba}
+                        />
+                      </Drawer>
+                    </React.Fragment>
                   </Box>
-                  {/* Modal de filtro */}
-                  {filtroAberto && (
-                    <ModalFiltro
-                      fecharModal={() => {
-                        setFiltroAberto(false);
-                      }}
-                      listaFiltros={listaFiltros}
-                      setListaFiltros={setListaFiltros}
-                    />
-                  )}
                 </Box>
-
                 {/* Botão de criar demanda */}
                 <Button
                   id="quarto"
