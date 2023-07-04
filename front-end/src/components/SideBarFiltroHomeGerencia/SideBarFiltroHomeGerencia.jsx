@@ -147,7 +147,7 @@ export default function SliderBar(props) {
           {opcoesFiltrar.map((opcao, index) =>
             props.valorAba == 1 && opcao.id <= 6 ? (
               <Input
-                key={index}
+                key={"Filtro " + index}
                 age={age}
                 handleChange={handleChange}
                 opcao={opcao}
@@ -169,7 +169,7 @@ export default function SliderBar(props) {
               opcao.id > 1 &&
               opcao.id <= 6 ? (
               <Input
-                key={index}
+                key={"Filtro " + index}
                 age={age}
                 handleChange={handleChange}
                 opcao={opcao}
@@ -189,7 +189,7 @@ export default function SliderBar(props) {
               />
             ) : props.valorAba == 4 && opcao.id <= 8 ? (
               <Input
-                key={index}
+                key={"Filtro " + index}
                 age={age}
                 handleChange={handleChange}
                 opcao={opcao}
@@ -209,7 +209,7 @@ export default function SliderBar(props) {
               />
             ) : props.valorAba == 6 && (opcao.id == 9 || opcao.id == 10) ? (
               <Input
-                key={index}
+                key={"Filtro " + index}
                 age={age}
                 handleChange={handleChange}
                 opcao={opcao}
@@ -261,9 +261,38 @@ export default function SliderBar(props) {
         <Divider />
       </Box>
       <Box>
-        {opcoesOrdenar.map((opcao, index) => (
-          <>
-            {props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
+        {opcoesOrdenar.map((opcao, index) =>
+          props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
+            <SideBarOrdenacao
+              opcao={opcao}
+              key={"Ordenação" + index}
+              ordenacaoTitulo={props.ordenacaoTitulo}
+              setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+              ordenacaoNum={props.ordenacaoNum}
+              setOrdenacaoNum={props.setOrdenacaoNum}
+              ordenacaoScore={props.ordenacaoScore}
+              setOrdenacaoScore={props.setOrdenacaoScore}
+              ordenacaoDate={props.ordenacaoDate}
+              setOrdenacaoDate={props.setOrdenacaoDate}
+              valorAba={props.valorAba}
+            />
+          ) : props.valorAba == 4 && opcao.id != 4 ? (
+            <SideBarOrdenacao
+              opcao={opcao}
+              key={"Ordenação" + index}
+              ordenacaoTitulo={props.ordenacaoTitulo}
+              setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+              ordenacaoNum={props.ordenacaoNum}
+              setOrdenacaoNum={props.setOrdenacaoNum}
+              ordenacaoScore={props.ordenacaoScore}
+              setOrdenacaoScore={props.setOrdenacaoScore}
+              ordenacaoDate={props.ordenacaoDate}
+              setOrdenacaoDate={props.setOrdenacaoDate}
+              valorAba={props.valorAba}
+            />
+          ) : (
+            props.valorAba > 4 &&
+            opcao.id != 1 && (
               <SideBarOrdenacao
                 opcao={opcao}
                 key={"Ordenação" + index}
@@ -277,40 +306,9 @@ export default function SliderBar(props) {
                 setOrdenacaoDate={props.setOrdenacaoDate}
                 valorAba={props.valorAba}
               />
-            ) : props.valorAba == 4 && opcao.id != 4 ? (
-              <SideBarOrdenacao
-                opcao={opcao}
-                key={"Ordenação" + index}
-                ordenacaoTitulo={props.ordenacaoTitulo}
-                setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                ordenacaoNum={props.ordenacaoNum}
-                setOrdenacaoNum={props.setOrdenacaoNum}
-                ordenacaoScore={props.ordenacaoScore}
-                setOrdenacaoScore={props.setOrdenacaoScore}
-                ordenacaoDate={props.ordenacaoDate}
-                setOrdenacaoDate={props.setOrdenacaoDate}
-                valorAba={props.valorAba}
-              />
-            ) : (
-              props.valorAba > 4 &&
-              opcao.id != 1 && (
-                <SideBarOrdenacao
-                  opcao={opcao}
-                  key={"Ordenação" + index}
-                  ordenacaoTitulo={props.ordenacaoTitulo}
-                  setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                  ordenacaoNum={props.ordenacaoNum}
-                  setOrdenacaoNum={props.setOrdenacaoNum}
-                  ordenacaoScore={props.ordenacaoScore}
-                  setOrdenacaoScore={props.setOrdenacaoScore}
-                  ordenacaoDate={props.ordenacaoDate}
-                  setOrdenacaoDate={props.setOrdenacaoDate}
-                  valorAba={props.valorAba}
-                />
-              )
-            )}
-          </>
-        ))}
+            )
+          )
+        )}
       </Box>
       <Box className="mt-4 flex justify-center">
         <Button
