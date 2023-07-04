@@ -197,7 +197,7 @@ const DetalhesProposta = ({
       <Box className="flex justify-center">
         <Box
           className="flex justify-center border rounded px-10 py-4 border-t-6 relative"
-          sx={{ width: "55rem", borderTopColor: "primary.main" }}
+          sx={{ width: "60rem", borderTopColor: "primary.main" }}
         >
           <ClipLoader className="mt-2" color="#00579D" size={110} />
         </Box>
@@ -210,7 +210,7 @@ const DetalhesProposta = ({
       <Box className="flex justify-center">
         <Box
           className="border rounded px-10 py-4 border-t-6 relative"
-          sx={{ width: "55rem", borderTopColor: "primary.main" }}
+          sx={{ width: "60rem", borderTopColor: "primary.main" }}
         >
           <DetalhesPropostaEditMode
             propostaData={proposta}
@@ -227,7 +227,7 @@ const DetalhesProposta = ({
     <Box className="flex justify-center">
       <Box
         className="border rounded px-10 py-4 border-t-6 relative"
-        sx={{ width: "55rem", borderTopColor: "primary.main" }}
+        sx={{ width: "60rem", borderTopColor: "primary.main" }}
         id="primeiro"
       >
         {/* Componente da bandeirinha do status da proposta */}
