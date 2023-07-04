@@ -1077,6 +1077,18 @@ const TextLanguage = (linguagem) => {
           aprovada: "Aprovada",
           emAndamento: "Em Andamento",
           emDesenvolvimento: "Em Desenvolvimento",
+
+          cancelled: "Cancelled",
+          businessCase: "Business Case",
+          done: "Done",
+          assessment: "Assessment",
+          assessmentEdicao: "Assessment - Edição",
+          assessmentComissao: "Assessment - Comissão",
+          assessmentDg: "Assessment - DG",
+
+          ata: "Ata",
+          pauta: "Pauta",
+          semAtribuicao: "Sem Atribuição",
         },
       }
     : linguagem == "en"
@@ -4163,6 +4175,18 @@ const TextLanguage = (linguagem) => {
           aprovada: "Aprobada",
           emAndamento: "En Curso",
           emDesenvolvimento: "En Desarollo",
+
+          cancelled: "Cancelled",
+          businessCase: "Business Case",
+          done: "Done",
+          assessment: "Assessment",
+          assessmentEdicao: "Assessment - Edição",
+          assessmentComissao: "Assessment - Comissão",
+          assessmentDg: "Assessment - DG",
+
+          ata: "Ata",
+          pauta: "Pauta",
+          semAtribuicao: "Sin Atribución",
         },
       }
     : null;

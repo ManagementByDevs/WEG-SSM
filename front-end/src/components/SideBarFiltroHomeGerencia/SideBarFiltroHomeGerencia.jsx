@@ -647,7 +647,9 @@ function Input(props) {
                 <MenuItem value={"BUSINESS_CASE"}>
                   {texts.sideBarFiltro.businessCase}
                 </MenuItem>
-                <MenuItem value={"DONE"}>{texts.sideBarFiltro.done}</MenuItem>
+                <MenuItem value={"DONE"}>
+                  {texts.sideBarFiltro.done}
+                </MenuItem>
                 <MenuItem value={"ASSESSMENT_APROVACAO"}>
                   {texts.sideBarFiltro.assessment}
                 </MenuItem>
