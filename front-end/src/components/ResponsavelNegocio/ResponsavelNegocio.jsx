@@ -67,7 +67,7 @@ const ResponsavelNegocio = (props) => {
             className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
             sx={{
               width: "100%;",
-              height: "30px",
+              height: "40px",
               backgroundColor: "background.default",
               borderLeftColor: "primary.main",
             }}
@@ -140,7 +140,7 @@ const ResponsavelNegocio = (props) => {
             className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
             sx={{
               width: "100%;",
-              height: "30px",
+              height: "40px",
               backgroundColor: "background.default",
               borderLeftColor: "primary.main",
             }}
