@@ -109,15 +109,19 @@ const SliderMark = styled(Slider)(({ theme }) => ({
   },
 }));
 
-// Modal com as preferências do usuário
+/** Modal para alterar as preferências do usuário, assim como acesso aos escopos e chats */
 const UserModal = () => {
+
+  // useContext que contém os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
   //useContext para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Context para ler o texto da tela
   const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
 
-  // UseState com as informações do usuário, recebidas no useEffect ao criar o componente
+  /** Objeto do usuário logado no sistema, buscado ao inicializar o componente */
   const [usuario, setUsuario] = useState({
     id: 0,
     email: "",
@@ -128,21 +132,6 @@ const UserModal = () => {
     departamento: null,
   });
 
-  // UseEffect para pegar o usuário e arrumar as preferências dele ao carregar a tela
-  useEffect(() => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
-      (e) => {
-        setUsuario(e);
-        arrangePreferences();
-      }
-    );
-  }, []);
-
-  // useContext que contém os textos do sistema
-  const { texts } = useContext(TextLanguageContext);
-
-  // ********************************************** Preferências **********************************************
-
   // Desestruturação de objeto em duas variáveis:
   // - Mode: modo do tema atual ("light" ou "dark")
   // - toggleColorMode: função para alternar o tema
@@ -151,40 +140,49 @@ const UserModal = () => {
   // Variável de estado para controlar o tema
   const [temaDark, setTemaDark] = useState(mode == "dark" ? true : false);
 
-  // Pega as preferências do usuário e as aplica no sistema
-  const arrangePreferences = () => {
-    if (!CookieService.getCookie("jwt")) return;
-    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
-      (preferencias) => {
-        if (preferencias.themeMode != mode) {
-          setTemaDark(!temaDark);
-        }
+  /** UseState com o valor do slider de tamanho da fonte */
+  const [valorSliderFonte, setValorSliderFonte] = useState(0);
 
-        if (preferencias.fontSizeDefault != FontConfig.default) {
-          setFontConfig(getUserFontSizePreference(preferencias));
-        }
-        alterarValorSlider(preferencias);
+  /** UseEffect para buscar o usuário e carregar suas preferências ao inicializar o componente */
+  useEffect(() => {
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((e) => {
+      setUsuario(e);
+      carregarPreferencias();
+    });
+  }, []);
+
+  /** Função para carregar as preferências salvas do usuário logado */
+  const carregarPreferencias = () => {
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
+      if (preferencias.themeMode != mode) {
+        setTemaDark(!temaDark);
       }
-    );
+
+      if (preferencias.fontSizeDefault != FontConfig.default) {
+        setFontConfig(getUserFontSizePreference(preferencias));
+      }
+      alterarValorSlider(preferencias);
+    });
   };
 
-  // Função para alterar o valor do slider de acordo com a preferência do usuário
+  /** Função para alterar o valor do slider pela preferência do usuário */
   const alterarValorSlider = (preferencias) => {
     switch (preferencias.fontSizeDefault) {
       case "18px":
-        setValueSlider(2);
+        setValorSliderFonte(2);
         break;
       case "16px":
-        setValueSlider(1);
+        setValorSliderFonte(1);
         break;
       case "14px":
-        setValueSlider(0);
+        setValorSliderFonte(0);
         break;
       case "12px":
-        setValueSlider(-1);
+        setValorSliderFonte(-1);
         break;
       default:
-        setValueSlider(-2);
+        setValorSliderFonte(-2);
         break;
     }
   };
@@ -337,7 +335,7 @@ const UserModal = () => {
   };
 
   // Mudar o value para texto
-  function valuetext(value) {
+  const valuetext = (value) => {
     if (value === 0) {
       return texts.userModal?.normal;
     } else if (value === -1) {
@@ -353,19 +351,19 @@ const UserModal = () => {
 
   // Funções para aumentar o value do slider
   const aumentarValue = (event) => {
-    if (valueSlider === 2) {
-      setValueSlider(2);
+    if (valorSliderFonte === 2) {
+      setValorSliderFonte(2);
     } else {
-      setValueSlider(valueSlider + 1);
+      setValorSliderFonte(valorSliderFonte + 1);
     }
   };
 
   // Funções para diminuir o value do slider
   const diminuirValue = (event) => {
-    if (valueSlider === -2) {
-      setValueSlider(-2);
+    if (valorSliderFonte === -2) {
+      setValorSliderFonte(-2);
     } else {
-      setValueSlider(valueSlider - 1);
+      setValorSliderFonte(valorSliderFonte - 1);
     }
   };
 
@@ -384,19 +382,16 @@ const UserModal = () => {
     }
   };
 
-  // UseState para poder visualizar e alterar o value do slider
-  const [valueSlider, setValueSlider] = useState(2);
-
   // Função para mudar o value do slider
   const handleChange = (event, newValue) => {
     if (typeof newValue === "number") {
-      setValueSlider(newValue);
+      setValorSliderFonte(newValue);
     }
   };
 
   // UseEffect para alterar o tamanho da fonte
   useEffect(() => {
-    switch (valueSlider) {
+    switch (valorSliderFonte) {
       case 0:
         setFontConfig({
           verySmall: "10px",
@@ -469,7 +464,7 @@ const UserModal = () => {
           title: "36px",
         });
     }
-  }, [valueSlider]);
+  }, [valorSliderFonte]);
 
   return (
     <>
@@ -604,7 +599,7 @@ const UserModal = () => {
                   aria-label="Small steps"
                   defaultValue={getValueByContext(FontConfig?.default)}
                   step={1}
-                  value={valueSlider}
+                  value={valorSliderFonte}
                   onChange={handleChange}
                   marks
                   min={-2}
