@@ -18,7 +18,7 @@ import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 
 import Pauta from "../../components/Pauta/Pauta";
-import SideBarFiltro from "../../components/SideBarFiltro/SideBarFiltro";
+import SideBarFiltro from "../../components/SideBarFiltroHomeGerencia/SideBarFiltroHomeGerencia";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";

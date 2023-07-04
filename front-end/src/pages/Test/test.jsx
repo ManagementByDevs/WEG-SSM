@@ -24,23 +24,23 @@ export default function TemporaryDrawer(props) {
   const opcoesFiltrar = [
     {
       id: 1,
-      tipo: texts.modalOrdenacao.titulo,
+      tipo: texts.sideBarFiltro.titulo,
     },
     {
       id: 2,
-      tipo: texts.modalOrdenacao.numeroSequencial,
+      tipo: texts.sideBarFiltro.numeroSequencial,
     },
     {
       id: 3,
-      tipo: texts.modalOrdenacao.score,
+      tipo: texts.sideBarFiltro.score,
     },
     {
       id: 4,
-      tipo: texts.modalOrdenacao.dataReuniao
+      tipo: texts.sideBarFiltro.dataReuniao
     },
     {
       id: 5,
-      tipo: texts.modalOrdenacao.dataDeCriacao
+      tipo: texts.sideBarFiltro.dataDeCriacao
     },
   ];
 
@@ -63,7 +63,7 @@ export default function TemporaryDrawer(props) {
           fontSize={FontConfig.smallTitle}
           sx={{ color: "text.white", fontWeight: 600 }}
         >
-          {texts.modalOrdenacao.ordenar}
+          {texts.sideBarFiltro.ordenar}
         </Typography>
       </Box>
       <Box className="h-full">

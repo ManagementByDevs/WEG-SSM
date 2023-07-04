@@ -9,12 +9,6 @@ import {
   Select,
   Autocomplete,
   TextField,
-  ListItemIcon,
-  ListItemText,
-  ListItemButton,
-  Collapse,
-  Checkbox,
-  FormControlLabel,
   Box,
 } from "@mui/material";
 
@@ -22,14 +16,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-
-import AbcOutlinedIcon from "@mui/icons-material/AbcOutlined";
-import PinOutlinedIcon from "@mui/icons-material/PinOutlined";
-import OutlinedFlagIcon from "@mui/icons-material/OutlinedFlag";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import TodayOutlinedIcon from "@mui/icons-material/TodayOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
@@ -40,6 +26,8 @@ import PersonSearchOutlinedIcon from "@mui/icons-material/PersonSearchOutlined";
 import ContentPasteSearchOutlinedIcon from "@mui/icons-material/ContentPasteSearchOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
+
+import SideBarOrdenacao from "../SideBarOrdenacao/SideBarOrdenacao";
 
 import UsuarioService from "../../service/usuarioService";
 
@@ -57,23 +45,23 @@ export default function SliderBar(props) {
   const opcoesOrdenar = [
     {
       id: 1,
-      tipo: texts.modalOrdenacao.titulo,
+      tipo: texts.sideBarFiltro.titulo,
     },
     {
       id: 2,
-      tipo: texts.modalOrdenacao.numeroSequencial,
+      tipo: texts.sideBarFiltro.numeroSequencial,
     },
     {
       id: 3,
-      tipo: texts.modalOrdenacao.score,
+      tipo: texts.sideBarFiltro.score,
     },
     {
       id: 4,
-      tipo: texts.modalOrdenacao.dataReuniao,
+      tipo: texts.sideBarFiltro.dataReuniao,
     },
     {
       id: 5,
-      tipo: texts.modalOrdenacao.dataDeCriacao,
+      tipo: texts.sideBarFiltro.dataDeCriacao,
     },
   ];
 
@@ -81,43 +69,43 @@ export default function SliderBar(props) {
   const opcoesFiltrar = [
     {
       id: 1,
-      tipo: texts.SideBarFiltro.status,
+      tipo: texts.sideBarFiltro.status,
     },
     {
       id: 3,
-      tipo: texts.SideBarFiltro.forum,
+      tipo: texts.sideBarFiltro.forum,
     },
     {
       id: 4,
-      tipo: texts.SideBarFiltro.departamento,
+      tipo: texts.sideBarFiltro.departamento,
     },
     {
       id: 5,
-      tipo: texts.SideBarFiltro.tamanho,
+      tipo: texts.sideBarFiltro.tamanho,
     },
     {
       id: 8,
-      tipo: texts.SideBarFiltro.atribuidoA,
+      tipo: texts.sideBarFiltro.atribuidoA,
     },
     {
       id: 9,
-      tipo: texts.SideBarFiltro.apreciada,
+      tipo: texts.sideBarFiltro.apreciada,
     },
     {
       id: 10,
-      tipo: texts.SideBarFiltro.publicada,
+      tipo: texts.sideBarFiltro.publicada,
     },
     {
       id: 2,
-      tipo: texts.SideBarFiltro.gerenteResponsavel,
+      tipo: texts.sideBarFiltro.gerenteResponsavel,
     },
     {
       id: 6,
-      tipo: texts.SideBarFiltro.analistaResponsavel,
+      tipo: texts.sideBarFiltro.analistaResponsavel,
     },
     {
       id: 7,
-      tipo: texts.SideBarFiltro.solicitante,
+      tipo: texts.sideBarFiltro.solicitante,
     },
   ];
 
@@ -144,10 +132,10 @@ export default function SliderBar(props) {
             color: "text.white",
           }}
           onClick={() => {
-            lerTexto(texts.modalOrdenacao.filtrar);
+            lerTexto(texts.sideBarFiltro.filtrar);
           }}
         >
-          {texts.modalOrdenacao.filtrar}
+          {texts.sideBarFiltro.filtrar}
         </Typography>
         <Divider />
       </Box>
@@ -250,10 +238,10 @@ export default function SliderBar(props) {
               color: "text.secondary",
             }}
             onClick={() => {
-              lerTexto(texts.SideBarFiltro.semFiltro);
+              lerTexto(texts.sideBarFiltro.semFiltro);
             }}
           >
-            {texts.SideBarFiltro.semFiltro}
+            {texts.sideBarFiltro.semFiltro}
           </Typography>
         </Box>
       )}
@@ -268,10 +256,10 @@ export default function SliderBar(props) {
             color: "text.white",
           }}
           onClick={() => {
-            lerTexto(texts.modalOrdenacao.ordenar);
+            lerTexto(texts.sideBarFiltro.ordenar);
           }}
         >
-          {texts.modalOrdenacao.ordenar}
+          {texts.sideBarFiltro.ordenar}
         </Typography>
         <Divider />
       </Box>
@@ -279,7 +267,7 @@ export default function SliderBar(props) {
         {opcoesOrdenar.map((opcao, index) => (
           <>
             {props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
-              <ItemOrdenacao
+              <SideBarOrdenacao
                 opcao={opcao}
                 key={index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
@@ -293,7 +281,7 @@ export default function SliderBar(props) {
                 valorAba={props.valorAba}
               />
             ) : props.valorAba == 4 && opcao.id != 4 ? (
-              <ItemOrdenacao
+              <SideBarOrdenacao
                 opcao={opcao}
                 key={index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
@@ -309,7 +297,7 @@ export default function SliderBar(props) {
             ) : (
               props.valorAba > 4 &&
               opcao.id != 1 && (
-                <ItemOrdenacao
+                <SideBarOrdenacao
                   opcao={opcao}
                   key={index}
                   ordenacaoTitulo={props.ordenacaoTitulo}
@@ -328,235 +316,6 @@ export default function SliderBar(props) {
         ))}
       </Box>
     </List>
-  );
-}
-
-function ItemOrdenacao(props) {
-  // Context para alterar a linguagem do sistema
-  const { texts } = useContext(TextLanguageContext);
-
-  /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
-
-  // useState utilizado para abrir o modal
-  const [open, setOpen] = useState(false);
-
-  // handleClick para fechar o modal
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por score "Menor Score" */
-  const mudarCheck1 = () => {
-    props.setOrdenacaoScore([!props.ordenacaoScore[0], false]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por score "Maior Score" */
-  const mudarCheck2 = () => {
-    props.setOrdenacaoScore([false, !props.ordenacaoScore[1]]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por título "Z-A"  */
-  const mudarCheck3 = () => {
-    props.setOrdenacaoTitulo([!props.ordenacaoTitulo[0], false]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por título "A-Z"  */
-  const mudarCheck4 = () => {
-    props.setOrdenacaoTitulo([false, !props.ordenacaoTitulo[1]]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por data "Mais Velha" */
-  const mudarCheck5 = () => {
-    props.setOrdenacaoDate([!props.ordenacaoDate[0], false]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por data "Mais Nova" */
-  const mudarCheck6 = () => {
-    props.setOrdenacaoDate([false, !props.ordenacaoDate[1]]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por número sequencial "Decrescente" */
-  const mudarCheck7 = () => {
-    props.setOrdenacaoNum([!props.ordenacaoNum[0], false]);
-  };
-
-  /** Função para mudar o valor do checkbox de ordenação por número sequencial "Crescente" */
-  const mudarCheck8 = () => {
-    props.setOrdenacaoNum([false, !props.ordenacaoNum[1]]);
-  };
-
-  return (
-    <>
-      <ListItemButton onClick={handleClick}>
-        <ListItemIcon>
-          {props.opcao.id == 1 ? (
-            <AbcOutlinedIcon />
-          ) : props.opcao.id == 2 ? (
-            <PinOutlinedIcon />
-          ) : props.opcao.id == 3 ? (
-            <OutlinedFlagIcon />
-          ) : props.opcao.id == 4 ? (
-            <CalendarMonthOutlinedIcon />
-          ) : props.opcao.id == 5 ? (
-            <TodayOutlinedIcon />
-          ) : null}
-        </ListItemIcon>
-        {props.valorAba == 4 && props.opcao.id == 2 ? (
-          <ListItemText
-            onClick={() => {
-              lerTexto("PPM");
-            }}
-            primary="PPM"
-          />
-        ) : (
-          <ListItemText
-            onClick={() => {
-              lerTexto(props.opcao.tipo);
-            }}
-            primary={props.opcao.tipo}
-          />
-        )}
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Divider />
-      <Collapse in={open}>
-        <List component="div">
-          <ListItemButton>
-            {props.opcao.id == 1 ? (
-              <FormControlLabel
-                checked={props.ordenacaoTitulo[1]}
-                onChange={mudarCheck4}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.az}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.az);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 2 ? (
-              <FormControlLabel
-                checked={props.ordenacaoNum[1]}
-                onChange={mudarCheck8}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.crescente}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.crescente);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 3 ? (
-              <FormControlLabel
-                checked={props.ordenacaoScore[1]}
-                onChange={mudarCheck2}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maiorScore}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maiorScore);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 4 ? (
-              <FormControlLabel
-                checked={props.ordenacaoDate[1]}
-                onChange={mudarCheck6}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maisRecente}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisRecente);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 5 ? (
-              <FormControlLabel
-                checked={props.ordenacaoDate[1]}
-                onChange={mudarCheck6}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maisRecente}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisRecente);
-                  }
-                }}
-              />
-            ) : (
-              <Box />
-            )}
-          </ListItemButton>
-          <Divider />
-          <ListItemButton>
-            {props.opcao.id == 1 ? (
-              <FormControlLabel
-                checked={props.ordenacaoTitulo[0]}
-                onChange={mudarCheck3}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.za}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.za);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 2 ? (
-              <FormControlLabel
-                checked={props.ordenacaoNum[0]}
-                onChange={mudarCheck7}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.decrescente}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.decrescente);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 3 ? (
-              <FormControlLabel
-                checked={props.ordenacaoScore[0]}
-                onChange={mudarCheck1}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.menorScorlerTextotextssse}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.menorScore);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 4 ? (
-              <FormControlLabel
-                checked={props.ordenacaoDate[0]}
-                onChange={mudarCheck5}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maisAntiga}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisAntiga);
-                  }
-                }}
-              />
-            ) : props.opcao.id == 5 ? (
-              <FormControlLabel
-                checked={props.ordenacaoDate[0]}
-                onChange={mudarCheck5}
-                control={<Checkbox />}
-                label={texts.modalOrdenacao.maisAntiga}
-                onClick={() => {
-                  if (lendoTexto) {
-                    lerTexto(texts.modalOrdenacao.maisAntiga);
-                  }
-                }}
-              />
-            ) : (
-              <Box />
-            )}
-          </ListItemButton>
-          <Divider />
-        </List>
-      </Collapse>
-    </>
   );
 }
 
@@ -720,7 +479,7 @@ function Input(props) {
           <Autocomplete
             {...gerentes}
             sx={{ width: "72%", marginLeft: "8%" }}
-            noOptionsText={texts.modalFiltroGerencia.semResultados}
+            noOptionsText={texts.sideBarFiltro.semResultados}
             value={props.filtro.gerente}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -733,7 +492,7 @@ function Input(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={texts.modalFiltroGerencia.gerenteResponsavel}
+                label={texts.sideBarFiltro.gerenteResponsavel}
                 variant="standard"
               />
             )}
@@ -744,7 +503,7 @@ function Input(props) {
           <Autocomplete
             {...analistas}
             sx={{ width: "72%", marginLeft: "8%" }}
-            noOptionsText={texts.modalFiltroGerencia.semResultados}
+            noOptionsText={texts.sideBarFiltro.semResultados}
             value={props.filtro.analista}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -757,7 +516,7 @@ function Input(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={texts.modalFiltroGerencia.analistaResponsavel}
+                label={texts.sideBarFiltro.analistaResponsavel}
                 variant="standard"
               />
             )}
@@ -768,7 +527,7 @@ function Input(props) {
           <Autocomplete
             {...solicitantes}
             sx={{ width: "72%", marginLeft: "8%" }}
-            noOptionsText={texts.modalFiltroGerencia.semResultados}
+            noOptionsText={texts.sideBarFiltro.semResultados}
             value={props.filtro.solicitante}
             id="disable-close-on-select"
             disableCloseOnSelect
@@ -781,7 +540,7 @@ function Input(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={texts.modalFiltroGerencia.labelSolicitante}
+                label={texts.sideBarFiltro.labelSolicitante}
                 variant="standard"
               />
             )}
@@ -822,32 +581,32 @@ function Input(props) {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={props.filtro.status}
-                label={"Icon" + texts.modalFiltroGerencia.status}
+                label={"Icon" + texts.sideBarFiltro.status}
                 onChange={selecionarStatus}
               >
                 <MenuItem selected value={""}>
-                  {texts.SideBarFiltro.semFiltro}
+                  {texts.sideBarFiltro.semFiltro}
                 </MenuItem>
                 <MenuItem value={"CANCELLED"}>
-                  {texts.modalFiltroGerencia.reprovada}
+                  {texts.sideBarFiltro.reprovada}
                 </MenuItem>
                 <MenuItem value={"BACKLOG_REVISAO"}>
-                  {texts.modalFiltroGerencia.aguardandoRevisao}
+                  {texts.sideBarFiltro.aguardandoRevisao}
                 </MenuItem>
                 <MenuItem value={"BACKLOG_EDICAO"}>
-                  {texts.modalFiltroGerencia.aguardandoEdicao}
+                  {texts.sideBarFiltro.aguardandoEdicao}
                 </MenuItem>
                 <MenuItem value={"BACKLOG_APROVACAO"}>
-                  {texts.modalFiltroGerencia.emAprovacao}
+                  {texts.sideBarFiltro.emAprovacao}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT"}>
-                  {texts.modalFiltroGerencia.aprovada}
+                  {texts.sideBarFiltro.aprovada}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_APROVACAO"}>
-                  {texts.modalFiltroGerencia.emAndamento}
+                  {texts.sideBarFiltro.emAndamento}
                 </MenuItem>
                 <MenuItem value={"DONE"}>
-                  {texts.modalFiltroGerencia.emDesenvolvimento}
+                  {texts.sideBarFiltro.emDesenvolvimento}
                 </MenuItem>
               </Select>
             ) : (
@@ -855,32 +614,32 @@ function Input(props) {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={props.filtro.status}
-                label={"Icon" + texts.modalFiltroGerencia.status}
+                label={"Icon" + texts.sideBarFiltro.status}
                 onChange={selecionarStatus}
               >
                 <MenuItem selected value={""}>
-                  {texts.SideBarFiltro.semFiltro}
+                  {texts.sideBarFiltro.semFiltro}
                 </MenuItem>
                 <MenuItem value={"CANCELLED"}>
-                  {texts.modalFiltroGerencia.cancelled}
+                  {texts.sideBarFiltro.cancelled}
                 </MenuItem>
                 <MenuItem value={"BUSINESS_CASE"}>
-                  {texts.modalFiltroGerencia.businessCase}
+                  {texts.sideBarFiltro.businessCase}
                 </MenuItem>
                 <MenuItem value={"DONE"}>
-                  {texts.modalFiltroGerencia.done}
+                  {texts.sideBarFiltro.done}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_APROVACAO"}>
-                  {texts.modalFiltroGerencia.assessment}
+                  {texts.sideBarFiltro.assessment}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_EDICAO"}>
-                  {texts.modalFiltroGerencia.assessmentEdicao}
+                  {texts.sideBarFiltro.assessmentEdicao}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_COMISSAO"}>
-                  {texts.modalFiltroGerencia.assessmentComissao}
+                  {texts.sideBarFiltro.assessmentComissao}
                 </MenuItem>
                 <MenuItem value={"ASSESSMENT_DG"}>
-                  {texts.modalFiltroGerencia.assessmentDg}
+                  {texts.sideBarFiltro.assessmentDg}
                 </MenuItem>
               </Select>
             )
@@ -889,11 +648,11 @@ function Input(props) {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.filtro.forum}
-              label={"Icon" + texts.modalFiltroGerencia.forum}
+              label={"Icon" + texts.sideBarFiltro.forum}
               onChange={selecionarForum}
             >
               <MenuItem selected value={""}>
-                {texts.SideBarFiltro.semFiltro}
+                {texts.sideBarFiltro.semFiltro}
               </MenuItem>
               {props.listaForuns.map((forum) => {
                 return (
@@ -912,7 +671,7 @@ function Input(props) {
               onChange={selecionarDepartamento}
             >
               <MenuItem selected value={""}>
-                {texts.SideBarFiltro.semFiltro}
+                {texts.sideBarFiltro.semFiltro}
               </MenuItem>
               {props.listaDepartamentos.map((departamento) => {
                 return (
@@ -927,17 +686,17 @@ function Input(props) {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.filtro.tamanho}
-              label={"Icon" + texts.modalFiltroGerencia.tamanho}
+              label={"Icon" + texts.sideBarFiltro.tamanho}
               onChange={selecionarTamanho}
             >
               <MenuItem selected value={""}>
-                {texts.SideBarFiltro.semFiltro}
+                {texts.sideBarFiltro.semFiltro}
               </MenuItem>
               <MenuItem value={"Muito Pequeno"}>
-                {texts.modalFiltroGerencia.muitoPequeno}
+                {texts.sideBarFiltro.muitoPequeno}
               </MenuItem>
               <MenuItem value={"Pequeno"}>
-                {texts.modalFiltroGerencia.pequeno}
+                {texts.sideBarFiltro.pequeno}
               </MenuItem>
               <MenuItem value={"Médio"}>
                 {texts.modalAceitarDemanda.medio}
@@ -954,18 +713,18 @@ function Input(props) {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.filtro.presenteEm}
-              label={"Icon" + texts.modalFiltroGerencia.atribuido}
+              label={"Icon" + texts.sideBarFiltro.atribuido}
               onChange={selecionarAtribuicao}
             >
               <MenuItem selected value={""}>
-                {texts.SideBarFiltro.semFiltro}
+                {texts.sideBarFiltro.semFiltro}
               </MenuItem>
-              <MenuItem value={"Ata"}>{texts.modalFiltroGerencia.ata}</MenuItem>
+              <MenuItem value={"Ata"}>{texts.sideBarFiltro.ata}</MenuItem>
               <MenuItem value={"Pauta"}>
-                {texts.modalFiltroGerencia.pauta}
+                {texts.sideBarFiltro.pauta}
               </MenuItem>
               <MenuItem value={"Solta"}>
-                {texts.modalFiltroGerencia.semAtribuicao}
+                {texts.sideBarFiltro.semAtribuicao}
               </MenuItem>
             </Select>
           ) : props.opcao.id == 9 ? (
@@ -977,13 +736,13 @@ function Input(props) {
               onChange={selecionarApreciacao}
             >
               <MenuItem value="">
-                <em>{texts.SideBarFiltro.semFiltro}</em>
+                <em>{texts.sideBarFiltro.semFiltro}</em>
               </MenuItem>
               <MenuItem value={"Apreciada"}>
-                {texts.SideBarFiltro.apreciada}
+                {texts.sideBarFiltro.apreciada}
               </MenuItem>
               <MenuItem value={"NaoApreciada"}>
-                {texts.SideBarFiltro.naoApreciada}
+                {texts.sideBarFiltro.naoApreciada}
               </MenuItem>
             </Select>
           ) : props.opcao.id == 10 ? (
@@ -995,13 +754,13 @@ function Input(props) {
               onChange={selecionarPublicidade}
             >
               <MenuItem value="">
-                <em>{texts.SideBarFiltro.semFiltro}</em>
+                <em>{texts.sideBarFiltro.semFiltro}</em>
               </MenuItem>
               <MenuItem value={"Publicado"}>
-                {texts.SideBarFiltro.publicado}
+                {texts.sideBarFiltro.publicado}
               </MenuItem>
               <MenuItem value={"NaoPublicado"}>
-                {texts.SideBarFiltro.naoPublicado}
+                {texts.sideBarFiltro.naoPublicado}
               </MenuItem>
             </Select>
           ) : null}

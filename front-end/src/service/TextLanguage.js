@@ -356,14 +356,6 @@ const TextLanguage = (linguagem) => {
           },
           cancelar: "Cancelar",
         },
-        modalCriarAta: {
-          feedback: "Preencha todos os campos obrigatórios!",
-          criacaoDaAta: "Criação da Ata",
-          digiteNumeroSequencial: "Digite o número sequencial...",
-          dataDaReuniao: "Data da reunião:",
-          botaoCancelar: "Cancelar",
-          botaoCriar: "Criar",
-        },
         modalFiltro: {
           status: "Status",
           labels: {
@@ -376,38 +368,10 @@ const TextLanguage = (linguagem) => {
             emDesenvolvimento: "Em Desenvolvimento",
           },
         },
-        modalFiltroGerencia: {
-          filtros: "Filtros",
-          semResultados: "Sem Resultados",
-          labelSolicitante: "Solicitante",
-          forum: "Fórum",
-          selecionar: "Selecionar",
-          tamanho: "Tamanho",
-          selecionar: "Selecionar",
-          muitoPequeno: "Muito Pequeno",
-          semResultados: "Sem Resultados",
-          analistaResponsavel: "Analista Responsável",
-          gerenteResponsavel: "Gerente Responsável",
-          status: "Status",
-          pequeno: "Pequeno",
-          medio: "Médio",
-          grande: "Grande",
-          muitoGrande: "Muito Grande",
-          aprovada: "Aprovada",
-          reprovada: "Reprovada",
-          aguardandoEdicao: "Aguardando Edição",
-          aguardandoRevisao: "Aguardando Revisão",
-          emAprovacao: "Em Aprovação",
-          emAndamento: "Em Andamento",
-          emDesenvolvimento: "Em Desenvolvimento",
-          departamento: "Departamento",
-          numero: "Número",
-          limparFilros: "Limpar Filtros",
-        },
         modalHistoricoDemanda: {
           historico: "Histórico",
         },
-        modalFiltroGerencia: {
+        sideBarFiltro: {
           filtros: "Filtros",
           semResultados: "Sem Resultados",
           labelSolicitante: "Solicitante",
@@ -445,25 +409,6 @@ const TextLanguage = (linguagem) => {
           semAtribuicao: "Sem Atribuição",
           numero: "Número",
           limparFilros: "Limpar Filtros",
-        },
-        modalFiltroAtas: {
-          apreciada: "Apreciada",
-          naoApreciada: "Não Apreciada",
-          publicada: "Publicada",
-          naoPublicada: "Não Publicada",
-        },
-        modalHistoricoDemanda: {
-          historico: "Histórico",
-        },
-        modalInformarMotivo: {
-          informarMotivo: "Informar Motivo",
-          informeMotivo: "Informe o motivo...",
-          confirmar: "Confirmar",
-        },
-        modalMotivoRecusa: {
-          motivoDaRecusa: "Motivo da recusa",
-        },
-        modalOrdenacao: {
           score: "Score",
           maiorScore: "Maior Score",
           menorScore: "Menor Score",
@@ -479,6 +424,25 @@ const TextLanguage = (linguagem) => {
           dataReuniao: "Data de Reunião",
           ordenar: "Ordenar",
           filtrar: "Filtrar",
+          atribuidoA: "Atribuído à",
+          apreciada: "Apreciada",
+          publicada: "Publicada",
+          solicitante: "Solicitante",
+          semFiltro: "Sem Filtro",
+          naoApreciada: "Não Apreciada",
+          publicado: "Publicado",
+          naoPublicado: "Não Publicado",
+        },
+        modalHistoricoDemanda: {
+          historico: "Histórico",
+        },
+        modalInformarMotivo: {
+          informarMotivo: "Informar Motivo",
+          informeMotivo: "Informe o motivo...",
+          confirmar: "Confirmar",
+        },
+        modalMotivoRecusa: {
+          motivoDaRecusa: "Motivo da recusa",
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Motivo da recusa",
@@ -1042,22 +1006,6 @@ const TextLanguage = (linguagem) => {
           "Detalhes pauta",
           "Criar pauta",
         ],
-        SideBarFiltro: {
-          status: "Status",
-          forum: "Fórum",
-          departamento: "Departamento",
-          tamanho: "Tamanho",
-          atribuidoA: "Atribuído à",
-          apreciada: "Apreciada",
-          publicada: "Publicada",
-          gerenteResponsavel: "Gerente Responsável",
-          analistaResponsavel: "Analista Responsável",
-          solicitante: "Solicitante",
-          semFiltro: "Sem Filtro",
-          naoApreciada: "Não Apreciada",
-          publicado: "Publicado",
-          naoPublicado: "Não Publicado",
-        },
       }
     : linguagem == "en"
     ? {
@@ -1415,14 +1363,6 @@ const TextLanguage = (linguagem) => {
           },
           cancelar: "Cancel",
         },
-        modalCriarAta: {
-          feedback: "Fill in all required fields!",
-          criacaoDaAta: "Creation of the Minute",
-          digiteNumeroSequencial: "Enter the sequential number...",
-          dataDaReuniao: "Meeting date:",
-          botaoCancelar: "Cancel",
-          botaoCriar: "Create",
-        },
         modalFiltro: {
           status: "Status",
           labels: {
@@ -1435,7 +1375,7 @@ const TextLanguage = (linguagem) => {
             emDesenvolvimento: "In Development",
           },
         },
-        modalFiltroGerencia: {
+        sideBarFiltro: {
           filtros: "Filters",
           semResultados: "No results found",
           labelSolicitante: "Requestor",
@@ -1472,25 +1412,6 @@ const TextLanguage = (linguagem) => {
           semAtribuicao: "No Attribution",
           numero: "Number",
           limparFilros: "Clear Filters",
-        },
-        modalFiltroAtas: {
-          apreciada: "Appreciated",
-          naoApreciada: "Not Appreciated",
-          publicada: "Published",
-          naoPublicada: "Not Published",
-        },
-        modalHistoricoDemanda: {
-          historico: "History",
-        },
-        modalInformarMotivo: {
-          informarMotivo: "Inform Motive",
-          informeMotivo: "Enter the motive...",
-          confirmar: "Confirm",
-        },
-        modalMotivoRecusa: {
-          motivoDaRecusa: "Refusal Motive",
-        },
-        modalOrdenacao: {
           score: "Score",
           maiorScore: "Highest Score",
           menorScore: "Lowest Score",
@@ -1506,6 +1427,25 @@ const TextLanguage = (linguagem) => {
           dataReuniao: "Meeting Date",
           ordenar: "Order",
           filtrar: "Filter",
+          atribuidoA: "Assigned to",
+          apreciada: "Appreciated",
+          publicada: "Published",
+          solicitante: "Requester",
+          semFiltro: "No filter",
+          naoApreciada: "Not appreciated",
+          publicado: "Published",
+          naoPublicado: "Not published",
+        },
+        modalHistoricoDemanda: {
+          historico: "History",
+        },
+        modalInformarMotivo: {
+          informarMotivo: "Inform Motive",
+          informeMotivo: "Enter the motive...",
+          confirmar: "Confirm",
+        },
+        modalMotivoRecusa: {
+          motivoDaRecusa: "Refusal Motive",
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Refusal Motive",
@@ -2056,22 +1996,6 @@ const TextLanguage = (linguagem) => {
           "Agenda details",
           "Create Agenda",
         ],
-        SideBarFiltro: {
-          status: "Status",
-          forum: "Forum",
-          departamento: "Department",
-          tamanho: "Size",
-          atribuidoA: "Assigned to",
-          apreciada: "Appreciated",
-          publicada: "Published",
-          gerenteResponsavel: "Responsible Manager",
-          analistaResponsavel: "Responsible Analyst",
-          solicitante: "Requester",
-          semFiltro: "No filter",
-          naoApreciada: "Not appreciated",
-          publicado: "Published",
-          naoPublicado: "Not published",
-        },
       }
     : linguagem == "ch"
     ? {
@@ -2421,14 +2345,6 @@ const TextLanguage = (linguagem) => {
           },
           cancelar: "取消",
         },
-        modalCriarAta: {
-          feedback: "请填写所有必填字段！",
-          criacaoDaAta: "创建会议记录",
-          digiteNumeroSequencial: "输入序列号...",
-          dataDaReuniao: "会议日期：",
-          botaoCancelar: "取消",
-          botaoCriar: "创建",
-        },
         modalFiltro: {
           status: "状态",
           labels: {
@@ -2441,7 +2357,7 @@ const TextLanguage = (linguagem) => {
             emDesenvolvimento: "正在开发中",
           },
         },
-        modalFiltroGerencia: {
+        sideBarFiltro: {
           filtros: "过滤器",
           semResultados: "没有找到结果",
           labelSolicitante: "请求人",
@@ -2479,25 +2395,6 @@ const TextLanguage = (linguagem) => {
           semAtribuicao: "无归属",
           numero: "编号",
           limparFilros: "清除过滤器",
-        },
-        modalFiltroAtas: {
-          apreciada: "赞赏",
-          naoApreciada: "不被赏识",
-          publicada: "发表",
-          naoPublicada: "未发表",
-        },
-        modalHistoricoDemanda: {
-          historico: "历史",
-        },
-        modalInformarMotivo: {
-          informarMotivo: "输入原因",
-          informeMotivo: "输入原因...",
-          confirmar: "确认",
-        },
-        modalMotivoRecusa: {
-          motivoDaRecusa: "拒绝原因",
-        },
-        modalOrdenacao: {
           score: "得分",
           maiorScore: "最高分",
           menorScore: "最低分",
@@ -2513,6 +2410,25 @@ const TextLanguage = (linguagem) => {
           dataReuniao: "会议日期",
           ordenar: "排序",
           filtrar: "过滤器",
+          atribuidoA: "分配给",
+          apreciada: "赞赏",
+          publicada: "已发布",
+          solicitante: "请求者",
+          semFiltro: "无过滤器",
+          naoApreciada: "不赞赏",
+          publicado: "已发布",
+          naoPublicado: "未发布",
+        },
+        modalHistoricoDemanda: {
+          historico: "历史",
+        },
+        modalInformarMotivo: {
+          informarMotivo: "输入原因",
+          informeMotivo: "输入原因...",
+          confirmar: "确认",
+        },
+        modalMotivoRecusa: {
+          motivoDaRecusa: "拒绝原因",
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "拒绝原因",
@@ -3035,22 +2951,6 @@ const TextLanguage = (linguagem) => {
           "分钟细节",
           "创建议程",
         ],
-        SideBarFiltro: {
-          status: "状态",
-          forum: "论坛",
-          departamento: "部门",
-          tamanho: "尺寸",
-          atribuidoA: "分配给",
-          apreciada: "赞赏",
-          publicada: "已发布",
-          gerenteResponsavel: "负责经理",
-          analistaResponsavel: "负责分析师",
-          solicitante: "请求者",
-          semFiltro: "无过滤器",
-          naoApreciada: "不赞赏",
-          publicado: "已发布",
-          naoPublicado: "未发布",
-        },
       }
     : linguagem == "es"
     ? {
@@ -3410,14 +3310,6 @@ const TextLanguage = (linguagem) => {
           },
           cancelar: "Cancelar",
         },
-        modalCriarAta: {
-          feedback: "¡Rellene todos los campos obligatorios!",
-          criacaoDaAta: "Creación de la Ata",
-          digiteNumeroSequencial: "Escribe el número secuencial...",
-          dataDaReuniao: "Fecha de la reunión:",
-          botaoCancelar: "Cancelar",
-          botaoCriar: "Crear",
-        },
         modalFiltro: {
           status: "Status",
           labels: {
@@ -3430,7 +3322,7 @@ const TextLanguage = (linguagem) => {
             emDesenvolvimento: "En Desarrollo",
           },
         },
-        modalFiltroGerencia: {
+        sideBarFiltro: {
           filtros: "Filtros",
           semResultados: "Sin resultados",
           labelSolicitante: "Solicitante",
@@ -3456,19 +3348,6 @@ const TextLanguage = (linguagem) => {
           departamento: "Departamento",
           numero: "Número",
           limparFilros: "Limpiar filtros",
-        },
-        modalHistoricoDemanda: {
-          historico: "Histórico",
-        },
-        modalInformarMotivo: {
-          informarMotivo: "Informar Motivo",
-          informeMotivo: "Informe o motivo...",
-          confirmar: "Confirmar",
-        },
-        modalMotivoRecusa: {
-          motivoDaRecusa: "Motivo da recusa",
-        },
-        modalOrdenacao: {
           score: "Score",
           maiorScore: "Score más alta",
           menorScore: "Score más baja",
@@ -3484,6 +3363,25 @@ const TextLanguage = (linguagem) => {
           dataReuniao: "Fecha de la reunión",
           ordenar: "Ordenar",
           filtrar: "Filtrar",
+          atribuidoA: "Asignado a",
+          apreciada: "Apreciada",
+          publicada: "Publicada",
+          solicitante: "Solicitante",
+          semFiltro: "Sin filtro",
+          naoApreciada: "No apreciada",
+          publicado: "Publicado",
+          naoPublicado: "No publicado",
+        },
+        modalHistoricoDemanda: {
+          historico: "Histórico",
+        },
+        modalInformarMotivo: {
+          informarMotivo: "Informar Motivo",
+          informeMotivo: "Informe o motivo...",
+          confirmar: "Confirmar",
+        },
+        modalMotivoRecusa: {
+          motivoDaRecusa: "Motivo da recusa",
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Motivo da recusa",
@@ -4045,22 +3943,6 @@ const TextLanguage = (linguagem) => {
           "Detalles del minuto",
           "Crear Agenda",
         ],
-        SideBarFiltro: {
-          status: "Status",
-          forum: "Foro",
-          departamento: "Departamento",
-          tamanho: "Tamaño",
-          atribuidoA: "Asignado a",
-          apreciada: "Apreciada",
-          publicada: "Publicada",
-          gerenteResponsavel: "Gerente Responsable",
-          analistaResponsavel: "Analista Responsable",
-          solicitante: "Solicitante",
-          semFiltro: "Sin filtro",
-          naoApreciada: "No apreciada",
-          publicado: "Publicado",
-          naoPublicado: "No publicado",
-        },
       }
     : null;
 };
