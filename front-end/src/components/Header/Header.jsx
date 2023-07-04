@@ -47,7 +47,7 @@ const Header = () => {
       {/* Link para página inicial */}
       <Link to={"/"}>
         {/* Title */}
-        <Tooltip title={texts.Header.paginaInicial}>
+        <Tooltip title={texts.Header.paginaInicial} PopperProps={{ disablePortal: true }}>
           {/* Parte esquerda do header */}
           <div className="flex gap-2">
             {/* Grid da WEG */}

@@ -469,7 +469,7 @@ const UserModal = () => {
   return (
     <>
       {/* Botão para abrir o menu */}
-      <Tooltip title={texts.userModal?.configuracoes}>
+      <Tooltip title={texts.userModal?.configuracoes} PopperProps={{ disablePortal: true }}>
         <IconButton
           onClick={handleClick}
           size="small"

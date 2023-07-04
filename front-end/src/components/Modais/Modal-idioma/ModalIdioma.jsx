@@ -142,7 +142,7 @@ const IdiomaModal = () => {
   return (
     // Div container do idioma
     <div className=" border border-solid rounded-sm border-[#ffffff75]">
-      <Tooltip title={texts.idiomaModal.idiomas}>
+      <Tooltip title={texts.idiomaModal.idiomas} PopperProps={{ disablePortal: true }}>
         <IconButton
           onClick={handleClick}
           size="small"
