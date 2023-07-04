@@ -111,19 +111,11 @@ const FormularioGeralProposta = (props) => {
   return (
     <Box className="flex flex-col">
       <Box className="mt-12" sx={{ minWidth: "55rem" }}>
-        <Box
-          className="flex justify-around mb-5 mt-10 "
-          sx={{
-            marginLeft: "6.1rem",
-            display: "grid",
-            gap: "1rem",
-            gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))",
-          }}
-        >
+        <Box className="flex flex-row mb-8 " sx={{ marginLeft: "6.1rem", marginTop: "2%" }}>
           {/* Box geral do formulário */}
-          <Box>
+          <Box sx={{ width: "50%" }}>
             {/* Período Execução */}
-            <Box className="flex mb-2">
+            <Box className="flex mb-2 w-1/2" >
               <Typography
                 sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
                 onClick={() => {
@@ -142,15 +134,15 @@ const FormularioGeralProposta = (props) => {
                 *
               </Typography>
             </Box>
-            <Box className="flex">
-              <Box className="mr-5">
+            <Box className="flex w-full">
+              <Box className="mr-5" sx={{ width: "30%" }}>
                 <Box
                   fontSize={FontConfig.medium}
                   color="text.primary"
                   className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
                   sx={{
                     width: "100%;",
-                    height: "30px",
+                    height: "40px",
                     backgroundColor: "background.default",
                     borderLeftColor: "primary.main",
                     colorScheme: mode,
@@ -167,7 +159,7 @@ const FormularioGeralProposta = (props) => {
                   }}
                 />
               </Box>
-              <Box>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography
                   sx={{ fontSize: FontConfig.big }}
                   onClick={() => {
@@ -177,14 +169,14 @@ const FormularioGeralProposta = (props) => {
                   {texts.formularioGeralProposta.a}
                 </Typography>
               </Box>
-              <Box className="ml-5">
+              <Box className="ml-5" sx={{ width: "30%" }}>
                 <Box
                   fontSize={FontConfig.medium}
                   color="text.primary"
                   className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
                   sx={{
                     width: "100%;",
-                    height: "30px",
+                    height: "40px",
                     backgroundColor: "background.default",
                     borderLeftColor: "primary.main",
                     colorScheme: mode,
@@ -203,7 +195,8 @@ const FormularioGeralProposta = (props) => {
               </Box>
             </Box>
           </Box>
-          <Box>
+
+          <Box sx={{ width: "50%" }}>
             {/* Payback */}
             <Box className="flex mb-2">
               <Typography
@@ -229,8 +222,8 @@ const FormularioGeralProposta = (props) => {
                 className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
                 sx={{
                   backgroundColor: "background.default",
-                  width: "17%",
-                  height: "30px",
+                  width: "20%",
+                  height: "40px",
                   borderLeftColor: "primary.main",
                 }}
               >
@@ -280,11 +273,12 @@ const FormularioGeralProposta = (props) => {
               </Box>
               <FormControl
                 variant="standard"
-                sx={{ marginLeft: "20px", minWidth: 100 }}
+                sx={{ marginLeft: "30px", minWidth: 110 }}
               >
                 <Select
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
+                  sx={{ height: "40px" }}
                   value={props.gerais.unidadePaybackSimples || ""}
                   onChange={(e) =>
                     props.setGerais({
@@ -306,7 +300,88 @@ const FormularioGeralProposta = (props) => {
               </FormControl>
             </Box>
           </Box>
-          <Box>
+        </Box>
+
+        {/* Link Jira */}
+        <Box className="flex flex-row mb-8 " sx={{ marginLeft: "6.1rem", }}>
+          <Box sx={{ width: "50%" }}>
+            <Box className="flex mb-2">
+              <Typography
+                sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+                onClick={() => {
+                  lerTexto(texts.formularioGeralProposta.linkDoJira);
+                }}
+              >
+                {texts.formularioGeralProposta.linkDoJira}:
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: FontConfig.big,
+                  color: "red",
+                  marginLeft: "5px",
+                }}
+              >
+                *
+              </Typography>
+            </Box>
+            <Box sx={{ width: "67%" }}>
+              <Box
+                className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+                sx={{
+                  width: "100%;",
+                  height: "40px",
+                  backgroundColor: "background.default",
+                  borderLeftColor: "primary.main",
+                }}
+              >
+                <Box
+                  fontSize={FontConfig.medium}
+                  color="text.primary"
+                  className="flex outline-none"
+                  sx={{
+                    width: "95%;",
+                    backgroundColor: "transparent",
+                  }}
+                  component="input"
+                  placeholder={texts.formularioGeralProposta.insiraLinkDoJira}
+                  value={props.gerais.linkJira || ""}
+                  onChange={(e) =>
+                    props.setGerais({
+                      ...props.gerais,
+                      linkJira: e.target.value,
+                    })
+                  }
+                />
+                <Tooltip
+                  className="hover:cursor-pointer"
+                  title={texts.homeGerencia.gravarAudio}
+                  onClick={() => {
+                    startRecognition("linkJira");
+                  }}
+                >
+                  {escutar && localClique == "linkJira" ? (
+                    <MicOutlinedIcon
+                      sx={{
+                        cursor: "pointer",
+                        color: "primary.main",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  ) : (
+                    <MicNoneOutlinedIcon
+                      sx={{
+                        cursor: "pointer",
+                        color: "text.secondary",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  )}
+                </Tooltip>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box sx={{ width: "50%" }}>
             {/* Código PPM */}
             <Box className="flex mb-2">
               <Typography
@@ -331,8 +406,8 @@ const FormularioGeralProposta = (props) => {
               <Box
                 className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
                 sx={{
-                  width: "90%;",
-                  height: "30px",
+                  width: "40%;",
+                  height: "40px",
                   backgroundColor: "background.default",
                   borderLeftColor: "primary.main",
                 }}
@@ -381,84 +456,6 @@ const FormularioGeralProposta = (props) => {
                   )}
                 </Tooltip>
               </Box>
-            </Box>
-          </Box>
-        </Box>
-
-        {/* Link Jira */}
-        <Box className="flex flex-col mb-8" sx={{ marginLeft: "6.1rem" }}>
-          <Box className="flex mb-2">
-            <Typography
-              sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
-              onClick={() => {
-                lerTexto(texts.formularioGeralProposta.linkDoJira);
-              }}
-            >
-              {texts.formularioGeralProposta.linkDoJira}:
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: FontConfig.big,
-                color: "red",
-                marginLeft: "5px",
-              }}
-            >
-              *
-            </Typography>
-          </Box>
-          <Box sx={{ width: "30rem" }}>
-            <Box
-              className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
-              sx={{
-                width: "100%;",
-                height: "30px",
-                backgroundColor: "background.default",
-                borderLeftColor: "primary.main",
-              }}
-            >
-              <Box
-                fontSize={FontConfig.medium}
-                color="text.primary"
-                className="flex outline-none"
-                sx={{
-                  width: "95%;",
-                  backgroundColor: "transparent",
-                }}
-                component="input"
-                placeholder={texts.formularioGeralProposta.insiraLinkDoJira}
-                value={props.gerais.linkJira || ""}
-                onChange={(e) =>
-                  props.setGerais({
-                    ...props.gerais,
-                    linkJira: e.target.value,
-                  })
-                }
-              />
-              <Tooltip
-                className="hover:cursor-pointer"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition("linkJira");
-                }}
-              >
-                {escutar && localClique == "linkJira" ? (
-                  <MicOutlinedIcon
-                    sx={{
-                      cursor: "pointer",
-                      color: "primary.main",
-                      fontSize: "1.3rem",
-                    }}
-                  />
-                ) : (
-                  <MicNoneOutlinedIcon
-                    sx={{
-                      cursor: "pointer",
-                      color: "text.secondary",
-                      fontSize: "1.3rem",
-                    }}
-                  />
-                )}
-              </Tooltip>
             </Box>
           </Box>
         </Box>
