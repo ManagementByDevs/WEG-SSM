@@ -886,7 +886,7 @@ const BarraProgressaoProposta = (props) => {
             color="tertiary"
             disabled={activeStep === 0}
             onClick={voltarEtapa}
-            sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
+            sx={{ mr: 1, position: "fixed", bottom: 30, left: 160 }}
             disableElevation
           >
             {texts.barraProgressaoProposta.botaoVoltar}
@@ -899,7 +899,7 @@ const BarraProgressaoProposta = (props) => {
               color="primary"
               variant="contained"
               onClick={criarProposta}
-              sx={{ position: "fixed", bottom: 50, right: 160 }}
+              sx={{ position: "fixed", bottom: 30, right: 160 }}
               disableElevation
             >
               {texts.barraProgressaoProposta.botaoCriar}
@@ -909,7 +909,7 @@ const BarraProgressaoProposta = (props) => {
               color="primary"
               variant="contained"
               onClick={proximaEtapa}
-              sx={{ position: "fixed", bottom: 50, right: 160 }}
+              sx={{ position: "fixed", bottom: 30, right: 160 }}
               disableElevation
             >
               {texts.barraProgressaoProposta.botaoProximo}
