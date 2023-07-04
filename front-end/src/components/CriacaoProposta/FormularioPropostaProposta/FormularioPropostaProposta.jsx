@@ -1,5 +1,16 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { Box, Typography, Divider, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Paper,
+  IconButton,
+  Tooltip,
+  MenuItem,
+  TextField,
+  Autocomplete,
+  Checkbox,
+} from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -30,7 +41,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 /** Fase de criação de proposta em que os dados da demanda poderão ser editados */
 const FormularioPropostaProposta = (props) => {
-  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -247,7 +257,12 @@ const FormularioPropostaProposta = (props) => {
       />
       <Box
         className="flex flex-col justify-center relative items-center"
-        sx={{ minWidth: "60rem", marginTop: "4rem", marginBottom: "3rem", marginBottom: "7rem" }}
+        sx={{
+          minWidth: "60rem",
+          marginTop: "4rem",
+          marginBottom: "3rem",
+          marginBottom: "7rem",
+        }}
       >
         {props.carregamento ? (
           <Box className="mt-6 w-full h-full flex justify-center items-center">
@@ -255,8 +270,8 @@ const FormularioPropostaProposta = (props) => {
           </Box>
         ) : (
           <Box
-            className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
-            sx={{ width: "55rem" }}
+            className="flex flex-col gap-5 border rounded p-10 pt-6 border-t-6 relative"
+            sx={{ width: "60rem", borderTopColor: "primary.main" }}
           >
             <>
               <Box className="flex justify-center">
@@ -317,7 +332,7 @@ const FormularioPropostaProposta = (props) => {
               <Box>
                 <Box className="flex">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig.big}
                     fontWeight="600"
                     color="text.primary"
                     className="flex"
@@ -350,7 +365,7 @@ const FormularioPropostaProposta = (props) => {
               <Box>
                 <Box className="flex">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig.big}
                     fontWeight="600"
                     color="text.primary"
                     className="flex"
@@ -383,7 +398,7 @@ const FormularioPropostaProposta = (props) => {
               <Box>
                 <Box className="flex items-center">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig.big}
                     fontWeight="600"
                     color="text.primary"
                     onClick={() => {
@@ -421,7 +436,7 @@ const FormularioPropostaProposta = (props) => {
               <Box>
                 <Box className="flex">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig.big}
                     fontWeight="600"
                     color="text.primary"
                     className="flex"
@@ -444,24 +459,21 @@ const FormularioPropostaProposta = (props) => {
                   </Typography>
                 </Box>
                 <Box
-                  className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+                  className="w-full flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                   sx={{
-                    width: "90%;",
                     backgroundColor: corFundoTextArea,
-                    marginLeft: "30px",
                   }}
                 >
                   <Box
+                    className="w-full outline-none"
+                    sx={{
+                      backgroundColor: "transparent",
+                    }}
                     value={props.dados.frequencia}
                     onChange={(e) => {
                       alterarTexto(e, "frequencia");
                     }}
                     fontSize={FontConfig.medium}
-                    className="outline-none"
-                    sx={{
-                      width: "95%;",
-                      backgroundColor: "transparent",
-                    }}
                     component="input"
                     placeholder={
                       texts.formularioPropostaProposta.digiteFrequencia
@@ -678,7 +690,7 @@ const FormularioPropostaProposta = (props) => {
               <Box>
                 <Box className="flex items-center">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig.big}
                     fontWeight="600"
                     color="text.primary"
                     onClick={() => {
