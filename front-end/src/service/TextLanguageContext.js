@@ -339,7 +339,7 @@ const TextLanguageContext = createContext({
         confirmarExclusao: "Tem certeza que deseja excluir?",
         fecharChat: "Deseja realmente fechar este chat?",
         publicarAta: "Deseja publicar a ata?",
-        criarAta: "Deseja criar a ata?"
+        criarAta: "Deseja criar a ata?",
       },
       mensagensBotao: {
         sim: "Sim",
@@ -412,7 +412,7 @@ const TextLanguageContext = createContext({
       apreciada: "Apreciada",
       naoApreciada: "Não Apreciada",
       publicada: "Publicada",
-      naoPublicada: "Não Publicada"
+      naoPublicada: "Não Publicada",
     },
     modalHistoricoDemanda: {
       historico: "Histórico",
@@ -441,7 +441,7 @@ const TextLanguageContext = createContext({
       dataReuniao: "Data de Reunião",
       ordenar: "Ordenar",
       filtrar: "Filtrar",
-      limparFiltro: "Limpar Filtros"
+      limparFiltro: "Limpar Filtros",
     },
     modalRecusarDemanda: {
       motivoDaRecusa: "Motivo da recusa",
@@ -462,9 +462,10 @@ const TextLanguageContext = createContext({
       tresSemanasAtras: "3 semanas atrás",
       quatroSemanasAtras: "4 semanas atrás",
       maisDeUmMesAtras: "mais de 1 mês atrás",
-      tour:{
-        tour1: "Aqui fica as notificações, podendo clicar em uma notificação para ver mais detalhes.",
-      }
+      tour: {
+        tour1:
+          "Aqui fica as notificações, podendo clicar em uma notificação para ver mais detalhes.",
+      },
     },
     notificacaoModal: {
       notificacaoLidaComSucesso: "Notificação lida com sucesso!",
@@ -745,7 +746,7 @@ const TextLanguageContext = createContext({
         feedback13: "Navegador não é compatível!",
         feedback14: "Proposta Adicionada à Pauta",
         feedback15: "Data do período de execução inválida!",
-        feedback17: "Não há dados para a exportação!"
+        feedback17: "Não há dados para a exportação!",
       },
       demandas: "Demandas",
       criarPropostas: "Criar Propostas",
@@ -864,7 +865,7 @@ const TextLanguageContext = createContext({
         cancelled: "Cancelada",
         done: "Concluída",
       },
-      semComissao: "Cancelamento fora de comissão:"
+      semComissao: "Cancelamento fora de comissão:",
     },
     modalAddPropostaPauta: {
       feedbacks: {
@@ -886,7 +887,7 @@ const TextLanguageContext = createContext({
     CaixaTextoQuill: {
       gravarAudio: "Gravar áudio",
     },
-    SideBarFiltro: {
+    sideBarFiltro: {
       status: "Status",
       forum: "Fórum",
       departamento: "Departamento",
@@ -897,13 +898,31 @@ const TextLanguageContext = createContext({
       gerenteResponsavel: "Gerente Responsável",
       analistaResponsavel: "Analista Responsável",
       solicitante: "Solicitante",
-      semFiltro: "Sem filtro",
+      semFiltro: "Sem Filtro",
       naoApreciada: "Não Apreciada",
       publicado: "Publicado",
       naoPublicado: "Não Publicado",
-    }
+      aprovada: "Aprovada",
+      reprovada: "Reprovada",
+      aguardandoEdicao: "Aguardando Edição",
+      aguardandoRevisao: "Aguardando Revisão",
+      emAprovacao: "Em Aprovação",
+      emAndamento: "Em Andamento",
+      emDesenvolvimento: "Em Desenvolvimento",
+      filtros: "Filtros",
+      semResultados: "Sem Resultados",
+      labelSolicitante: "Solicitante",
+      selecionar: "Selecionar",
+      muitoPequeno: "Muito Pequeno",
+      pequeno: "Pequeno",
+      medio: "Médio",
+      grande: "Grande",
+      muitoGrande: "Muito Grande",
+      numero: "Número",
+      limparFilros: "Limpar Filtros",
+    },
   },
-  setTexts: () => { },
+  setTexts: () => {},
 });
 
 export default TextLanguageContext;

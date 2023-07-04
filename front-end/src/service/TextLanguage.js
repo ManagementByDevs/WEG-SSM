@@ -364,46 +364,6 @@ const TextLanguage = (linguagem) => {
           botaoCancelar: "Cancelar",
           botaoCriar: "Criar",
         },
-        modalFiltro: {
-          status: "Status",
-          labels: {
-            aprovada: "Aprovada",
-            reprovada: "Reprovada",
-            aguardandoEdicao: "Aguardando Edição",
-            aguardandoRevisao: "Aguardando Revisão",
-            emAprovacao: "Em Aprovação",
-            emAndamento: "Em Andamento",
-            emDesenvolvimento: "Em Desenvolvimento",
-          },
-        },
-        modalFiltroGerencia: {
-          filtros: "Filtros",
-          semResultados: "Sem Resultados",
-          labelSolicitante: "Solicitante",
-          forum: "Fórum",
-          selecionar: "Selecionar",
-          tamanho: "Tamanho",
-          selecionar: "Selecionar",
-          muitoPequeno: "Muito Pequeno",
-          semResultados: "Sem Resultados",
-          analistaResponsavel: "Analista Responsável",
-          gerenteResponsavel: "Gerente Responsável",
-          status: "Status",
-          pequeno: "Pequeno",
-          medio: "Médio",
-          grande: "Grande",
-          muitoGrande: "Muito Grande",
-          aprovada: "Aprovada",
-          reprovada: "Reprovada",
-          aguardandoEdicao: "Aguardando Edição",
-          aguardandoRevisao: "Aguardando Revisão",
-          emAprovacao: "Em Aprovação",
-          emAndamento: "Em Andamento",
-          emDesenvolvimento: "Em Desenvolvimento",
-          departamento: "Departamento",
-          numero: "Número",
-          limparFilros: "Limpar Filtros",
-        },
         modalHistoricoDemanda: {
           historico: "Histórico",
         },
@@ -463,24 +423,6 @@ const TextLanguage = (linguagem) => {
         modalMotivoRecusa: {
           motivoDaRecusa: "Motivo da recusa",
         },
-        modalOrdenacao: {
-          score: "Score",
-          maiorScore: "Maior Score",
-          menorScore: "Menor Score",
-          titulo: "Título",
-          az: "A-Z",
-          za: "Z-A",
-          dataDeCriacao: "Data de criação",
-          maisRecente: "Mais recente",
-          maisAntiga: "Mais antiga",
-          numeroSequencial: "Número Sequencial",
-          crescente: "Crescente",
-          decrescente: "Decrescente",
-          dataReuniao: "Data de Reunião",
-          ordenar: "Ordenar",
-          filtrar: "Filtrar",
-          limparFiltro: "Limpar Filtros"
-        },
         modalRecusarDemanda: {
           motivoDaRecusa: "Motivo da recusa",
           informeMotivo: "Informe o motivo...",
@@ -514,12 +456,14 @@ const TextLanguage = (linguagem) => {
           assessment: "Assessment",
           cancelled: "Cancelled",
           done: "Done",
-          tour:{
+          tour: {
             tour1: "Aqui você pode ver as notificações que recebeu.",
-            tour2: "Clicando aqui você pode atualizar a página para buscar novas notificações.",
-            tour3: "Clicando aqui você pode selecionar todas as notificações, podendo ler e deletá-las.",
+            tour2:
+              "Clicando aqui você pode atualizar a página para buscar novas notificações.",
+            tour3:
+              "Clicando aqui você pode selecionar todas as notificações, podendo ler e deletá-las.",
             tour4: "E aqui é possível alterar a paginação das notificações.",
-          }
+          },
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notificação lida com sucesso!",
@@ -662,11 +606,12 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsável",
           numeroSequencialDG: "Número Sequencial da Ata da DG",
           tour: {
-            tour1: "Aqui você pode ver os detalhes da ata e as propostas que pertencem a ela",
+            tour1:
+              "Aqui você pode ver os detalhes da ata e as propostas que pertencem a ela",
             tour2: "Clicando aqui você pode baixar o PDF da ata",
             tour3: "Esse botão permite a navegação entre as propostas da ata",
             tour4: "Esse botão permite publicar a ata",
-          }
+          },
         },
         detalhesDemandaPagina: {
           tour: {
@@ -699,12 +644,13 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsável",
           nenhumaPropostaAdicionada: "Nenhuma proposta adicionada",
           numeroSequencialAta: "Número Sequencial da Ata",
-          tour:{
-            tour1: "Aqui você pode ver os detalhes da pauta e suas respectivas propostas",
+          tour: {
+            tour1:
+              "Aqui você pode ver os detalhes da pauta e suas respectivas propostas",
             tour2: "Clicando aqui você pode baixar a pauta em PDF",
             tour3: "Esse botão permite a navegação entre as propostas da pauta",
             tour4: "A partir desse botão é possível realizar a criação da ata",
-          }
+          },
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "Adicionar à Pauta",
@@ -740,7 +686,7 @@ const TextLanguage = (linguagem) => {
             botaoMotivo:
               "Aqui consegue observar o motivo pelo qual foi recusado ou o motivo da edição.",
             botaoChat:
-              "Clicando neste botão você consegue abrir o chat da demanda."
+              "Clicando neste botão você consegue abrir o chat da demanda.",
           },
           demandaCriadaComSucesso: "Demanda criada com sucesso!",
           minhasDemandas: "Minhas Demandas",
@@ -782,7 +728,7 @@ const TextLanguage = (linguagem) => {
             tour10:
               "Aqui consegue observar o motivo pelo qual foi recusado ou o motivo da edição.",
             tour11:
-              "Clicando neste botão você consegue abrir o chat da demanda."
+              "Clicando neste botão você consegue abrir o chat da demanda.",
           },
           toursCriarPropostas: {
             tour1:
@@ -961,8 +907,9 @@ const TextLanguage = (linguagem) => {
           tour: {
             tour1: "Aqui ficam todos os detalhes da proposta",
             tour2: "Clicando aqui é possível baixar a proposta em PDF",
-            tour3: "Clicando nesse botão é possível adicionar a proposta em uma pauta"
-          }
+            tour3:
+              "Clicando nesse botão é possível adicionar a proposta em uma pauta",
+          },
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Dado inválido!",
@@ -1042,18 +989,23 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "Adicione uma data de reunião!",
           addComissao: "Adicione uma comissão!",
           addProposta: "Adicione pelo menos uma proposta!",
-          tour:{
-            tour1: "Nesta parte ficam os dados gerais para a criação de uma nova pauta.",
-            tour2: "Aqui você preenche o número sequencial e a data de reunião da pauta.",
+          tour: {
+            tour1:
+              "Nesta parte ficam os dados gerais para a criação de uma nova pauta.",
+            tour2:
+              "Aqui você preenche o número sequencial e a data de reunião da pauta.",
             tour3: "E aqui você seleciona o fórum da pauta.",
             tour4: "Aqui ficam as propostas que serão adicionadas na pauta.",
             tour5: "Clicando aqui é possível ter uma visualização da proposta.",
-            tour6: "Já aqui é possível adicionar a proposta na pauta, sendo também possível arrastá-la para o campo de propostas ao lado.",
-            tour7: "Neste campo ficam as propostas que estão adicionadas na pauta.",
+            tour6:
+              "Já aqui é possível adicionar a proposta na pauta, sendo também possível arrastá-la para o campo de propostas ao lado.",
+            tour7:
+              "Neste campo ficam as propostas que estão adicionadas na pauta.",
             tour8: "Clicando aqui é possível remover a proposta da pauta.",
-            tour9: "Clicando aqui é possível mudar a visualização da proposta, publicada ou não pubicada",
-            tour10: "Clicando aqui é possível criar a pauta."
-          }
+            tour9:
+              "Clicando aqui é possível mudar a visualização da proposta, publicada ou não pubicada",
+            tour10: "Clicando aqui é possível criar a pauta.",
+          },
         },
         rotas: [
           "Login",
@@ -1069,7 +1021,7 @@ const TextLanguage = (linguagem) => {
           "Detalhes pauta",
           "Criar pauta",
         ],
-        SideBarFiltro: {
+        sideBarFiltro: {
           status: "Status",
           forum: "Fórum",
           departamento: "Departamento",
@@ -1084,6 +1036,40 @@ const TextLanguage = (linguagem) => {
           naoApreciada: "Não Apreciada",
           publicado: "Publicado",
           naoPublicado: "Não Publicado",
+          aprovada: "Aprovada",
+          reprovada: "Reprovada",
+          aguardandoEdicao: "Aguardando Edição",
+          aguardandoRevisao: "Aguardando Revisão",
+          emAprovacao: "Em Aprovação",
+          emAndamento: "Em Andamento",
+          emDesenvolvimento: "Em Desenvolvimento",
+          filtros: "Filtros",
+          semResultados: "Sem Resultados",
+          labelSolicitante: "Solicitante",
+          selecionar: "Selecionar",
+          muitoPequeno: "Muito Pequeno",
+          pequeno: "Pequeno",
+          medio: "Médio",
+          grande: "Grande",
+          muitoGrande: "Muito Grande",
+          numero: "Número",
+          limparFilros: "Limpar Filtros",
+          score: "Score",
+          maiorScore: "Maior Score",
+          menorScore: "Menor Score",
+          titulo: "Título",
+          az: "A-Z",
+          za: "Z-A",
+          dataDeCriacao: "Data de criação",
+          maisRecente: "Mais recente",
+          maisAntiga: "Mais antiga",
+          numeroSequencial: "Número Sequencial",
+          crescente: "Crescente",
+          decrescente: "Decrescente",
+          dataReuniao: "Data de Reunião",
+          ordenar: "Ordenar",
+          filtrar: "Filtrar",
+          limparFiltro: "Limpar Filtros",
         },
       }
     : linguagem == "en"
@@ -1450,56 +1436,6 @@ const TextLanguage = (linguagem) => {
           botaoCancelar: "Cancel",
           botaoCriar: "Create",
         },
-        modalFiltro: {
-          status: "Status",
-          labels: {
-            aprovada: "Approved",
-            reprovada: "Rejected",
-            aguardandoEdicao: "Waiting for Edition",
-            aguardandoRevisao: "Waiting for Review",
-            emAprovacao: "In Approval",
-            emAndamento: "In Progress",
-            emDesenvolvimento: "In Development",
-          },
-        },
-        modalFiltroGerencia: {
-          filtros: "Filters",
-          semResultados: "No results found",
-          labelSolicitante: "Requestor",
-          forum: "Forum",
-          selecionar: "Select",
-          tamanho: "Size",
-          semResultados: "No results found",
-          analistaResponsavel: "Responsible Analyst",
-          gerenteResponsavel: "Responsible Manager",
-          status: "Status",
-          muitoPequeno: "Very Small",
-          pequeno: "Small",
-          medio: "Medium",
-          grande: "Large",
-          muitoGrande: "Very Large",
-          aprovada: "Approved",
-          reprovada: "Rejected",
-          aguardandoEdicao: "Waiting for Edition",
-          aguardandoRevisao: "Waiting for Review",
-          emAprovacao: "In Approval",
-          emAndamento: "In Progress",
-          emDesenvolvimento: "In Development",
-          cancelled: "Cancelled",
-          businessCase: "Business Case",
-          done: "Done",
-          assessment: "Assessment",
-          assessmentEdicao: "Assessment - Edition",
-          assessmentComissao: "Assessment - In Comission",
-          assessmentDg: "Assessment - In DG",
-          departamento: "Department",
-          atribuido: "Assigned To",
-          ata: "Minutes",
-          pauta: "Agenda",
-          semAtribuicao: "No Attribution",
-          numero: "Number",
-          limparFilros: "Clear Filters",
-        },
         modalFiltroAtas: {
           apreciada: "Appreciated",
           naoApreciada: "Not Appreciated",
@@ -1516,24 +1452,6 @@ const TextLanguage = (linguagem) => {
         },
         modalMotivoRecusa: {
           motivoDaRecusa: "Refusal Motive",
-        },
-        modalOrdenacao: {
-          score: "Score",
-          maiorScore: "Highest Score",
-          menorScore: "Lowest Score",
-          titulo: "Title",
-          az: "A-Z",
-          za: "Z-A",
-          dataDeCriacao: "Date of Creation",
-          maisRecente: "Most recent",
-          maisAntiga: "Oldest",
-          numeroSequencial: "Sequential Number",
-          crescente: "Ascending",
-          decrescente: "Descending",
-          dataReuniao: "Meeting Date",
-          ordenar: "Order",
-          filtrar: "Filter",
-          limparFiltro: "Clear Filters"
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Refusal Motive",
@@ -1570,12 +1488,15 @@ const TextLanguage = (linguagem) => {
           assessment: "Assessment",
           cancelled: "Cancelled",
           done: "Done",
-          tour:{
+          tour: {
             tour1: "Here you can see the notifications you have received.",
-            tour2: "Clicking here you can refresh the page to check for new notifications.",
-            tour3: "Clicking here you can select all the notifications, being able to read and delete them.",
-            tour4: "And here it is possible to change the pagination of the notifications.",
-          }
+            tour2:
+              "Clicking here you can refresh the page to check for new notifications.",
+            tour3:
+              "Clicking here you can select all the notifications, being able to read and delete them.",
+            tour4:
+              "And here it is possible to change the pagination of the notifications.",
+          },
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notification read successfully!",
@@ -1717,11 +1638,13 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Responsable Analyst",
           numeroSequencialDG: "DG Minutes Sequential Number",
           tour: {
-            tour1: "Here you can see the details of the minutes and the proposals that belong to them",
+            tour1:
+              "Here you can see the details of the minutes and the proposals that belong to them",
             tour2: "Click here to download the PDF of the minutes",
-            tour3: "This button allows navigation between the proposals in the minutes",
+            tour3:
+              "This button allows navigation between the proposals in the minutes",
             tour4: "This button allows you to publish the minutes",
-          }
+          },
         },
         detalhesDemandaPagina: {
           tour: {
@@ -1754,12 +1677,13 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Responsible Analyst",
           nenhumaPropostaAdicionada: "No proposal added",
           numeroSequencialAta: "Minutes Sequential Number",
-          tour:{
-            tour1: "Here you can see the details of the agenda and their respective proposals",
+          tour: {
+            tour1:
+              "Here you can see the details of the agenda and their respective proposals",
             tour2: "Click here to download the agenda in PDF",
             tour3: "This button allows navigation between agenda proposals",
             tour4: "From this button it is possible to create the minutes",
-          }
+          },
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "Add to Agenda",
@@ -2087,18 +2011,23 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "Add a meeting date!",
           addComissao: "Add a commission!",
           addProposta: "Add at least one proposal!",
-          tour:{
-            tour1: "In this part are the general data for the creation of a new agenda",
-            tour2: "Here you fill in the sequential number and meeting date of the agenda",
+          tour: {
+            tour1:
+              "In this part are the general data for the creation of a new agenda",
+            tour2:
+              "Here you fill in the sequential number and meeting date of the agenda",
             tour3: "And here you select the agenda forum",
             tour4: "Here are the proposals that will be added to the agenda",
             tour5: "Click here to view the proposal",
-            tour6: "Here, it is possible to add the proposal to the agenda, and it is also possible to drag it to the proposals field on the side",
-            tour7: "In this field are the proposals that are added to the agenda",
+            tour6:
+              "Here, it is possible to add the proposal to the agenda, and it is also possible to drag it to the proposals field on the side",
+            tour7:
+              "In this field are the proposals that are added to the agenda",
             tour8: "Click here to remove the proposal from the agenda",
-            tour9: "By clicking here it is possible to change the view of the proposal, published or unpublished",
-            tour10: "Click here to create the agenda"
-          }
+            tour9:
+              "By clicking here it is possible to change the view of the proposal, published or unpublished",
+            tour10: "Click here to create the agenda",
+          },
         },
         rotas: [
           "Login",
@@ -2114,7 +2043,7 @@ const TextLanguage = (linguagem) => {
           "Agenda details",
           "Create Agenda",
         ],
-        SideBarFiltro: {
+        sideBarFiltro: {
           status: "Status",
           forum: "Forum",
           departamento: "Department",
@@ -2129,6 +2058,50 @@ const TextLanguage = (linguagem) => {
           naoApreciada: "Not appreciated",
           publicado: "Published",
           naoPublicado: "Not published",
+          aprovada: "Approved",
+          reprovada: "Rejected",
+          aguardandoEdicao: "Waiting for Edition",
+          aguardandoRevisao: "Waiting for Review",
+          emAprovacao: "In Approval",
+          emAndamento: "In Progress",
+          emDesenvolvimento: "In Development",
+          filtros: "Filters",
+          semResultados: "No results found",
+          labelSolicitante: "Requestor",
+          selecionar: "Select",
+          muitoPequeno: "Very Small",
+          pequeno: "Small",
+          medio: "Medium",
+          grande: "Large",
+          muitoGrande: "Very Large",
+          cancelled: "Cancelled",
+          businessCase: "Business Case",
+          done: "Done",
+          assessment: "Assessment",
+          assessmentEdicao: "Assessment - Edition",
+          assessmentComissao: "Assessment - In Comission",
+          assessmentDg: "Assessment - In DG",
+          ata: "Minutes",
+          pauta: "Agenda",
+          semAtribuicao: "No Attribution",
+          numero: "Number",
+          limparFilros: "Clear Filters",
+          score: "Score",
+          maiorScore: "Highest Score",
+          menorScore: "Lowest Score",
+          titulo: "Title",
+          az: "A-Z",
+          za: "Z-A",
+          dataDeCriacao: "Date of Creation",
+          maisRecente: "Most recent",
+          maisAntiga: "Oldest",
+          numeroSequencial: "Sequential Number",
+          crescente: "Ascending",
+          decrescente: "Descending",
+          dataReuniao: "Meeting Date",
+          ordenar: "Order",
+          filtrar: "Filter",
+          limparFiltro: "Clear Filters",
         },
       }
     : linguagem == "ch"
@@ -2487,57 +2460,6 @@ const TextLanguage = (linguagem) => {
           botaoCancelar: "取消",
           botaoCriar: "创建",
         },
-        modalFiltro: {
-          status: "状态",
-          labels: {
-            aprovada: "批准",
-            reprovada: "未批准",
-            aguardandoEdicao: "等待编辑",
-            aguardandoRevisao: "等待审查",
-            emAprovacao: "正在批准",
-            emAndamento: "进行中",
-            emDesenvolvimento: "正在开发中",
-          },
-        },
-        modalFiltroGerencia: {
-          filtros: "过滤器",
-          semResultados: "没有找到结果",
-          labelSolicitante: "请求人",
-          forum: "论坛",
-          selecionar: "选择",
-          tamanho: "大小",
-          semResultados: "没有找到结果",
-          analistaResponsavel: "负责分析师",
-          gerenteResponsavel: "负责经理",
-          status: "地位",
-          muitoPequeno: "非常小",
-          pequeno: "小",
-          medio: "中",
-          grande: "大",
-          muitoGrande: "非常大",
-          aprovada: "批准",
-          reprovada: "未批准",
-          aguardandoEdicao: "等待编辑",
-          aguardandoRevisao: "等待审查",
-          emAprovacao: "正在批准",
-          emAndamento: "进行中",
-          emDesenvolvimento: "正在开发中",
-          departamento: "部门",
-          cancelled: "取消",
-          businessCase: "商业案例",
-          done: "完毕",
-          assessment: "评估",
-          assessmentEdicao: "评估 - 版",
-          assessmentComissao: "评估 - 委托中",
-          assessmentDg: "评估 - 在 DG",
-          departamento: "部门",
-          atribuido: "分配给",
-          ata: "分钟",
-          pauta: "日程",
-          semAtribuicao: "无归属",
-          numero: "编号",
-          limparFilros: "清除过滤器",
-        },
         modalFiltroAtas: {
           apreciada: "赞赏",
           naoApreciada: "不被赏识",
@@ -2554,24 +2476,6 @@ const TextLanguage = (linguagem) => {
         },
         modalMotivoRecusa: {
           motivoDaRecusa: "拒绝原因",
-        },
-        modalOrdenacao: {
-          score: "得分",
-          maiorScore: "最高分",
-          menorScore: "最低分",
-          titulo: "标题",
-          az: "生长",
-          za: "降序",
-          dataDeCriacao: "创建日期",
-          maisRecente: "最近",
-          maisAntiga: "最早",
-          numeroSequencial: "序号",
-          crescente: "生长",
-          decrescente: "降序",
-          dataReuniao: "会议日期",
-          ordenar: "排序",
-          filtrar: "过滤器",
-          limparFiltro: "清除过滤器"
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "拒绝原因",
@@ -2605,12 +2509,12 @@ const TextLanguage = (linguagem) => {
           assessment: "评估",
           cancelled: "取消",
           done: "完毕",
-          tour:{
+          tour: {
             tour1: "在这里您可以看到您收到的通知",
             tour2: "单击此处您可以刷新页面以检查新通知",
             tour3: "单击此处您可以选择所有通知，并能够阅读和删除它们",
             tour4: "在这里可以更改通知的分页",
-          }
+          },
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "通知成功阅读！",
@@ -2750,7 +2654,7 @@ const TextLanguage = (linguagem) => {
             tour2: "单击此处下载会议纪要的 PDF 版本",
             tour3: "此按钮允许在几分钟内在提案之间导航",
             tour4: "此按钮允许您发布会议记录",
-          }
+          },
         },
         detalhesDemandaPagina: {
           tour: {
@@ -2782,12 +2686,12 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "责任分析师",
           nenhumaPropostaAdicionada: "未添加提案",
           numeroSequencialAta: "分钟序号",
-          tour:{
+          tour: {
             tour1: "在这里您可以看到议程的详细信息及其各自的提案",
             tour2: "单击此处下载 PDF 格式的议程",
             tour3: "此按钮允许在议程提案之间导航",
             tour4: "通过此按钮可以创建会议记录",
-          }
+          },
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "添加到议程",
@@ -3097,18 +3001,19 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "添加会议日期！",
           addComissao: "增加佣金！",
           addProposta: "至少添加一项提案！",
-          tour:{
+          tour: {
             tour1: "这部分是创建新议程的一般数据",
             tour2: "您可以在此处填写议程的序号和会议日期",
             tour3: "您可以在此处选择议程论坛",
             tour4: "以下是将添加到议程中的提案",
             tour5: "单击此处查看提案",
-            tour6: "在这里，可以将提案添加到议程中，也可以将其拖到侧面的提案字段中",
+            tour6:
+              "在这里，可以将提案添加到议程中，也可以将其拖到侧面的提案字段中",
             tour7: "该领域的提案被添加到议程中",
             tour8: "单击此处，您可以从议程中删除该提案",
             tour9: "单击此处可以更改提案的视图（已发布或未发布)",
-            tour10: "单击此处，您可以创建议程"
-          }
+            tour10: "单击此处，您可以创建议程",
+          },
         },
         rotas: [
           "登录",
@@ -3124,7 +3029,7 @@ const TextLanguage = (linguagem) => {
           "分钟细节",
           "创建议程",
         ],
-        SideBarFiltro: {
+        sideBarFiltro: {
           status: "状态",
           forum: "论坛",
           departamento: "部门",
@@ -3139,6 +3044,51 @@ const TextLanguage = (linguagem) => {
           naoApreciada: "不赞赏",
           publicado: "已发布",
           naoPublicado: "未发布",
+          aprovada: "批准",
+          reprovada: "未批准",
+          aguardandoEdicao: "等待编辑",
+          aguardandoRevisao: "等待审查",
+          emAprovacao: "正在批准",
+          emAndamento: "进行中",
+          emDesenvolvimento: "正在开发中",
+          filtros: "过滤器",
+          semResultados: "没有找到结果",
+          labelSolicitante: "请求人",
+          selecionar: "选择",
+          muitoPequeno: "非常小",
+          pequeno: "小",
+          medio: "中",
+          grande: "大",
+          muitoGrande: "非常大",
+          cancelled: "取消",
+          businessCase: "商业案例",
+          done: "完毕",
+          assessment: "评估",
+          assessmentEdicao: "评估 - 版",
+          assessmentComissao: "评估 - 委托中",
+          assessmentDg: "评估 - 在 DG",
+          atribuido: "分配给",
+          ata: "分钟",
+          pauta: "日程",
+          semAtribuicao: "无归属",
+          numero: "编号",
+          limparFilros: "清除过滤器",
+          score: "得分",
+          maiorScore: "最高分",
+          menorScore: "最低分",
+          titulo: "标题",
+          az: "生长",
+          za: "降序",
+          dataDeCriacao: "创建日期",
+          maisRecente: "最近",
+          maisAntiga: "最早",
+          numeroSequencial: "序号",
+          crescente: "生长",
+          decrescente: "降序",
+          dataReuniao: "会议日期",
+          ordenar: "排序",
+          filtrar: "过滤器",
+          limparFiltro: "清除过滤器",
         },
       }
     : linguagem == "es"
@@ -3507,45 +3457,6 @@ const TextLanguage = (linguagem) => {
           botaoCancelar: "Cancelar",
           botaoCriar: "Crear",
         },
-        modalFiltro: {
-          status: "Status",
-          labels: {
-            aprovada: "Aprobada",
-            reprovada: "Rechazada",
-            aguardandoEdicao: "Esperando Edición",
-            aguardandoRevisao: "Esperando Revisión",
-            emAprovacao: "En Aprobación",
-            emAndamento: "En Curso",
-            emDesenvolvimento: "En Desarrollo",
-          },
-        },
-        modalFiltroGerencia: {
-          filtros: "Filtros",
-          semResultados: "Sin resultados",
-          labelSolicitante: "Solicitante",
-          forum: "Foro",
-          selecionar: "Seleccionar",
-          tamanho: "Tamaño",
-          muitoPequeno: "Muy pequeño",
-          semResultados: "Sin resultados",
-          analistaResponsavel: "Analista responsable",
-          gerenteResponsavel: "Gerente responsable",
-          status: "Status",
-          pequeno: "Pequeño",
-          medio: "Medio",
-          grande: "Grande",
-          muitoGrande: "Muy grande",
-          aprovada: "Aprobada",
-          reprovada: "Rechazada",
-          aguardandoEdicao: "Esperando Edición",
-          aguardandoRevisao: "Esperando Revisión",
-          emAprovacao: "En Aprobación",
-          emAndamento: "En Curso",
-          emDesenvolvimento: "En Desarrollo",
-          departamento: "Departamento",
-          numero: "Número",
-          limparFilros: "Limpiar filtros",
-        },
         modalHistoricoDemanda: {
           historico: "Histórico",
         },
@@ -3556,24 +3467,6 @@ const TextLanguage = (linguagem) => {
         },
         modalMotivoRecusa: {
           motivoDaRecusa: "Motivo da recusa",
-        },
-        modalOrdenacao: {
-          score: "Score",
-          maiorScore: "Score más alta",
-          menorScore: "Score más baja",
-          titulo: "Título",
-          az: "A-Z",
-          za: "Z-A",
-          dataDeCriacao: "Fecha de creación",
-          maisRecente: "Más reciente",
-          maisAntiga: "Más antigua",
-          numeroSequencial: "Numero secuencial",
-          crescente: "Creciente",
-          decrescente: "Descendente",
-          dataReuniao: "Fecha de la reunión",
-          ordenar: "Ordenar",
-          filtrar: "Filtrar",
-          limparFiltro: "Filtros Claros"
         },
         modalRecusarDemanda: {
           motivoDaRecusa: "Motivo da recusa",
@@ -3609,12 +3502,15 @@ const TextLanguage = (linguagem) => {
           assessment: "Assessment",
           cancelled: "Cancelled",
           done: "Done",
-          tour:{
+          tour: {
             tour1: "Aquí puedes ver las notificaciones que has recibido.",
-            tour2: "Al hacer clic aquí, puede actualizar la página para verificar si hay nuevas notificaciones.",
-            tour3: "Pulsando aquí puedes seleccionar todas las notificaciones, pudiendo leerlas y borrarlas.",
-            tour4: "Y aquí es posible cambiar la paginación de las notificaciones.",
-          }
+            tour2:
+              "Al hacer clic aquí, puede actualizar la página para verificar si hay nuevas notificaciones.",
+            tour3:
+              "Pulsando aquí puedes seleccionar todas las notificaciones, pudiendo leerlas y borrarlas.",
+            tour4:
+              "Y aquí es posible cambiar la paginación de las notificaciones.",
+          },
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notificación leída con éxito!",
@@ -3757,11 +3653,13 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsable",
           numeroSequencialDG: "Número secuencial de actas del GD",
           tour: {
-            tour1: "Aquí puede ver el detalle de las actas y las propuestas que les corresponden",
+            tour1:
+              "Aquí puede ver el detalle de las actas y las propuestas que les corresponden",
             tour2: "Haga clic aquí para descargar el PDF del acta",
-            tour3: "Este botón permite la navegación entre las propuestas del acta",
+            tour3:
+              "Este botón permite la navegación entre las propuestas del acta",
             tour4: "Este botón le permite publicar las actas",
-          }
+          },
         },
         detalhesDemandaPagina: {
           tour: {
@@ -3794,12 +3692,13 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsable",
           nenhumaPropostaAdicionada: "No se ha añadido ninguna propuesta",
           numeroSequencialAta: "Número secuencial de minutos",
-          tour:{
+          tour: {
             tour1: "Desde este botón es posible crear los minutos",
             tour2: "Haga clic aquí para descargar la agenda en PDF",
-            tour3: "Este botón permite la navegación entre propuestas de agenda",
+            tour3:
+              "Este botón permite la navegación entre propuestas de agenda",
             tour4: "Desde este botón es posible crear los minutos",
-          }
+          },
         },
         detalhesPropostaPagina: {
           adicionarAPauta: "Agregar a la pauta",
@@ -4138,18 +4037,24 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "¡Agregue una fecha de reunión!",
           addComissao: "¡Agregue una comisión!",
           addProposta: "¡Agregue al menos una propuesta!",
-          tour:{
-            tour1: "En esta parte se encuentran los datos generales para la creación de una nueva agenda",
-            tour2: "Aquí se rellena el número correlativo y fecha de reunión de la agenda",
+          tour: {
+            tour1:
+              "En esta parte se encuentran los datos generales para la creación de una nueva agenda",
+            tour2:
+              "Aquí se rellena el número correlativo y fecha de reunión de la agenda",
             tour3: "Y aquí seleccionas la agenda del foro",
             tour4: "Aquí están las propuestas que se agregarán a la agenda",
             tour5: "Haga clic aquí para ver la propuesta",
-            tour6: "Aquí, es posible agregar la propuesta a la agenda, y también es posible arrastrarla al campo de propuestas al costado",
-            tour7: "En este campo se encuentran las propuestas que se añaden a la agenda",
-            tour8: "Al hacer clic aquí, puede eliminar la propuesta de la agenda",
-            tour9: "Al hacer clic aquí es posible cambiar la vista de la propuesta, publicada o no publicada",
-            tour10: "Al hacer clic aquí, puede crear la agenda"
-          }
+            tour6:
+              "Aquí, es posible agregar la propuesta a la agenda, y también es posible arrastrarla al campo de propuestas al costado",
+            tour7:
+              "En este campo se encuentran las propuestas que se añaden a la agenda",
+            tour8:
+              "Al hacer clic aquí, puede eliminar la propuesta de la agenda",
+            tour9:
+              "Al hacer clic aquí es posible cambiar la vista de la propuesta, publicada o no publicada",
+            tour10: "Al hacer clic aquí, puede crear la agenda",
+          },
         },
         rotas: [
           "Login",
@@ -4165,7 +4070,7 @@ const TextLanguage = (linguagem) => {
           "Detalles del minuto",
           "Crear Agenda",
         ],
-        SideBarFiltro: {
+        sideBarFiltro: {
           status: "Status",
           forum: "Foro",
           departamento: "Departamento",
@@ -4180,6 +4085,41 @@ const TextLanguage = (linguagem) => {
           naoApreciada: "No apreciada",
           publicado: "Publicado",
           naoPublicado: "No publicado",
+          aprovada: "Aprobada",
+          reprovada: "Rechazada",
+          aguardandoEdicao: "Esperando Edición",
+          aguardandoRevisao: "Esperando Revisión",
+          emAprovacao: "En Aprobación",
+          emAndamento: "En Curso",
+          emDesenvolvimento: "En Desarrollo",
+          filtros: "Filtros",
+          semResultados: "Sin resultados",
+          labelSolicitante: "Solicitante",
+          selecionar: "Seleccionar",
+          muitoPequeno: "Muy pequeño",
+          semResultados: "Sin resultados",
+          pequeno: "Pequeño",
+          medio: "Medio",
+          grande: "Grande",
+          muitoGrande: "Muy grande",
+          numero: "Número",
+          limparFilros: "Limpiar filtros",
+          score: "Score",
+          maiorScore: "Score más alta",
+          menorScore: "Score más baja",
+          titulo: "Título",
+          az: "A-Z",
+          za: "Z-A",
+          dataDeCriacao: "Fecha de creación",
+          maisRecente: "Más reciente",
+          maisAntiga: "Más antigua",
+          numeroSequencial: "Numero secuencial",
+          crescente: "Creciente",
+          decrescente: "Descendente",
+          dataReuniao: "Fecha de la reunión",
+          ordenar: "Ordenar",
+          filtrar: "Filtrar",
+          limparFiltro: "Filtros Claros",
         },
       }
     : null;
