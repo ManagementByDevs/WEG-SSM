@@ -33,16 +33,15 @@ public class Chat {
     private Long msgNaoLidas = Long.parseLong("0");
 
     /**
-     * Foreign keys
-     */
-
-    /**
      * Proposta que o chat está relacionado
      */
     @OneToOne
     @JoinColumn(name = "id_proposta")
     private Proposta idProposta;
 
+    /**
+     * Demanda que o chat está relacionado
+     */
     @OneToOne
     @JoinColumn(name = "id_demanda")
     private Demanda idDemanda;

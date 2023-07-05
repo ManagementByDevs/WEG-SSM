@@ -79,10 +79,6 @@ public class Demanda {
     private Date data;
 
     /**
-     * Foreign keys
-     */
-
-    /**
      * Seção de TI que pertence a demanda
      */
     @ManyToOne

@@ -24,7 +24,8 @@ public class DemandaService {
 
     /**
      * Função para buscar todas as demandas
-     * @return
+     *
+     * @return - Retorno da Lista de demandas
      */
     public List<Demanda> findAll() {
         return demandaRepository.findAll();
@@ -32,8 +33,9 @@ public class DemandaService {
 
     /**
      * Função para buscar todas as demandas com paginação
-     * @param pageable
-     * @return
+     *
+     * @param pageable - Componente de paginação
+     * @return - Retorno da Lista de demandas com paginação
      */
     public Page<Demanda> findAll(Pageable pageable) {
         return demandaRepository.findAll(pageable);
@@ -41,8 +43,9 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo ID
-     * @param id
-     * @return
+     *
+     * @param id - ID da demanda
+     * @return - Retorno da demanda com o ID
      */
     public Optional<Demanda> findById(Long id) {
         return demandaRepository.findById(id);
@@ -50,9 +53,10 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo ID com paginação
-     * @param id
-     * @param pageable
-     * @return
+     *
+     * @param id - ID da demanda
+     * @param pageable - Componente de paginação
+     * @return - Retorno da demanda com o ID
      */
     public Page<Demanda> findById(Long id, Pageable pageable) {
         return demandaRepository.findById(id, pageable);
@@ -60,9 +64,10 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo seu status com paginação
-     * @param status
-     * @param pageable
-     * @return
+     *
+     * @param status - Status da demanda
+     * @param pageable - Componente de paginação
+     * @return - Retorno da demanda com o status
      */
     public Page<Demanda> findByStatus(Status status, Pageable pageable) {
         return demandaRepository.findByStatus(status, pageable);
@@ -70,9 +75,10 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo fórum com paginação
-     * @param forum
-     * @param pageable
-     * @return
+     *
+     * @param forum - Fórum da demanda
+     * @param pageable - Componente de paginação
+     * @return - Retorno da demanda com o fórum
      */
     public Page<Demanda> findByForum(Forum forum, Pageable pageable) {
         return demandaRepository.findByForum(forum, pageable);
@@ -80,9 +86,10 @@ public class DemandaService {
 
     /**
      * Função para buscar uma demanda pelo departamento com paginação
-     * @param departamento
-     * @param pageable
-     * @return
+     *
+     * @param departamento - Departamento da demanda
+     * @param pageable - Componente de paginação
+     * @return - Retorno da demanda com o departamento
      */
     public Page<Demanda> findByDepartamento(Departamento departamento, Pageable pageable) {
         return demandaRepository.findByDepartamento(departamento, pageable);
@@ -90,8 +97,9 @@ public class DemandaService {
 
     /**
      * Função para verificar se uma demanda existe pelo ID
-     * @param id
-     * @return
+     *
+     * @param id - ID da demanda
+     * @return  - Retorno se a demanda existe ou não
      */
     public boolean existsById(Long id) {
         return demandaRepository.existsById(id);
@@ -99,9 +107,10 @@ public class DemandaService {
 
     /**
      * Função para salvar uma demanda
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Demanda a ser salva
+     * @param <S> - Tipo da demanda
+     * @return - Retorno da demanda salva
      */
     public <S extends Demanda> S save(S entity) {
         return demandaRepository.save(entity);
@@ -109,7 +118,8 @@ public class DemandaService {
 
     /**
      * Função para deletar uma demanda pelo ID
-     * @param id
+     *
+     * @param id - ID da demanda
      */
     public void deleteById(Long id) {
         demandaRepository.deleteById(id);
@@ -2146,4 +2156,5 @@ public class DemandaService {
     public Page<Demanda> findByIdAndStatus(Long id, Status status, Pageable pageable) {
         return demandaRepository.findByIdAndStatus(id, status, pageable);
     }
+
 }

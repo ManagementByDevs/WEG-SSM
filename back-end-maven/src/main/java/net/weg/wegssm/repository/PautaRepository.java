@@ -21,31 +21,25 @@ import java.util.Optional;
 public interface PautaRepository extends JpaRepository<Pauta, Long> {
 
     /**
-     * @param numeroSequencial
-     * @return
-     */
-    Boolean existsByNumeroSequencial(Long numeroSequencial);
-
-    /**
      * Método para retornar uma pauta com o numero sequencial passado por parâmetro
      *
-     * @param numeroSequencial
-     * @return
+     * @param numeroSequencial - numero sequencial
+     * @return - pauta
      */
     Page<Pauta> findByNumeroSequencial(String numeroSequencial, Pageable pageable);
 
     /**
      * Método para buscar uma pauta através de uma proposta
      *
-     * @param proposta
-     * @return
+     * @param proposta - proposta
+     * @return - pauta
      */
     Pauta findByPropostasContaining(Proposta proposta);
 
     /**
      * Função para retornar as propostas que pertencem a uma pauta, utilizado par ao calculo do score
      *
-     * @return
+     * @return - lista de propostas
      */
     @Query("SELECT p FROM Pauta p LEFT JOIN FETCH p.propostas")
     List<Pauta> findAllScore();

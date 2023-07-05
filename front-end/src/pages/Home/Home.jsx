@@ -8,7 +8,6 @@ import { Button, Tab, Box, Tooltip, IconButton, Drawer } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -126,12 +125,6 @@ const Home = () => {
 
   /** Variável booleana que determina se o input de pesquisa está vazio ou não, usado para a limpagem do input */
   const [inputPreenchido, setInputPreenchido] = useState(false);
-
-  /** Variável para determinar se o modal de ordenação está aberto */
-  const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
-
-  /** Variável para determinar se o modal de filtragem está aberto */
-  const [filtroAberto, setFiltroAberto] = useState(false);
 
   /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
   const [carregamentoItens, setCarregamentoItens] = useState(true);
@@ -270,12 +263,6 @@ const Home = () => {
   /** UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal de ordenação */
   useEffect(() => {
     let textoNovo = "";
-    if (ordenacaoScore[1]) {
-      textoNovo += "sort=score,desc&";
-    }
-    if (ordenacaoScore[0]) {
-      textoNovo += "sort=score,asc&";
-    }
     if (ordenacaoTitulo[1]) {
       textoNovo += "sort=titulo,asc&";
     }
@@ -287,6 +274,12 @@ const Home = () => {
     }
     if (ordenacaoDate[1]) {
       textoNovo += "sort=data,desc&";
+    }
+    if (ordenacaoScore[1]) {
+      textoNovo += "sort=score,desc&";
+    }
+    if (ordenacaoScore[0]) {
+      textoNovo += "sort=score,asc&";
     }
     if (textoNovo == "") {
       textoNovo = "sort=id,asc&";
@@ -470,7 +463,7 @@ const Home = () => {
 
         user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => {});
+        UsuarioService.updateUser(user.id, user).then((e) => { });
       }
     );
   };
@@ -626,6 +619,7 @@ const Home = () => {
                   >
                     {/* Input de pesquisa */}
                     <Box
+                      title={texts.home.pesquisarPorTituloOuNumero}
                       className="w-full"
                       component="input"
                       sx={{
@@ -635,7 +629,6 @@ const Home = () => {
                         fontSize: FontConfig?.medium,
                       }}
                       ref={inputPesquisa}
-                      contentEditable
                       placeholder={texts.home.pesquisarPorTituloOuNumero}
                       onKeyDown={(e) => {
                         if (e.key == "Enter") {
@@ -731,6 +724,7 @@ const Home = () => {
                         anchor={"right"}
                         open={state["right"]}
                         onClose={toggleDrawer("right", false)}
+                        sx={{ zIndex: "800" }}
                       >
                         <SideBarFiltroHome
                           listaFiltros={listaFiltros}

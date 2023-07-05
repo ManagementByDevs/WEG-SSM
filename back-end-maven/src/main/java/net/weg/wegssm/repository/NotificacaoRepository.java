@@ -21,34 +21,34 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
     /**
      * Método para listar todas as notificações com determinado tipo de notificação
      *
-     * @param tipoNotificacao
-     * @return
+     * @param tipoNotificacao - tipo de notificação
+     * @return - lista de notificações
      */
     List<Notificacao> findByTipoNotificacao(TipoNotificacao tipoNotificacao);
 
     /**
      * Lista as notificações do usuário
      *
-     * @param usuario
-     * @return
+     * @param usuario - usuário
+     * @return - lista de notificações
      */
     Page<Notificacao> findByUsuario(Usuario usuario, Pageable pageable);
 
     /**
      * Lista as notificações pela data escolhida
      *
-     * @param data
-     * @return
+     * @param data - data
+     * @return - lista de notificações
      */
     List<Notificacao> findByData(Data data);
 
     /**
      * Método para buscar as notificações por usuário e se foi visualiada, com paginação
      *
-     * @param usuario
-     * @param visualizado
-     * @param pageable
-     * @return
+     * @param usuario - usuário
+     * @param visualizado - visualização
+     * @param pageable - paginação
+     * @return - lista de notificações
      */
     Page<Notificacao> findByUsuarioAndVisualizado(Usuario usuario, Boolean visualizado, Pageable pageable);
 

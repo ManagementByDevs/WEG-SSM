@@ -162,10 +162,6 @@ public class Proposta {
     private String escopo;
 
     /**
-     * Foreign keys
-     */
-
-    /**
      * Seção TI da proposta
      */
     @ManyToOne
@@ -289,8 +285,8 @@ public class Proposta {
     /**
      * Função para verificar se contém uma tabela de custos na proposta
      *
-     * @param tabelaCusto
-     * @return
+     * @param tabelaCusto - Tabela de custo a ser verificada
+     * @return - True se contém, false se não contém
      */
     public boolean containsTabelaCusto(TabelaCusto tabelaCusto) {
         for (TabelaCusto oldTabelaCusto : tabelaCustos) {
@@ -304,8 +300,8 @@ public class Proposta {
     /**
      * Função para verificar se existem anexos em uma proposta
      *
-     * @param anexo
-     * @return
+     * @param anexo - Anexo a ser verificado
+     * @return - True se contém, false se não contém
      */
     public boolean containsAnexo(Anexo anexo) {
         for (Anexo oldAnexo : this.anexo) {
@@ -319,9 +315,9 @@ public class Proposta {
     /**
      * Função para verificar se contém um custo na tabela de custos da proposta
      *
-     * @param oldCusto
-     * @param tabelasCusto
-     * @return
+     * @param oldCusto - Custo a ser verificado
+     * @param tabelasCusto - Lista de tabelas de custos da proposta
+     * @return - True se contém, false se não contém
      */
     public boolean containsCustoInTabelaCusto(Custo oldCusto, List<TabelaCusto> tabelasCusto) {
         for (TabelaCusto tabelaCusto : tabelasCusto) {
@@ -337,9 +333,9 @@ public class Proposta {
     /**
      * Função para verificar se existem CCs em uma tabela de custos da proposta
      *
-     * @param oldCc
-     * @param tabelasCusto
-     * @return
+     * @param oldCc - CC a ser verificado
+     * @param tabelasCusto - Lista de tabelas de custos da proposta
+     * @return - True se contém, false se não contém
      */
     public boolean containsCcInTabelaCusto(CC oldCc, List<TabelaCusto> tabelasCusto) {
         for (TabelaCusto tabelaCusto : tabelasCusto) {

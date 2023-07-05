@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 
- 
 import ClipLoader from "react-spinners/ClipLoader";
 import Tour from "reactour";
 
@@ -158,7 +157,10 @@ const Escopos = () => {
     setCarregamentoItens(true);
 
     let params = { usuario: usuario, titulo: inputPesquisa };
-    EscopoService.buscarPagina(params, "sort=id,asc&size=" + tamanhoPagina + "&page=" + paginaAtual).then((response) => {
+    EscopoService.buscarPagina(
+      params,
+      "sort=id,asc&size=" + tamanhoPagina + "&page=" + paginaAtual
+    ).then((response) => {
       setEscopos(formatarEscopos(response.content));
       setCarregamentoItens(false);
     });
@@ -242,7 +244,6 @@ const Escopos = () => {
           case "abaPadrao":
             // Nova preferência da aba padrão
             preferencias.abaPadrao = value;
-            // setValorAba(preferencias.abaPadrao);
             break;
         }
 
@@ -282,8 +283,42 @@ const Escopos = () => {
         <Box className="flex justify-center w-full">
           {/* Container conteudo */}
           <Box className="w-11/12 mt-10">
+            <Box className="flex justify-between">
+              <Typography
+                fontSize={FontConfig.smallTitle}
+                fontWeight={600}
+                color="primary"
+              >
+                {texts.userModal.escopos}
+              </Typography>
+
+              <Box id="nonoDemandas">
+                {nextModoVisualizacao == "TABLE" ? (
+                  <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
+                    <IconButton
+                      onClick={() => {
+                        trocarModoVisualizacao();
+                      }}
+                    >
+                      <ViewListIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
+                    <IconButton
+                      onClick={() => {
+                        trocarModoVisualizacao();
+                      }}
+                    >
+                      <ViewModuleIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Box>
+            </Box>
+            <Divider />
             {/* Container para o input e botão de filtrar */}
-            <Box className="relative mb-4">
+            <Box className="mb-4 mt-4">
               {/* Input de pesquisa */}
               <Box
                 id="segundo"
@@ -298,6 +333,7 @@ const Escopos = () => {
                 <Box
                   className="w-full"
                   component="input"
+                  title={texts.escopos.pesquisarPorTitulo}
                   sx={{
                     backgroundColor: "input.main",
                     outline: "none",
@@ -309,9 +345,6 @@ const Escopos = () => {
                   value={inputPesquisa}
                   onKeyDown={(e) => {
                     eventoTeclado(e);
-                  }}
-                  onBlur={() => {
-                    buscarEscopos();
                   }}
                 />
 
@@ -351,29 +384,6 @@ const Escopos = () => {
                     )}
                   </Tooltip>
                 </Box>
-              </Box>
-              <Box id="nonoDemandas" className="absolute right-0 top-2">
-                {nextModoVisualizacao == "TABLE" ? (
-                  <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
-                    <IconButton
-                      onClick={() => {
-                        trocarModoVisualizacao();
-                      }}
-                    >
-                      <ViewListIcon color="primary" />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
-                    <IconButton
-                      onClick={() => {
-                        trocarModoVisualizacao();
-                      }}
-                    >
-                      <ViewModuleIcon color="primary" />
-                    </IconButton>
-                  </Tooltip>
-                )}
               </Box>
             </Box>
 

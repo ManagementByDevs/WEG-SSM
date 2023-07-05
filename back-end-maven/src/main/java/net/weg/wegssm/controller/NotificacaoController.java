@@ -95,7 +95,7 @@ public class NotificacaoController {
      *
      * @param id       - ID do usuário
      * @param pageable - Objeto que contém a paginação
-     * @return         - Retorno da paginação
+     * @return - Retorno da paginação
      */
     @GetMapping("user/modal-notificacao/{id}")
     public ResponseEntity<Page<Notificacao>> findByUsuarioAndVisualizado(@PathVariable(value = "id") Long id, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {

@@ -20,35 +20,37 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     /**
      * Método para encontrar uma proposta pelo id
      *
-     * @param id
-     * @return
+     * @param id - id
+     * @return - proposta
      */
     Optional<Proposta> findByDemandaId(Long id);
 
     /**
      * Método para verificar se existe uma proposta com o id de uma demanda
      *
-     * @param id
-     * @return
+     * @param id - id
+     * @return - boolean
      */
     Boolean existsByDemandaId(Long id);
 
     /**
      * Método para encontrar uma proposta pelo código PPM
      *
-     * @param ppm
-     * @param pageable
-     * @return
+     * @param ppm      - código PPM
+     * @param pageable - paginação
+     * @return - proposta
      */
     Page<Proposta> findByCodigoPPM(Long ppm, Pageable pageable);
 
     /**
-     * Método para verificar se existe uma proposta com o código PPM
+     * Função utilizada para buscar uma lista de propostas que não estejam com o status passado como parâmetro
      *
-     * @param ppm
-     * @return
+     * @param status           - Status que não deve ser retornado
+     * @param statusSecundario - Status secundário que não deve ser retornado
+     * @return - Lista de propostas que não estão com o status passado como parâmetro
      */
-    Boolean existsByCodigoPPM(Long ppm);
+    @Query("SELECT d FROM Proposta d LEFT JOIN FETCH d.beneficios WHERE d.status != :status and d.status != :status_secundario")
+    List<Proposta> findByStatusNotAndStatusNot(@Param("status") Status status, @Param("status_secundario") Status statusSecundario);
 
     /**
      * Métodos utilizados pelo filtro
@@ -1081,15 +1083,5 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable);
 
     Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable);
-
-    /**
-     * Função utilizada para buscar uma lista de propostas que não estejam com o status passado como parâmetro
-     *
-     * @param status
-     * @param statusSecundario
-     * @return
-     */
-    @Query("SELECT d FROM Proposta d LEFT JOIN FETCH d.beneficios WHERE d.status != :status and d.status != :status_secundario")
-    List<Proposta> findByStatusNotAndStatusNot(@Param("status") Status status, @Param("status_secundario") Status statusSecundario);
 
 }

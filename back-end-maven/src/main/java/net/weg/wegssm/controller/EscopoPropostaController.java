@@ -91,7 +91,7 @@ public class EscopoPropostaController {
      * @param pageable  - Objeto que contém a paginação
      * @param idUsuario - ID do usuário logado
      * @param titulo    - Título do escopo
-     * @return
+     * @return - Retorno da paginação filtrada
      */
     @GetMapping("/titulo/{idUsuario}/{titulo}")
     public ResponseEntity<Page<EscopoProposta>> findByUsuarioAndTitulo(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,

@@ -13,6 +13,10 @@ import {
   Select,
   MenuItem,
   Tooltip,
+  Input,
+  TextField,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -118,22 +122,29 @@ const BeneficiosDetalheDemanda = (props) => {
       {/* Beneficios editáveis */}
       {props.editavel ? (
         <>
-          {/* Botão de excluir benefício */}
-          <DeleteOutlineOutlinedIcon
-            fontSize="large"
-            className="delay-120 hover:scale-110 duration-300 mr-2"
-            sx={{ color: "icon.main", cursor: "pointer" }}
-            onClick={() => {
-              props.delete(props.index);
-            }}
-          />
           {/* Tabela que contem os beneficios */}
           <TableContainer component={Paper} square>
+            <Box className="w-full relative">
+              {/* Botão de excluir benefício */}
+              <Box className="absolute right-0">
+                <Tooltip title={texts.formularioPropostaProposta.titleRemover}>
+                  <IconButton
+                    size="large"
+                    onClick={() => {
+                      props.delete(props.index);
+                    }}
+                    color="whiteAll"
+                  >
+                    <DeleteOutlineOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
             <Table sx={{ minWidth: 750 }} aria-label="customized table">
               {/* Criação do esqueleto da tabela */}
               <TableHead sx={{ backgroundColor: "primary.main" }}>
                 <TableRow>
-                  <th align="center" className="p-2" style={{ width: "10%" }}>
+                  <th align="center" className="p-3" style={{ width: "10%" }}>
                     <Typography
                       fontSize={FontConfig.medium}
                       fontWeight="800"
@@ -145,31 +156,46 @@ const BeneficiosDetalheDemanda = (props) => {
                       {texts.BeneficiosDetalheDemanda.tipo}
                     </Typography>
                   </th>
-                  <th align="center" className="p-2" style={{ width: "15%" }}>
-                    <Typography
-                      fontSize={FontConfig.medium}
-                      fontWeight="800"
-                      color="text.white"
-                      onClick={() => {
-                        lerTexto(texts.BeneficiosDetalheDemanda.valorMensal);
-                      }}
-                    >
-                      {texts.BeneficiosDetalheDemanda.valorMensal}
-                    </Typography>
-                  </th>
-                  <th align="center" className="p-2" style={{ width: "10%" }}>
-                    <Typography
-                      fontSize={FontConfig.medium}
-                      fontWeight="800"
-                      color="text.white"
-                      onClick={() => {
-                        lerTexto(texts.BeneficiosDetalheDemanda.moeda);
-                      }}
-                    >
-                      {texts.BeneficiosDetalheDemanda.moeda}
-                    </Typography>
-                  </th>
-                  <th align="center" className="p-2" style={{ width: "30%" }}>
+                  {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
+                    props.beneficio.tipoBeneficio != "Qualitativo" && (
+                      <>
+                        <th
+                          align="center"
+                          className="p-3"
+                          style={{ width: "15%" }}
+                        >
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            fontWeight="800"
+                            color="text.white"
+                            onClick={() => {
+                              lerTexto(
+                                texts.BeneficiosDetalheDemanda.valorMensal
+                              );
+                            }}
+                          >
+                            {texts.BeneficiosDetalheDemanda.valorMensal}
+                          </Typography>
+                        </th>
+                        <th
+                          align="center"
+                          className="p-3"
+                          style={{ width: "10%" }}
+                        >
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            fontWeight="800"
+                            color="text.white"
+                            onClick={() => {
+                              lerTexto(texts.BeneficiosDetalheDemanda.moeda);
+                            }}
+                          >
+                            {texts.BeneficiosDetalheDemanda.moeda}
+                          </Typography>
+                        </th>
+                      </>
+                    )}
+                  <th align="center" className="p-3" style={{ width: "30%" }}>
                     <Typography
                       fontSize={FontConfig.medium}
                       fontWeight="800"
@@ -195,6 +221,10 @@ const BeneficiosDetalheDemanda = (props) => {
                       <Select
                         labelId="demo-simple-select-standard-label"
                         id="demo-simple-select-standard"
+                        className="border-solid border px-1 text-center"
+                        sx={{
+                          borderLeft: "4px solid #00579d",
+                        }}
                         value={props.beneficio.tipoBeneficio}
                         onChange={(e) => {
                           if (e.target.value != "Qualitativo") {
@@ -230,13 +260,13 @@ const BeneficiosDetalheDemanda = (props) => {
                       </Select>
                     </FormControl>
                   </td>
-                  <td align="center" className="p-2">
-                    {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
-                      props.beneficio.tipoBeneficio != "Qualitativo" && (
-                        <>
+                  {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
+                    props.beneficio.tipoBeneficio != "Qualitativo" && (
+                      <>
+                        <td align="center" className="p-2">
                           <Box className="flex items-center justify-center">
                             {/* Input de valor mensal */}
-                            <Box
+                            <Input
                               value={props.beneficio.valor_mensal || ""}
                               fontSize={FontConfig.medium}
                               onChange={(e) => {
@@ -248,75 +278,78 @@ const BeneficiosDetalheDemanda = (props) => {
                                   props.index
                                 );
                               }}
-                              color="text.primary"
-                              className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                              className="border-solid border px-1 text-center"
                               sx={{
-                                width: "70%;",
-                                height: "30px",
-                                backgroundColor: "background.default",
+                                borderLeft: "4px solid #00579d",
                               }}
-                              component="input"
+                              fullWidth
                               placeholder={
                                 texts.BeneficiosDetalheDemanda.digiteValorMensal
                               }
+                              endAdornment={
+                                <InputAdornment position="end">
+                                  <Tooltip
+                                    className="hover:cursor-pointer"
+                                    title={texts.homeGerencia.gravarAudio}
+                                    onClick={() => {
+                                      startRecognition("valor_mensal");
+                                    }}
+                                  >
+                                    {escutar &&
+                                    localClique == "valor_mensal" ? (
+                                      <MicOutlinedIcon
+                                        sx={{
+                                          cursor: "pointer",
+                                          color: "primary.main",
+                                          fontSize: "1.3rem",
+                                        }}
+                                      />
+                                    ) : (
+                                      <MicNoneOutlinedIcon
+                                        sx={{
+                                          cursor: "pointer",
+                                          color: "text.secondary",
+                                          fontSize: "1.3rem",
+                                        }}
+                                      />
+                                    )}
+                                  </Tooltip>
+                                </InputAdornment>
+                              }
                             />
-                            <Tooltip
-                              className="hover:cursor-pointer"
-                              title={texts.homeGerencia.gravarAudio}
-                              onClick={() => {
-                                startRecognition("valor_mensal");
+                          </Box>
+                        </td>
+                        <td align="center" className="p-2">
+                          <FormControl
+                            variant="standard"
+                            sx={{ marginRight: "10px", minWidth: 90 }}
+                          >
+                            {/* Select de moeda do benefício */}
+                            <Select
+                              labelId="demo-simple-select-standard-label"
+                              id="demo-simple-select-standard"
+                              className="border-solid border px-1 text-center"
+                              sx={{
+                                borderLeft: "4px solid #00579d",
+                              }}
+                              value={props.beneficio.moeda || ""}
+                              onChange={(e) => {
+                                props.setBeneficio(
+                                  { ...props.beneficio, moeda: e.target.value },
+                                  props.index
+                                );
                               }}
                             >
-                              {escutar && localClique == "valor_mensal" ? (
-                                <MicOutlinedIcon
-                                  sx={{
-                                    cursor: "pointer",
-                                    color: "primary.main",
-                                    fontSize: "1.3rem",
-                                  }}
-                                />
-                              ) : (
-                                <MicNoneOutlinedIcon
-                                  sx={{
-                                    cursor: "pointer",
-                                    color: "text.secondary",
-                                    fontSize: "1.3rem",
-                                  }}
-                                />
-                              )}
-                            </Tooltip>
-                          </Box>
-                        </>
-                      )}
-                  </td>
-                  <td align="center" className="p-2">
-                    {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
-                      props.beneficio.tipoBeneficio != "Qualitativo" && (
-                        <FormControl
-                          variant="standard"
-                          sx={{ marginRight: "10px", minWidth: 90 }}
-                        >
-                          {/* Select de moeda do benefício */}
-                          <Select
-                            labelId="demo-simple-select-standard-label"
-                            id="demo-simple-select-standard"
-                            value={props.beneficio.moeda || ""}
-                            onChange={(e) => {
-                              props.setBeneficio(
-                                { ...props.beneficio, moeda: e.target.value },
-                                props.index
-                              );
-                            }}
-                          >
-                            <MenuItem value={"Real"}>BRL</MenuItem>
-                            <MenuItem value={"Dolar"}>USD</MenuItem>
-                            <MenuItem value={"Euro"}>EUR</MenuItem>
-                          </Select>
-                        </FormControl>
-                      )}
-                  </td>
+                              <MenuItem value={"Real"}>BRL</MenuItem>
+                              <MenuItem value={"Dolar"}>USD</MenuItem>
+                              <MenuItem value={"Euro"}>EUR</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </td>
+                      </>
+                    )}
                   <td className="p-2 px-5 flex justify-center overflow-auto">
-                    <Box sx={{ height: "10rem" }}>
+                    <Box sx={{ maxHeight: "10rem" }}>
                       {/* Caixa de texto para edição da memória cálculo */}
                       <CaixaTextoQuill
                         texto={props.beneficio.memoriaCalculo}
@@ -350,30 +383,45 @@ const BeneficiosDetalheDemanda = (props) => {
                     {texts.BeneficiosDetalheDemanda.tipo}
                   </Typography>
                 </th>
-                <th align="center" className="p-2" style={{ width: "15%" }}>
-                  <Typography
-                    fontSize={FontConfig.medium}
-                    fontWeight="800"
-                    color="text.white"
-                    onClick={() => {
-                      lerTexto(texts.BeneficiosDetalheDemanda.valorMensal);
-                    }}
-                  >
-                    {texts.BeneficiosDetalheDemanda.valorMensal}
-                  </Typography>
-                </th>
-                <th align="center" className="p-2" style={{ width: "10%" }}>
-                  <Typography
-                    fontSize={FontConfig.medium}
-                    fontWeight="800"
-                    color="text.white"
-                    onClick={() => {
-                      lerTexto(texts.BeneficiosDetalheDemanda.moeda);
-                    }}
-                  >
-                    {texts.BeneficiosDetalheDemanda.moeda}
-                  </Typography>
-                </th>
+                {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
+                  props.beneficio.tipoBeneficio != "Qualitativo" && (
+                    <>
+                      <th
+                        align="center"
+                        className="p-2"
+                        style={{ width: "15%" }}
+                      >
+                        <Typography
+                          fontSize={FontConfig.medium}
+                          fontWeight="800"
+                          color="text.white"
+                          onClick={() => {
+                            lerTexto(
+                              texts.BeneficiosDetalheDemanda.valorMensal
+                            );
+                          }}
+                        >
+                          {texts.BeneficiosDetalheDemanda.valorMensal}
+                        </Typography>
+                      </th>
+                      <th
+                        align="center"
+                        className="p-2"
+                        style={{ width: "10%" }}
+                      >
+                        <Typography
+                          fontSize={FontConfig.medium}
+                          fontWeight="800"
+                          color="text.white"
+                          onClick={() => {
+                            lerTexto(texts.BeneficiosDetalheDemanda.moeda);
+                          }}
+                        >
+                          {texts.BeneficiosDetalheDemanda.moeda}
+                        </Typography>
+                      </th>
+                    </>
+                  )}
                 <th align="center" style={{ width: "30%" }}>
                   <Typography
                     fontSize={FontConfig.medium}
@@ -404,30 +452,35 @@ const BeneficiosDetalheDemanda = (props) => {
                     {formatarTipoBeneficio(props.beneficio.tipoBeneficio)}
                   </Typography>
                 </td>
-                <td align="center" className="p-2">
-                  {/* Valor mensal */}
-                  <Typography
-                    fontSize={FontConfig.medium}
-                    color="text.primary"
-                    onClick={() => {
-                      lerTexto(props.beneficio.valor_mensal);
-                    }}
-                  >
-                    {props.beneficio.valor_mensal}
-                  </Typography>
-                </td>
-                <td align="center" className="p-2">
-                  {/* Moeda do benefício */}
-                  <Typography
-                    fontSize={FontConfig.medium}
-                    color="text.primary"
-                    onClick={() => {
-                      lerTexto(props.beneficio.moeda);
-                    }}
-                  >
-                    {props.beneficio.moeda}
-                  </Typography>
-                </td>
+                {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
+                  props.beneficio.tipoBeneficio != "Qualitativo" && (
+                    <>
+                      <td align="center" className="p-2">
+                        {/* Valor mensal */}
+                        <Typography
+                          fontSize={FontConfig.medium}
+                          color="text.primary"
+                          onClick={() => {
+                            lerTexto(props.beneficio.valor_mensal);
+                          }}
+                        >
+                          {props.beneficio.valor_mensal}
+                        </Typography>
+                      </td>
+                      <td align="center" className="p-2">
+                        {/* Moeda do benefício */}
+                        <Typography
+                          fontSize={FontConfig.medium}
+                          color="text.primary"
+                          onClick={() => {
+                            lerTexto(props.beneficio.moeda);
+                          }}
+                        >
+                          {props.beneficio.moeda}
+                        </Typography>
+                      </td>
+                    </>
+                  )}
                 <td align="center" className="p-2 px-5">
                   {/* Memória de cálculo */}
                   <Typography

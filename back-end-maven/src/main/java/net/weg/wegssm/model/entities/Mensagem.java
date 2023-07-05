@@ -45,10 +45,6 @@ public class Mensagem {
     private StatusChat status;
 
     /**
-     * Foreign keys
-     */
-
-    /**
      * Usuário do chat
      */
     @ManyToOne

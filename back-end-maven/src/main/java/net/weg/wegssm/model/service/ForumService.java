@@ -21,6 +21,8 @@ public class ForumService {
 
     /**
      * Função para buscar todos os fóruns salvos no banco de dados
+     *
+     * @return - Lista de fóruns
      */
     public List<Forum> findAll() {
         return forumRepository.findAll();

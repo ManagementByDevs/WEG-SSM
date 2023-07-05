@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     /**
      * Método para configurar o message broker
      *
-     * @param registry
+     * @param registry - Registro do message broker
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -28,7 +28,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     /**
      * Método para registrar os endpoints
      *
-     * @param registry
+     * @param registry - Registro dos endpoints
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {

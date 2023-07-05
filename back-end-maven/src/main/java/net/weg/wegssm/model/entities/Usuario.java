@@ -64,10 +64,6 @@ public class Usuario {
     private String preferencias;
 
     /**
-     * Foreign key
-     */
-
-    /**
      * Departamento do usuário
      */
     @ManyToOne

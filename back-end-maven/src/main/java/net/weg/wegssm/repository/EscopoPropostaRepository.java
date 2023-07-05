@@ -19,27 +19,27 @@ public interface EscopoPropostaRepository extends JpaRepository<EscopoProposta, 
     /**
      * Método para listar um escopo proposta a partir de um solicitante, com paginação
      *
-     * @param usuario
-     * @param pageable
-     * @return
+     * @param usuario - usuário
+     * @param pageable - paginação
+     * @return - lista de escopos
      */
     Page<EscopoProposta> findBySolicitante(Usuario usuario, Pageable pageable);
 
     /**
      * Método para listar um escopo proposta a partir de um solicitante e um título, com paginação
      *
-     * @param usuario
-     * @param titulo
-     * @param pageable
-     * @return
+     * @param usuario - usuário
+     * @param titulo - título
+     * @param pageable - paginação
+     * @return - lista de escopos
      */
     Page<EscopoProposta> findBySolicitanteAndTitulo(Usuario usuario, String titulo, Pageable pageable);
 
     /**
      * Método para listar um escopo a partir de uma demanda
      *
-     * @param demanda
-     * @return
+     * @param demanda - demanda
+     * @return - lista de escopos
      */
     List<EscopoProposta> findByDemanda(Demanda demanda);
 

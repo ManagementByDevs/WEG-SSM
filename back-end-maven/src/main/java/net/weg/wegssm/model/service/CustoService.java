@@ -19,9 +19,10 @@ public class CustoService {
 
     /**
      * Função para salvar um custo no banco de dados
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Objeto do custo a ser salvo
+     * @param <S> - Tipo do custo
+     * @return - Retorno do custo salvo
      */
     public <S extends Custo> S save(S entity) {
         return custoRepository.save(entity);
@@ -29,8 +30,9 @@ public class CustoService {
 
     /**
      * Função booleana para verificar se um custo existe pelo seu ID
-     * @param id
-     * @return
+     *
+     * @param id - ID do custo a ser verificado
+     * @return - Retorno booleano da verificação
      */
     public Boolean existsById(Long id) {
         return custoRepository.existsById(id);
@@ -38,7 +40,8 @@ public class CustoService {
 
     /**
      * Função para excluir um custo pelo seu ID
-     * @param id
+     *
+     * @param id - ID do custo a ser excluído
      */
     public void deleteById(Long id) {
         custoRepository.deleteById(id);

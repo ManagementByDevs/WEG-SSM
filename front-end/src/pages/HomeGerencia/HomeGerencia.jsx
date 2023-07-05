@@ -142,7 +142,7 @@ const HomeGerencia = () => {
   const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
 
   /** Valores dos checkboxes de número sequencial no modal de ordenação (0 - "Decrescente" | 1 - "Crescente") */
-  const [ordenacaoNum, setOrdenacaoNum] = useState([false, false]);
+  const [ordenacaoPPM, setOrdenacaoPPM] = useState([false, false]);
 
   /** Valores dos checkboxes de data no modal de ordenação (0 - "Mais Antiga" | 1 - "Mais Recente") */
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
@@ -661,7 +661,7 @@ const HomeGerencia = () => {
   /** UseEffect para chamar a função "formatarOrdenacao" quando o modal de ordenação for editado */
   useEffect(() => {
     formatarOrdenacao();
-  }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate, ordenacaoNum]);
+  }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate, ordenacaoPPM]);
 
   /**  UseEffect para retirar o ícone de carregamento quando os itens forem buscados do banco de dados */
   useEffect(() => {
@@ -719,19 +719,11 @@ const HomeGerencia = () => {
     if (ordenacaoTitulo[0]) {
       textoNovo += "sort=titulo,desc&";
     }
-    if (valorAba > 4) {
-      if (ordenacaoNum[1]) {
-        textoNovo += "sort=numeroSequencial,asc&";
-      }
-      if (ordenacaoNum[0]) {
-        textoNovo += "sort=numeroSequencial,desc&";
-      }
-    }
     if (valorAba == 4) {
-      if (ordenacaoNum[1]) {
+      if (ordenacaoPPM[1]) {
         textoNovo += "sort=codigoPPM,asc&";
       }
-      if (ordenacaoNum[0]) {
+      if (ordenacaoPPM[0]) {
         textoNovo += "sort=codigoPPM,desc&";
       }
     }
@@ -771,7 +763,7 @@ const HomeGerencia = () => {
 
   /** Função usada juntamente com "limparFiltro" para resetar a ordenação */
   const limparOrdenacao = () => {
-    setOrdenacaoNum([false, false]);
+    setOrdenacaoPPM([false, false]);
     setOrdenacaoDate([false, false]);
     setOrdenacaoScore([false, false]);
     setOrdenacaoTitulo([false, false]);
@@ -1173,7 +1165,6 @@ const HomeGerencia = () => {
           case "abaPadrao":
             // Nova preferência da aba padrão
             preferencias.abaPadrao = value;
-            // setValorAba(preferencias.abaPadrao);
             break;
         }
 
@@ -1187,7 +1178,6 @@ const HomeGerencia = () => {
   /** useEffect utilizado para salvar o valor da pesquisa como o valor do reconhecimento de voz */
   useEffect(() => {
     if (escutar) {
-      // setValorPesquisa(palavrasJuntas);
       valorPesquisa = palavrasJuntas;
     }
   }, [palavrasJuntas]);
@@ -1558,6 +1548,7 @@ const HomeGerencia = () => {
                     <Box
                       className="w-full"
                       component="input"
+                      title={formatarTextoPesquisa()}
                       sx={{
                         backgroundColor: "input.main",
                         outline: "none",
@@ -1580,7 +1571,6 @@ const HomeGerencia = () => {
                           className="hover:cursor-pointer"
                           title={texts.homeGerencia.limparBusca}
                           onClick={() => {
-                            // setValorPesquisa("");
                             valorPesquisa = "";
                             inputPesquisa.current.value = "";
                             pesquisaTitulo();
@@ -1665,8 +1655,8 @@ const HomeGerencia = () => {
                       <SideBarFiltro
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
-                        ordenacaoNum={ordenacaoNum}
-                        setOrdenacaoNum={setOrdenacaoNum}
+                        ordenacaoPPM={ordenacaoPPM}
+                        setOrdenacaoPPM={setOrdenacaoPPM}
                         ordenacaoScore={ordenacaoScore}
                         setOrdenacaoScore={setOrdenacaoScore}
                         ordenacaoDate={ordenacaoDate}

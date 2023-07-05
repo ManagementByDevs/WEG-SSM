@@ -23,7 +23,8 @@ public class PropostaService {
 
     /**
      * Função para buscar todas as propostas
-     * @return
+     *
+     * @return - Lista de propostas
      */
     public List<Proposta> findAll() {
         return propostaRepository.findAll();
@@ -31,8 +32,9 @@ public class PropostaService {
 
     /**
      * Função para buscar todas as propostas com paginação
-     * @param pageable
-     * @return
+     *
+     * @param pageable - Componente de Paginação
+     * @return - Lista de propostas
      */
     public Page<Proposta> findAll(Pageable pageable) {
         return propostaRepository.findAll(pageable);
@@ -40,8 +42,9 @@ public class PropostaService {
 
     /**
      * Função para buscar uma proposta por id
-     * @param id
-     * @return
+     *
+     * @param id - Id da proposta
+     * @return - Proposta encontrada
      */
     public Optional<Proposta> findById(Long id) {
         return propostaRepository.findById(id);
@@ -49,8 +52,9 @@ public class PropostaService {
 
     /**
      * Função para buscar uma proposta por demanda
-     * @param id
-     * @return
+     *
+     * @param id - Id da demanda
+     * @return - Proposta encontrada
      */
     public Optional<Proposta> findByDemandaId(Long id) {
         return propostaRepository.findByDemandaId(id);
@@ -58,9 +62,10 @@ public class PropostaService {
 
     /**
      * Função para buscar uma proposta por código ppm
-     * @param ppm
-     * @param pageable
-     * @return
+     *
+     * @param ppm      - Código ppm da proposta
+     * @param pageable - Componente de Paginação
+     * @return - Proposta encontrada
      */
     public Page<Proposta> findByPpm(Long ppm, Pageable pageable) {
         return propostaRepository.findByCodigoPPM(ppm, pageable);
@@ -68,8 +73,9 @@ public class PropostaService {
 
     /**
      * Função para verificar se existe uma proposta por id
-     * @param id
-     * @return
+     *
+     * @param id - Id da proposta
+     * @return - Proposta encontrada
      */
     public Boolean existsById(Long id) {
         return propostaRepository.existsById(id);
@@ -77,27 +83,20 @@ public class PropostaService {
 
     /**
      * Função para verificar se existe uma proposta com aquela demanda
-     * @param id
-     * @return
+     *
+     * @param id - Id da demanda
+     * @return - Proposta encontrada
      */
     public boolean existsByDemandaId(Long id) {
         return propostaRepository.existsByDemandaId(id);
     }
 
     /**
-     * Função para verificar se existe uma proposta por ppm
-     * @param ppm
-     * @return
-     */
-    public Boolean existsByPpm(Long ppm) {
-        return propostaRepository.existsByCodigoPPM(ppm);
-    }
-
-    /**
      * Função para salvar uma proposta
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Proposta a ser salva
+     * @param <S>    - Proposta
+     * @return - Proposta salva
      */
     public <S extends Proposta> S save(S entity) {
         return propostaRepository.save(entity);
@@ -105,7 +104,8 @@ public class PropostaService {
 
     /**
      * Função para deletar uma proposta por id
-     * @param id
+     *
+     * @param id - Id da proposta
      */
     public void deleteById(Long id) {
         propostaRepository.deleteById(id);
@@ -635,10 +635,6 @@ public class PropostaService {
         return propostaRepository.findByTituloContainingIgnoreCase(titulo);
     }
 
-    public Boolean existsByPPM(Long ppm) {
-        return propostaRepository.existsByCodigoPPM(ppm);
-    }
-
     public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
         return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(b, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
     }
@@ -677,14 +673,6 @@ public class PropostaService {
 
     public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
         return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(b, status, analista, titulo, gerente, departamento, tamanho, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(b, status, analista, titulo, gerente, departamento, solicitante, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(b, status, analista, titulo, gerente, departamento, pageable);
     }
 
     public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {

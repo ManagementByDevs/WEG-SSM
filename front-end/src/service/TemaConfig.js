@@ -47,6 +47,10 @@ const getDesignTokens = (mode) => ({
           hover: {
             main: "#2E2E2E",
           },
+
+          whiteAll: {
+            main: "#FFFFFF",
+          },
         }
       : {
           primary: {
@@ -90,6 +94,9 @@ const getDesignTokens = (mode) => ({
           },
           hover: {
             main: "#EBEBEB",
+          },
+          whiteAll: {
+            main: "#FFFFFF",
           },
         }),
   },
