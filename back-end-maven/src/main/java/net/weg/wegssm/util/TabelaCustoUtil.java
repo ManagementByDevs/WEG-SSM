@@ -27,14 +27,6 @@ public class TabelaCustoUtil {
         }
     }
 
-    public TabelaCusto convertJsonToModelDirect(String tabelaCustoJSON) {
-        try {
-            return this.objectMapper.readValue(tabelaCustoJSON, TabelaCusto.class);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private TabelaCusto convertDTOToModel(@Valid TabelaCustoDTO tabelaCustoDTO) {
         return this.objectMapper.convertValue(tabelaCustoDTO, TabelaCusto.class);
     }

@@ -3,22 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
- 
-
-import {
-  Box,
-  Avatar,
-  Typography,
-  Divider,
-  Tooltip,
-  IconButton,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { Box, Avatar, Typography, Divider, Tooltip, IconButton, Menu, MenuItem } from "@mui/material";
 
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
@@ -50,7 +38,8 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 import logoWeg from "../../assets/logo-weg.png";
 
 /** Chat para conversa entre usuários do sistema */
-const Chat = (props) => {
+const Chat = () => {
+
   /** Context para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
 
@@ -289,7 +278,7 @@ const Chat = (props) => {
     }
   }, [stompClient, idChat]);
 
-  /** useEffect para armazenar o contato selecionado */
+  /** useEffect utilizado para filtragem dos chats */
   useEffect(() => {
     let listaChatsAux = listaChats.filter((chat) => {
       let demanda = chat.idProposta ? chat.idProposta : chat.idDemanda;
@@ -543,7 +532,7 @@ const Chat = (props) => {
           );
           inputRef.current.value = "";
         })
-        .catch((error) => {});
+        .catch((error) => { });
     } else {
       setFeedbackAnexoGrande(true);
     }
@@ -727,6 +716,7 @@ const Chat = (props) => {
                   }}
                 >
                   <Box
+                    title={texts.chat.pesquisarChat}
                     className="w-full"
                     component="input"
                     onChange={onChange}
@@ -736,12 +726,9 @@ const Chat = (props) => {
                       color: "text.primary",
                       fontSize: FontConfig.medium,
                     }}
-                    placeholder={texts.chat.pesquisarPorNome}
+                    placeholder={texts.chat.pesquisarChat}
                     value={pesquisaContato}
                   />
-                  <Box className="flex gap-2">
-                    <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
-                  </Box>
                   <Tooltip
                     className="hover:cursor-pointer"
                     title={texts.homeGerencia.gravarAudio}
@@ -843,7 +830,7 @@ const Chat = (props) => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                        // src={usuarios[indexUsuario].foto}
+                      // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -1056,7 +1043,7 @@ const Chat = (props) => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                        // src={usuarios[indexUsuario].foto}
+                      // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -1155,66 +1142,66 @@ const Chat = (props) => {
                               demanda.status != "Cancelled"
                             );
                           }) && (
-                            <>
-                              <div className="w-full flex justify-center">
-                                <hr className="w-10/12 my-1.5" />
-                              </div>
+                              <>
+                                <div className="w-full flex justify-center">
+                                  <hr className="w-10/12 my-1.5" />
+                                </div>
 
-                              {isConversaEncerrada() ? (
-                                <MenuItem
-                                  className="gap-2"
-                                  onClick={() => {
-                                    handleClose();
-                                    abrirModalAbrirChat();
-                                  }}
-                                >
-                                  <CommentOutlinedIcon
-                                    sx={{
-                                      fontSize: "25px",
-                                      color: "tertiary.main",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                  <Typography
-                                    color={"text.primary"}
-                                    fontSize={FontConfig.medium}
-                                    sx={{ fontWeight: 500 }}
+                                {isConversaEncerrada() ? (
+                                  <MenuItem
+                                    className="gap-2"
                                     onClick={() => {
-                                      lerTexto(texts.chat.reabrirChat);
+                                      handleClose();
+                                      abrirModalAbrirChat();
                                     }}
                                   >
-                                    {texts.chat.reabrirChat}
-                                  </Typography>
-                                </MenuItem>
-                              ) : (
-                                <MenuItem
-                                  className="gap-2"
-                                  onClick={() => {
-                                    handleClose();
-                                    abrirModalCancelarChat();
-                                  }}
-                                >
-                                  <CommentsDisabledOutlinedIcon
-                                    sx={{
-                                      fontSize: "25px",
-                                      color: "tertiary.main",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                  <Typography
-                                    color={"text.primary"}
-                                    fontSize={FontConfig.medium}
-                                    sx={{ fontWeight: 500 }}
+                                    <CommentOutlinedIcon
+                                      sx={{
+                                        fontSize: "25px",
+                                        color: "tertiary.main",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                    <Typography
+                                      color={"text.primary"}
+                                      fontSize={FontConfig.medium}
+                                      sx={{ fontWeight: 500 }}
+                                      onClick={() => {
+                                        lerTexto(texts.chat.reabrirChat);
+                                      }}
+                                    >
+                                      {texts.chat.reabrirChat}
+                                    </Typography>
+                                  </MenuItem>
+                                ) : (
+                                  <MenuItem
+                                    className="gap-2"
                                     onClick={() => {
-                                      lerTexto(texts.chat.encerrarChat);
+                                      handleClose();
+                                      abrirModalCancelarChat();
                                     }}
                                   >
-                                    {texts.chat.encerrarChat}
-                                  </Typography>
-                                </MenuItem>
-                              )}
-                            </>
-                          )}
+                                    <CommentsDisabledOutlinedIcon
+                                      sx={{
+                                        fontSize: "25px",
+                                        color: "tertiary.main",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                    <Typography
+                                      color={"text.primary"}
+                                      fontSize={FontConfig.medium}
+                                      sx={{ fontWeight: 500 }}
+                                      onClick={() => {
+                                        lerTexto(texts.chat.encerrarChat);
+                                      }}
+                                    >
+                                      {texts.chat.encerrarChat}
+                                    </Typography>
+                                  </MenuItem>
+                                )}
+                              </>
+                            )}
                         </Box>
                       </Menu>
                     </Box>

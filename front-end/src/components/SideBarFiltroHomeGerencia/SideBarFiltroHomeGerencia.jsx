@@ -51,7 +51,7 @@ export default function SliderBar(props) {
     },
     {
       id: 2,
-      tipo: texts.sideBarFiltro.numeroSequencial,
+      tipo: "PPM",
     },
     {
       id: 3,
@@ -270,8 +270,8 @@ export default function SliderBar(props) {
               opcao={opcao}
               ordenacaoTitulo={props.ordenacaoTitulo}
               setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-              ordenacaoNum={props.ordenacaoNum}
-              setOrdenacaoNum={props.setOrdenacaoNum}
+              ordenacaoPPM={props.ordenacaoPPM}
+              setOrdenacaoPPM={props.setOrdenacaoPPM}
               ordenacaoScore={props.ordenacaoScore}
               setOrdenacaoScore={props.setOrdenacaoScore}
               ordenacaoDate={props.ordenacaoDate}
@@ -284,8 +284,8 @@ export default function SliderBar(props) {
               opcao={opcao}
               ordenacaoTitulo={props.ordenacaoTitulo}
               setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-              ordenacaoNum={props.ordenacaoNum}
-              setOrdenacaoNum={props.setOrdenacaoNum}
+              ordenacaoPPM={props.ordenacaoPPM}
+              setOrdenacaoPPM={props.setOrdenacaoPPM}
               ordenacaoScore={props.ordenacaoScore}
               setOrdenacaoScore={props.setOrdenacaoScore}
               ordenacaoDate={props.ordenacaoDate}
@@ -294,14 +294,14 @@ export default function SliderBar(props) {
             />
           ) : (
             props.valorAba > 4 &&
-            opcao.id != 1 && (
+            opcao.id != 1 && opcao.id != 2 && (
               <SideBarOrdenacao
                 key={"Ordenação" + index}
                 opcao={opcao}
                 ordenacaoTitulo={props.ordenacaoTitulo}
                 setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                ordenacaoNum={props.ordenacaoNum}
-                setOrdenacaoNum={props.setOrdenacaoNum}
+                ordenacaoPPM={props.ordenacaoPPM}
+                setOrdenacaoPPM={props.setOrdenacaoPPM}
                 ordenacaoScore={props.ordenacaoScore}
                 setOrdenacaoScore={props.setOrdenacaoScore}
                 ordenacaoDate={props.ordenacaoDate}

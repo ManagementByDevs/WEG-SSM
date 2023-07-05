@@ -503,24 +503,6 @@ const DetalhesAta = (props) => {
                   fontWeight={600}
                   onClick={() => {
                     lerTexto(
-                      texts.detalhesAta.horaReuniao +
-                        ": " +
-                        trazerHoraData(ata.dataReuniao)
-                    );
-                  }}
-                >
-                  {/* {Hora reunião} */}
-                  {texts.detalhesAta.horaReuniao}:{" "}
-                  <Typography component="span">
-                    {trazerHoraData(ata.dataReuniao)}
-                  </Typography>
-                </Typography>
-                <Typography
-                  className="cursor-default"
-                  sx={{ marginTop: "1%" }}
-                  fontWeight={600}
-                  onClick={() => {
-                    lerTexto(
                       texts.detalhesAta.analistaResponsavel +
                         ": " +
                         ata.analistaResponsavel.nome

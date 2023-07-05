@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
- 
-
 import { Typography, Box, Button } from "@mui/material";
 
 import Error from "../../assets/Error.png";
@@ -13,6 +11,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página de Not Found, caso o usuário entre em alguma url inexistente no sistema */
 const NotFound = () => {
+  
   /** useContext para alterar o idioma do sistema */
   const { texts } = useContext(TextLanguageContext);
 

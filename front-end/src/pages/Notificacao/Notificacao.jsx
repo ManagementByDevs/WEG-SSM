@@ -47,8 +47,7 @@ const Notificacao = (props) => {
   const [openModalConfirmDelete, setOpenModalConfirmDelete] = useState(false);
 
   /** Modal de confirmação de exclusão múltipla */
-  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] =
-    useState(false);
+  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] = useState(false);
 
   /** UseState para saber qual notificação deletar ao usar o botão de delete individual */
   const [indexDelete, setIndexDelete] = useState(null);
@@ -81,6 +80,45 @@ const Notificacao = (props) => {
     mensagem: "sfd",
   });
 
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  /** Passos do tour de notificações */
+  const stepsTour = [
+    {
+      selector: "#primeiro",
+      content: texts.notificacaoComponente.tour.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: texts.notificacaoComponente.tour.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: texts.notificacaoComponente.tour.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.notificacaoComponente.tour.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ]
+
   /** useEffect utilizado para buscar o usuário */
   useEffect(() => {
     setCarregamento(true);
@@ -100,7 +138,7 @@ const Notificacao = (props) => {
   /** UseEffect para recarregar as notificações ao mudar a página */
   useEffect(() => {
     buscarNotificacoes();
-  }, [paginaAtual]);
+  }, [paginaAtual, tamanhoPagina]);
 
   /** Cria uma linha da tabela retornando um objeto */
   const createRows = (dataset) => {
@@ -343,44 +381,6 @@ const Notificacao = (props) => {
     buscarNotificacoes();
   };
 
-  /** useState para abrir e fechar o tour */
-  const [isTourOpen, setIsTourOpen] = useState(false);
-
-  const stepsTour = [
-    {
-      selector: "#primeiro",
-      content: texts.notificacaoComponente.tour.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundo",
-      content: texts.notificacaoComponente.tour.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiro",
-      content: texts.notificacaoComponente.tour.tour3,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quarto",
-      content: texts.notificacaoComponente.tour.tour4,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ]
-
   return (
     <FundoComHeader>
       {/* Tour de ajuda para as notificações*/}
@@ -392,8 +392,8 @@ const Notificacao = (props) => {
         rounded={10}
         showCloseButton={false}
       />
-
       <Ajuda onClick={() => setIsTourOpen(true)} />
+
       {/* Feedbacks do sistema */}
       <Feedback
         open={feedback.visibilidade}
@@ -587,7 +587,7 @@ const Notificacao = (props) => {
                           </Typography>
                           <Typography className="notificacao-table-row-td-action">
                             {row.visualizado ? (
-                              <Tooltip title={texts.login.marcarComoNaoLido}>
+                              <Tooltip title={texts.notificacao.marcarComoNaoLido}>
                                 <MarkEmailUnreadOutlinedIcon
                                   onClick={() => onReadOrUnreadClick(index)}
                                   className="cursor-pointer"

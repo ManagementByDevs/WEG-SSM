@@ -553,7 +553,7 @@ const TextLanguage = (linguagem) => {
             tour4:
               "Aqui pode escrever o que deseja enviar, podendo também anexar algum arquivo.",
           },
-          pesquisarPorNome: "Pesquisar por usuário...",
+          pesquisarChat: "Pesquisar por PPM/ID ou nome da demanda...",
           usuarioTour: {
             tour: "Tour",
             gerente: "Gerente",
@@ -1604,7 +1604,7 @@ const TextLanguage = (linguagem) => {
             tour4:
               "Here you can write what you want to send, you can also attach a file.",
           },
-          pesquisarPorNome: "Search by user...",
+          pesquisarChat: "Search by PPM/ID or demand's name...",
           usuarioTour: {
             tour: "Tour",
             gerente: "Manager",
@@ -2629,7 +2629,7 @@ const TextLanguage = (linguagem) => {
             tour3: "在此处，您可以查看您的聊天历史记录。",
             tour4: "在此处，您可以查看您的聊天历史记录。",
           },
-          pesquisarPorNome: "搜索用户...",
+          pesquisarChat: "按 PPM/ID 或需求名称搜索...",
           usuarioTour: {
             tour: "旅游",
             gerente: "经理",
@@ -3645,7 +3645,7 @@ const TextLanguage = (linguagem) => {
             tour4:
               "Aquí puede escribir lo que desea enviar, pudiendo también adjuntar algún archivo.",
           },
-          pesquisarPorNome: "Pesquisar por usuário...",
+          pesquisarChat: "Busque por PPM/ID o nombre de la demanda...",
           usuarioTour: {
             tour: "Tour",
             gerente: "Gerente",

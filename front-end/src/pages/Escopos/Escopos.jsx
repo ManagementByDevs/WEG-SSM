@@ -244,7 +244,6 @@ const Escopos = () => {
           case "abaPadrao":
             // Nova preferência da aba padrão
             preferencias.abaPadrao = value;
-            // setValorAba(preferencias.abaPadrao);
             break;
         }
 
@@ -334,6 +333,7 @@ const Escopos = () => {
                 <Box
                   className="w-full"
                   component="input"
+                  title={texts.escopos.pesquisarPorTitulo}
                   sx={{
                     backgroundColor: "input.main",
                     outline: "none",
@@ -345,9 +345,6 @@ const Escopos = () => {
                   value={inputPesquisa}
                   onKeyDown={(e) => {
                     eventoTeclado(e);
-                  }}
-                  onBlur={() => {
-                    buscarEscopos();
                   }}
                 />
 

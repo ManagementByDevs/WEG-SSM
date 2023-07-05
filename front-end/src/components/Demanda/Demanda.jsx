@@ -46,6 +46,11 @@ const Demanda = (props) => {
   useEffect(() => {
     if (descricaoDemanda.current) {
       descricaoDemanda.current.innerHTML = props.demanda.proposta;
+      descricaoDemanda.current.style.overflow = "hidden";
+      descricaoDemanda.current.style.textOverflow = "ellipsis";
+      descricaoDemanda.current.style.display = "-webkit-box";
+      descricaoDemanda.current.style.webkitLineClamp = "2";
+      descricaoDemanda.current.style.webkitBoxOrient = "vertical";
     }
   }, []);
 
@@ -155,20 +160,20 @@ const Demanda = (props) => {
           "&:hover": { backgroundColor: "hover.main" },
           borderColor: "primary.main",
           minWidth: "540px",
-          minHeight: retornaAlturaDemanda(),
+          minHeight: "8rem",
           cursor: "pointer",
         }}
-        className={`items-center h-30 text-justify border-t-4 pt-2 pb-1 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200`}
+        className={`flex flex-col text-justify justify-between border-t-4 pt-2 pb-1 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200`}
       >
         <Box
           className={`flex justify-between`}
-          sx={{ marginBottom: "1%", height: "20%" }}
+          sx={{ marginBottom: "1%" }}
         >
           {/* Título da demanda */}
           <Typography
             className="overflow-hidden text-ellipsis whitespace-nowrap"
             fontSize={FontConfig.veryBig}
-            sx={{ fontWeight: "600", maxWidth: "65%" }}
+            sx={{ fontWeight: "600", maxWidth: "75%" }}
             color="text.primary"
             title={props.demanda.titulo}
             onClick={(e) => {
@@ -228,7 +233,7 @@ const Demanda = (props) => {
             </Box>
           )}
         </Box>
-        <Box sx={{ height: "40%" }}>
+        <Box className="flex items-start" sx={{height: "2.5rem"}}>
           {/* Proposta da demanda */}
           <Typography
             gutterBottom
@@ -236,10 +241,7 @@ const Demanda = (props) => {
             color="text.secondary"
             ref={descricaoDemanda}
             sx={{
-              maxHeight: "5rem",
-              maxWidth: "70%",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
+              maxWidth: "80%",
             }}
             onClick={(e) => {
               if (lendoTexto) {
@@ -249,19 +251,19 @@ const Demanda = (props) => {
             }}
           >
             {/* Chamando a função de formatação html, passando como parâmetro o texto em html */}
-            {getPropostaFomartted(props.demanda.proposta)}
+            {/* {getPropostaFomartted(props.demanda.proposta)} */}
           </Typography>
         </Box>
         <Box
-          className="flex justify-end items-center"
-          sx={{ marginTop: ".5%", height: "20%" }}
+          className="flex justify-end items-center relative"
+          sx={{ marginTop: ".5%", height: "2rem", paddingBottom: "1rem" }}
         >
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
           {props.demanda?.solicitante?.email !=
           CookieService.getCookie("jwt").sub ? (
             <Typography
               fontSize={FontConfig?.default}
-              sx={{ fontWeight: "600", cursor: "default" }}
+              sx={{ fontWeight: "600", cursor: "default", position: "absolute", right: "0", bottom: "0" }}
               color="text.primary"
               onClick={(e) => {
                 if (lendoTexto) {
