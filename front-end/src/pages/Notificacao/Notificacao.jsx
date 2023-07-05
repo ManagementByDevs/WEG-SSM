@@ -138,7 +138,7 @@ const Notificacao = (props) => {
   /** UseEffect para recarregar as notificações ao mudar a página */
   useEffect(() => {
     buscarNotificacoes();
-  }, [paginaAtual]);
+  }, [paginaAtual, tamanhoPagina]);
 
   /** Cria uma linha da tabela retornando um objeto */
   const createRows = (dataset) => {
