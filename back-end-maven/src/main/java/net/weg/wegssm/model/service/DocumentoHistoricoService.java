@@ -20,8 +20,9 @@ public class DocumentoHistoricoService {
 
     /**
      * Função para salvar um documento histórico
-     * @param documentoHistorico
-     * @return
+     *
+     * @param documentoHistorico - Documento histórico a ser salvo
+     * @return - Documento histórico salvo
      */
     public DocumentoHistorico save(DocumentoHistorico documentoHistorico) {
         return documentoHistoricoRepository.save(documentoHistorico);

@@ -60,9 +60,9 @@ public class MensagemController {
     /**
      * Método MESSAGEMAPPING utilizado para receber uma mensagem
      *
-     * @param id - ID da mensagem
+     * @param id          - ID da mensagem
      * @param mensagemDTO - Objeto da mensagem
-     * @return  - ResponseEntity com a mensagem
+     * @return - ResponseEntity com a mensagem
      */
     @MessageMapping("/weg_ssm/mensagem/{id}")
     @SendTo("/weg_ssm/mensagem/{id}/chat")
@@ -82,9 +82,9 @@ public class MensagemController {
     /**
      * Método MESSAGEMAPPING para o usuário poder entrar no chat
      *
-     * @param idChat
-     * @param usuarioID
-     * @return
+     * @param idChat    - ID do chat utilizado para o usuário entrar
+     * @param usuarioID - ID do usuário
+     * @return - Retorno de uma ResponseEntity
      */
     @MessageMapping("/weg_ssm/enter/chat/{idChat}")
     @SendTo("/weg_ssm/enter/chat/{idChat}")
@@ -106,8 +106,8 @@ public class MensagemController {
     /**
      * Método MESSAGEMAPPING para receber qualquer mensagem
      *
-     * @param mensagem
-     * @return
+     * @param mensagem - Payload da mensagem
+     * @return - ResponseEntity com a mensagem
      */
     @MessageMapping("/weg_ssm/mensagem/all/user/{idUser}")
     @SendTo("/weg_ssm/mensagem/all/user/{idUser}")
@@ -118,17 +118,15 @@ public class MensagemController {
     /**
      * Método MESSAGEMAPPING para enviar uma mensagem de um chat específico
      *
-     * @param mensagemDTO
-     * @param idChat
-     * @return
+     * @param mensagemDTO - Payload da mensagem
+     * @param idChat      - ID do chat
+     * @return - ResponseEntity com a mensagem
      */
     @MessageMapping("/weg_ssm/mensagem/chat/{idChat}/visto")
     @SendTo("/weg_ssm/mensagem/chat/{idChat}/visto")
-    public ResponseEntity<Object> verMensagem(
-            @Payload MensagemDTO mensagemDTO,
-            @DestinationVariable(value = "idChat") Long idChat
-    ) {
+    public ResponseEntity<Object> verMensagem(@Payload MensagemDTO mensagemDTO, @DestinationVariable(value = "idChat") Long idChat) {
         Optional<Chat> chat = chatService.findById(idChat);
+
         if (chat.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum Chat com esse ID.");
         }
@@ -147,10 +145,10 @@ public class MensagemController {
     /**
      * Método PUT para editar uma mensagem
      *
-     * @param idChat
-     * @param idUser
-     * @param pageable
-     * @return
+     * @param idChat   - ID do chat
+     * @param idUser   - ID do usuário
+     * @param pageable - Componente de paginação
+     * @return - ResponseEntity com a mensagem
      */
     @PutMapping("/chat/{idChat}/user/{idUsuario}")
     public ResponseEntity<Object> updateMessages(
@@ -183,7 +181,7 @@ public class MensagemController {
     /**
      * Método GET para buscar todas as mensagens
      *
-     * @return
+     * @return - ResponseEntity com a lista de mensagens
      */
     @GetMapping
     public ResponseEntity<List<Mensagem>> findAll() {
@@ -193,8 +191,8 @@ public class MensagemController {
     /**
      * Método GET para buscar uma mensagem através de um id específico
      *
-     * @param id
-     * @return
+     * @param id - ID da mensagem
+     * @return - ResponseEntity com a mensagem
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -208,8 +206,8 @@ public class MensagemController {
     /**
      * Método GET para buscar várias mensagens através de um id de um chat
      *
-     * @param id
-     * @return
+     * @param id - ID do chat
+     * @return - ResponseEntity com a lista de mensagens
      */
     @GetMapping("/chat/{id}")
     public ResponseEntity<Object> findByIdChat(@PathVariable(value = "id") Long id) {
@@ -224,9 +222,9 @@ public class MensagemController {
     /**
      * Método POST para criar uma mensagem, enviando também uma lista de arquivos caso necessário
      *
-     * @param mensagemJSON
-     * @param anexos
-     * @return
+     * @param mensagemJSON - Payload da mensagem
+     * @param anexos       - Lista de arquivos
+     * @return - ResponseEntity com a mensagem
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestParam(value = "anexos", required = false) List<MultipartFile> anexos, @RequestParam("mensagem") String mensagemJSON) {
@@ -241,8 +239,8 @@ public class MensagemController {
     /**
      * Método DELETE para deletar uma mensagem
      *
-     * @param id
-     * @return
+     * @param id - ID da mensagem
+     * @return - ResponseEntity com a mensagem
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {

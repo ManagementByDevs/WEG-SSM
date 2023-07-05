@@ -54,10 +54,6 @@ public class Escopo {
     private Date ultimaModificacao;
 
     /**
-     * Foreign keys
-     */
-
-    /**
      * Lista de benefícios do escopo da demanda
      */
     @OneToMany

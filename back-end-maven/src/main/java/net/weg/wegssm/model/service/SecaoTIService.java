@@ -21,7 +21,8 @@ public class SecaoTIService {
 
     /**
      * Função para buscar todas as seções de TI
-     * @return
+     *
+     * @return - Lista de seções de TI
      */
     public List<SecaoTI> findAll() {
         return secaoTIRepository.findAll();

@@ -21,8 +21,9 @@ public class TabelaCustoService {
 
     /**
      * Função para salvar uma tabela de custos no banco de dados
-     * @param tabelaCusto
-     * @return
+     *
+     * @param tabelaCusto - Tabela de custos a ser salva
+     * @return - Tabela de custos salva
      */
     public TabelaCusto save(TabelaCusto tabelaCusto) {
         return tabelaCustoRepository.save(tabelaCusto);
@@ -30,8 +31,9 @@ public class TabelaCustoService {
 
     /**
      * Função booleana para verificação se uma tabela de custos existe pelo seu ID
-     * @param id
-     * @return
+     *
+     * @param id - Id da tabela de custos
+     * @return - Verificando se existe uma tabela de custos ou não
      */
     public Boolean existsById(Long id) {
         return tabelaCustoRepository.existsById(id);
@@ -39,7 +41,8 @@ public class TabelaCustoService {
 
     /**
      * Função para excluir uma tabela de custos pelo seu ID
-     * @param id
+     *
+     * @param id - Id da tabela de custos
      */
     public void deleteById(Long id) {
         tabelaCustoRepository.deleteById(id);
@@ -47,8 +50,9 @@ public class TabelaCustoService {
 
     /**
      * Função para buscar uma tabela de custos pelo seu ID
-     * @param aLong
-     * @return
+     *
+     * @param aLong - Id da tabela de custos
+     * @return - Tabela de custos encontrada
      */
     public Optional<TabelaCusto> findById(Long aLong) {
         return tabelaCustoRepository.findById(aLong);

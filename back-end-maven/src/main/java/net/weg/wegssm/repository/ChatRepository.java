@@ -19,25 +19,26 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
     /**
      * Método para listar os chats através de um usuário
      *
-     * @param usuario
-     * @return
+     * @param usuario - usuário
+     * @return - lista de chats
      */
     List<Chat> findByUsuariosChat(Usuario usuario);
 
     /**
      * Método para listar os chats através de uma proposta e um usuário
      *
-     * @param proposta
-     * @param usuario
-     * @return
+     * @param proposta - proposta
+     * @param usuario  - usuário
+     * @return - lista de chats
      */
     List<Chat> findByIdPropostaAndUsuariosChat(Proposta proposta, Usuario usuario);
 
     /**
      * Método para listar os chats através de uma demanda e um usuário
-     * @param demanda
-     * @param usuario
-     * @return
+     *
+     * @param demanda - demanda
+     * @param usuario - usuário
+     * @return - lista de chats
      */
     List<Chat> findByIdDemandaAndUsuariosChat(Demanda demanda, Usuario usuario);
 

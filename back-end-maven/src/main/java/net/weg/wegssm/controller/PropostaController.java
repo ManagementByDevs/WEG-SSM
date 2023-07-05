@@ -4166,7 +4166,7 @@ public class PropostaController {
 
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJaCriadaJsonToModel(propostaJSON);
-        
+
         proposta.setId(id);
 
         deleteTabelaCustosRows(propostaOptional.get(), proposta);

@@ -43,9 +43,9 @@ public class ExcelExportController {
     /**
      * Método POST para exportar as demandas do backlog para excel
      *
-     * @param response
-     * @param listaDemandas
-     * @throws IOException
+     * @param response      - Resposta da requisição web
+     * @param listaDemandas - Lista de ids das demandas na paginação
+     * @throws IOException - Exceção de entrada e saída
      */
     @PostMapping("/excel/demandas_backlog")
     public void exportDemandasBackLogToExcel(HttpServletResponse response, @RequestParam("demandas_backlog") List<Long> listaDemandas) throws IOException {
@@ -55,9 +55,9 @@ public class ExcelExportController {
     /**
      * Método POST para exportar as demandas do assessment para excel
      *
-     * @param response
-     * @param listaDemandas
-     * @throws IOException
+     * @param response      - Resposta da requisição web
+     * @param listaDemandas - Lista de ids das demandas na paginação
+     * @throws IOException - Exceção de entrada e saída
      */
     @PostMapping("/excel/demandas_assessment")
     public void exportDemandasAssessmentToExcel(HttpServletResponse response, @RequestParam("demandas_assessment") List<Long> listaDemandas) throws IOException {
@@ -67,9 +67,9 @@ public class ExcelExportController {
     /**
      * Método POST para exportar as propostas para excel
      *
-     * @param response
-     * @param listaPropostas
-     * @throws IOException
+     * @param response       - Resposta da requisição web
+     * @param listaPropostas - Lista de ids das propostas na paginação
+     * @throws IOException - Exceção de entrada e saída
      */
     @PostMapping("/excel/propostas")
     public void exportPropostasToExcel(HttpServletResponse response, @RequestParam("propostas") List<Long> listaPropostas) throws IOException {
@@ -79,9 +79,9 @@ public class ExcelExportController {
     /**
      * Método POST para exportar as pautas para excel
      *
-     * @param response
-     * @param listaPautas
-     * @throws IOException
+     * @param response    - Resposta da requisição web
+     * @param listaPautas - Lista de ids das pautas na paginação
+     * @throws IOException - Exceção de entrada e saída
      */
     @PostMapping("/excel/pautas")
     public void exportPautasToExcel(HttpServletResponse response, @RequestParam("pautas") List<Long> listaPautas) throws IOException {
@@ -91,9 +91,9 @@ public class ExcelExportController {
     /**
      * Método POST para exportar as atas para excel
      *
-     * @param response
-     * @param listaAtas
-     * @throws IOException
+     * @param response  - Resposta da requisição web
+     * @param listaAtas - Lista de ids das atas na paginação
+     * @throws IOException - Exceção de entrada e saída
      */
     @PostMapping("/excel/atas")
     public void exportAtasToExcel(HttpServletResponse response, @RequestParam("atas") List<Long> listaAtas) throws IOException {

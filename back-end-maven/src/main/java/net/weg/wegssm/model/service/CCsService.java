@@ -19,8 +19,9 @@ public class CCsService {
 
     /**
      * Função para salvar uma CC no banco
-     * @param cc
-     * @return
+     *
+     * @param cc - CC a ser salvo
+     * @return - CC salvo
      */
     public CC save(CC cc) {
         return ccsRepository.save(cc);
@@ -28,8 +29,9 @@ public class CCsService {
 
     /**
      * Função booleana para verificar se uma CC existe ou não, pelo seu ID
-     * @param id
-     * @return
+     *
+     * @param id - ID do CC a ser verificado
+     * @return - Retorno booleano da verificação
      */
     public Boolean existsById(Long id) {
         return ccsRepository.existsById(id);
@@ -37,7 +39,8 @@ public class CCsService {
 
     /**
      * Função para excluir uma CC pelo seu ID
-     * @param id
+     *
+     * @param id - ID do CC a ser excluído
      */
     public void deleteById(Long id) {
         ccsRepository.deleteById(id);

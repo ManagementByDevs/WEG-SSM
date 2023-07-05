@@ -45,7 +45,7 @@ public class PautaController {
     /**
      * Método GET para listar todas as pautas
      *
-     * @return
+     * @return - Retorno da lista de pautas
      */
     @GetMapping
     public ResponseEntity<List<Pauta>> findAll() {

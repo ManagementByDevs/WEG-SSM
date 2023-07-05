@@ -16,16 +16,16 @@ public interface HistoricoRepository extends JpaRepository<Historico, Long> {
     /**
      * Método para listar o histórico pelo id do usuário
      *
-     * @param autor
-     * @return
+     * @param autor - usuário
+     * @return - histórico
      */
     Optional<Historico> findByAutor(Usuario autor);
 
     /**
      * Método que verifica se existe um histórico com o id do usuário passado por parâmetro
      *
-     * @param autor
-     * @return
+     * @param autor - usuário
+     * @return - booleano
      */
     Boolean existsByAutor(Usuario autor);
 

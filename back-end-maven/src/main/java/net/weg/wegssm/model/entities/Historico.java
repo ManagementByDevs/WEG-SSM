@@ -37,10 +37,6 @@ public class Historico {
     private String acaoRealizada;
 
     /**
-     * Foreign keys
-     */
-
-    /**
      * Autor do histórico
      */
     @ManyToOne
@@ -57,7 +53,7 @@ public class Historico {
     /**
      * Função para setar o documento do histórico
      *
-     * @param file
+     * @param file - Arquivo do documento
      */
     public void setDocumentoMultipart(MultipartFile file) {
         try {
