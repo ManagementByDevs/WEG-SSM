@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { Box, IconButton, Tooltip } from "@mui/material";
 
- 
 import ClipLoader from "react-spinners/ClipLoader";
 import Tour from "reactour";
 
@@ -30,6 +28,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 /** Tela para mostrar os escopos de demandas/propostas não finalizadas */
 const Escopos = () => {
+
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -242,7 +241,6 @@ const Escopos = () => {
           case "abaPadrao":
             // Nova preferência da aba padrão
             preferencias.abaPadrao = value;
-            // setValorAba(preferencias.abaPadrao);
             break;
         }
 
@@ -298,6 +296,7 @@ const Escopos = () => {
                 <Box
                   className="w-full"
                   component="input"
+                  title={texts.escopos.pesquisarPorTitulo}
                   sx={{
                     backgroundColor: "input.main",
                     outline: "none",
@@ -309,9 +308,6 @@ const Escopos = () => {
                   value={inputPesquisa}
                   onKeyDown={(e) => {
                     eventoTeclado(e);
-                  }}
-                  onBlur={() => {
-                    buscarEscopos();
                   }}
                 />
 

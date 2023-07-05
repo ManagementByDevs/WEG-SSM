@@ -553,7 +553,7 @@ const TextLanguageContext = createContext({
         tour4:
           "Aqui pode escrever o que deseja enviar, podendo também anexar algum arquivo.",
       },
-      pesquisarPorNome: "Pesquisar por usuário...",
+      pesquisarChat: "Pesquisar por PPM/ID ou nome da demanda...",
       usuarioTour: {
         tour: "Tour",
         gerente: "Gerente",
@@ -943,7 +943,7 @@ const TextLanguageContext = createContext({
       semAtribuicao: "Sem Atribuição",
     },
   },
-  setTexts: () => {},
+  setTexts: () => { },
 });
 
 export default TextLanguageContext;
