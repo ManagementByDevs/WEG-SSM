@@ -1,7 +1,9 @@
 package net.weg.wegssm.model.service;
 
+import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.Departamento;
 import net.weg.wegssm.repository.DepartamentoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,24 +12,18 @@ import java.util.List;
  * Classe service para os departamentos
  */
 @Service
+@AllArgsConstructor
 public class DepartamentoService {
 
     /**
-     * Classe repository dos departamentos
+     * Repository do departamento
      */
     private DepartamentoRepository departamentoRepository;
 
     /**
-     * Construtor da classe
-     * @param departamentoRepository
-     */
-    public DepartamentoService(DepartamentoRepository departamentoRepository) {
-        this.departamentoRepository = departamentoRepository;
-    }
-
-    /**
      * Função para buscar todos os departamentos salvos
-     * @return
+     *
+     * @return - Retorno da lista de departamentos
      */
     public List<Departamento> findAll() {
         return departamentoRepository.findAll();

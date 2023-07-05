@@ -26,7 +26,8 @@ public class ChatService {
 
     /**
      * Função para buscar todos os chats
-     * @return
+     *
+     * @return - Retorno da lista de chats
      */
     public List<Chat> findAll() {
         return chatRepository.findAll();
@@ -34,8 +35,9 @@ public class ChatService {
 
     /**
      * Função para buscar um chat pelo seu ID
-     * @param id
-     * @return
+     *
+     * @param id - ID do chat
+     * @return - Retorno do chat com o ID
      */
     public Optional<Chat> findById(Long id) {
         return chatRepository.findById(id);
@@ -43,8 +45,9 @@ public class ChatService {
 
     /**
      * Função para verificar se um chat existe pelo seu ID
-     * @param id
-     * @return
+     *
+     * @param id - ID do chat
+     * @return - Retorno se o chat existe ou não
      */
     public Boolean existsById(Long id) {
         return chatRepository.existsById(id);
@@ -52,9 +55,10 @@ public class ChatService {
 
     /**
      * Função para salvar um chat
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Chat a ser salvo
+     * @param <S>    - Tipo do chat
+     * @return - Retorno do chat salvo
      */
     public <S extends Chat> S save(S entity) {
         return chatRepository.save(entity);
@@ -62,7 +66,8 @@ public class ChatService {
 
     /**
      * Função para deletar um chat pelo seu id
-     * @param id
+     *
+     * @param id - ID do chat a ser deletado
      */
     public void deleteById(Long id) {
         chatRepository.deleteById(id);
@@ -70,8 +75,9 @@ public class ChatService {
 
     /**
      * Função para buscar um chat pelos usuários que fazem parte
-     * @param usuario
-     * @return
+     *
+     * @param usuario - Usuário que faz parte do chat
+     * @return - Retorno do chat com o usuário
      */
     public List<Chat> findByUsuariosChat(Usuario usuario) {
         return chatRepository.findByUsuariosChat(usuario);
@@ -79,9 +85,10 @@ public class ChatService {
 
     /**
      * Função para buscar um chat pela proposta e pelos usuários que fazem parte
-     * @param proposta
-     * @param usuario
-     * @return
+     *
+     * @param proposta - Proposta que faz parte do chat
+     * @param usuario  - Usuário que faz parte do chat
+     * @return - Retorno do chat com a proposta e o usuário
      */
     public List<Chat> findByIdPropostaAndUsuariosChat(Proposta proposta, Usuario usuario) {
         return chatRepository.findByIdPropostaAndUsuariosChat(proposta, usuario);
@@ -89,11 +96,13 @@ public class ChatService {
 
     /**
      * Função para buscar um chat pela demanda e pelos usuários que fazem parte
-     * @param demanda
-     * @param usuario
-     * @return
+     *
+     * @param demanda - Demanda que faz parte do chat
+     * @param usuario - Usuário que faz parte do chat
+     * @return - Retorno do chat com a demanda e o usuário
      */
     public List<Chat> findByIdDemandaAndUsuariosChat(Demanda demanda, Usuario usuario) {
         return chatRepository.findByIdDemandaAndUsuariosChat(demanda, usuario);
     }
+
 }

@@ -25,7 +25,8 @@ public class PautaService {
 
     /**
      * Função para buscar todas as pautas
-     * @return
+     *
+     * @return - Lista de pautas
      */
     public List<Pauta> findAll() {
         return pautaRepository.findAll();
@@ -33,8 +34,9 @@ public class PautaService {
 
     /**
      * Função para buscar todas as pautas com paginação
-     * @param pageable
-     * @return
+     *
+     * @param pageable - Componente de Paginação
+     * @return - Lista de pautas
      */
     public Page<Pauta> findAll(Pageable pageable) {
         return pautaRepository.findAll(pageable);
@@ -42,8 +44,9 @@ public class PautaService {
 
     /**
      * Função para buscar uma pauta por id
-     * @param id
-     * @return
+     *
+     * @param id - Id da pauta
+     * @return - Pauta encontrada
      */
     public Optional<Pauta> findById(Long id) {
         return pautaRepository.findById(id);
@@ -51,8 +54,9 @@ public class PautaService {
 
     /**
      * Função para buscar uma pauta por número sequencial
-     * @param numeroSequencial
-     * @return
+     *
+     * @param numeroSequencial - Número sequencial da pauta
+     * @return - Pauta encontrada
      */
     public Page<Pauta> findByNumeroSequencial(String numeroSequencial, Pageable pageable) {
         return pautaRepository.findByNumeroSequencial(numeroSequencial, pageable);
@@ -60,27 +64,20 @@ public class PautaService {
 
     /**
      * Funçao para verificar se uma pauta existe por id
-     * @param id
-     * @return
+     *
+     * @param id - Id da pauta
+     * @return - Booleano
      */
     public Boolean existsById(Long id) {
         return pautaRepository.existsById(id);
     }
 
     /**
-     * Função para verificar se uma pauta existe por número sequencial
-     * @param numeroSequencial
-     * @return
-     */
-    public Boolean existsByNumeroSequencial(Long numeroSequencial) {
-        return pautaRepository.existsByNumeroSequencial(numeroSequencial);
-    }
-
-    /**
      * Função para salvar uma pauta
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Pauta a ser salva
+     * @param <S>    - Pauta
+     * @return - Pauta salva
      */
     public <S extends Pauta> S save(S entity) {
         return pautaRepository.save(entity);
@@ -88,7 +85,8 @@ public class PautaService {
 
     /**
      * Função para deletar uma pauta por id
-     * @param id
+     *
+     * @param id - Id da pauta
      */
     public void deleteById(Long id) {
         pautaRepository.deleteById(id);
@@ -96,8 +94,9 @@ public class PautaService {
 
     /**
      * Função para buscar uma pauta por proposta
-     * @param proposta
-     * @return
+     *
+     * @param proposta - Proposta
+     * @return - Pauta encontrada
      */
     public Pauta findByPropostasContaining(Proposta proposta) {
         return pautaRepository.findByPropostasContaining(proposta);

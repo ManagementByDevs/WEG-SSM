@@ -24,12 +24,12 @@ public class EscopoPropostaService {
      */
     private EscopoPropostaRepository escopoPropostaRepository;
 
-
     /**
      * Função para buscar um escopo da proposta pelo usuário
-     * @param usuario
-     * @param pageable
-     * @return
+     *
+     * @param usuario  - Usuário solicitante
+     * @param pageable - Componente de paginação
+     * @return - Paginação de escopos da proposta de um usuário
      */
     public Page<EscopoProposta> findByUsuario(Usuario usuario, Pageable pageable) {
         return escopoPropostaRepository.findBySolicitante(usuario, pageable);
@@ -37,10 +37,11 @@ public class EscopoPropostaService {
 
     /**
      * Função para buscar um escopo proposta pelo usuário e pelo título
-     * @param usuario
-     * @param titulo
-     * @param pageable
-     * @return
+     *
+     * @param usuario  - Usuário solicitante
+     * @param titulo   - Título do escopo da proposta
+     * @param pageable - Componente de paginação
+     * @return - Paginação de escopos da proposta de um usuário com um título específico
      */
     public Page<EscopoProposta> findByUsuarioAndTitulo(Usuario usuario, String titulo, Pageable pageable) {
         return escopoPropostaRepository.findBySolicitanteAndTitulo(usuario, titulo, pageable);
@@ -48,8 +49,9 @@ public class EscopoPropostaService {
 
     /**
      * Função para salvar um escopo da proposta
-     * @param escopoProposta
-     * @return
+     *
+     * @param escopoProposta - Escopo da proposta a ser salvo
+     * @return - Escopo da proposta salvo
      */
     public EscopoProposta save(EscopoProposta escopoProposta) {
         return escopoPropostaRepository.save(escopoProposta);
@@ -57,8 +59,9 @@ public class EscopoPropostaService {
 
     /**
      * Função para verificar se existe um escopo da proposta pelo id
-     * @param id
-     * @return
+     *
+     * @param id - Id do escopo da proposta
+     * @return - True se existir, false se não existir
      */
     public Boolean existsById(Long id) {
         return escopoPropostaRepository.existsById(id);
@@ -66,7 +69,8 @@ public class EscopoPropostaService {
 
     /**
      * Função para deletar um escopo da proposta pelo id
-     * @param id
+     *
+     * @param id - Id do escopo da proposta
      */
     public void deleteById(Long id) {
         escopoPropostaRepository.deleteById(id);
@@ -74,8 +78,9 @@ public class EscopoPropostaService {
 
     /**
      * Função para buscar um escopo da proposta pela demanda
-     * @param demanda
-     * @return
+     *
+     * @param demanda - Demanda do escopo da proposta
+     * @return - Lista de escopos da proposta de uma demanda
      */
     public List<EscopoProposta> findByDemanda(Demanda demanda) {
         return escopoPropostaRepository.findByDemanda(demanda);
@@ -83,8 +88,9 @@ public class EscopoPropostaService {
 
     /**
      * Função para buscar um escopo da proposta pelo id
-     * @param idEscopo
-     * @return
+     *
+     * @param idEscopo - Id do escopo da proposta
+     * @return - Escopo da proposta encontrado
      */
     public Optional<EscopoProposta> findById(Long idEscopo) {
         return escopoPropostaRepository.findById(idEscopo);

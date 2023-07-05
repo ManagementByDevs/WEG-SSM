@@ -46,9 +46,10 @@ public class ExcelGeneratorService {
 
     /**
      * Função para exportar as demandas assessment para excel
-     * @param response
-     * @param listaDemandas
-     * @throws IOException
+     *
+     * @param response - Resposta da requisição
+     * @param listaDemandas - Lista com os ids das demandas demandas
+     * @throws IOException - Exceção de entrada e saída
      */
     public void exportDemandasAssessmentToExcel(HttpServletResponse response, List<Long> listaDemandas) throws IOException {
         ArrayList<Optional<Demanda>> listDemandas = new ArrayList<>();
@@ -196,9 +197,10 @@ public class ExcelGeneratorService {
 
     /**
      * Função para exportar demandas back_log para excel
-     * @param response
-     * @param listaDemandas
-     * @throws IOException
+     *
+     * @param response - Resposta da requisição
+     * @param listaDemandas - Lista com os ids das demandas
+     * @throws IOException - Exceção de entrada e saída
      */
     public void exportDemandasBackLogToExcel(HttpServletResponse response, List<Long> listaDemandas) throws IOException {
         ArrayList<Optional<Demanda>> listDemandas = new ArrayList<>();
@@ -328,9 +330,10 @@ public class ExcelGeneratorService {
 
     /**
      * Função para exportar as propostas para excel
-     * @param response
-     * @param listaPropostas
-     * @throws IOException
+     *
+     * @param response - Resposta da requisição
+     * @param listaPropostas - Lista com os ids das propostas
+     * @throws IOException - Exceção de entrada e saída
      */
     public void exportPropostasToExcel(HttpServletResponse response, List<Long> listaPropostas) throws IOException {
         ArrayList<Optional<Proposta>> listPropostas = new ArrayList<>();
@@ -517,9 +520,10 @@ public class ExcelGeneratorService {
 
     /**
      * Função para exportar as pautas para excel
-     * @param response
-     * @param listaPautas
-     * @throws IOException
+     *
+     * @param response - Resposta da requisição
+     * @param listaPautas - Lista com os ids das pautas
+     * @throws IOException - Exceção de entrada e saída
      */
     public void exportPautasToExcel(HttpServletResponse response, List<Long> listaPautas) throws IOException {
         ArrayList<Optional<Pauta>> listPautas = new ArrayList<>();
@@ -793,9 +797,10 @@ public class ExcelGeneratorService {
 
     /**
      * Função para exportar as atas para excel
-     * @param response
-     * @param listaAtas
-     * @throws IOException
+     *
+     * @param response - Resposta da requisição
+     * @param listaAtas - Lista com os ids das atas
+     * @throws IOException - Exceção de entrada e saída
      */
     public void exportAtasToExcel(HttpServletResponse response, List<Long> listaAtas) throws IOException {
         ArrayList<Optional<Ata>> listAtas = new ArrayList<>();

@@ -55,7 +55,7 @@ public class AtaController {
      *
      * @param pageable - String de paginação e ordenação
      * @param titulo   - String com o título de uma proposta, para pesquisar as atas que contém tal proposta
-     * @return         - Página de atas
+     * @return - Página de atas
      */
     @GetMapping("/page")
     public ResponseEntity<Page<Ata>> findPage(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
@@ -178,7 +178,7 @@ public class AtaController {
     /**
      * Método PUT para atualizar uma ata no banco de dados
      *
-     * @param id - ID da ata a ser editada
+     * @param id     - ID da ata a ser editada
      * @param ataDTO - Objeto a ser editado
      * @return - Retorno do novo objeto editado
      */

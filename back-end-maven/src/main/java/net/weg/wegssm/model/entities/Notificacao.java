@@ -45,10 +45,6 @@ public class Notificacao {
     private TipoNotificacao tipoNotificacao;
 
     /**
-     * Foreign key
-     */
-
-    /**
      * Usuário que recebeu a notificação
      */
     @ManyToOne

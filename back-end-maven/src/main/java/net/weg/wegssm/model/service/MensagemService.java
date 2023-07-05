@@ -26,7 +26,8 @@ public class MensagemService {
 
     /**
      * Função para buscar todas as mensagens
-     * @return
+     *
+     * @return - Lista de mensagens
      */
     public List<Mensagem> findAll() {
         return mensagemRepository.findAll();
@@ -34,8 +35,9 @@ public class MensagemService {
 
     /**
      * Função para buscar uma mensagem através de um id
-     * @param id
-     * @return
+     *
+     * @param id - Id da mensagem
+     * @return - Mensagem encontrada
      */
     public Optional<Mensagem> findById(Long id) {
         return mensagemRepository.findById(id);
@@ -43,8 +45,9 @@ public class MensagemService {
 
     /**
      * Função para verificar se existe uma mensagem através do id
-     * @param id
-     * @return
+     *
+     * @param id - Id da mensagem
+     * @return - Verificando se existe uma mensagem ou não
      */
     public Boolean existsById(Long id) {
         return mensagemRepository.existsById(id);
@@ -52,9 +55,10 @@ public class MensagemService {
 
     /**
      * Função para salvar uma mensagem
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Mensagem a ser salva
+     * @param <S>    - Mensagem
+     * @return - Mensagem salva
      */
     public <S extends Mensagem> S save(S entity) {
         return mensagemRepository.save(entity);
@@ -62,7 +66,8 @@ public class MensagemService {
 
     /**
      * Função para deletar uma mensagem através de um id
-     * @param id
+     *
+     * @param id - Id da mensagem
      */
     public void deleteById(Long id) {
         mensagemRepository.deleteById(id);
@@ -70,9 +75,10 @@ public class MensagemService {
 
     /**
      * Função para buscar mensagem através do id com paginação
-     * @param chat
-     * @param pageable
-     * @return
+     *
+     * @param chat     - Chat
+     * @param pageable - Componente de Paginação
+     * @return - Lista de mensagens
      */
     public Page<Mensagem> findByIdChat(Chat chat, Pageable pageable) {
         return mensagemRepository.findByIdChat(chat, pageable);
@@ -80,8 +86,9 @@ public class MensagemService {
 
     /**
      * Função para encontrar todas as mensagens através do id do chat
-     * @param chat
-     * @return
+     *
+     * @param chat - Chat
+     * @return - Lista de mensagens
      */
     public List<Mensagem> findAllByIdChat(Chat chat) {
         return mensagemRepository.findAllByIdChat(chat);
@@ -89,9 +96,10 @@ public class MensagemService {
 
     /**
      * Função para encontrar todas as mensagens através do id do chat e se foi visto
-     * @param chat
-     * @param visto
-     * @return
+     *
+     * @param chat  - Chat
+     * @param visto - Visto
+     * @return - Lista de mensagens
      */
     public List<Mensagem> findAllByIdChatAndVisto(Chat chat, Boolean visto) {
         return mensagemRepository.findAllByIdChatAndVisto(chat, visto);
@@ -99,10 +107,11 @@ public class MensagemService {
 
     /**
      * Função para encontrar todas as mensagens através do id do chat e se foi visto e se o usuário não é o usuário atual
-     * @param chat
-     * @param visto
-     * @param usuario
-     * @return
+     *
+     * @param chat    - Chat
+     * @param visto   - Visto
+     * @param usuario - Usuário
+     * @return - Lista de mensagens
      */
     public List<Mensagem> findAllByIdChatAndVistoAndUsuarioNot(Chat chat, Boolean visto, Usuario usuario) {
         return mensagemRepository.findAllByIdChatAndVistoAndUsuarioNot(chat, visto, usuario);

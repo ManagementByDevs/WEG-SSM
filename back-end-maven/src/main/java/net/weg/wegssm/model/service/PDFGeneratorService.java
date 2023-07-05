@@ -35,7 +35,8 @@ public class PDFGeneratorService {
 
     /**
      * Construtor do service
-     * @param demandaService
+     *
+     * @param demandaService - Service da demanda
      */
     public PDFGeneratorService(DemandaService demandaService) {
         this.demandaService = demandaService;
@@ -43,11 +44,12 @@ public class PDFGeneratorService {
 
     /**
      * Função para exportar uma demanda para pdf
-     * @param response
-     * @param demanda
-     * @return
-     * @throws IOException
-     * @throws DocumentException
+     *
+     * @param response - Resposta da requisição
+     * @param demanda  - Demanda a ser exportada
+     * @return - Documento pdf
+     * @throws IOException       - Exceção de entrada e saída
+     * @throws DocumentException - Exceção de documento
      */
     public Document exportDemanda(HttpServletResponse response, Demanda demanda) throws IOException, DocumentException {
 
@@ -269,11 +271,12 @@ public class PDFGeneratorService {
 
     /**
      * Função para exportar uma proposta para pdf
-     * @param response
-     * @param proposta
-     * @return
-     * @throws IOException
-     * @throws DocumentException
+     *
+     * @param response - Resposta da requisição
+     * @param proposta - Proposta que será exportada
+     * @return - Documento pdf
+     * @throws IOException       - Exceção de entrada e saída
+     * @throws DocumentException - Exceção de documento
      */
     public Document exportProposta(HttpServletResponse response, Proposta proposta) throws IOException, DocumentException {
 
@@ -666,11 +669,12 @@ public class PDFGeneratorService {
 
     /**
      * Função para exportar uma pauta para pdf
-     * @param response
-     * @param pauta
-     * @return
-     * @throws IOException
-     * @throws DocumentException
+     *
+     * @param response - Resposta da requisição
+     * @param pauta    - Pauta a ser exportada
+     * @return - Documento pdf
+     * @throws IOException       - Exceção de entrada e saída
+     * @throws DocumentException - Exceção de documento
      */
     public Document exportPauta(HttpServletResponse response, Pauta pauta) throws IOException, DocumentException {
 
@@ -1162,11 +1166,12 @@ public class PDFGeneratorService {
 
     /**
      * Função para exportar uma ata para pdf
-     * @param response
-     * @param ata
-     * @return
-     * @throws IOException
-     * @throws DocumentException
+     *
+     * @param response - Resposta da requisição
+     * @param ata      - Ata a ser exportada
+     * @return - Documento pdf
+     * @throws IOException       - Exceção de entrada e saída
+     * @throws DocumentException - Exceção de documento
      */
     public Document exportAta(HttpServletResponse response, Ata ata) throws IOException, DocumentException {
 

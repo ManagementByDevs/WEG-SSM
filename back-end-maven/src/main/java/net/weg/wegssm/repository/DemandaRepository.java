@@ -19,25 +19,25 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
     /**
      * Método para listar a demanda pelo status, com paginação
      *
-     * @param status
-     * @param pageable
-     * @return
+     * @param status - Status da demanda
+     * @param pageable - Componente de paginação
+     * @return - Página com as demandas
      */
     Page<Demanda> findByStatus(Status status, Pageable pageable);
 
     /**
      * Método para lista a demanda por id, com paginação
      *
-     * @param id
-     * @param pageable
-     * @return
+     * @param id - Id da demanda
+     * @param pageable - Componente de paginação
+     * @return - Página com a demanda
      */
     Page<Demanda> findById(Long id, Pageable pageable);
 
     /**
      * Método para listar as demandas pelo fórum, com paginação
      *
-     * @param forum Fórum para a filtragem da demanda
+     * @param forum    Fórum para a filtragem da demanda
      * @param pageable Pageable para ordenação das demandas
      * @return Página ordenada com as demandas filtradas
      */
@@ -47,7 +47,7 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
      * Método para listar as demandas pelo departamento, com paginação
      *
      * @param departamento Departamento para filtragem das demandas
-     * @param pageable Pageable para ordenação das demandas
+     * @param pageable     Pageable para ordenação das demandas
      * @return Página com as demandas filtradas e ordenadas
      */
     Page<Demanda> findByDepartamento(Departamento departamento, Pageable pageable);
@@ -55,6 +55,7 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
     /**
      * Função para buscar todas as demandas excluindo dois status recebidos como parâmetros, assim como recebendo as demandas contendo
      * seus respectivos benefícios por conta do "LEFT JOIN"
+     *
      * @param status
      * @param statusSecundario
      * @return

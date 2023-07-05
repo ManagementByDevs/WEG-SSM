@@ -26,7 +26,8 @@ public class EscopoService {
 
     /**
      * Função para buscar todos os escopos
-     * @return
+     *
+     * @return - Lista de escopos
      */
     public List<Escopo> findAll() {
         return escopoRepository.findAll();
@@ -34,36 +35,20 @@ public class EscopoService {
 
     /**
      * Função para buscar um escopo através de um id
-     * @param id
-     * @return
+     *
+     * @param id - Id do escopo
+     * @return - Escopo encontrado
      */
     public Optional<Escopo> findById(Long id) {
         return escopoRepository.findById(id);
     }
 
     /**
-     * Função para buscar um escopo através de um título
-     * @param titulo
-     * @return
-     */
-    public Optional<Escopo> findByTitle(String titulo) {
-        return escopoRepository.findByTitulo(titulo);
-    }
-
-    /**
-     * Função para buscar um escopo pelo usuário
-     * @param usuario
-     * @return
-     */
-    public List<Object> findByUsuario(Usuario usuario) {
-        return escopoRepository.findByUsuario(usuario);
-    }
-
-    /**
      * Função para buscar um escopo pelo usuário com paginação
-     * @param usuario
-     * @param pageable
-     * @return
+     *
+     * @param usuario  - Usuário solicitante
+     * @param pageable - Componente de paginação
+     * @return - Paginação de escopos de um usuário
      */
     public Page<Escopo> findByUsuario(Usuario usuario, Pageable pageable) {
         return escopoRepository.findByUsuario(usuario, pageable);
@@ -71,36 +56,20 @@ public class EscopoService {
 
     /**
      * Função para verificar se existe um escopo através do id
-     * @param id
-     * @return
+     *
+     * @param id - Id do escopo
+     * @return - Booleano se existe ou não
      */
     public Boolean existsById(Long id) {
         return escopoRepository.existsById(id);
     }
 
     /**
-     * Função para verificar se existe um escopo através do título
-     * @param titulo
-     * @return
-     */
-    public Boolean existsByTitle(String titulo) {
-        return escopoRepository.existsByTitulo(titulo);
-    }
-
-    /**
-     * Função para verificar se existe um escopo através do usuário
-     * @param usuario
-     * @return
-     */
-    public boolean existsByUsuario(Usuario usuario) {
-        return escopoRepository.existsByUsuario(usuario);
-    }
-
-    /**
      * Função para salvar um escopo
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Escopo a ser salvo
+     * @param <S>    - Tipo do escopo
+     * @return - Escopo salvo
      */
     public <S extends Escopo> S save(S entity) {
         return escopoRepository.save(entity);
@@ -108,7 +77,8 @@ public class EscopoService {
 
     /**
      * Função para deletar um escopo
-     * @param id
+     *
+     * @param id - Id do escopo
      */
     public void deleteById(Long id) {
         escopoRepository.deleteById(id);
@@ -116,10 +86,11 @@ public class EscopoService {
 
     /**
      * Função para buscar um escopo através do usuário e do título com paginação
-     * @param usuario
-     * @param titulo
-     * @param pageable
-     * @return
+     *
+     * @param usuario  - Usuário solicitante
+     * @param titulo   - Título do escopo
+     * @param pageable - Componente de paginação
+     * @return - Paginação de escopos de um usuário com um título específico
      */
     public Page<Escopo> findByUsuarioAndTitulo(Usuario usuario, String titulo, Pageable pageable) {
         return escopoRepository.findByUsuarioAndTituloContaining(usuario, titulo, pageable);

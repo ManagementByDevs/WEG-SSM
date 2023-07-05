@@ -34,10 +34,6 @@ public class Pauta {
     private Date dataReuniao;
 
     /**
-     * Foreign keys
-     */
-
-    /**
      * Comissão a qual a pauta pertence
      */
     @ManyToOne

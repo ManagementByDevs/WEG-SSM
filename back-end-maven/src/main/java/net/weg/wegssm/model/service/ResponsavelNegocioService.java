@@ -21,8 +21,9 @@ public class ResponsavelNegocioService {
 
     /**
      * Função booleana para verificação se um responsável de negócio existe pelo seu ID
-     * @param id
-     * @return
+     *
+     * @param id - Id do responsável de negócio
+     * @return - Verificando se existe um responsável de negócio ou não
      */
     public Boolean existsById(Long id) {
         return responsavelNegocioRepository.existsById(id);
@@ -30,9 +31,10 @@ public class ResponsavelNegocioService {
 
     /**
      * Função para salvar um responsável negócio
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Responsável negócio a ser salvo
+     * @param <S>    - Responsável negócio
+     * @return - Responsável negócio salvo
      */
     public <S extends ResponsavelNegocio> S save(S entity) {
         return responsavelNegocioRepository.save(entity);
@@ -40,7 +42,8 @@ public class ResponsavelNegocioService {
 
     /**
      * Função para excluir um responsável de negócio pelo seu ID
-     * @param id
+     *
+     * @param id - Id do responsável de negócio
      */
     public void deleteById(Long id) {
         responsavelNegocioRepository.deleteById(id);
@@ -48,8 +51,9 @@ public class ResponsavelNegocioService {
 
     /**
      * Função para buscar um responsável negócio pelo seu ID
-     * @param id
-     * @return
+     *
+     * @param id - Id do responsável negócio
+     * @return - Responsável negócio encontrado
      */
     public Optional<ResponsavelNegocio> findById(Long id) {
         return responsavelNegocioRepository.findById(id);

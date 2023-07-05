@@ -56,10 +56,10 @@ public class PDFExportController {
     /**
      * Método GET para gerar um pdf de uma demanda
      *
-     * @param demandaId
-     * @param response
-     * @throws IOException
-     * @throws DocumentException
+     * @param demandaId - Id da demanda
+     * @param response  - Resposta da requisição web
+     * @throws IOException       - Exceção de entrada e saída
+     * @throws DocumentException - Exceção de documento
      */
     @GetMapping("/pdf/demanda/{id}")
     public void generatePDFDemanda(@PathVariable(value = "id") Long demandaId, HttpServletResponse response) throws IOException, DocumentException {
@@ -87,10 +87,10 @@ public class PDFExportController {
     /**
      * Método GET para gerar o pdf de uma proposta
      *
-     * @param propostaId
-     * @param response
-     * @throws IOException
-     * @throws DocumentException
+     * @param propostaId - Id da proposta
+     * @param response   - Resposta da requisição web
+     * @throws IOException       - Exceção de entrada e saída
+     * @throws DocumentException - Exceção de documento
      */
     @GetMapping("/pdf/proposta/{id}")
     public void generatePDFProposta(@PathVariable(value = "id") Long propostaId, HttpServletResponse response) throws IOException, DocumentException {
@@ -118,10 +118,10 @@ public class PDFExportController {
     /**
      * Método GET para gerar o pdf de uma pauta
      *
-     * @param idPauta
-     * @param response
-     * @throws IOException
-     * @throws DocumentException
+     * @param idPauta  - Id da pauta
+     * @param response - Resposta da requisição web
+     * @throws IOException       - Exceção de entrada e saída
+     * @throws DocumentException - Exceção de documento
      */
     @GetMapping("/pdf/pauta/{id}")
     public void generatePDFPauta(@PathVariable(value = "id") Long idPauta, HttpServletResponse response) throws IOException, DocumentException {
@@ -149,10 +149,10 @@ public class PDFExportController {
     /**
      * Método GET para gerar o pdf de uma ata
      *
-     * @param idAta
-     * @param response
-     * @throws IOException
-     * @throws DocumentException
+     * @param idAta    - Id da ata
+     * @param response - Resposta da requisição web
+     * @throws IOException       - Exceção de entrada e saída
+     * @throws DocumentException - Exceção de documento
      */
     @GetMapping("/pdf/ata/{id}")
     public void generatePDFAta(@PathVariable(value = "id") Long idAta, HttpServletResponse response) throws IOException, DocumentException {

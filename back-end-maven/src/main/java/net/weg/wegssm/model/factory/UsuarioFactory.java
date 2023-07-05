@@ -11,6 +11,10 @@ public class UsuarioFactory {
 
     /**
      * Função para retornar um usuário com o seu tipo definido por uma autoridade (de autenticação)
+     *
+     * @param authority - Autoridade de autenticação
+     * @param usuario - Usuário a ser definido
+     * @return - Usuário com o tipo definido
      */
     public Usuario getUsuario(SimpleGrantedAuthority authority, Usuario usuario) {
         switch (authority.getAuthority()) {

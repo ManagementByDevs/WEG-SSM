@@ -107,10 +107,6 @@ public class EscopoProposta {
     private String escopo;
 
     /**
-     * Foreign keys
-     */
-
-    /**
      * SecaoTI do escopo da proposta
      */
     @ManyToOne(cascade = CascadeType.DETACH)

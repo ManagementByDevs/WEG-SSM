@@ -23,8 +23,9 @@ public class BeneficioService {
 
     /**
      * Função para buscar um benefício pelo ID recebido
-     * @param id
-     * @return
+     *
+     * @param id - ID do benefício buscado
+     * @return - Retorno do benefício com o ID recebido
      */
     public Optional<Beneficio> findById(Long id) {
         return beneficioRepository.findById(id);
@@ -32,8 +33,9 @@ public class BeneficioService {
 
     /**
      * Função booleana para verificar se um benefício com o ID recebido existe ou não
-     * @param id
-     * @return
+     *
+     * @param id - ID do benefício a ser verificado
+     * @return - Retorno booleano da verificação
      */
     public boolean existsById(Long id) {
         return beneficioRepository.existsById(id);
@@ -41,9 +43,10 @@ public class BeneficioService {
 
     /**
      * Função para salvar um benefício recebido no banco de dados
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Benefício a ser salvo
+     * @param <S>    - Tipo do benefício
+     * @return - Retorno do benefício salvo
      */
     public <S extends Beneficio> S save(S entity) {
         return beneficioRepository.save(entity);
@@ -51,7 +54,8 @@ public class BeneficioService {
 
     /**
      * Função para excluir um benefício com o ID recebido
-     * @param id
+     *
+     * @param id - ID do benefício a ser excluído
      */
     public void deleteById(Long id) {
         beneficioRepository.deleteById(id);

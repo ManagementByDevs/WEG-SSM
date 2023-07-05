@@ -29,7 +29,8 @@ public class NotificacaoService {
 
     /**
      * Função para buscar todas as notificações
-     * @return
+     *
+     * @return - Lista de notificações
      */
     public List<Notificacao> findAll() {
         return notificacaoRepository.findAll();
@@ -37,8 +38,9 @@ public class NotificacaoService {
 
     /**
      * Função para buscar todas as notificações com paginação
-     * @param pageable
-     * @return
+     *
+     * @param pageable - Componente de Paginação
+     * @return - Lista de notificações
      */
     public Page<Notificacao> findAll(Pageable pageable) {
         return notificacaoRepository.findAll(pageable);
@@ -46,8 +48,9 @@ public class NotificacaoService {
 
     /**
      * Função para buscar uma notificação através de um id
-     * @param id
-     * @return
+     *
+     * @param id - Id da notificação
+     * @return - Notificação encontrada
      */
     public Optional<Notificacao> findById(Long id) {
         return notificacaoRepository.findById(id);
@@ -55,8 +58,9 @@ public class NotificacaoService {
 
     /**
      * Função para buscar notificação através do tipo
-     * @param tipoNotificacao
-     * @return
+     *
+     * @param tipoNotificacao - Tipo da notificação
+     * @return - Lista de notificações
      */
     public List<Notificacao> findByTipoNotificacao(TipoNotificacao tipoNotificacao) {
         return notificacaoRepository.findByTipoNotificacao(tipoNotificacao);
@@ -64,8 +68,9 @@ public class NotificacaoService {
 
     /**
      * Função para verificar se existe uma notificação através do id
-     * @param id
-     * @return
+     *
+     * @param id - Id da notificação
+     * @return - Verificando se existe uma notificação ou não
      */
     public boolean existsById(Long id) {
         return notificacaoRepository.existsById(id);
@@ -73,9 +78,10 @@ public class NotificacaoService {
 
     /**
      * Função para salvar uma notificação
-     * @param entity
-     * @param <S>
-     * @return
+     *
+     * @param entity - Notificação a ser salva
+     * @param <S>    - Notificação
+     * @return - Notificação salva
      */
     public <S extends Notificacao> S save(S entity) {
         return notificacaoRepository.save(entity);
@@ -83,7 +89,8 @@ public class NotificacaoService {
 
     /**
      * Função para deletar uma notificação através do id
-     * @param id
+     *
+     * @param id - Id da notificação
      */
     public void deleteById(Long id) {
         notificacaoRepository.deleteById(id);
@@ -91,9 +98,10 @@ public class NotificacaoService {
 
     /**
      * Função para buscar notificações através de um usuário
-     * @param usuario
-     * @param pageable
-     * @return
+     *
+     * @param usuario  - Usuário
+     * @param pageable - Componente de paginação
+     * @return - Lista de notificações
      */
     public Page<Notificacao> findByUsuario(Usuario usuario, Pageable pageable) {
         return notificacaoRepository.findByUsuario(usuario, pageable);
@@ -101,8 +109,9 @@ public class NotificacaoService {
 
     /**
      * Função para buscar notificações através da data
-     * @param data
-     * @return
+     *
+     * @param data - Data
+     * @return - Lista de notificações
      */
     public List<Notificacao> findByData(Data data) {
         return notificacaoRepository.findByData(data);
@@ -110,10 +119,11 @@ public class NotificacaoService {
 
     /**
      * Função para buscar notificação através do usuário e da visualização
-     * @param usuario
-     * @param visualizado
-     * @param pageable
-     * @return
+     *
+     * @param usuario     - Usuário
+     * @param visualizado - Visualização
+     * @param pageable    - Componente de paginação
+     * @return - Lista de notificações
      */
     public Page<Notificacao> findByUsuarioAndVisualizado(Usuario usuario, Boolean visualizado, Pageable pageable) {
         return notificacaoRepository.findByUsuarioAndVisualizado(usuario, visualizado, pageable);

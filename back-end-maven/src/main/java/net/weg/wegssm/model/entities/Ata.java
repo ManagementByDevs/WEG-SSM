@@ -45,9 +45,6 @@ public class Ata {
     @Column
     private Boolean visibilidade;
 
-
-    /** Foreign keys */
-
     /**
      * Comissão presente na ata
      */

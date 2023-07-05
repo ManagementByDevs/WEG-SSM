@@ -19,6 +19,7 @@ public class AnexoService {
 
     /**
      * Função para buscar um anexo pelo ID informado
+     *
      * @param id ID do anexo buscado
      * @return Anexo com o ID semelhante
      */
@@ -28,6 +29,7 @@ public class AnexoService {
 
     /**
      * Função para verificar se existe um anexo salvo com o ID recebido
+     *
      * @param id ID do anexo a ser verificado
      * @return Boolean de verificação se o anexo existe
      */
@@ -37,6 +39,7 @@ public class AnexoService {
 
     /**
      * Função para excluir um anexo pelo ID
+     *
      * @param id ID do anexo a ser excluído
      */
     public void deleteById(Long id) {
@@ -45,6 +48,7 @@ public class AnexoService {
 
     /**
      * Função para salvar um anexo no banco de dados
+     *
      * @param anexo Objeto do anexo a ser salvo
      * @return Anexo já salvo no banco de dados
      */

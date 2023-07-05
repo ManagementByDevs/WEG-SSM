@@ -17,53 +17,21 @@ import java.util.Optional;
 public interface EscopoRepository extends JpaRepository<Escopo, Long> {
 
     /**
-     * Método para retornar se existe um escopo com o título passado por parâmetro
-     *
-     * @param titulo
-     * @return
-     */
-    Boolean existsByTitulo(String titulo);
-
-    /**
-     * Método para retornar um escopo com o título passado por parâmetro
-     *
-     * @param titulo
-     * @return
-     */
-    Optional<Escopo> findByTitulo(String titulo);
-
-    /**
-     * Método para retornar se existe um escopo com o usuário passado por parâmetro
-     *
-     * @param usuario
-     * @return
-     */
-    boolean existsByUsuario(Usuario usuario);
-
-    /**
-     * Método para retornar um escopo com o usuário passado por parâmetro
-     *
-     * @param usuario
-     * @return
-     */
-    List<Object> findByUsuario(Usuario usuario);
-
-    /**
      * Método para buscar um escopo a partir de um usuário, com paginação
      *
-     * @param usuario
-     * @param pageable
-     * @return
+     * @param usuario - usuário
+     * @param pageable - paginação
+     * @return - escopo
      */
     Page<Escopo> findByUsuario(Usuario usuario, Pageable pageable);
 
     /**
      * Método para listar um escopo a partir de um usuário e de um título, com paginação
      *
-     * @param usuario
-     * @param titulo
-     * @param pageable
-     * @return
+     * @param usuario - usuário
+     * @param titulo - título
+     * @param pageable - paginação
+     * @return - escopo
      */
     Page<Escopo> findByUsuarioAndTituloContaining(Usuario usuario, String titulo, Pageable pageable);
 
