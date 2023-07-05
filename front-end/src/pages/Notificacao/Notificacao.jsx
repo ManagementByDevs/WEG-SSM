@@ -587,7 +587,7 @@ const Notificacao = (props) => {
                           </Typography>
                           <Typography className="notificacao-table-row-td-action">
                             {row.visualizado ? (
-                              <Tooltip title={texts.login.marcarComoNaoLido}>
+                              <Tooltip title={texts.notificacao.marcarComoNaoLido}>
                                 <MarkEmailUnreadOutlinedIcon
                                   onClick={() => onReadOrUnreadClick(index)}
                                   className="cursor-pointer"
