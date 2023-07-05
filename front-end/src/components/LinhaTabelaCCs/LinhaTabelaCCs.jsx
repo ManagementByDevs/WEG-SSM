@@ -1,6 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { TableRow, Box, Tooltip, Input, InputAdornment } from "@mui/material";
+import {
+  TableRow,
+  Box,
+  Tooltip,
+  Input,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
@@ -13,7 +20,6 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 // Componente para criar uma linha da tabela de CCs
 const LinhaTabelaCCs = (props) => {
-
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -75,140 +81,114 @@ const LinhaTabelaCCs = (props) => {
 
   return (
     <TableRow className="border-b">
-      <td align="center" className="pb-5 relative">
-        <Box className="flex w-full justify-end absolute" sx={{ width: "98%" }}>
+      <td align="center" className="flex relative items-center">
+        <Box className="absolute right-2">
           <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
-            <DeleteOutlineOutlinedIcon
-              fontSize="medium"
-              className="mt-1 delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main", cursor: "pointer" }}
+            <IconButton
               onClick={() =>
                 props.deletarLinhaCCs(
                   props.dados.ccs[props.index].id,
                   props.index
                 )
               }
-            />
+              size="small"
+              color="primary"
+            >
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
           </Tooltip>
         </Box>
-        <Box
-          className="flex w-full justify-around pr-10 pl-4"
-          sx={{ marginTop: "2rem" }}
-        >
-          <Box
-            className="flex items-center justify-between border rounded drop-shadow-sm"
+        <Box className="w-full flex gap-2 p-5">
+          <Input
+            className="w-3/5 border-solid border pl-1 text-center"
             sx={{
-              width: "60%",
-              minWidth: "134px",
-              height: "2.4rem",
-              backgroundColor: corFundoTextArea,
+              borderLeft: "4px solid #00579d",
             }}
-          >
-            <Input
-              className="outline-none"
-              fontSize={FontConfig.medium}
-              placeholder={texts.linhaTabelaCCs.digiteCodigo}
-              size="small"
-              style={{
-                width: "95%",
-                backgroundColor: "transparent",
-                paddingLeft: "10px",
-              }}
-              value={props.dados.ccs[props.index].codigo || ""}
-              onChange={(e) => {
-                let aux = [...props.custos];
-                aux[props.indexCusto].ccs[props.index].codigo = e.target.value;
-                props.setCustos(aux);
-              }}
-            />
-            <Tooltip
-              className="hover:cursor-pointer"
-              title={texts.homeGerencia.gravarAudio}
-              onClick={() => {
-                startRecognition("codigoCcs");
-              }}
-            >
-              {escutar && localClique == "codigoCcs" ? (
-                <MicOutlinedIcon
-                  sx={{
-                    cursor: "pointer",
-                    color: "primary.main",
-                    fontSize: "1.3rem",
-                  }}
-                />
-              ) : (
-                <MicNoneOutlinedIcon
-                  sx={{
-                    cursor: "pointer",
-                    color: "text.secondary",
-                    fontSize: "1.3rem",
-                  }}
-                />
-              )}
-            </Tooltip>
-          </Box>
+            fontSize={FontConfig.medium}
+            placeholder={texts.linhaTabelaCCs.digiteCodigo}
+            value={props.dados.ccs[props.index].codigo || ""}
+            onChange={(e) => {
+              let aux = [...props.custos];
+              aux[props.indexCusto].ccs[props.index].codigo = e.target.value;
+              props.setCustos(aux);
+            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <Tooltip title={texts.homeGerencia.gravarAudio}>
+                  <IconButton
+                    onClick={() => {
+                      startRecognition("codigoCcs");
+                    }}
+                    size="small"
+                  >
+                    {escutar && localClique == "codigoCcs" ? (
+                      <MicOutlinedIcon
+                        sx={{
+                          color: "primary.main",
+                          fontSize: "1.3rem",
+                        }}
+                      />
+                    ) : (
+                      <MicNoneOutlinedIcon
+                        sx={{
+                          color: "text.secondary",
+                          fontSize: "1.3rem",
+                        }}
+                      />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              </InputAdornment>
+            }
+          />
 
-          <Box
-            className="flex items-center justify-between border rounded drop-shadow-sm"
+          <Input
+            className="border-solid border pl-1 text-center"
             sx={{
+              borderLeft: "4px solid #00579d",
               width: "32%",
-              minWidth: "73px",
-              backgroundColor: corFundoTextArea,
             }}
-          >
-            <Input
-              className="outline-none"
-              endAdornment={
-                <InputAdornment className="mb-1" position="end">
-                  %
-                </InputAdornment>
-              }
-              aria-describedby="standard-weight-helper-text"
-              fontSize={FontConfig.medium}
-              size="small"
-              style={{
-                width: "95%",
-                backgroundColor: "transparent",
-                padding: "0 10px",
-              }}
-              value={props.dados.ccs[props.index].porcentagem || ""}
-              onChange={(e) => {
-                if (!verificarCaracteres(e.target.value)) {
-                  if (e.target.value <= 100) {
-                    let aux = [...props.custos];
-                    aux[props.indexCusto].ccs[props.index].porcentagem =
-                      e.target.value;
-                    props.setCustos(aux);
-                  }
+            fontSize={FontConfig.medium}
+            value={props.dados.ccs[props.index].porcentagem || ""}
+            onChange={(e) => {
+              if (!verificarCaracteres(e.target.value)) {
+                if (e.target.value <= 100) {
+                  let aux = [...props.custos];
+                  aux[props.indexCusto].ccs[props.index].porcentagem =
+                    e.target.value;
+                  props.setCustos(aux);
                 }
-              }}
-            />
-            <Tooltip
-              className="hover:cursor-pointer"
-              title={texts.homeGerencia.gravarAudio}
-              onClick={() => {
-                startRecognition("porcentagemCcs");
-              }}
-            >
-              {escutar && localClique == "porcentagemCcs" ? (
-                <MicOutlinedIcon
-                  sx={{
-                    cursor: "pointer",
-                    color: "primary.main",
-                    fontSize: "1.3rem",
-                  }}
-                />
-              ) : (
-                <MicNoneOutlinedIcon
-                  sx={{
-                    cursor: "pointer",
-                    color: "text.secondary",
-                    fontSize: "1.3rem",
-                  }}
-                />
-              )}
-            </Tooltip>
-          </Box>
+              }
+            }}
+            endAdornment={
+              <InputAdornment position="end">
+                %
+                <Tooltip title={texts.homeGerencia.gravarAudio}>
+                  <IconButton
+                    onClick={() => {
+                      startRecognition("porcentagemCcs");
+                    }}
+                  >
+                    {escutar && localClique == "porcentagemCcs" ? (
+                      <MicOutlinedIcon
+                        sx={{
+                          color: "primary.main",
+                          fontSize: "1.3rem",
+                        }}
+                      />
+                    ) : (
+                      <MicNoneOutlinedIcon
+                        sx={{
+                          color: "text.secondary",
+                          fontSize: "1.3rem",
+                        }}
+                      />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              </InputAdornment>
+            }
+          />
         </Box>
       </td>
     </TableRow>

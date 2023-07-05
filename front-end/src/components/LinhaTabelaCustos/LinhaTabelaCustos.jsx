@@ -1,6 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { TableRow, Box, TextareaAutosize, Tooltip } from "@mui/material";
+import {
+  TableRow,
+  Box,
+  TextareaAutosize,
+  Tooltip,
+  Input,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
@@ -13,7 +21,6 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 // Componente para criar uma linha na tabela de custos
 const LinhaTabelaCustos = (props) => {
-
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -140,249 +147,211 @@ const LinhaTabelaCustos = (props) => {
   return (
     <TableRow className="border-b">
       <td align="center" className="pt-5 pb-5">
-        <Box
-          className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+        <Input
+          className="w-4/5 border-solid border-t border-r pl-1 text-center"
           sx={{
-            width: "80%",
-            backgroundColor: corFundoTextArea,
-            marginTop: "0.8rem",
+            borderLeft: "4px solid #00579d",
           }}
-        >
-          <TextareaAutosize
-            style={{
-              width: "100%",
-              resize: "none",
-              textAlign: "center",
-              backgroundColor: "transparent",
-            }}
-            fontSize={FontConfig.medium}
-            className="flex outline-none"
-            placeholder={texts.linhaTabelaCustos.digitePerfil}
-            value={props.dados.custos[props.index].perfilDespesa || ""}
-            onChange={(e) => {
+          fontSize={FontConfig.medium}
+          placeholder={texts.linhaTabelaCustos.digitePerfil}
+          value={props.dados.custos[props.index].perfilDespesa || ""}
+          onChange={(e) => {
+            let aux = [...props.custos];
+            aux[props.indexCusto].custos[props.index].perfilDespesa =
+              e.target.value;
+            props.setCustos(aux);
+          }}
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip title={texts.homeGerencia.gravarAudio}>
+                <IconButton
+                  onClick={() => {
+                    startRecognition("perfilDespesa");
+                  }}
+                  size="small"
+                >
+                  {escutar && localClique == "perfilDespesa" ? (
+                    <MicOutlinedIcon
+                      sx={{
+                        color: "primary.main",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  ) : (
+                    <MicNoneOutlinedIcon
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  )}
+                </IconButton>
+              </Tooltip>
+            </InputAdornment>
+          }
+        />
+      </td>
+      <td align="center" className="pt-5 pb-5">
+        <Input
+          className="w-3/5 border-solid border pl-1 text-center"
+          sx={{
+            borderLeft: "4px solid #00579d",
+          }}
+          fontSize={FontConfig.medium}
+          placeholder={texts.linhaTabelaCustos.digitePeriodo}
+          value={props.dados.custos[props.index].periodoExecucao || ""}
+          onChange={(e) => {
+            if (!verificarCaracteres(e.target.value)) {
               let aux = [...props.custos];
-              aux[props.indexCusto].custos[props.index].perfilDespesa =
+              aux[props.indexCusto].custos[props.index].periodoExecucao =
                 e.target.value;
               props.setCustos(aux);
-            }}
-          />
-          <Tooltip
-            className="hover:cursor-pointer"
-            title={texts.homeGerencia.gravarAudio}
-            onClick={() => {
-              startRecognition("perfilDespesa");
-            }}
-          >
-            {escutar && localClique == "perfilDespesa" ? (
-              <MicOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "primary.main",
-                  fontSize: "1.3rem",
-                }}
-              />
-            ) : (
-              <MicNoneOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "text.secondary",
-                  fontSize: "1.3rem",
-                }}
-              />
-            )}
-          </Tooltip>
-        </Box>
+            }
+          }}
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip title={texts.homeGerencia.gravarAudio}>
+                <IconButton
+                  onClick={() => {
+                    startRecognition("periodoExecucao");
+                  }}
+                  size="small"
+                >
+                  {escutar && localClique == "periodoExecucao" ? (
+                    <MicOutlinedIcon
+                      sx={{
+                        cursor: "pointer",
+                        color: "primary.main",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  ) : (
+                    <MicNoneOutlinedIcon
+                      sx={{
+                        cursor: "pointer",
+                        color: "text.secondary",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  )}
+                </IconButton>
+              </Tooltip>
+            </InputAdornment>
+          }
+        />
       </td>
       <td align="center" className="pt-5 pb-5">
-        <Box
-          className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+        <Input
+          className="w-3/5 border-solid border pl-1 text-center"
           sx={{
-            width: "95%",
-            minWidth: "155px",
-            backgroundColor: corFundoTextArea,
-            marginTop: "0.8rem",
+            borderLeft: "4px solid #00579d",
           }}
-        >
-          <TextareaAutosize
-            style={{
-              width: "95%",
-              resize: "none",
-              textAlign: "center",
-              backgroundColor: "transparent",
-            }}
-            fontSize={FontConfig.medium}
-            className="flex outline-none"
-            placeholder={texts.linhaTabelaCustos.digitePeriodo}
-            value={props.dados.custos[props.index].periodoExecucao || ""}
-            onChange={(e) => {
-              if (!verificarCaracteres(e.target.value)) {
-                let aux = [...props.custos];
-                aux[props.indexCusto].custos[props.index].periodoExecucao =
-                  e.target.value;
-                props.setCustos(aux);
-              }
-            }}
-          />
-          <Tooltip
-            className="hover:cursor-pointer"
-            title={texts.homeGerencia.gravarAudio}
-            onClick={() => {
-              startRecognition("periodoExecucao");
-            }}
-          >
-            {escutar && localClique == "periodoExecucao" ? (
-              <MicOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "primary.main",
-                  fontSize: "1.3rem",
-                }}
-              />
-            ) : (
-              <MicNoneOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "text.secondary",
-                  fontSize: "1.3rem",
-                }}
-              />
-            )}
-          </Tooltip>
-        </Box>
+          fontSize={FontConfig.medium}
+          placeholder={texts.linhaTabelaCustos.digiteHoras}
+          value={props.dados.custos[props.index].horas || ""}
+          onChange={(e) => {
+            if (!verificarCaracteres(e.target.value)) {
+              let aux = [...props.custos];
+              aux[props.indexCusto].custos[props.index].horas = e.target.value;
+              props.setCustos(aux);
+            }
+          }}
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip title={texts.homeGerencia.gravarAudio}>
+                <IconButton
+                  onClick={() => {
+                    startRecognition("horas");
+                  }}
+                  size="small"
+                >
+                  {escutar && localClique == "horas" ? (
+                    <MicOutlinedIcon
+                      sx={{
+                        color: "primary.main",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  ) : (
+                    <MicNoneOutlinedIcon
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  )}
+                </IconButton>
+              </Tooltip>
+            </InputAdornment>
+          }
+        />
       </td>
       <td align="center" className="pt-5 pb-5">
-        <Box
-          className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+        <Input
+          className="w-3/5 border-solid border pl-1 text-center"
           sx={{
-            width: "90%",
-            backgroundColor: corFundoTextArea,
-            marginTop: "0.8rem",
+            borderLeft: "4px solid #00579d",
           }}
-        >
-          <TextareaAutosize
-            style={{
-              width: "95%",
-              resize: "none",
-              textAlign: "center",
-              backgroundColor: "transparent",
-            }}
-            fontSize={FontConfig.medium}
-            className="flex outline-none"
-            placeholder={texts.linhaTabelaCustos.digiteHoras}
-            value={props.dados.custos[props.index].horas || ""}
-            onChange={(e) => {
-              if (!verificarCaracteres(e.target.value)) {
-                let aux = [...props.custos];
-                aux[props.indexCusto].custos[props.index].horas =
-                  e.target.value;
-                props.setCustos(aux);
-              }
-            }}
-          />
-          <Tooltip
-            className="hover:cursor-pointer"
-            title={texts.homeGerencia.gravarAudio}
-            onClick={() => {
-              startRecognition("horas");
-            }}
-          >
-            {escutar && localClique == "horas" ? (
-              <MicOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "primary.main",
-                  fontSize: "1.3rem",
-                }}
-              />
-            ) : (
-              <MicNoneOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "text.secondary",
-                  fontSize: "1.3rem",
-                }}
-              />
-            )}
-          </Tooltip>
-        </Box>
-      </td>
-      <td align="center" className="pt-5 pb-5">
-        <Box
-          className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          sx={{
-            width: "95%",
-            backgroundColor: corFundoTextArea,
-            marginTop: "0.8rem",
+          fontSize={FontConfig.medium}
+          placeholder={texts.linhaTabelaCustos.digiteValor}
+          value={props.dados.custos[props.index].valorHora || ""}
+          onChange={(e) => {
+            if (!verificarCaracteres(e.target.value)) {
+              let aux = [...props.custos];
+              aux[props.indexCusto].custos[props.index].valorHora =
+                e.target.value;
+              props.setCustos(aux);
+            }
           }}
-        >
-          <TextareaAutosize
-            style={{
-              width: "95%",
-              resize: "none",
-              textAlign: "center",
-              backgroundColor: "transparent",
-            }}
-            fontSize={FontConfig.medium}
-            className="flex outline-none"
-            placeholder={texts.linhaTabelaCustos.digiteValor}
-            value={props.dados.custos[props.index].valorHora || ""}
-            onChange={(e) => {
-              if (!verificarCaracteres(e.target.value)) {
-                let aux = [...props.custos];
-                aux[props.indexCusto].custos[props.index].valorHora =
-                  e.target.value;
-                props.setCustos(aux);
-              }
-            }}
-          />
-          <Tooltip
-            className="hover:cursor-pointer"
-            title={texts.homeGerencia.gravarAudio}
-            onClick={() => {
-              startRecognition("valorHora");
-            }}
-          >
-            {escutar && localClique == "valorHora" ? (
-              <MicOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "primary.main",
-                  fontSize: "1.3rem",
-                }}
-              />
-            ) : (
-              <MicNoneOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "text.secondary",
-                  fontSize: "1.3rem",
-                }}
-              />
-            )}
-          </Tooltip>
-        </Box>
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip title={texts.homeGerencia.gravarAudio}>
+                <IconButton
+                  onClick={() => {
+                    startRecognition("valorHora");
+                  }}
+                  size="small"
+                >
+                  {escutar && localClique == "valorHora" ? (
+                    <MicOutlinedIcon
+                      sx={{
+                        color: "primary.main",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  ) : (
+                    <MicNoneOutlinedIcon
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: "1.3rem",
+                      }}
+                    />
+                  )}
+                </IconButton>
+              </Tooltip>
+            </InputAdornment>
+          }
+        />
       </td>
-      <td className="relative">
-        <Box
-          className="flex w-full justify-end absolute"
-          sx={{ width: "98%", top: 0 }}
-        >
-          <Tooltip title={texts.linhaTabelaCustos.titleExcluirLinha}>
-            <DeleteOutlineOutlinedIcon
-              fontSize="medium"
-              className="mt-1 delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main", cursor: "pointer" }}
-              onClick={() =>
-                props.deletarLinhaCustos(
-                  props.dados.custos[props.index].id,
-                  props.index
-                )
-              }
-            />
-          </Tooltip>
-        </Box>
-        <Box className="flex justify-center mt-5">
+      <td>
+        <Box className="flex justify-center items-center relative">
           {props.dados.custos[props.index].total || ""}
+          <Box className="absolute right-2">
+            <Tooltip title={texts.linhaTabelaCustos.titleExcluirLinha}>
+              <IconButton
+                onClick={() =>
+                  props.deletarLinhaCustos(
+                    props.dados.custos[props.index].id,
+                    props.index
+                  )
+                }
+                size="small"
+                color="primary"
+              >
+                <DeleteOutlineOutlinedIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
       </td>
     </TableRow>

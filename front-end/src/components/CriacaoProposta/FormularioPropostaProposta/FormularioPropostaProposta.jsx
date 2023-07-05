@@ -276,11 +276,12 @@ const FormularioPropostaProposta = (props) => {
             <>
               <Box className="flex justify-center">
                 <Box
-                  className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+                  className="flex items-center justify-between border-solid border px-1 py-1.5"
                   sx={{
                     width: "100%;",
                     height: "54px",
                     backgroundColor: "background.default",
+                    borderLeft: "4px solid #00579D",
                   }}
                 >
                   <Box
@@ -301,31 +302,35 @@ const FormularioPropostaProposta = (props) => {
                       texts.formularioPropostaProposta.digiteTituloDaDemanda
                     }
                   />
-                  <Tooltip
-                    className="hover:cursor-pointer"
-                    title={texts.homeGerencia.gravarAudio}
-                    onClick={() => {
-                      startRecognition("titulo");
-                    }}
-                  >
-                    {escutar && localClique == "titulo" ? (
-                      <MicOutlinedIcon
-                        sx={{
-                          cursor: "pointer",
-                          color: "primary.main",
-                          fontSize: "2rem",
+                  <Box className="flex gap-1">
+                    <Divider orientation="vertical" flexItem />
+                    <Tooltip title={texts.homeGerencia.gravarAudio}>
+                      <IconButton
+                        onClick={() => {
+                          startRecognition("titulo");
                         }}
-                      />
-                    ) : (
-                      <MicNoneOutlinedIcon
-                        sx={{
-                          cursor: "pointer",
-                          color: "text.secondary",
-                          fontSize: "2rem",
-                        }}
-                      />
-                    )}
-                  </Tooltip>
+                        size="small"
+                      >
+                        {escutar && localClique == "titulo" ? (
+                          <MicOutlinedIcon
+                            sx={{
+                              cursor: "pointer",
+                              color: "primary.main",
+                              fontSize: "2rem",
+                            }}
+                          />
+                        ) : (
+                          <MicNoneOutlinedIcon
+                            sx={{
+                              cursor: "pointer",
+                              color: "text.secondary",
+                              fontSize: "2rem",
+                            }}
+                          />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                 </Box>
               </Box>
               <Divider />
@@ -459,9 +464,10 @@ const FormularioPropostaProposta = (props) => {
                   </Typography>
                 </Box>
                 <Box
-                  className="w-full flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+                  className="w-full flex items-center justify-between border-solid border px-1 py-1.5"
                   sx={{
                     backgroundColor: corFundoTextArea,
+                    borderLeft: "4px solid #00579d",
                   }}
                 >
                   <Box
@@ -507,7 +513,7 @@ const FormularioPropostaProposta = (props) => {
                 </Box>
               </Box>
               <Box
-                className="flex justify-evenly"
+                className="flex justify-between"
                 sx={{ marginTop: "15px", marginBottom: "10px" }}
               >
                 <TextField
@@ -569,7 +575,7 @@ const FormularioPropostaProposta = (props) => {
                 />
               </Box>
               <Box
-                className="flex justify-evenly"
+                className="flex justify-between"
                 sx={{ marginTop: "15px", marginBottom: "10px" }}
               >
                 <Autocomplete
@@ -658,7 +664,7 @@ const FormularioPropostaProposta = (props) => {
                 sx={{ marginTop: "15px", marginBottom: "10px" }}
               >
                 <Autocomplete
-                  sx={{ width: "45%", marginLeft: "3%" }}
+                  sx={{ width: "45%" }}
                   disablePortal
                   options={props.listaForuns}
                   value={props.dados.forum}
@@ -717,15 +723,10 @@ const FormularioPropostaProposta = (props) => {
                     {props.dados.anexo?.map((anexo, index) => (
                       <Paper
                         key={index}
-                        className="flex justify-between items-center"
-                        sx={{
-                          borderLeftWidth: "4px",
-                          borderLeftColor: "primary.main",
-                          borderLeftStyle: "solid",
-                          backgroundColor: "background.default",
-                          padding: "0.2rem 1rem",
-                        }}
                         elevation={0}
+                        className="flex justify-between items-center mt-2 px-2 border border-l-4"
+                        sx={{ borderLeftColor: "primary.main" }}
+                        square
                       >
                         <Typography
                           sx={{

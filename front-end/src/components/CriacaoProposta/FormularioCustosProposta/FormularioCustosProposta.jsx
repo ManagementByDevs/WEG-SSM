@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 import Custos from "../../Custos/Custos";
@@ -12,7 +12,6 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 // Etapa de criação de proposta para adicionar as tabelas de custos
 const FormularioCustosProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -101,8 +100,8 @@ const FormularioCustosProposta = (props) => {
 
   return (
     <Box className="flex flex-col">
-      <Box className="flex w-full justify-between mt-10 items-end">
-        <Box className="flex ml-10">
+      <Box className="flex w-full justify-between items-end mt-10 mb-2">
+        <Box className="flex">
           <Typography
             fontSize={FontConfig.medium}
             sx={{ marginRight: "8px" }}
@@ -150,6 +149,7 @@ const FormularioCustosProposta = (props) => {
         </Button>
       </Box>
       <Box>
+        <Divider />
         {props.custos?.map((custo, index) => {
           return (
             <Custos
