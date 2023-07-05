@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext } from "react";
 
-import { Box, Typography, Tooltip, Input } from "@mui/material";
+import { Box, Typography, Tooltip } from "@mui/material";
 
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
@@ -65,6 +65,7 @@ const InputComLabel = (props) => {
           className="flex items-center justify-between border-solid border border-l-4 px-1 py-1.5 drop-shadow-sm rounded"
           sx={{
             width: "100%",
+            height: "40px",
             backgroundColor: "background.default",
             borderLeftColor: "primary.main",
           }}
