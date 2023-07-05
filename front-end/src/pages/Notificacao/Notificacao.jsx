@@ -47,8 +47,7 @@ const Notificacao = (props) => {
   const [openModalConfirmDelete, setOpenModalConfirmDelete] = useState(false);
 
   /** Modal de confirmação de exclusão múltipla */
-  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] =
-    useState(false);
+  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] = useState(false);
 
   /** UseState para saber qual notificação deletar ao usar o botão de delete individual */
   const [indexDelete, setIndexDelete] = useState(null);
@@ -80,6 +79,45 @@ const Notificacao = (props) => {
     tipo: "sucesso",
     mensagem: "sfd",
   });
+
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  /** Passos do tour de notificações */
+  const stepsTour = [
+    {
+      selector: "#primeiro",
+      content: texts.notificacaoComponente.tour.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: texts.notificacaoComponente.tour.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: texts.notificacaoComponente.tour.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.notificacaoComponente.tour.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ]
 
   /** useEffect utilizado para buscar o usuário */
   useEffect(() => {
@@ -343,44 +381,6 @@ const Notificacao = (props) => {
     buscarNotificacoes();
   };
 
-  /** useState para abrir e fechar o tour */
-  const [isTourOpen, setIsTourOpen] = useState(false);
-
-  const stepsTour = [
-    {
-      selector: "#primeiro",
-      content: texts.notificacaoComponente.tour.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundo",
-      content: texts.notificacaoComponente.tour.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiro",
-      content: texts.notificacaoComponente.tour.tour3,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quarto",
-      content: texts.notificacaoComponente.tour.tour4,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ]
-
   return (
     <FundoComHeader>
       {/* Tour de ajuda para as notificações*/}
@@ -392,8 +392,8 @@ const Notificacao = (props) => {
         rounded={10}
         showCloseButton={false}
       />
-
       <Ajuda onClick={() => setIsTourOpen(true)} />
+
       {/* Feedbacks do sistema */}
       <Feedback
         open={feedback.visibilidade}
