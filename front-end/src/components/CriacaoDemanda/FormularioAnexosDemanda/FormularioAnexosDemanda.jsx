@@ -25,7 +25,7 @@ const FormularioAnexosDemanda = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Variável usada para referência da área de "soltar" arquivos */
   const areaArquivos = useRef(null);

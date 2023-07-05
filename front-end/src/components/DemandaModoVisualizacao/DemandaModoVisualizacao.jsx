@@ -72,7 +72,9 @@ const DemandaTable = ({
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   // useState para abrir o modal de motivo recusa
   const [abrirModal, setOpenModal] = useState(false);
@@ -152,6 +154,8 @@ const DemandaTable = ({
                   if (lendoTexto) {
                     e.preventDefault();
                     lerTexto(texts.demandaModoVisualizacao.codigo);
+                  } else if (librasAtivo) {
+                    e.stopPropagation();
                   }
                 }}
               >
@@ -166,6 +170,8 @@ const DemandaTable = ({
                   if (lendoTexto) {
                     e.preventDefault();
                     lerTexto(texts.demandaModoVisualizacao.titulo);
+                  } else if (librasAtivo) {
+                    e.stopPropagation();
                   }
                 }}
               >
@@ -181,6 +187,8 @@ const DemandaTable = ({
                     if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(texts.demandaModoVisualizacao.statusString);
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -196,6 +204,8 @@ const DemandaTable = ({
                   if (lendoTexto) {
                     e.preventDefault();
                     lerTexto(texts.demandaModoVisualizacao.data);
+                  } else if (librasAtivo) {
+                    e.stopPropagation();
                   }
                 }}
               >
@@ -215,7 +225,7 @@ const DemandaTable = ({
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
               onClick={() => {
-                if (!lendoTexto) {
+                if (!lendoTexto && !librasAtivo) {
                   onDemandaClick(row);
                 }
               }}
@@ -229,6 +239,8 @@ const DemandaTable = ({
                     if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(row.id);
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -244,6 +256,8 @@ const DemandaTable = ({
                     if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(row.titulo);
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -275,6 +289,8 @@ const DemandaTable = ({
                           if (lendoTexto) {
                             e.preventDefault();
                             lerTexto(formatarNomeStatus(row.status));
+                          } else if (librasAtivo) {
+                            e.stopPropagation();
                           }
                         }}
                       >
@@ -289,6 +305,7 @@ const DemandaTable = ({
                             e.stopPropagation();
                             if (lendoTexto) {
                               lerTexto(texts.demandaModoVisualizacao.motivo);
+                            } else if (librasAtivo) {
                             } else {
                               abrirModalMotivoRecusa(row);
                             }
@@ -324,6 +341,8 @@ const DemandaTable = ({
                           texts.linguagem
                         )
                       );
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >

@@ -31,7 +31,7 @@ export default function ItemOrdenacao(props) {
     const { texts } = useContext(TextLanguageContext);
   
     /** Context para ler o texto da tela */
-    const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+    const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
   
     // useState utilizado para abrir o modal
     const [open, setOpen] = useState(false);

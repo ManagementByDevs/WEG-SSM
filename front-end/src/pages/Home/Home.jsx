@@ -42,7 +42,7 @@ const Home = () => {
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
   const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
@@ -762,8 +762,9 @@ const Home = () => {
                   variant="contained"
                   disableElevation
                   onClick={() => {
-                    if (!lendoTexto) {
+                    if (!lendoTexto && !librasAtivo) {
                       navigate("/criar-demanda");
+                    } else if (librasAtivo) {
                     } else {
                       lerTexto(texts.home.criarDemanda);
                     }

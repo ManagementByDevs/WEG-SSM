@@ -12,7 +12,6 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 // Etapa de criação de proposta para adicionar as tabelas de custos
 const FormularioCustosProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -20,7 +19,9 @@ const FormularioCustosProposta = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   // UseState para armazenar as horas totais dos custos
   const [horasTotais, setHorasTotais] = useState(0);
@@ -76,6 +77,8 @@ const FormularioCustosProposta = (props) => {
   const criarTabelaCusto = () => {
     if (lendoTexto) {
       lerTexto(texts.formularioCustosProposta.adicionarCustos);
+    } else if (librasAtivo) {
+      return;
     } else {
       CustosService.postTabela({
         custos: [

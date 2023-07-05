@@ -104,7 +104,7 @@ const DemandaTable = ({
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   // Controla o estado do modal de histórico da demanda
   const [modalHistorico, setModalHistorico] = useState(false);
@@ -237,6 +237,8 @@ const DemandaTable = ({
                       } else {
                         lerTexto("PPM");
                       }
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -253,6 +255,8 @@ const DemandaTable = ({
                     if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(texts.demandaGerenciaModoVisualizacao.titulo);
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -269,6 +273,8 @@ const DemandaTable = ({
                       lerTexto(
                         texts.demandaGerenciaModoVisualizacao.solicitante
                       );
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -285,6 +291,8 @@ const DemandaTable = ({
                       lerTexto(
                         texts.demandaGerenciaModoVisualizacao.departamento
                       );
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -301,6 +309,8 @@ const DemandaTable = ({
                       lerTexto(
                         texts.demandaGerenciaModoVisualizacao.gerenteResponsavel
                       );
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -315,6 +325,8 @@ const DemandaTable = ({
                     if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(texts.demandaGerenciaModoVisualizacao.status);
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -340,7 +352,7 @@ const DemandaTable = ({
                   width: "100%",
                 }}
                 onClick={() => {
-                  if (!lendoTexto) {
+                  if (!lendoTexto && !librasAtivo) {
                     onDemandaClick(row);
                   }
                 }}
@@ -361,6 +373,8 @@ const DemandaTable = ({
                         } else {
                           lerTexto(row.codigoPPM);
                         }
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -379,6 +393,8 @@ const DemandaTable = ({
                       if (lendoTexto) {
                         e.preventDefault();
                         lerTexto(row.titulo);
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -397,6 +413,8 @@ const DemandaTable = ({
                       if (lendoTexto) {
                         e.preventDefault();
                         lerTexto(row.solicitante.nome);
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -425,6 +443,8 @@ const DemandaTable = ({
                             texts.demandaGerenciaModoVisualizacao.naoAtribuido
                           );
                         }
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -455,6 +475,8 @@ const DemandaTable = ({
                             texts.demandaGerenciaModoVisualizacao.naoAtribuido
                           );
                         }
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -486,6 +508,8 @@ const DemandaTable = ({
                           if (lendoTexto) {
                             e.preventDefault();
                             lerTexto(formatarNomeStatus(row.status));
+                          } else if (librasAtivo) {
+                            e.stopPropagation();
                           }
                         }}
                       >

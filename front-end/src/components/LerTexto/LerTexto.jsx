@@ -10,7 +10,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 const LerTexto = () => {
 
   /**  Variável utilizada para ler o texto */
-  const { lendoTexto, setLendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, setLendoTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Variável utilizada pra setar a cor do botao */
   const [corButton, setCorButton] = useState("linear-gradient(to right, #0083B4, #00579D)");
@@ -34,11 +34,14 @@ const LerTexto = () => {
       <Box
         className="flex items-center justify-center cursor-pointer"
         sx={{
-          width: "2.35rem",
-          height: "2.35rem",
+          minWidth: "40px",
+          minHeight: "40px",
           borderRadius: "30%",
           background: corButton,
-          zIndex: 9999999,
+          right: "0",
+          bottom: "8.5rem",
+          position: "fixed",
+          zIndex: 999999,
         }}
         onClick={lerTexto}
       >

@@ -11,7 +11,6 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 /** Modal padrão usado para confirmação de ações (ex: criação de demanda, aprovação de demanda) */
 const ModalConfirmacao = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -19,7 +18,9 @@ const ModalConfirmacao = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   // Context para ler o texto da tela
-  const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   /** Função para retornar um tipo de mensagem no modal */
   const mensagemModal = (tipoMensagem) => {
@@ -74,7 +75,9 @@ const ModalConfirmacao = (props) => {
   return (
     <Modal
       open={props.open}
-      onClose={() => { props.setOpen(false);}}
+      onClose={() => {
+        props.setOpen(false);
+      }}
       closeAfterTransition
     >
       <Fade in={props.open}>
@@ -110,6 +113,7 @@ const ModalConfirmacao = (props) => {
                   if (props.onCancelClick) {
                     props.onCancelClick(true);
                   }
+                } else if (librasAtivo) {
                 } else {
                   lerTexto(texts.modalConfirmacao.cancelar);
                 }
@@ -134,6 +138,7 @@ const ModalConfirmacao = (props) => {
                 if (!lendoTexto) {
                   props.setOpen(false);
                   props.onConfirmClick(false);
+                } else if (librasAtivo) {
                 } else {
                   lerTexto(mensagemBotao(props.textoBotao));
                 }

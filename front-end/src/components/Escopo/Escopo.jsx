@@ -10,7 +10,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente para mostrar os dados do escopo
 const Escopo = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -18,7 +17,9 @@ const Escopo = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   /** Variável utilizada para armazenar o valor em html do campo */
   const propostaEscopo = useRef(null);
@@ -56,6 +57,8 @@ const Escopo = (props) => {
             if (lendoTexto) {
               e.stopPropagation();
               lerTexto(props.escopo.titulo);
+            } else if (librasAtivo) {
+              e.stopPropagation();
             }
           }}
         >
@@ -82,6 +85,8 @@ const Escopo = (props) => {
               if (lendoTexto) {
                 e.stopPropagation();
                 lerTexto(props.escopo.porcentagem);
+              } else if (librasAtivo) {
+                e.stopPropagation();
               }
             }}
           >
@@ -101,6 +106,8 @@ const Escopo = (props) => {
               if (lendoTexto) {
                 e.stopPropagation();
                 lerTexto(getPropostaFomartted(props.escopo.proposta));
+              } else if (librasAtivo) {
+                e.stopPropagation();
               }
             }}
           >

@@ -55,7 +55,7 @@ const DetalhesPauta = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Navigate utilizado para navegar para uma determianda página */
   const navigate = useNavigate();
@@ -183,7 +183,7 @@ const DetalhesPauta = (props) => {
 
   /** Função para passar para a próxima proposta */
   const proximo = () => {
-    if (!lendoTexto) {
+    if (!lendoTexto && !librasAtivo) {
       if (indexProposta == listaProposta.length - 1) {
         setBotaoProximo(false);
       } else {
@@ -191,6 +191,7 @@ const DetalhesPauta = (props) => {
         setDadosProposta(pauta.propostas[indexProposta + 1]);
         setIndexProposta(indexProposta + 1);
       }
+    } else if (librasAtivo) {
     } else {
       lerTexto(texts.detalhesPauta.proximo);
     }
@@ -723,6 +724,7 @@ const DetalhesPauta = (props) => {
                           onClick={() => {
                             if (lendoTexto) {
                               lerTexto(proposta.titulo);
+                            } else if (librasAtivo) {
                             } else {
                               onClickProposta(index);
                             }

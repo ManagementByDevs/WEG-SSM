@@ -76,7 +76,7 @@ const EscopoTable = ({
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   // Variável para controlar a abertura do modal de confirmação de remoção do escopo
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
@@ -185,6 +185,8 @@ const EscopoTable = ({
                     if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(calculaPorcentagem(row));
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -199,6 +201,8 @@ const EscopoTable = ({
                     if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(row.titulo);
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >

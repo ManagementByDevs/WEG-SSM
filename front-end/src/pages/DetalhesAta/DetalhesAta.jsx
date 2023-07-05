@@ -52,7 +52,9 @@ const DetalhesAta = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   /** Navigate e location utilizados para verificar state passado por parametro para determinada verificação */
   const navigate = useNavigate();
@@ -161,7 +163,7 @@ const DetalhesAta = (props) => {
 
   /** Função para voltar para uma proposta */
   const voltar = () => {
-    if (!lendoTexto) {
+    if (!lendoTexto && !librasAtivo) {
       if (indexProposta <= 0) {
         setProposta(false);
         setIndexProposta(-1);
@@ -170,6 +172,7 @@ const DetalhesAta = (props) => {
         setDadosProposta(ata.propostas[indexProposta - 1]);
         setIndexProposta(indexProposta - 1);
       }
+    } else if (librasAtivo) {
     } else {
       lerTexto(texts.detalhesAta.voltar);
     }
@@ -177,13 +180,14 @@ const DetalhesAta = (props) => {
 
   /** Função para passar para a próxima proposta */
   const proximo = () => {
-    if (!lendoTexto) {
+    if (!lendoTexto && !librasAtivo) {
       if (indexProposta == ata.propostas.length - 1) {
       } else {
         setProposta(false);
         setDadosProposta(ata.propostas[indexProposta + 1]);
         setIndexProposta(indexProposta + 1);
       }
+    } else if (librasAtivo) {
     } else {
       lerTexto(texts.detalhesAta.proximo);
     }
@@ -637,6 +641,7 @@ const DetalhesAta = (props) => {
                         onClick={() => {
                           if (lendoTexto) {
                             lerTexto(proposta.titulo);
+                          } else if (librasAtivo) {
                           } else {
                             onClickProposta(index);
                           }

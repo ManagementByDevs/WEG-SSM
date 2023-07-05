@@ -31,7 +31,9 @@ const Demanda = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   // Variável para obter o usuário logado
   const [user] = useState(UsuarioService.getUserCookies());
@@ -160,15 +162,12 @@ const Demanda = (props) => {
           "&:hover": { backgroundColor: "hover.main" },
           borderColor: "primary.main",
           minWidth: "540px",
-          minHeight: "8rem",
+          height: "8.5rem",
           cursor: "pointer",
         }}
         className={`flex flex-col text-justify justify-between border-t-4 pt-2 pb-1 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200`}
       >
-        <Box
-          className={`flex justify-between`}
-          sx={{ marginBottom: "1%" }}
-        >
+        <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
           {/* Título da demanda */}
           <Typography
             className="overflow-hidden text-ellipsis whitespace-nowrap"
@@ -233,7 +232,7 @@ const Demanda = (props) => {
             </Box>
           )}
         </Box>
-        <Box className="flex items-start" sx={{height: "2.5rem"}}>
+        <Box className="flex items-start" sx={{ height: "2.5rem" }}>
           {/* Proposta da demanda */}
           <Typography
             gutterBottom
@@ -263,7 +262,7 @@ const Demanda = (props) => {
           CookieService.getCookie("jwt").sub ? (
             <Typography
               fontSize={FontConfig?.default}
-              sx={{ fontWeight: "600", cursor: "default", position: "absolute", right: "0", bottom: "0" }}
+              sx={{ fontWeight: "600", cursor: "default" }}
               color="text.primary"
               onClick={(e) => {
                 if (lendoTexto) {
@@ -282,8 +281,9 @@ const Demanda = (props) => {
               <IconButton
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (!lendoTexto) {
+                  if (!lendoTexto && !librasAtivo) {
                     setModalMotivoRecusa(true);
+                  } else if (librasAtivo) {
                   } else {
                     lerTexto(texts.demanda.motivo);
                   }
