@@ -345,7 +345,7 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
       sx={{
         display: "grid",
         gap: "1rem",
-        gridTemplateColumns: "repeat(auto-fit, minmax(560px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(570px, 1fr))",
       }}
     >
       {listaDemandas?.map((e, index) => (

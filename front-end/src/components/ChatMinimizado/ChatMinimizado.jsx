@@ -192,31 +192,6 @@ const ChatMinimizado = () => {
     }
   }, [stompClient, idChat]);
 
-  /** useEffect utilizado para pesquisa de chats */
-  useEffect(() => {
-    let listaChatsAux = listaChats.filter((chat) => {
-      /** Pesquisa por código PPM */
-      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
-        return true;
-      }
-
-      /** Pesquisa pelo título da proposta */
-      if (
-        chat.idProposta.titulo
-          .toLowerCase()
-          .includes(pesquisaContato.toLowerCase())
-      ) {
-        return true;
-      }
-
-      /** Pesquisa pelo nome do contato */
-      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
-        return true;
-      }
-    });
-    setResultadosContato([...listaChatsAux]);
-  }, [pesquisaContato, listaChats, idChat]);
-
   /** useEffect utilizado para colocar scroll no chat */
   useEffect(() => {
     setBuscandoMensagens(false);

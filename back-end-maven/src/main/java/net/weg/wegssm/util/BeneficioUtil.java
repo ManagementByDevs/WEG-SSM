@@ -25,14 +25,6 @@ public class BeneficioUtil {
         }
     }
 
-    public Beneficio convertJsonToModelDirect(String beneficioJSON) {
-        try {
-            return this.objectMapper.readValue(beneficioJSON, Beneficio.class);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private Beneficio convertDTOToModel(@Valid BeneficioDTO beneficioDTO) {
         return this.objectMapper.convertValue(beneficioDTO, Beneficio.class);
     }

@@ -278,7 +278,7 @@ const Chat = () => {
     }
   }, [stompClient, idChat]);
 
-  /** useEffect para armazenar o contato selecionado */
+  /** useEffect utilizado para filtragem dos chats */
   useEffect(() => {
     let listaChatsAux = listaChats.filter((chat) => {
       let demanda = chat.idProposta ? chat.idProposta : chat.idDemanda;

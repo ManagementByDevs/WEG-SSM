@@ -40,14 +40,6 @@ public class PropostaUtil {
         }
     }
 
-    public Proposta convertJsonToModelDirect(String propostaJSON) {
-        try {
-            return this.objectMapper.readValue(propostaJSON, Proposta.class);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private Proposta convertDTOToModel(@Valid PropostaDTO propostaDTO) {
         return this.objectMapper.convertValue(propostaDTO, Proposta.class);
     }
