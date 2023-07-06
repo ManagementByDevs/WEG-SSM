@@ -55,16 +55,13 @@ const HomeGerencia = () => {
   const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, palavrasJuntas } = useContext(
-    SpeechRecognitionContext
-  );
+  const { startRecognition, escutar, palavrasJuntas } = useContext(SpeechRecognitionContext);
 
   /** Variável para determinar se a tour de demandas está aberta */
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
 
   /** Variável para determinar se a tour de criar proposta está aberta */
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
-    useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
 
   /** Variável para determinar se a tour de propostas está aberta */
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
@@ -148,7 +145,6 @@ const HomeGerencia = () => {
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
   /** Valor do input de pesquisa por título */
-  // const [valorPesquisa, setValorPesquisa] = useState("");
   let valorPesquisa = "";
 
   /** Variável de referência ao input de pesquisa */
@@ -170,7 +166,6 @@ const HomeGerencia = () => {
     tamanho: "",
     gerente: null,
     departamento: "",
-    id: null,
     codigoPPM: null,
     analista: null,
     presenteEm: "",
@@ -218,15 +213,13 @@ const HomeGerencia = () => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] =
-    useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
 
   /** Variável para o feedback de demanda aceita */
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
 
   /** Variável para o feedback de demanda devolvida */
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
-    useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
 
   /** Variável para o feedback de demanda recusada */
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
@@ -241,15 +234,13 @@ const HomeGerencia = () => {
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   /** Feedback propostas atualizadas */
-  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] =
-    useState(false);
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
 
   /** Feedback deletar pauta */
   const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
 
   /** Feedback atualizar proposta */
-  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] =
-    useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
 
   /** Feedback de demanda criada */
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
@@ -266,8 +257,8 @@ const HomeGerencia = () => {
   /** Feedback utilizado quando não há dados para realizar o download do excel */
   const [feedbackSemDadosExcel, setFeedbackSemDadosExcel] = useState(false);
 
-  /** Variável para verificação se é do tipo GERENTE */
-  const isGerente = !(usuario.tipoUsuario == "GERENTE");
+  /** Variável para verificação se o usuário logado é do tipo GERENTE */
+  const usuarioGerente = usuario.tipoUsuario == "GERENTE";
 
   /** Tour de ajuda das "Minhas Demandas" */
   const stepsMinhasDemandas = [
@@ -478,7 +469,7 @@ const HomeGerencia = () => {
       departamento: null,
       analista: null,
       presenteEm: null,
-      status: null,
+      status: null
     };
 
     if (filtrosAtuais.solicitante) {
@@ -1450,7 +1441,7 @@ const HomeGerencia = () => {
                     }}
                   />
 
-                  {isGerente && (
+                  {!usuarioGerente && (
                     <Tab
                       sx={{
                         color: "text.secondary",
@@ -1464,7 +1455,7 @@ const HomeGerencia = () => {
                     />
                   )}
 
-                  {isGerente && (
+                  {!usuarioGerente && (
                     <Tab
                       sx={{
                         color: "text.secondary",
@@ -1478,7 +1469,7 @@ const HomeGerencia = () => {
                     />
                   )}
 
-                  {isGerente && (
+                  {!usuarioGerente && (
                     <Tab
                       sx={{
                         color: "text.secondary",
@@ -1492,7 +1483,7 @@ const HomeGerencia = () => {
                     />
                   )}
 
-                  {isGerente && (
+                  {!usuarioGerente && (
                     <Tab
                       sx={{
                         color: "text.secondary",
@@ -1854,7 +1845,7 @@ const HomeGerencia = () => {
                       )}
                     </TabPanel>
                   </Box>
-                  {isGerente && (
+                  {!usuarioGerente && (
                     <>
                       <TabPanel
                         sx={{ padding: 0 }}

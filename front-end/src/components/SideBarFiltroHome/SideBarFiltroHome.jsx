@@ -1,14 +1,5 @@
-import React, { useContext, useState } from "react";
-import {
-  List,
-  Typography,
-  Divider,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-  Box,
-} from "@mui/material";
+import React, { useContext } from "react";
+import { List, Typography, Divider, InputLabel, MenuItem, FormControl, Select, Box, Button } from "@mui/material";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -16,45 +7,37 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 
-import UsuarioService from "../../service/usuarioService";
-
 import SideBarOrdenacao from "../SideBarOrdenacao/SideBarOrdenacao";
 
-export default function SliderBar(props) {
-  // Context para alterar a linguagem do sistema
+/** Barra lateral de filtragem e ordenação das demandas, usada na Página Inicial do Solicitante */
+const SliderBar = (props) => {
+
+  /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
-  // Array com as opções de filtro
+  /** Lista com todas as opções disponíveis de ordenação */
   const opcoesOrdenar = [
     {
       id: 1,
       tipo: texts.sideBarFiltro.titulo,
     },
     {
-      id: 2,
-      tipo: texts.sideBarFiltro.numeroSequencial,
-    },
-    {
       id: 3,
       tipo: texts.sideBarFiltro.score,
     },
     {
-      id: 4,
-      tipo: texts.sideBarFiltro.dataReuniao,
-    },
-    {
       id: 5,
       tipo: texts.sideBarFiltro.dataDeCriacao,
-    },
+    }
   ];
 
-  // Array com as opções de filtro
+  /** Lista com as opções de filtragem */
   const opcoesFiltrar = [
     {
       id: 1,
@@ -92,8 +75,8 @@ export default function SliderBar(props) {
             <Input
               key={index}
               opcao={opcao}
-              listaFiltros={props.listaFiltros}
-              setListaFiltros={props.setListaFiltros}
+              statusFiltroAtual={props.statusFiltroAtual}
+              setStatusFiltroAtual={props.setStatusFiltroAtual}
             />
           ) : (
             <Box key={index} className="flex flex-col w-full items-center my-3">
@@ -131,157 +114,50 @@ export default function SliderBar(props) {
       </Box>
       <Box>
         {opcoesOrdenar.map((opcao, index) =>
-          props.valorAba < 4 && opcao.id != 4 && opcao.id != 2 ? (
-            <SideBarOrdenacao
-              key={index}
-              opcao={opcao}
-              ordenacaoTitulo={props.ordenacaoTitulo}
-              setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-              ordenacaoNum={props.ordenacaoNum}
-              setOrdenacaoNum={props.setOrdenacaoNum}
-              ordenacaoScore={props.ordenacaoScore}
-              setOrdenacaoScore={props.setOrdenacaoScore}
-              ordenacaoDate={props.ordenacaoDate}
-              setOrdenacaoDate={props.setOrdenacaoDate}
-              valorAba={props.valorAba}
-            />
-          ) : props.valorAba == 4 && opcao.id != 4 ? (
-            <SideBarOrdenacao
-              opcao={opcao}
-              key={index}
-              ordenacaoTitulo={props.ordenacaoTitulo}
-              setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-              ordenacaoNum={props.ordenacaoNum}
-              setOrdenacaoNum={props.setOrdenacaoNum}
-              ordenacaoScore={props.ordenacaoScore}
-              setOrdenacaoScore={props.setOrdenacaoScore}
-              ordenacaoDate={props.ordenacaoDate}
-              setOrdenacaoDate={props.setOrdenacaoDate}
-              valorAba={props.valorAba}
-            />
-          ) : (
-            props.valorAba > 4 &&
-            opcao.id != 1 && (
-              <SideBarOrdenacao
-                opcao={opcao}
-                key={index}
-                ordenacaoTitulo={props.ordenacaoTitulo}
-                setOrdenacaoTitulo={props.setOrdenacaoTitulo}
-                ordenacaoNum={props.ordenacaoNum}
-                setOrdenacaoNum={props.setOrdenacaoNum}
-                ordenacaoScore={props.ordenacaoScore}
-                setOrdenacaoScore={props.setOrdenacaoScore}
-                ordenacaoDate={props.ordenacaoDate}
-                setOrdenacaoDate={props.setOrdenacaoDate}
-                valorAba={props.valorAba}
-              />
-            )
-          )
+          <SideBarOrdenacao
+            key={index}
+            opcao={opcao}
+            ordenacaoTitulo={props.ordenacaoTitulo}
+            setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+            ordenacaoNum={props.ordenacaoNum}
+            setOrdenacaoNum={props.setOrdenacaoNum}
+            ordenacaoScore={props.ordenacaoScore}
+            setOrdenacaoScore={props.setOrdenacaoScore}
+            ordenacaoDate={props.ordenacaoDate}
+            setOrdenacaoDate={props.setOrdenacaoDate}
+            valorAba={props.valorAba}
+          />
         )}
+      </Box>
+      <Box className="mt-4 flex justify-center">
+        <Button
+          id="terceiroDemandas"
+          className="flex"
+          sx={{
+            backgroundColor: "primary.main",
+            color: "text.white",
+            fontSize: FontConfig.default,
+          }}
+          onClick={props.limparFiltro}
+          variant="contained"
+          disableElevation
+        >
+          {texts.sideBarFiltro.limparFilros}
+        </Button>
       </Box>
     </List>
   );
 }
 
-function Input(props) {
-  // Context para alterar a linguagem do sistema
-  const { texts } = useContext(TextLanguageContext);
+/** Input para o filtro de "status" na SideBarFiltroHome */
+const Input = (props) => {
 
-  const [status, setStatus] = useState("");
+  /** Context para alterar a linguagem do sistema */
+  const { texts } = useContext(TextLanguageContext);
 
   /** Função para atualizar os filtros quando um status for selecionado */
   const selecionarStatus = (event) => {
-    setStatus(event.target.value);
-    switch (event.target.value) {
-      case "Aprovado":
-        props.setListaFiltros([
-          !props.listaFiltros[0],
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-        ]);
-        break;
-      case "Reprovado":
-        props.setListaFiltros([
-          false,
-          !props.listaFiltros[1],
-          false,
-          false,
-          false,
-          false,
-          false,
-        ]);
-        break;
-      case "Aguardando Edição":
-        props.setListaFiltros([
-          false,
-          false,
-          !props.listaFiltros[2],
-          false,
-          false,
-          false,
-          false,
-        ]);
-        break;
-      case "Aguardando Revisão":
-        props.setListaFiltros([
-          false,
-          false,
-          false,
-          !props.listaFiltros[3],
-          false,
-          false,
-          false,
-        ]);
-        break;
-      case "Em Aprovação":
-        props.setListaFiltros([
-          false,
-          false,
-          false,
-          false,
-          !props.listaFiltros[4],
-          false,
-          false,
-        ]);
-        break;
-      case "Em Andamento":
-        props.setListaFiltros([
-          false,
-          false,
-          false,
-          false,
-          false,
-          !props.listaFiltros[5],
-          false,
-        ]);
-        break;
-      case "Em Desenvolvimento":
-        props.setListaFiltros([
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          !props.listaFiltros[6],
-        ]);
-        break;
-      default:
-        props.setListaFiltros([
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-        ]);
-        break;
-    }
+    props.setStatusFiltroAtual(event.target?.value || "");
   };
 
   return (
@@ -294,30 +170,32 @@ function Input(props) {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={status}
+          value={props.statusFiltroAtual}
           label={"Icon" + texts.sideBarFiltro.status}
           onChange={selecionarStatus}
         >
           <MenuItem selected value={""}>
             {texts.sideBarFiltro.semFiltro}
           </MenuItem>
-          <MenuItem value={"Aprovado"}>{texts.sideBarFiltro.aprovada}</MenuItem>
-          <MenuItem value={"Reprovado"}>
+          <MenuItem value={"ASSESSMENT"}>
+            {texts.sideBarFiltro.aprovada}
+          </MenuItem>
+          <MenuItem value={"CANCELLED"}>
             {texts.sideBarFiltro.reprovada}
           </MenuItem>
-          <MenuItem value={"Aguardando Edição"}>
+          <MenuItem value={"BACKLOG_EDICAO"}>
             {texts.sideBarFiltro.aguardandoEdicao}
           </MenuItem>
-          <MenuItem value={"Aguardando Revisão"}>
+          <MenuItem value={"BACKLOG_REVISAO"}>
             {texts.sideBarFiltro.aguardandoRevisao}
           </MenuItem>
-          <MenuItem value={"Em Aprovação"}>
+          <MenuItem value={"BACKLOG_APROVACAO"}>
             {texts.sideBarFiltro.emAprovacao}
           </MenuItem>
-          <MenuItem value={"Em Andamento"}>
+          <MenuItem value={"ASSESSMENT_APROVACAO"}>
             {texts.sideBarFiltro.emAndamento}
           </MenuItem>
-          <MenuItem value={"Em Desenvolvimento"}>
+          <MenuItem value={"DONE"}>
             {texts.sideBarFiltro.emDesenvolvimento}
           </MenuItem>
         </Select>
@@ -325,3 +203,5 @@ function Input(props) {
     </Box>
   );
 }
+
+export default SliderBar;

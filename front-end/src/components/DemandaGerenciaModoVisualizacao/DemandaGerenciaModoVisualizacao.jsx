@@ -522,12 +522,12 @@ const DemandaTable = ({
                         {row.presenteEm == "Pauta" ? (
                           <Box title="Em pauta">
                             <ContentPasteOutlinedIcon
-                              sx={{ color: "icon.main" }}
+                              sx={{ color: "text.secondary" }}
                             />
                           </Box>
                         ) : (
                           <Box title="Em ata">
-                            <BeenhereOutlinedIcon sx={{ color: "icon.main" }} />
+                            <BeenhereOutlinedIcon sx={{ color: "text.secondary" }} />
                           </Box>
                         )}
                       </Box>

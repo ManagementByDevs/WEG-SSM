@@ -145,7 +145,7 @@ const App = () => {
   );
 
   useEffect(() => {
-    if(librasAtivo) {
+    if (librasAtivo) {
       setLendoTexto(false);
     }
   }, [librasAtivo]);
@@ -166,67 +166,79 @@ const App = () => {
             <WebSocketService>
               <SpeechRecognitionService>
                 <SpeechSynthesisContext.Provider value={speechSynthesis}>
-                  <Router>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "start",
-                        alignItems: "end",
-                        position: "fixed",
-                        bottom: "0",
-                        right: "0",
-                        width: "0rem",
-                        zIndex: "999",
-                      }}
-                    >
+                  <div className={`app ${lendoTexto ? "lendo-text" : ""}`}>
+                    <Router>
                       <Box
                         sx={{
                           display: "flex",
                           flexDirection: "column",
+                          justifyContent: "start",
                           alignItems: "end",
-                          justifyContent: "end",
-                          paddingBottom: "3.5rem",
-                          width: "1px",
+                          position: "fixed",
+                          bottom: "0",
+                          right: "0",
+                          width: "0rem",
+                          zIndex: "999",
                         }}
                       >
-                        <LerTexto />
-                        <GlobalStyles
-                          styles={{
-                            "div[vw].enabled": {
-                              marginRight: "0px !important",
-                              marginBottom: "5rem !important",
-                              position: "unset",
-                              zIndex: 999999,
-                            },
-                          }}
-                        />
                         <Box
-                          onClick={() => {
-                            setLibrasAtivo(!librasAtivo);
-                          }}
                           sx={{
-                            zIndex: "999999",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "end",
+                            justifyContent: "end",
+                            paddingBottom: "3.5rem",
+                            width: "1px",
                           }}
                         >
-                          <VLibras forceOnload />
+                          <LerTexto />
+                          <GlobalStyles
+                            styles={{
+                              "div[vw].enabled": {
+                                marginRight: "0px !important",
+                                marginBottom: "5rem !important",
+                                position: "unset",
+                                zIndex: 999999,
+                              },
+                            }}
+                          />
+                          <Box
+                            onClick={() => {
+                              setLibrasAtivo(!librasAtivo);
+                            }}
+                            sx={{
+                              zIndex: "999999",
+                            }}
+                          >
+                            <VLibras forceOnload />
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                    <Routes>
-                      <Route path="/login" element={<Login />} />
-                      <Route element={<ProtectedRoute />}>
-                        <Route
-                          path="/criar-demanda"
-                          element={<CriarDemanda />}
-                        />
-                        <Route path="/notificacao" element={<Notificacao />} />
-                        <Route path="/chat" element={<Chat />} />
-                        <Route path="/chat/:id" element={<Chat />} />
-                        <Route
-                          path="/detalhes-demanda"
-                          element={<DetalhesDemandaPagina />}
-                        />
+                      <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route element={<ProtectedRoute />}>
+                          <Route
+                            path="/criar-demanda"
+                            element={<CriarDemanda />}
+                          />
+                          <Route
+                            path="/notificacao"
+                            element={<Notificacao />}
+                          />
+                          <Route path="/chat" element={<Chat />} />
+                          <Route path="/chat/:id" element={<Chat />} />
+                          <Route
+                            path="/detalhes-demanda"
+                            element={<DetalhesDemandaPagina />}
+                          />
+                          <Route
+                            path="/editar-escopo"
+                            element={<EditarEscopo />}
+                          />
+                          <Route path="/escopos" element={<Escopos />} />
+                          <Route path="*" element={<NotFound />} />
+                          <Route path="/test" element={<Test />} />
+                        </Route>
                         <Route
                           path="/editar-escopo"
                           element={<EditarEscopo />}
@@ -234,96 +246,92 @@ const App = () => {
                         <Route path="/escopos" element={<Escopos />} />
                         <Route path="*" element={<NotFound />} />
                         <Route path="/test" element={<Test />} />
-                      </Route>
-                      <Route path="/editar-escopo" element={<EditarEscopo />} />
-                      <Route path="/escopos" element={<Escopos />} />
-                      <Route path="*" element={<NotFound />} />
-                      <Route path="/test" element={<Test />} />
-                      <Route
-                        path="/"
-                        element={
-                          <ProtectedRoute>
-                            <DetermineHomeUser />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/criar-proposta"
-                        element={
-                          <ProtectedRoute
-                            tiposUsuarioAllowed={[
-                              "ANALISTA",
-                              "GERENTE",
-                              "GESTOR",
-                            ]}
-                            redirectPath="/"
-                          >
-                            <CriarProposta />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/detalhes-proposta/:id"
-                        element={
-                          <ProtectedRoute
-                            tiposUsuarioAllowed={[
-                              "ANALISTA",
-                              "GERENTE",
-                              "GESTOR",
-                            ]}
-                            redirectPath="/"
-                          >
-                            <DetalhesPropostaPagina />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="detalhes-ata"
-                        element={
-                          <ProtectedRoute
-                            tiposUsuarioAllowed={[
-                              "ANALISTA",
-                              "GERENTE",
-                              "GESTOR",
-                            ]}
-                            redirectPath="/"
-                          >
-                            <DetalhesAta />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="detalhes-pauta"
-                        element={
-                          <ProtectedRoute
-                            tiposUsuarioAllowed={[
-                              "ANALISTA",
-                              "GERENTE",
-                              "GESTOR",
-                            ]}
-                            redirectPath="/"
-                          >
-                            <DetalhesPauta />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="criar-pauta"
-                        element={
-                          <ProtectedRoute
-                            tiposUsuarioAllowed={[
-                              "ANALISTA",
-                              "GERENTE",
-                              "GESTOR",
-                            ]}
-                            redirectPath="/"
-                          >
-                            <CriarPauta />
-                          </ProtectedRoute>
-                        }
-                      />
-                    </Routes>
-                  </Router>
+                        <Route
+                          path="/"
+                          element={
+                            <ProtectedRoute>
+                              <DetermineHomeUser />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/criar-proposta"
+                          element={
+                            <ProtectedRoute
+                              tiposUsuarioAllowed={[
+                                "ANALISTA",
+                                "GERENTE",
+                                "GESTOR",
+                              ]}
+                              redirectPath="/"
+                            >
+                              <CriarProposta />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/detalhes-proposta/:id"
+                          element={
+                            <ProtectedRoute
+                              tiposUsuarioAllowed={[
+                                "ANALISTA",
+                                "GERENTE",
+                                "GESTOR",
+                              ]}
+                              redirectPath="/"
+                            >
+                              <DetalhesPropostaPagina />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="detalhes-ata"
+                          element={
+                            <ProtectedRoute
+                              tiposUsuarioAllowed={[
+                                "ANALISTA",
+                                "GERENTE",
+                                "GESTOR",
+                              ]}
+                              redirectPath="/"
+                            >
+                              <DetalhesAta />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="detalhes-pauta"
+                          element={
+                            <ProtectedRoute
+                              tiposUsuarioAllowed={[
+                                "ANALISTA",
+                                "GERENTE",
+                                "GESTOR",
+                              ]}
+                              redirectPath="/"
+                            >
+                              <DetalhesPauta />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="criar-pauta"
+                          element={
+                            <ProtectedRoute
+                              tiposUsuarioAllowed={[
+                                "ANALISTA",
+                                "GERENTE",
+                                "GESTOR",
+                              ]}
+                              redirectPath="/"
+                            >
+                              <CriarPauta />
+                            </ProtectedRoute>
+                          }
+                        />
+                      </Routes>
+                    </Router>
+                  </div>
                 </SpeechSynthesisContext.Provider>
               </SpeechRecognitionService>
             </WebSocketService>

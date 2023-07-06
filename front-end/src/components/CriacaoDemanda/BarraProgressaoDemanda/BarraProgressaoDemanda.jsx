@@ -303,6 +303,8 @@ const BarraProgressaoDemanda = () => {
   const voltarEtapa = () => {
     if (!lendoTexto && !librasAtivo) {
       setEtapaAtiva((prevActiveStep) => prevActiveStep - 1);
+    } else if (librasAtivo) {
+        return;
     } else {
       lerTexto(texts.barraProgressaoDemanda.botaoVoltar);
     }
@@ -313,7 +315,7 @@ const BarraProgressaoDemanda = () => {
     if (lendoTexto) {
       lerTexto(texts.barraProgressaoDemanda.botaoProximo);
     } else if (librasAtivo) {
-      return
+      return;
     } else {
       switch (etapaAtiva) {
         case 0:
@@ -422,7 +424,9 @@ const BarraProgressaoDemanda = () => {
                     <Typography
                       fontSize={FontConfig.default}
                       onClick={() => {
-                        lerTexto(label);
+                        if (!librasAtivo) {
+                          lerTexto(label);
+                        }
                       }}
                     >
                       {label}
@@ -479,6 +483,7 @@ const BarraProgressaoDemanda = () => {
               onClick={() => {
                 if (!lendoTexto && !librasAtivo) {
                   setOpenConfirmacao(true);
+                } else if (librasAtivo) {
                 } else {
                   lerTexto(texts.barraProgressaoDemanda.botaoCriar);
                 }

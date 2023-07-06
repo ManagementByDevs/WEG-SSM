@@ -12,7 +12,6 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 
 /** Componnete para utilizar durante uma mensagem no chat */
 const Mensagem = ({ mensagem = EntitiesObjectService.mensagem() }) => {
-
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
@@ -145,12 +144,14 @@ const Mensagem = ({ mensagem = EntitiesObjectService.mensagem() }) => {
               ) : (
                 <Tooltip title={mensagem.anexo.nome}>
                   <Box
-                    className="px-5 pb-2 mb-2 border rounded cursor-pointer"
-                    sx={{ backgroundColor: "background.paper" }}
+                    className="px-4 py-2.5 mb-1 flex items-center gap-2 border rounded cursor-pointer"
+                    sx={{
+                      backgroundColor: "background.paper",
+                    }}
                     onClick={() => downloadAnexo(mensagem.anexo)}
                   >
                     <FolderOutlinedIcon
-                      sx={{ fontSize: "100px", color: "chat.eu" }}
+                      sx={{ fontSize: "32px", color: "chat.eu" }}
                     />
                     <Typography sx={{ fontWeight: 600 }}>
                       {mensagem.anexo.nome}

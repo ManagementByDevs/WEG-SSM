@@ -44,9 +44,9 @@ const ResponsavelNegocio = (props) => {
   return (
     <Box className="flex w-full mt-5 items-end">
       <Box className="flex flex-col">
-        <Box className="flex mb-2">
+        <Box className="flex mb-1">
           <Typography
-            sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+            sx={{ fontSize: FontConfig.medium, fontWeight: "500" }}
             onClick={() => {
               lerTexto(texts.responsavelNegocio.responsavelDoNegocio);
             }}
@@ -117,9 +117,9 @@ const ResponsavelNegocio = (props) => {
         </Box>
       </Box>
       <Box className="flex flex-col ml-10">
-        <Box className="flex mb-2">
+        <Box className="flex mb-1">
           <Typography
-            sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+            sx={{ fontSize: FontConfig.medium, fontWeight: "500" }}
             onClick={() => {
               lerTexto(texts.responsavelNegocio.area);
             }}

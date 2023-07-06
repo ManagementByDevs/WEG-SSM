@@ -1,17 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  List,
-  Typography,
-  Divider,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-  Autocomplete,
-  TextField,
-  Box,
-  Button,
-} from "@mui/material";
+import { List, Typography, Divider, InputLabel, MenuItem, FormControl, Select, Autocomplete, TextField, Box, Button } from "@mui/material";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -33,7 +21,8 @@ import SideBarOrdenacao from "../SideBarOrdenacao/SideBarOrdenacao";
 import UsuarioService from "../../service/usuarioService";
 
 /** SliderBar para os filtros e ordenações */
-export default function SliderBar(props) {
+const SliderBar = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -797,3 +786,5 @@ function Input(props) {
     </Box>
   );
 }
+
+export default SliderBar;
