@@ -1,6 +1,16 @@
 import React, { useContext, useRef, useEffect } from "react";
 
-import { Box, FormControl, Select, MenuItem, Typography, Divider, IconButton, Paper, Tooltip, } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  Typography,
+  Divider,
+  IconButton,
+  Paper,
+  Tooltip,
+} from "@mui/material";
 
 import ResponsavelNegocio from "../../ResponsavelNegocio/ResponsavelNegocio";
 
@@ -32,7 +42,9 @@ const FormularioGeralProposta = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   // Variável para o input de anexos
   const inputFile = useRef(null);
@@ -111,361 +123,301 @@ const FormularioGeralProposta = (props) => {
   return (
     <Box className="flex flex-col">
       <Box className="mt-12" sx={{ minWidth: "55rem" }}>
-        <Box className="flex flex-row mb-8 " sx={{ marginLeft: "6.1rem", marginTop: "2%" }}>
-          {/* Box geral do formulário */}
-          <Box sx={{ width: "50%" }}>
-            {/* Período Execução */}
-            <Box className="flex mb-2 w-1/2" >
-              <Typography
-                sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
-                onClick={() => {
-                  lerTexto(texts.formularioGeralProposta.periodoDeExecucao);
-                }}
-              >
-                {texts.formularioGeralProposta.periodoDeExecucao}:
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: FontConfig.big,
-                  color: "red",
-                  marginLeft: "5px",
-                }}
-              >
-                *
-              </Typography>
-            </Box>
-            <Box className="flex w-full">
-              <Box className="mr-5" sx={{ width: "30%" }}>
-                <Box
-                  fontSize={FontConfig.medium}
-                  color="text.primary"
-                  className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
-                  sx={{
-                    width: "100%;",
-                    height: "40px",
-                    backgroundColor: "background.default",
-                    borderLeftColor: "primary.main",
-                    colorScheme: mode,
-                  }}
-                  component="input"
-                  type="date"
-                  placeholder={texts.formularioGeralProposta.digiteCodigo}
-                  value={props.gerais.periodoExecucacaoInicio}
-                  onChange={(e) => {
-                    props.setGerais({
-                      ...props.gerais,
-                      periodoExecucacaoInicio: e.target.value,
-                    });
-                  }}
-                />
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography
-                  sx={{ fontSize: FontConfig.big }}
-                  onClick={() => {
-                    lerTexto(texts.formularioGeralProposta.a);
-                  }}
-                >
-                  {texts.formularioGeralProposta.a}
-                </Typography>
-              </Box>
-              <Box className="ml-5" sx={{ width: "30%" }}>
-                <Box
-                  fontSize={FontConfig.medium}
-                  color="text.primary"
-                  className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
-                  sx={{
-                    width: "100%;",
-                    height: "40px",
-                    backgroundColor: "background.default",
-                    borderLeftColor: "primary.main",
-                    colorScheme: mode,
-                  }}
-                  component="input"
-                  type="date"
-                  placeholder={texts.formularioGeralProposta.digiteCodigo}
-                  value={props.gerais.periodoExecucacaoFim}
-                  onChange={(e) =>
-                    props.setGerais({
-                      ...props.gerais,
-                      periodoExecucacaoFim: e.target.value,
-                    })
-                  }
-                />
-              </Box>
-            </Box>
-          </Box>
-
-          <Box sx={{ width: "50%" }}>
-            {/* Payback */}
-            <Box className="flex mb-2">
-              <Typography
-                sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
-                onClick={() => {
-                  lerTexto(texts.formularioGeralProposta.paybackSimples);
-                }}
-              >
-                {texts.formularioGeralProposta.paybackSimples}:
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: FontConfig.big,
-                  color: "red",
-                  marginLeft: "5px",
-                }}
-              >
-                *
-              </Typography>
-            </Box>
-            <Box className="flex">
-              <Box
-                className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
-                sx={{
-                  backgroundColor: "background.default",
-                  width: "20%",
-                  height: "40px",
-                  borderLeftColor: "primary.main",
-                }}
-              >
-                <Box
-                  fontSize={FontConfig.medium}
-                  color="text.primary"
-                  className="flex outline-none"
-                  sx={{
-                    width: "90%",
-                    backgroundColor: "trasnparent",
-                  }}
-                  component="input"
-                  placeholder={texts.formularioGeralProposta.quantidade}
-                  value={props.gerais.qtdPaybackSimples || ""}
-                  onChange={(e) =>
-                    props.setGerais({
-                      ...props.gerais,
-                      qtdPaybackSimples: e.target.value,
-                    })
-                  }
-                />
-                <Tooltip
-                  className="hover:cursor-pointer"
-                  title={texts.homeGerencia.gravarAudio}
-                  onClick={() => {
-                    startRecognition("qtdPaybackSimples");
-                  }}
-                >
-                  {escutar && localClique == "qtdPaybackSimples" ? (
-                    <MicOutlinedIcon
-                      sx={{
-                        cursor: "pointer",
-                        color: "primary.main",
-                        fontSize: "1.3rem",
-                      }}
-                    />
-                  ) : (
-                    <MicNoneOutlinedIcon
-                      sx={{
-                        cursor: "pointer",
-                        color: "text.secondary",
-                        fontSize: "1.3rem",
-                      }}
-                    />
-                  )}
-                </Tooltip>
-              </Box>
-              <FormControl
-                variant="standard"
-                sx={{ marginLeft: "30px", minWidth: 110 }}
-              >
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  sx={{ height: "40px" }}
-                  value={props.gerais.unidadePaybackSimples || ""}
-                  onChange={(e) =>
-                    props.setGerais({
-                      ...props.gerais,
-                      unidadePaybackSimples: e.target.value,
-                    })
-                  }
-                >
-                  <MenuItem value={"DIAS"}>
-                    {texts.formularioGeralProposta.dias}
-                  </MenuItem>
-                  <MenuItem value={"SEMANAS"}>
-                    {texts.formularioGeralProposta.semanas}
-                  </MenuItem>
-                  <MenuItem value={"MESES"}>
-                    {texts.formularioGeralProposta.meses}
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-          </Box>
+        <Box className="flex flex-col gap-2">
+          <Divider />
+          <Typography
+            className="flex"
+            sx={{
+              fontSize: FontConfig.veryBig,
+              fontWeight: "600",
+              marginRight: "5px",
+              color: "primary.main",
+            }}
+            onClick={() => {
+              lerTexto(texts.barraProgressaoProposta.gerais);
+            }}
+          >
+            {texts.barraProgressaoProposta.gerais}:
+            <Asterisco />
+          </Typography>
+          <Divider />
         </Box>
+        {/* Conteúdo dados gerais */}
+        <Box className="px-12 my-6">
+          <Box>
+            <Box className="flex justify-between">
+              {/* Código PPM */}
+              <Box>
+                <Box className="flex mb-1">
+                  <Typography
+                    sx={{ fontSize: FontConfig.medium, fontWeight: "500" }}
+                    onClick={() => {
+                      lerTexto(texts.formularioGeralProposta.codigoPpm);
+                    }}
+                  >
+                    {texts.formularioGeralProposta.codigoPpm}:
+                  </Typography>
+                  <Asterisco />
+                </Box>
+                <Box className="flex">
+                  <Box
+                    className="flex items-center justify-between border-solid border px-1 py-1 border-l-4"
+                    sx={{
+                      backgroundColor: "background.default",
+                      borderLeftColor: "primary.main",
+                    }}
+                  >
+                    <Box
+                      component="input"
+                      fontSize={FontConfig.medium}
+                      color="text.primary"
+                      className="flex outline-none"
+                      sx={{
+                        backgroundColor: "transparent",
+                      }}
+                      placeholder={texts.formularioGeralProposta.digiteCodigo}
+                      value={props.gerais.ppm || ""}
+                      onChange={(e) =>
+                        props.setGerais({
+                          ...props.gerais,
+                          ppm: e.target.value,
+                        })
+                      }
+                    />
+                    <Tooltip title={texts.homeGerencia.gravarAudio}>
+                      <IconButton
+                        onClick={() => {
+                          startRecognition("ppm");
+                        }}
+                        size="small"
+                      >
+                        {escutar && localClique == "ppm" ? (
+                          <MicOutlinedIcon />
+                        ) : (
+                          <MicNoneOutlinedIcon />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </Box>
+              </Box>
 
-        {/* Link Jira */}
-        <Box className="flex flex-row mb-8 " sx={{ marginLeft: "6.1rem", }}>
-          <Box sx={{ width: "50%" }}>
-            <Box className="flex mb-2">
-              <Typography
-                sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
-                onClick={() => {
-                  lerTexto(texts.formularioGeralProposta.linkDoJira);
-                }}
-              >
-                {texts.formularioGeralProposta.linkDoJira}:
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: FontConfig.big,
-                  color: "red",
-                  marginLeft: "5px",
-                }}
-              >
-                *
-              </Typography>
+              {/* Período Execução */}
+              <Box>
+                <Box className="flex mb-1">
+                  <Typography
+                    className="flex"
+                    sx={{ fontSize: FontConfig.medium, fontWeight: "500" }}
+                    onClick={() => {
+                      lerTexto(texts.formularioGeralProposta.periodoDeExecucao);
+                    }}
+                  >
+                    {texts.formularioGeralProposta.periodoDeExecucao}:
+                    <Asterisco />
+                  </Typography>
+                </Box>
+                <Box className="w-full flex gap-4">
+                  <Box
+                    component="input"
+                    type="date"
+                    fontSize={FontConfig.medium}
+                    color="text.primary"
+                    className="flex items-center justify-between border-solid border px-1 py-1 border-l-4"
+                    sx={{
+                      backgroundColor: "background.default",
+                      borderLeftColor: "primary.main",
+                      colorScheme: mode,
+                    }}
+                    placeholder={texts.formularioGeralProposta.digiteCodigo}
+                    value={props.gerais.periodoExecucacaoInicio}
+                    onChange={(e) => {
+                      props.setGerais({
+                        ...props.gerais,
+                        periodoExecucacaoInicio: e.target.value,
+                      });
+                    }}
+                  />
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography
+                      sx={{ fontSize: FontConfig.big }}
+                      onClick={() => {
+                        lerTexto(texts.formularioGeralProposta.a);
+                      }}
+                    >
+                      {texts.formularioGeralProposta.a}
+                    </Typography>
+                  </Box>
+                  <Box
+                    component="input"
+                    type="date"
+                    fontSize={FontConfig.medium}
+                    color="text.primary"
+                    className="flex items-center justify-between border-solid border px-1 py-2 border-l-4"
+                    sx={{
+                      backgroundColor: "background.default",
+                      borderLeftColor: "primary.main",
+                      colorScheme: mode,
+                    }}
+                    placeholder={texts.formularioGeralProposta.digiteCodigo}
+                    value={props.gerais.periodoExecucacaoFim}
+                    onChange={(e) =>
+                      props.setGerais({
+                        ...props.gerais,
+                        periodoExecucacaoFim: e.target.value,
+                      })
+                    }
+                  />
+                </Box>
+              </Box>
+
+              {/* Payback */}
+              <Box>
+                <Box className="flex mb-1">
+                  <Typography
+                    className="flex"
+                    sx={{ fontSize: FontConfig.medium, fontWeight: "500" }}
+                    onClick={() => {
+                      lerTexto(texts.formularioGeralProposta.paybackSimples);
+                    }}
+                  >
+                    {texts.formularioGeralProposta.paybackSimples}:
+                    <Asterisco />
+                  </Typography>
+                </Box>
+                <Box className="flex gap-4">
+                  <Box
+                    className="flex items-center justify-between border-solid border px-1 py-1 border-l-4"
+                    sx={{
+                      backgroundColor: "background.default",
+                      borderLeftColor: "primary.main",
+                    }}
+                  >
+                    <Box
+                      component="input"
+                      className="flex w-12 outline-none"
+                      fontSize={FontConfig.medium}
+                      color="text.primary"
+                      sx={{
+                        backgroundColor: "trasnparent",
+                      }}
+                      placeholder={texts.formularioGeralProposta.quantidade}
+                      value={props.gerais.qtdPaybackSimples || ""}
+                      onChange={(e) =>
+                        props.setGerais({
+                          ...props.gerais,
+                          qtdPaybackSimples: e.target.value,
+                        })
+                      }
+                    />
+                    <Tooltip title={texts.homeGerencia.gravarAudio}>
+                      <IconButton
+                        onClick={() => {
+                          startRecognition("qtdPaybackSimples");
+                        }}
+                        size="small"
+                      >
+                        {escutar && localClique == "qtdPaybackSimples" ? (
+                          <MicOutlinedIcon />
+                        ) : (
+                          <MicNoneOutlinedIcon />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                  <FormControl variant="standard">
+                    <Select
+                      className="h-full w-28 border-solid border-t border-r pl-1 text-center"
+                      sx={{
+                        borderLeft: "4px solid #00579d",
+                      }}
+                      id="demo-simple-select-standard"
+                      value={props.gerais.unidadePaybackSimples || ""}
+                      onChange={(e) =>
+                        props.setGerais({
+                          ...props.gerais,
+                          unidadePaybackSimples: e.target.value,
+                        })
+                      }
+                    >
+                      <MenuItem value={"DIAS"}>
+                        {texts.formularioGeralProposta.dias}
+                      </MenuItem>
+                      <MenuItem value={"SEMANAS"}>
+                        {texts.formularioGeralProposta.semanas}
+                      </MenuItem>
+                      <MenuItem value={"MESES"}>
+                        {texts.formularioGeralProposta.meses}
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Box>
             </Box>
-            <Box sx={{ width: "67%" }}>
+          </Box>
+
+          {/* Link Jira */}
+          <Box className="flex mt-4 mb-1">
+            <Typography
+              className="flex"
+              sx={{ fontSize: FontConfig.medium, fontWeight: "500" }}
+              onClick={() => {
+                lerTexto(texts.formularioGeralProposta.linkDoJira);
+              }}
+            >
+              {texts.formularioGeralProposta.linkDoJira}:
+              <Asterisco />
+            </Typography>
+          </Box>
+          <Box sx={{ width: "50%" }}>
+            <Box
+              className="flex items-center justify-between border-solid border px-1 py-1 border-l-4"
+              sx={{
+                backgroundColor: "background.default",
+                borderLeftColor: "primary.main",
+              }}
+            >
               <Box
-                className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+                fontSize={FontConfig.medium}
+                color="text.primary"
+                className="flex outline-none"
                 sx={{
-                  width: "100%;",
-                  height: "40px",
-                  backgroundColor: "background.default",
-                  borderLeftColor: "primary.main",
+                  width: "95%;",
+                  backgroundColor: "transparent",
                 }}
-              >
-                <Box
-                  fontSize={FontConfig.medium}
-                  color="text.primary"
-                  className="flex outline-none"
-                  sx={{
-                    width: "95%;",
-                    backgroundColor: "transparent",
-                  }}
-                  component="input"
-                  placeholder={texts.formularioGeralProposta.insiraLinkDoJira}
-                  value={props.gerais.linkJira || ""}
-                  onChange={(e) =>
-                    props.setGerais({
-                      ...props.gerais,
-                      linkJira: e.target.value,
-                    })
-                  }
-                />
-                <Tooltip
-                  className="hover:cursor-pointer"
-                  title={texts.homeGerencia.gravarAudio}
+                component="input"
+                placeholder={texts.formularioGeralProposta.insiraLinkDoJira}
+                value={props.gerais.linkJira || ""}
+                onChange={(e) =>
+                  props.setGerais({
+                    ...props.gerais,
+                    linkJira: e.target.value,
+                  })
+                }
+              />
+              <Tooltip title={texts.homeGerencia.gravarAudio}>
+                <IconButton
                   onClick={() => {
                     startRecognition("linkJira");
                   }}
+                  size="small"
                 >
                   {escutar && localClique == "linkJira" ? (
-                    <MicOutlinedIcon
-                      sx={{
-                        cursor: "pointer",
-                        color: "primary.main",
-                        fontSize: "1.3rem",
-                      }}
-                    />
+                    <MicOutlinedIcon />
                   ) : (
-                    <MicNoneOutlinedIcon
-                      sx={{
-                        cursor: "pointer",
-                        color: "text.secondary",
-                        fontSize: "1.3rem",
-                      }}
-                    />
+                    <MicNoneOutlinedIcon />
                   )}
-                </Tooltip>
-              </Box>
-            </Box>
-          </Box>
-
-          <Box sx={{ width: "50%" }}>
-            {/* Código PPM */}
-            <Box className="flex mb-2">
-              <Typography
-                sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
-                onClick={() => {
-                  lerTexto(texts.formularioGeralProposta.codigoPpm);
-                }}
-              >
-                {texts.formularioGeralProposta.codigoPpm}:
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: FontConfig.big,
-                  color: "red",
-                  marginLeft: "5px",
-                }}
-              >
-                *
-              </Typography>
-            </Box>
-            <Box className="flex">
-              <Box
-                className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
-                sx={{
-                  width: "40%;",
-                  height: "40px",
-                  backgroundColor: "background.default",
-                  borderLeftColor: "primary.main",
-                }}
-              >
-                <Box
-                  fontSize={FontConfig.medium}
-                  color="text.primary"
-                  className="flex outline-none"
-                  sx={{
-                    width: "95%;",
-                    backgroundColor: "transparent",
-                  }}
-                  component="input"
-                  placeholder={texts.formularioGeralProposta.digiteCodigo}
-                  value={props.gerais.ppm || ""}
-                  onChange={(e) =>
-                    props.setGerais({
-                      ...props.gerais,
-                      ppm: e.target.value,
-                    })
-                  }
-                />
-                <Tooltip
-                  className="hover:cursor-pointer"
-                  title={texts.homeGerencia.gravarAudio}
-                  onClick={() => {
-                    startRecognition("ppm");
-                  }}
-                >
-                  {escutar && localClique == "ppm" ? (
-                    <MicOutlinedIcon
-                      sx={{
-                        cursor: "pointer",
-                        color: "primary.main",
-                        fontSize: "1.3rem",
-                      }}
-                    />
-                  ) : (
-                    <MicNoneOutlinedIcon
-                      sx={{
-                        cursor: "pointer",
-                        color: "text.secondary",
-                        fontSize: "1.3rem",
-                      }}
-                    />
-                  )}
-                </Tooltip>
-              </Box>
+                </IconButton>
+              </Tooltip>
             </Box>
           </Box>
         </Box>
 
-        <Divider />
+        <Box className="flex flex-col gap-2">
+          <Divider />
 
-        {/* Responsável negócio */}
-        <Box className="flex flex-col mb-8" sx={{ marginLeft: "6.1rem" }}>
-          <Box className="flex mt-8 items-center">
+          <Box className="flex items-center">
             <Typography
+              className="flex"
               sx={{
                 fontSize: FontConfig.veryBig,
                 fontWeight: "600",
@@ -477,31 +429,30 @@ const FormularioGeralProposta = (props) => {
               }}
             >
               {texts.formularioGeralProposta.responsavelResponsaveis}:
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: FontConfig.veryBig,
-                fontWeight: "600",
-                marginRight: "8px",
-                color: "red",
-              }}
-            >
-              *
+              <Asterisco />
             </Typography>
             <Tooltip
               title={
                 texts.formularioGeralProposta.titleAdicionarNovoResponsavel
               }
             >
-              <AddCircleOutlineOutlinedIcon
-                className="delay-120 hover:scale-110 duration-300"
-                sx={{ color: "primary.main", cursor: "pointer" }}
+              <IconButton
                 onClick={() => {
                   adicionarResponsavel();
                 }}
-              />
+                size="small"
+                color="primary"
+              >
+                <AddCircleOutlineOutlinedIcon />
+              </IconButton>
             </Tooltip>
           </Box>
+
+          <Divider />
+        </Box>
+
+        {/* Responsável negócio */}
+        <Box className="flex flex-col px-12 mb-6">
           {props.gerais.responsaveisNegocio?.map((item, index) => {
             return (
               <ResponsavelNegocio
@@ -521,112 +472,128 @@ const FormularioGeralProposta = (props) => {
             );
           })}
         </Box>
-        <Divider />
-        <Box sx={{ marginLeft: "6.1rem" }}>
-          <Box className="flex items-center mt-8">
-            <Box className="w-full">
-              <Typography
-                sx={{
-                  fontSize: FontConfig.big,
-                  fontWeight: "600",
-                  marginRight: "5px",
-                }}
-                onClick={() => {
-                  lerTexto(texts.formularioGeralProposta.anexos);
-                }}
-              >
-                {texts.formularioGeralProposta.anexos}:
-                <Tooltip
-                  title={texts.formularioGeralProposta.adicionarNovoAnexo}
+        <Box>
+          {/* Anexos title */}
+          <Box className="flex flex-col gap-2">
+            <Divider />
+            <Typography
+              color="primary"
+              sx={{
+                fontSize: FontConfig.veryBig,
+                fontWeight: "600",
+                marginRight: "5px",
+              }}
+              onClick={() => {
+                lerTexto(texts.formularioGeralProposta.anexos);
+              }}
+            >
+              {texts.formularioGeralProposta.anexos}:
+              <Tooltip title={texts.formularioGeralProposta.adicionarNovoAnexo}>
+                <IconButton
+                  onClick={onAddAnexoButtonClick}
+                  color="primary"
+                  size="small"
                 >
-                  <AddCircleOutlineOutlinedIcon
-                    className="ml-1 delay-120 hover:scale-110 duration-300"
-                    sx={{ color: "icon.main", cursor: "pointer" }}
-                    onClick={onAddAnexoButtonClick}
-                  />
-                </Tooltip>
-              </Typography>
-              {/* Adicionar anexos */}
-              <input
-                onChange={onFilesSelect}
-                ref={inputFile}
-                type="file"
-                multiple
-                hidden
-              />
-              {props.dados.anexo.length > 0 ? (
-                <Box className="flex flex-col gap-2">
-                  {props.dados.anexo.map((anexo, index) => (
-                    <Paper
-                      key={index}
-                      className="flex justify-between items-center"
+                  <AddCircleOutlineOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+            </Typography>
+
+            {/* Adicionar anexos */}
+            <input
+              onChange={onFilesSelect}
+              ref={inputFile}
+              type="file"
+              multiple
+              hidden
+            />
+            <Divider />
+          </Box>
+          <Box className="w-full px-12 mt-5">
+            {props.dados.anexo.length > 0 ? (
+              <Box className="flex flex-col gap-2">
+                {props.dados.anexo.map((anexo, index) => (
+                  <Paper
+                    key={index}
+                    elevation={0}
+                    className="flex justify-between items-center mt-2 px-2 border border-l-4"
+                    sx={{ borderLeftColor: "primary.main" }}
+                    square
+                  >
+                    <Typography
                       sx={{
-                        borderLeftWidth: "4px",
-                        borderLeftColor: "primary.main",
-                        borderLeftStyle: "solid",
-                        backgroundColor: "background.default",
-                        padding: "0.2rem 1rem",
+                        color: "text.primary",
+                        fontSize: FontConfig.default,
+                      }}
+                      onClick={() => {
+                        lerTexto(anexo.name || anexo.nome);
                       }}
                     >
-                      <Typography
-                        sx={{
-                          color: "text.primary",
-                          fontSize: FontConfig.default,
-                        }}
-                        onClick={() => {
-                          lerTexto(anexo.name || anexo.nome);
-                        }}
-                      >
-                        {anexo.name || anexo.nome}
-                      </Typography>
-                      <IconButton
-                        onClick={() =>
-                          props.setDados({
-                            titulo: props.dados.titulo,
-                            status: props.dados.status,
-                            problema: props.dados.problema,
-                            proposta: props.dados.proposta,
-                            beneficios: props.dados.beneficios,
-                            frequencia: props.dados.frequencia,
-                            anexo: props.dados.anexo.filter(
-                              (anexo, i) => i !== index
-                            ),
-                            solicitante: props.dados.solicitante,
-                            analista: props.dados.analista,
-                            gerente: props.dados.gerente,
-                            buSolicitante: props.dados.buSolicitante,
-                            busBeneficiadas: props.dados.busBeneficiadas,
-                            data: props.dados.data,
-                            departamento: props.dados.departamento,
-                            forum: props.dados.forum,
-                            secaoTI: props.dados.secaoTI,
-                            tamanho: props.dados.tamanho,
-                          })
-                        }
-                      >
-                        <CloseIcon sx={{ color: "text.primary" }} />
-                      </IconButton>
-                    </Paper>
-                  ))}
-                </Box>
-              ) : (
-                <Typography
-                  textAlign="center"
-                  sx={{ color: "text.primary", fontSize: FontConfig.default }}
-                  onClick={() => {
-                    lerTexto(
-                      texts.formularioGeralProposta.nenhumAnexoAdicionado
-                    );
-                  }}
-                >
-                  {texts.formularioGeralProposta.nenhumAnexoAdicionado}
-                </Typography>
-              )}
-            </Box>
+                      {anexo.name || anexo.nome}
+                    </Typography>
+                    <IconButton
+                      onClick={() =>
+                        props.setDados({
+                          titulo: props.dados.titulo,
+                          status: props.dados.status,
+                          problema: props.dados.problema,
+                          proposta: props.dados.proposta,
+                          beneficios: props.dados.beneficios,
+                          frequencia: props.dados.frequencia,
+                          anexo: props.dados.anexo.filter(
+                            (anexo, i) => i !== index
+                          ),
+                          solicitante: props.dados.solicitante,
+                          analista: props.dados.analista,
+                          gerente: props.dados.gerente,
+                          buSolicitante: props.dados.buSolicitante,
+                          busBeneficiadas: props.dados.busBeneficiadas,
+                          data: props.dados.data,
+                          departamento: props.dados.departamento,
+                          forum: props.dados.forum,
+                          secaoTI: props.dados.secaoTI,
+                          tamanho: props.dados.tamanho,
+                        })
+                      }
+                    >
+                      <CloseIcon sx={{ color: "text.primary" }} />
+                    </IconButton>
+                  </Paper>
+                ))}
+              </Box>
+            ) : (
+              <Typography
+                textAlign="center"
+                sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                onClick={() => {
+                  lerTexto(texts.formularioGeralProposta.nenhumAnexoAdicionado);
+                }}
+              >
+                {texts.formularioGeralProposta.nenhumAnexoAdicionado}
+              </Typography>
+            )}
           </Box>
         </Box>
       </Box>
     </Box>
+  );
+};
+
+const Asterisco = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig } = useContext(FontContext);
+
+  return (
+    <Typography
+      component={"span"}
+      sx={{
+        fontSize: FontConfig.medium,
+        color: "red",
+        marginLeft: "5px",
+      }}
+    >
+      *
+    </Typography>
   );
 };
 

@@ -34,6 +34,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 /** Página principal do solicitante */
 const Home = () => {
+
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
@@ -44,9 +45,7 @@ const Home = () => {
   const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
-    SpeechRecognitionContext
-  );
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
 
   /** Variável para navegação entre páginas */
   const navigate = useNavigate();
@@ -76,7 +75,6 @@ const Home = () => {
     nome: "",
     senha: "",
     tipo_usuario: 0,
-    visibilidade: 1,
     departamento: null,
   });
 
@@ -93,17 +91,6 @@ const Home = () => {
 
   /** String para ordenação das demandas */
   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
-
-  /** Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado */
-  const [listaFiltros, setListaFiltros] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
 
   /** Valores dos checkboxes de Score no modal de ordenação */
   const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
@@ -130,116 +117,85 @@ const Home = () => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] =
-    useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
 
-  /** useState para abrir e fechar o tour */
-  const [isTourOpen, setIsTourOpen] = useState(false);
+  /** useState para abrir e fechar a tour na aba "Minhas Demandas" */
+  const [tourMinhasDemandas, setTourMinhasDemandas] = useState(false);
 
-  /** useState para abrir e fechar o tour da aba de departamento */
-  const [isTourOpenDepartamento, setIsTourOpenDepartamento] = useState(false);
+  /** useState para abrir e fechar a tour na aba "Meu Departamento" */
+  const [tourMeuDepartamento, setTourMeuDepartamento] = useState(false);
 
-  /** Passos do tour da aba de minhas demandas */
-  const stepsTour = [
+  /** Status atual usado na filtragem das demandas */
+  const [statusFiltroAtual, setStatusFiltroAtual] = useState("");
+
+  /** Variável usada para definir se a sidebar de filtragem e ordenação está aberta, além de definir onde aparecerá */
+  const [sidebarFiltro, setSidebarFiltro] = useState({ right: false });
+
+  /** Passos da tour da aba de minhas demandas */
+  const passosTourMinhasDemandas = [
     {
       selector: "#primeiro",
       content: texts.home.tourAjuda.barraDePesquisa,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#terceiro",
       content: texts.home.tourAjuda.botaoFiltrar,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#sexto",
       content: texts.home.tourAjuda.modoVisualizacao,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#quarto",
       content: texts.home.tourAjuda.criarNovaDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#quinto",
       content: texts.home.tourAjuda.areaDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#oitavo",
       content: texts.home.tourAjuda.statusDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#setimo",
       content: texts.home.tourAjuda.botaoMotivo,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#nono",
       content: texts.home.tourAjuda.botaoChat,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
   ];
 
   /** Passos do tour da aba de departamento */
-  const stepsTourDepartamento = [
+  const passosTourMeuDepartamento = [
     {
       selector: "#primeiro",
       content: texts.home.tourAjuda.barraDePesquisa,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#sexto",
       content: texts.home.tourAjuda.modoVisualizacao,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#quarto",
       content: texts.home.tourAjuda.criarNovaDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
     {
       selector: "#quinto",
       content: texts.home.tourAjuda.areaDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
+      style: { backgroundColor: "#DCDCDC", color: "#000000" }
     },
   ];
 
@@ -247,18 +203,23 @@ const Home = () => {
   useEffect(() => {
     ativarFeedback();
     buscarUsuario();
-    arrangePreferences();
+    carregarPreferencias();
   }, []);
 
-  /** UseEffect utilizado para buscar as preferências do usuário */
+  /** UseEffect para salvar as novas preferências do usuário quando alguma for alterada */
   useEffect(() => {
-    arrangePreferences();
-  }, [usuario]);
+    salvarPreferencias();
+  }, [nextModoVisualizacao, valorAba]);
 
   /** UseEffect para buscar as demandas sempre que os parâmetros (filtros, ordenação ou páginas) forem modificados */
   useEffect(() => {
     buscarDemandas();
   }, [params, stringOrdenacao, tamanhoPagina, paginaAtual]);
+
+  /** UseEffect para retirar o ícone de carregamento quando as demandas forem atualizadas */
+  useEffect(() => {
+    setCarregamentoItens(false);
+  }, [listaDemandas]);
 
   /** UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal de ordenação */
   useEffect(() => {
@@ -288,54 +249,38 @@ const Home = () => {
     setStringOrdenacao(textoNovo);
   }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
 
-  /** UseEffect para atualizar o string de filtro quando algum checkbox for ativado no modal de filtragem */
+  /** UseEffect para atualizar os parâmetros quando o filtro de status for alterado */
   useEffect(() => {
-    if (listaFiltros[0]) {
-      atualizarFiltro("ASSESSMENT");
-    } else if (listaFiltros[1]) {
-      atualizarFiltro("CANCELLED");
-    } else if (listaFiltros[2]) {
-      atualizarFiltro("BACKLOG_EDICAO");
-    } else if (listaFiltros[3]) {
-      atualizarFiltro("BACKLOG_REVISAO");
-    } else if (listaFiltros[4]) {
-      atualizarFiltro("BACKLOG_APROVACAO");
-    } else if (listaFiltros[5]) {
-      atualizarFiltro("ASSESSMENT_APROVACAO");
-    } else if (listaFiltros[6]) {
-      atualizarFiltro("DONE");
-    } else {
-      atualizarFiltro(null);
-    }
-  }, [listaFiltros]);
+    setParams({ ...params, status: statusFiltroAtual });
+  }, [statusFiltroAtual])
 
-  /** UseEffect para retirar o ícone de carregamento quando as demandas forem atualizadas */
+  /** useEffect para atualizar o valor de pesquisa quando usado o microfone no input de pesquisa */
   useEffect(() => {
-    setCarregamentoItens(false);
-  }, [listaDemandas]);
+    if (localClique == "demanda") {
+      valorPesquisa = palavrasJuntas;
+    }
+  }, [palavrasJuntas]);
 
   /** Função para mostrar feedbacks possíveis advindos de outras páginas, utilizando o localStorage */
   const ativarFeedback = () => {
     //Feedback de demanda criada
     if (localStorage.getItem("tipoFeedback") == "1") {
       setFeedbackDemandaCriada(true);
-      localStorage.removeItem("tipoFeedback");
     }
+    localStorage.removeItem("tipoFeedback");
   };
 
   /** Função para buscar o usuário logado no sistema pelos cookies assim que ele entrar na página */
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
-      (e) => {
-        setUsuario(e);
-        setParams({ ...params, solicitante: e });
-      }
-    );
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((e) => {
+      setUsuario(e);
+      setParams({ ...params, solicitante: e });
+    });
   };
 
   /** Função que verifica se os parâmetros estão nulos */
   const isParamsNull = () => {
-    return Object.values(params).every((e) => e == null);
+    return Object.values(params).every((e) => !e);
   };
 
   /** Função para buscar as demandas com os parâmetros e ordenação salvos */
@@ -356,29 +301,22 @@ const Home = () => {
     }
 
     setCarregamentoItens(true);
-    if (
-      params.titulo ||
-      params.solicitante ||
-      params.gerente ||
-      params.forum ||
-      params.departamento ||
-      params.tamanho ||
-      params.status
-    ) {
-      DemandaService.getPage(
-        params,
-        stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
-      ).then((e) => {
-        setTotalPaginas(e.totalPages);
-        setListaDemandas(e.content);
-      });
-    }
+    DemandaService.getPage(
+      params,
+      stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+    ).then((e) => {
+      setTotalPaginas(e.totalPages);
+      setListaDemandas(e.content);
+    });
   };
 
-  /** Função para atualizar o filtro de status quando modificado no modal de filtros */
-  const atualizarFiltro = (status) => {
-    setParams({ ...params, status: status });
-  };
+  /** Função para limpar os filtros e ordenações selecionados */
+  const limparFiltro = () => {
+    setStatusFiltroAtual("");
+    setOrdenacaoTitulo([false, false]);
+    setOrdenacaoScore([false, false]);
+    setOrdenacaoDate([false, false]);
+  }
 
   /** Função para pesquisar novas demandas quando a aba for modificada */
   const atualizarAba = (event, newValue) => {
@@ -389,11 +327,7 @@ const Home = () => {
     if (newValue == 1) {
       setParams({ ...params, departamento: null, solicitante: usuario });
     } else {
-      setParams({
-        ...params,
-        solicitante: null,
-        departamento: usuario?.departamento,
-      });
+      setParams({ ...params, solicitante: null, departamento: usuario?.departamento, });
     }
   };
 
@@ -428,78 +362,43 @@ const Home = () => {
     });
   };
 
-  // ********************************************** Preferências ********************************************** //
-
   /** Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último */
-  const arrangePreferences = () => {
-    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
-      (preferencias) => {
-        let itemsVisualizationMode =
-          preferencias?.itemsVisualizationMode?.toUpperCase();
+  const carregarPreferencias = () => {
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
+      let itemsVisualizationMode = preferencias?.itemsVisualizationMode?.toUpperCase();
 
-        setValorAba(preferencias?.abaPadrao);
-        // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
-        if (itemsVisualizationMode == nextModoVisualizacao) {
-          setNextModoVisualizacao("GRID");
-        }
-
-        // Timeout para retirar o carregamento após as preferências serem atualizadas
-        setTimeout(() => {
-          setCarregamentoPreferencias(false);
-        }, 500);
+      setValorAba(preferencias?.abaPadrao);
+      // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+      if (itemsVisualizationMode == nextModoVisualizacao) {
+        setNextModoVisualizacao("GRID");
       }
-    );
+
+      // Timeout para retirar o carregamento após as preferências serem atualizadas
+      setTimeout(() => {
+        setCarregamentoPreferencias(false);
+      }, 500);
+    });
   };
 
   /** Função que salva a nova preferência do usuário */
-  const saveNewPreference = () => {
+  const salvarPreferencias = () => {
     if (!CookieService.getCookie("jwt")) return;
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
-      (user) => {
-        let preferencias = JSON.parse(user.preferencias);
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
+      let preferencias = JSON.parse(user.preferencias);
 
-        preferencias.itemsVisualizationMode =
-          nextModoVisualizacao == "TABLE" ? "grid" : "table";
+      preferencias.itemsVisualizationMode = nextModoVisualizacao == "TABLE" ? "grid" : "table";
+      preferencias.abaPadrao = valorAba;
 
-        user.preferencias = JSON.stringify(preferencias);
+      user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => { });
-      }
-    );
+      UsuarioService.updateUser(user.id, user).then((e) => { });
+    });
   };
 
-  /** UseEffect para salvar as novas preferências do usuário */
-  useEffect(() => {
-    saveNewPreference("itemsVisualizationMode");
-  }, [nextModoVisualizacao]);
-
-  /** UseEffect utilizado para salvar as preferências caso mude de aba */
-  useEffect(() => {
-    saveNewPreference("abaPadrao");
-  }, [valorAba]);
-
-  // ********************************************** Fim Preferências ********************************************** //
-
-  /** useEffect utilizado para atualizar o input de pesquisa com o texto reconhecido */
-  useEffect(() => {
-    if (localClique == "demanda") {
-      valorPesquisa = palavrasJuntas;
-    }
-  }, [palavrasJuntas]);
-
-  const [state, setState] = useState({
-    right: false,
-  });
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
+  /** Função para abrir e fechar a sidebar de filtragem e ordenação */
+  const selecionarSidebar = (anchor, open) => (event) => {
+    if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) return;
+    setSidebarFiltro({ ...sidebarFiltro, [anchor]: open });
   };
 
   return (
@@ -507,18 +406,18 @@ const Home = () => {
       {/* Div container */}
       {/* Tour de ajuda para as minhas demandas*/}
       <Tour
-        steps={stepsTour}
-        isOpen={isTourOpen}
-        onRequestClose={() => setIsTourOpen(false)}
+        steps={passosTourMinhasDemandas}
+        isOpen={tourMinhasDemandas}
+        onRequestClose={() => setTourMinhasDemandas(false)}
         accentColor="#00579D"
         rounded={10}
         showCloseButton={false}
       />
       {/* Tour de ajuda para o departamento */}
       <Tour
-        steps={stepsTourDepartamento}
-        isOpen={isTourOpenDepartamento}
-        onRequestClose={() => setIsTourOpenDepartamento(false)}
+        steps={passosTourMeuDepartamento}
+        isOpen={tourMeuDepartamento}
+        onRequestClose={() => setTourMeuDepartamento(false)}
         accentColor="#00579D"
         rounded={10}
         showCloseButton={false}
@@ -712,7 +611,7 @@ const Home = () => {
                           color: "text.white",
                           fontSize: FontConfig?.default,
                         }}
-                        onClick={toggleDrawer("right", true)}
+                        onClick={selecionarSidebar("right", true)}
                         variant="contained"
                         disableElevation
                       >
@@ -722,13 +621,11 @@ const Home = () => {
                       </Button>
                       <Drawer
                         anchor={"right"}
-                        open={state["right"]}
-                        onClose={toggleDrawer("right", false)}
+                        open={sidebarFiltro["right"]}
+                        onClose={selecionarSidebar("right", false)}
                         sx={{ zIndex: "800" }}
                       >
                         <SideBarFiltroHome
-                          listaFiltros={listaFiltros}
-                          setListaFiltros={setListaFiltros}
                           tipoUsuario={usuario.tipo_usuario}
                           ordenacaoTitulo={ordenacaoTitulo}
                           setOrdenacaoTitulo={setOrdenacaoTitulo}
@@ -737,6 +634,9 @@ const Home = () => {
                           ordenacaoDate={ordenacaoDate}
                           setOrdenacaoDate={setOrdenacaoDate}
                           valorAba={valorAba}
+                          statusFiltroAtual={statusFiltroAtual}
+                          setStatusFiltroAtual={setStatusFiltroAtual}
+                          limparFiltro={limparFiltro}
                         />
                       </Drawer>
                     </React.Fragment>
@@ -779,12 +679,12 @@ const Home = () => {
                     <TabPanel sx={{ padding: 0 }} value="1">
                       <Ajuda
                         onClick={() => {
-                          setIsTourOpen(true);
-                          setState({ ...state, ["right"]: false });
+                          setTourMinhasDemandas(true);
+                          setSidebarFiltro({ ...sidebarFiltro, ["right"]: false });
                         }}
                       />
                       <Box>
-                        {isTourOpen ? (
+                        {tourMinhasDemandas ? (
                           <Demanda
                             demanda={{
                               id: 0,
@@ -813,12 +713,12 @@ const Home = () => {
                     <TabPanel sx={{ padding: 0 }} value="2">
                       <Ajuda
                         onClick={() => {
-                          setIsTourOpenDepartamento(true);
-                          setState({ ...state, ["right"]: false });
+                          setTourMeuDepartamento(true);
+                          setSidebarFiltro({ ...sidebarFiltro, ["right"]: false });
                         }}
                       />
                       <Box>
-                        {isTourOpenDepartamento ? (
+                        {tourMeuDepartamento ? (
                           <Demanda
                             demanda={{
                               id: 0,

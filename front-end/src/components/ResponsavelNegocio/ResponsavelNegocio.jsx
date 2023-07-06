@@ -13,7 +13,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente para exibir os responsáveis de negócio
 const ResponsavelNegocio = (props) => {
-
   // Context para alterar o idioma
   const { texts } = useContext(TextLanguageContext);
 
@@ -24,7 +23,9 @@ const ResponsavelNegocio = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   // useEffect utilizado para a leitura de texto
   useEffect(() => {
@@ -43,9 +44,9 @@ const ResponsavelNegocio = (props) => {
   return (
     <Box className="flex w-full mt-5 items-end">
       <Box className="flex flex-col">
-        <Box className="flex mb-2">
+        <Box className="flex mb-1">
           <Typography
-            sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+            sx={{ fontSize: FontConfig.medium, fontWeight: "500" }}
             onClick={() => {
               lerTexto(texts.responsavelNegocio.responsavelDoNegocio);
             }}
@@ -64,7 +65,7 @@ const ResponsavelNegocio = (props) => {
         </Box>
         <Box sx={{ width: "30rem" }}>
           <Box
-            className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+            className="flex items-center justify-between border-solid border px-1 py-1.5 border-l-4"
             sx={{
               width: "100%;",
               height: "40px",
@@ -116,9 +117,9 @@ const ResponsavelNegocio = (props) => {
         </Box>
       </Box>
       <Box className="flex flex-col ml-10">
-        <Box className="flex mb-2">
+        <Box className="flex mb-1">
           <Typography
-            sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+            sx={{ fontSize: FontConfig.medium, fontWeight: "500" }}
             onClick={() => {
               lerTexto(texts.responsavelNegocio.area);
             }}
@@ -137,7 +138,7 @@ const ResponsavelNegocio = (props) => {
         </Box>
         <Box sx={{ width: "20rem" }}>
           <Box
-            className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+            className="flex items-center justify-between border-solid border px-1 py-1.5 border-l-4"
             sx={{
               width: "100%;",
               height: "40px",

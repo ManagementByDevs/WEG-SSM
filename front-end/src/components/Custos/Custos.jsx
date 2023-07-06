@@ -156,7 +156,7 @@ const Custos = (props) => {
   };
 
   return (
-    <Box className="flex w-full mt-5">
+    <Box className="flex w-full mt-3">
       <Box className="flex mr-2 items-top">
         <Box>
           {/* Dropdown tipo despesa */}
