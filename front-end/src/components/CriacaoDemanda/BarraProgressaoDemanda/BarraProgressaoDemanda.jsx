@@ -134,10 +134,6 @@ const BarraProgressaoDemanda = () => {
       setTimeout(() => {
         salvarEscopo();
       }, 5000);
-
-      if (carregamentoDemanda) {
-        setCarregamentoDemanda(false);
-      }
     }
   }, [ultimoEscopo]);
 
@@ -271,12 +267,12 @@ const BarraProgressaoDemanda = () => {
           //Confirmação de salvamento (se sobrar tempo)
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
   };
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
@@ -377,7 +373,7 @@ const BarraProgressaoDemanda = () => {
       if (beneficio.visible) {
         let beneficioFinal = { ...beneficio };
         delete beneficioFinal.visible;
-        beneficioService.put(beneficioFinal).then((response) => {});
+        beneficioService.put(beneficioFinal).then((response) => { });
       }
     }
   };
