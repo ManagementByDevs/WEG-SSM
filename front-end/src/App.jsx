@@ -61,6 +61,8 @@ const App = () => {
 
   const [lendoTexto, setLendoTexto] = useState(false);
 
+  const [librasAtivo, setLibrasAtivo] = useState(false);
+
   /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (lendoTexto) {
@@ -132,9 +134,21 @@ const App = () => {
   );
 
   const speechSynthesis = useMemo(
-    () => ({ lendoTexto, setLendoTexto, lerTexto }),
-    [lendoTexto]
+    () => ({
+      lendoTexto,
+      librasAtivo,
+      setLibrasAtivo,
+      setLendoTexto,
+      lerTexto,
+    }),
+    [lendoTexto, librasAtivo]
   );
+
+  useEffect(() => {
+    if(librasAtivo) {
+      setLendoTexto(false);
+    }
+  }, [librasAtivo]);
 
   useEffect(() => {
     setLendoTexto(false);
@@ -153,43 +167,52 @@ const App = () => {
               <SpeechRecognitionService>
                 <SpeechSynthesisContext.Provider value={speechSynthesis}>
                   <Router>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "start",
+                        alignItems: "end",
+                        position: "fixed",
+                        bottom: "0",
+                        right: "0",
+                        width: "0rem",
+                        zIndex: "999",
+                      }}
+                    >
                       <Box
                         sx={{
                           display: "flex",
                           flexDirection: "column",
-                          justifyContent: "start",
                           alignItems: "end",
-                          position: "fixed",
-                          bottom: "0",
-                          right: "0",
-                          width: "0rem",
-                          zIndex: "999",
+                          justifyContent: "end",
+                          paddingBottom: "3.5rem",
+                          width: "1px",
                         }}
                       >
+                        <LerTexto />
+                        <GlobalStyles
+                          styles={{
+                            "div[vw].enabled": {
+                              marginRight: "0px !important",
+                              marginBottom: "5rem !important",
+                              position: "unset",
+                              zIndex: 999999,
+                            },
+                          }}
+                        />
                         <Box
+                          onClick={() => {
+                            setLibrasAtivo(!librasAtivo);
+                          }}
                           sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "end",
-                            justifyContent: "end",
-                            paddingBottom: "3.5rem",
-                            width: "1px",
+                            zIndex: "999999",
                           }}
                         >
-                          <LerTexto />
-                          <GlobalStyles
-                            styles={{
-                              "div[vw].enabled": {
-                                marginRight: "0px !important",
-                                marginTop: "2rem !important",
-                                position: "unset",
-                                zIndex: "999",
-                              },
-                            }}
-                          />
                           <VLibras forceOnload />
                         </Box>
                       </Box>
+                    </Box>
                     <Routes>
                       <Route path="/login" element={<Login />} />
                       <Route element={<ProtectedRoute />}>

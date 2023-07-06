@@ -21,7 +21,7 @@ const ModalRecusarDemanda = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
   const { startRecognition, escutar, palavrasJuntas } = useContext(
@@ -135,6 +135,7 @@ const ModalRecusarDemanda = (props) => {
               onClick={() => {
                 if (!lendoTexto) {
                   props.confirmRecusarDemanda();
+                } else if (librasAtivo) {
                 } else {
                   lerTexto(texts.modalRecusarDemanda.enviar);
                 }

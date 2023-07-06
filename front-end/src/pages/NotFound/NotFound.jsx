@@ -19,15 +19,16 @@ const NotFound = () => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Navigate utilizado para navegar para outra página */
   let navigate = useNavigate();
 
   /** Função para retornar a home */
   const voltarPaginaPrincipal = () => {
-    if (!lendoTexto) {
+    if (!lendoTexto && !librasAtivo) {
       navigate("/");
+    } else if (librasAtivo) {
     } else {
       lerTexto(texts.notFound.voltar);
     }

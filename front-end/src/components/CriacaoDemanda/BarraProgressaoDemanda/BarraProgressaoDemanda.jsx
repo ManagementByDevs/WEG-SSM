@@ -2,7 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 
-import { Box, Stepper, Step, StepLabel, Typography, Button, } from "@mui/material";
+import {
+  Box,
+  Stepper,
+  Step,
+  StepLabel,
+  Typography,
+  Button,
+} from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -24,7 +31,6 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
  * salvando a demanda e escopos no banco de dados
  */
 const BarraProgressaoDemanda = () => {
-
   /** Location utilizado para setar o state utilizado para verificação de lógica */
   const location = useLocation();
 
@@ -38,7 +44,9 @@ const BarraProgressaoDemanda = () => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   /** UseState utilizado para armazenar o usuário */
   const [usuario, setUsuario] = useState(null);
@@ -165,7 +173,12 @@ const BarraProgressaoDemanda = () => {
    */
   const carregarEscopoExistente = (id) => {
     EscopoService.buscarPorId(id).then((response) => {
-      setPaginaDados({ titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia });
+      setPaginaDados({
+        titulo: response.titulo,
+        problema: response.problema,
+        proposta: response.proposta,
+        frequencia: response.frequencia,
+      });
       receberBeneficios(response.beneficios);
       setPaginaArquivos(response.anexo);
       setUltimoEscopo({ ...response });
@@ -185,7 +198,11 @@ const BarraProgressaoDemanda = () => {
             .toLowerCase();
       }
 
-      listaNova.push({ ...beneficio, tipoBeneficio: tipoBeneficioNovo, visible: true });
+      listaNova.push({
+        ...beneficio,
+        tipoBeneficio: tipoBeneficioNovo,
+        visible: true,
+      });
     }
     setPaginaBeneficios(listaNova);
   };
@@ -208,7 +225,7 @@ const BarraProgressaoDemanda = () => {
       }
     }
     return listaBeneficiosVisible;
-  }
+  };
 
   /** Função para retornar um objeto de demanda para salvamento dela ou de um escopo */
   const retornaObjetoDemanda = () => {
@@ -217,7 +234,9 @@ const BarraProgressaoDemanda = () => {
       problema: formatarHtml(paginaDados.problema),
       proposta: formatarHtml(paginaDados.proposta),
       frequencia: paginaDados.frequencia,
-      beneficios: retornarIdsObjetos(retornarBeneficiosVisible(paginaBeneficios)),
+      beneficios: retornarIdsObjetos(
+        retornarBeneficiosVisible(paginaBeneficios)
+      ),
       anexo: retornarIdsObjetos(paginaArquivos),
       solicitante: { id: usuario.id },
     };
@@ -252,12 +271,12 @@ const BarraProgressaoDemanda = () => {
           //Confirmação de salvamento (se sobrar tempo)
         });
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
   };
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
@@ -286,7 +305,7 @@ const BarraProgressaoDemanda = () => {
 
   /** Função para voltar para a etapa anterior na criação da demanda */
   const voltarEtapa = () => {
-    if (!lendoTexto) {
+    if (!lendoTexto && !librasAtivo) {
       setEtapaAtiva((prevActiveStep) => prevActiveStep - 1);
     } else {
       lerTexto(texts.barraProgressaoDemanda.botaoVoltar);
@@ -297,6 +316,8 @@ const BarraProgressaoDemanda = () => {
   const proximaEtapa = () => {
     if (lendoTexto) {
       lerTexto(texts.barraProgressaoDemanda.botaoProximo);
+    } else if (librasAtivo) {
+      return
     } else {
       switch (etapaAtiva) {
         case 0:
@@ -356,7 +377,7 @@ const BarraProgressaoDemanda = () => {
       if (beneficio.visible) {
         let beneficioFinal = { ...beneficio };
         delete beneficioFinal.visible;
-        beneficioService.put(beneficioFinal).then((response) => { });
+        beneficioService.put(beneficioFinal).then((response) => {});
       }
     }
   };
@@ -460,7 +481,7 @@ const BarraProgressaoDemanda = () => {
               color="primary"
               variant="contained"
               onClick={() => {
-                if (!lendoTexto) {
+                if (!lendoTexto && !librasAtivo) {
                   setOpenConfirmacao(true);
                 } else {
                   lerTexto(texts.barraProgressaoDemanda.botaoCriar);

@@ -38,7 +38,7 @@ const NotificacaoModal = () => {
   const { inscrever, stompClient } = useContext(WebSocketContext);
 
   // Context para ler o texto da tela
-  const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Referência usada para determinar a posição do modal na tela */
   const elementoAncora = useRef(null);
@@ -239,6 +239,7 @@ const NotificacaoModal = () => {
               onClick={() => {
                 if (!lendoTexto) {
                   navigate("/notificacao");
+                } else if (librasAtivo) {
                 } else {
                   lerTexto(texts.notificacaoModal.verTudo);
                 }

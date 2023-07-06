@@ -29,7 +29,6 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 /** Componente utilizado para criação da proposta, redirecionando para as etapas respectivas  */
 const BarraProgressaoProposta = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -43,7 +42,9 @@ const BarraProgressaoProposta = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   /** Variáveis utilizadas para controlar a barra de progessão na criação da demanda */
   const [activeStep, setActiveStep] = useState(0);
@@ -236,29 +237,22 @@ const BarraProgressaoProposta = (props) => {
         if (beneficio.tipoBeneficio == "REAL") {
           if (beneficio.moeda == "Dolar") {
             valorBeneficio +=
-              parseFloat(beneficio.valor_mensal) *
-              valorDolar.USDBRL.bid;
+              parseFloat(beneficio.valor_mensal) * valorDolar.USDBRL.bid;
           } else if (beneficio.moeda == "Euro") {
             valorBeneficio +=
-              parseFloat(beneficio.valor_mensal) *
-              valorEuro.EURBRL.bid;
+              parseFloat(beneficio.valor_mensal) * valorEuro.EURBRL.bid;
           } else {
             valorBeneficio += parseFloat(beneficio.valor_mensal);
           }
         } else if (beneficio.tipoBeneficio == "POTENCIAL") {
           if (beneficio.moeda == "Dolar") {
             valorBeneficio +=
-              (parseFloat(beneficio.valor_mensal) *
-                valorDolar.USDBRL.bid) /
-              2;
+              (parseFloat(beneficio.valor_mensal) * valorDolar.USDBRL.bid) / 2;
           } else if (beneficio.moeda == "Euro") {
             valorBeneficio +=
-              (parseFloat(beneficio.valor_mensal) *
-                valorEuro.EURBRL.bid) /
-              2;
+              (parseFloat(beneficio.valor_mensal) * valorEuro.EURBRL.bid) / 2;
           } else {
-            valorBeneficio +=
-              parseFloat(beneficio.valor_mensal) / 2;
+            valorBeneficio += parseFloat(beneficio.valor_mensal) / 2;
           }
         }
       }
@@ -342,7 +336,7 @@ const BarraProgressaoProposta = (props) => {
     setDadosDemanda({
       ...escopo,
       id: escopo.demanda.id,
-      status: null
+      status: null,
     });
 
     setGerais({
@@ -399,7 +393,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -449,9 +443,7 @@ const BarraProgressaoProposta = (props) => {
       if (beneficio.visible) {
         let beneficioFinal = { ...beneficio };
         delete beneficioFinal.visible;
-        beneficioService
-          .put(beneficioFinal)
-          .then((response) => { });
+        beneficioService.put(beneficioFinal).then((response) => {});
       }
     }
   };
@@ -460,6 +452,8 @@ const BarraProgressaoProposta = (props) => {
   const proximaEtapa = () => {
     if (lendoTexto) {
       lerTexto(texts.barraProgressaoProposta.botaoProximo);
+    } else if (librasAtivo) {
+      return;
     } else {
       let dadosFaltantes = false;
       let fechar100porcentoCcs = false;
@@ -545,7 +539,7 @@ const BarraProgressaoProposta = (props) => {
 
   /** Função para voltar para página anterior */
   const voltarEtapa = () => {
-    if (!lendoTexto) {
+    if (!lendoTexto && !librasAtivo) {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     } else {
       lerTexto(texts.barraProgressaoProposta.botaoVoltar);
@@ -726,6 +720,8 @@ const BarraProgressaoProposta = (props) => {
   const criarProposta = async () => {
     if (lendoTexto) {
       lerTexto(texts.barraProgressaoProposta.botaoCriar);
+    } else if (librasAtivo) {
+      return;
     } else {
       let feedbackFaltante = false;
       criandoProposta = true;

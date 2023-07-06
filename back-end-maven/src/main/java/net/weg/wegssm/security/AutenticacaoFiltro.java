@@ -37,11 +37,11 @@ public class AutenticacaoFiltro extends OncePerRequestFilter {
     /**
      * Função para filtrar uma requisição e definir se ela pode ser acessada ou não
      *
-     * @param request
-     * @param response
-     * @param filterChain
-     * @throws ServletException
-     * @throws IOException
+     * @param request - Requisição a ser filtrada
+     * @param response - Resposta a ser enviada
+     * @param filterChain - Filtro a ser aplicado
+     * @throws ServletException - Exceção de Servlet
+     * @throws IOException - Exceção de IO
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

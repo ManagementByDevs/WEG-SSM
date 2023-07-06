@@ -25,7 +25,7 @@ const Login = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Variável para usar função de navegação do react-router-dom */
   let navigate = useNavigate();
@@ -64,7 +64,7 @@ const Login = (props) => {
    * Caso não encontre ou os inputs não estejam preenchidos, os feedbacks respectivos serão ativados
    */
   const fazerLogin = async () => {
-    if (!lendoTexto) {
+    if (!lendoTexto && !librasAtivo) {
       if (dados.email && dados.senha) {
         try {
           await AutenticacaoService.login(dados);

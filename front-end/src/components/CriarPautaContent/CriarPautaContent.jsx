@@ -55,7 +55,7 @@ const CriarPautaContent = () => {
   );
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Navigate do react-router-dom */
   const navigate = useNavigate();
@@ -576,6 +576,8 @@ const CriarPautaContent = () => {
           onClick={() => {
             if (lendoTexto) {
               lerTexto(texts.criarPauta.criarPauta);
+            } else if (librasAtivo) {
+              return
             } else {
               handleOnCreatePauta();
             }

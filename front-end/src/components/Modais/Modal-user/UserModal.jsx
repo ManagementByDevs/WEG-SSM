@@ -119,7 +119,7 @@ const UserModal = () => {
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Context para ler o texto da tela
-  const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Objeto do usuário logado no sistema, buscado ao inicializar o componente */
   const [usuario, setUsuario] = useState({
@@ -530,6 +530,7 @@ const UserModal = () => {
             onClick={() => {
               if (lendoTexto) {
                 lerTexto(texts.userModal?.escopos);
+              } else if (librasAtivo) {
               } else {
                 handleClose();
                 navigate("/escopos");
@@ -556,6 +557,7 @@ const UserModal = () => {
             onClick={() => {
               if (lendoTexto) {
                 lerTexto(texts.userModal?.chats);
+              } else if (librasAtivo) {
               } else {
                 handleClose();
                 navigate("/chat", { state: { userChat: true } });

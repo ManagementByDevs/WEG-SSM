@@ -27,7 +27,9 @@ const DemandaGerencia = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   // Variável pare receber o tipo ( proposta ou demanda )
   const tipo = props.tipo;
@@ -174,6 +176,8 @@ const DemandaGerencia = (props) => {
                 if (lendoTexto) {
                   e.stopPropagation();
                   lerTexto(props.dados.titulo);
+                } else if (librasAtivo) {
+                  e.stopPropagation();
                 }
               }}
             >
@@ -189,6 +193,8 @@ const DemandaGerencia = (props) => {
                       lerTexto(
                         texts.demandaGerencia.ppm + ": " + props.dados.codigoPPM
                       );
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -213,6 +219,8 @@ const DemandaGerencia = (props) => {
                       if (lendoTexto) {
                         e.stopPropagation();
                         lerTexto(formatarStatus(props.dados.status));
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -251,6 +259,8 @@ const DemandaGerencia = (props) => {
                         } else {
                           lerTexto(texts.demandaGerencia.emAta);
                         }
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -279,6 +289,8 @@ const DemandaGerencia = (props) => {
                     if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(texts.demandaGerencia.solicitante);
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -298,6 +310,8 @@ const DemandaGerencia = (props) => {
                     if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(props.dados.solicitante?.nome);
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -315,6 +329,8 @@ const DemandaGerencia = (props) => {
                     if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(texts.demandaGerencia.departamento);
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -338,6 +354,8 @@ const DemandaGerencia = (props) => {
                       } else {
                         lerTexto(texts.demandaGerencia.naoAtribuido);
                       }
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -362,6 +380,8 @@ const DemandaGerencia = (props) => {
                       if (lendoTexto) {
                         e.stopPropagation();
                         lerTexto(texts.demandaGerencia.analistaResponsavel);
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -385,6 +405,8 @@ const DemandaGerencia = (props) => {
                         } else {
                           lerTexto(texts.demandaGerencia.naoAtribuido);
                         }
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -402,6 +424,8 @@ const DemandaGerencia = (props) => {
                       if (lendoTexto) {
                         e.stopPropagation();
                         lerTexto(texts.demandaGerencia.gerenteResponsavel);
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >
@@ -424,6 +448,8 @@ const DemandaGerencia = (props) => {
                         } else {
                           lerTexto(texts.demandaGerencia.naoAtribuido);
                         }
+                      } else if (librasAtivo) {
+                        e.stopPropagation();
                       }
                     }}
                   >

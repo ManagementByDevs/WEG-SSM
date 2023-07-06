@@ -72,7 +72,7 @@ const PautaTable = ({
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   // Retorna data formatada para melhor leitura
   const getDataFormatada = (dataInicio) => {
@@ -103,6 +103,8 @@ const PautaTable = ({
                   if (lendoTexto) {
                     e.stopPropagation();
                     lerTexto(texts.pautaAtaModoVisualizacao.numeroSequencial);
+                  } else if (librasAtivo) {
+                    e.stopPropagation(); 
                   }
                 }}
               >
@@ -116,6 +118,8 @@ const PautaTable = ({
                   if (lendoTexto) {
                     e.stopPropagation();
                     lerTexto(texts.pautaAtaModoVisualizacao.comissao);
+                  } else if (librasAtivo) {
+                    e.stopPropagation(); 
                   }
                 }}
               >
@@ -131,6 +135,8 @@ const PautaTable = ({
                     lerTexto(
                       texts.pautaAtaModoVisualizacao.analistaResponsavel
                     );
+                  } else if (librasAtivo) {
+                    e.stopPropagation(); 
                   }
                 }}
               >
@@ -144,6 +150,8 @@ const PautaTable = ({
                   if (lendoTexto) {
                     e.stopPropagation();
                     lerTexto(texts.pautaAtaModoVisualizacao.data);
+                  } else if (librasAtivo) {
+                    e.stopPropagation(); 
                   }
                 }}
               >
@@ -173,6 +181,8 @@ const PautaTable = ({
                     if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(row.numeroSequencial);
+                    } else if (librasAtivo) {
+                      e.stopPropagation(); 
                     }
                   }}
                 >
@@ -187,6 +197,8 @@ const PautaTable = ({
                     if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(row.comissao.nomeForum);
+                    } else if (librasAtivo) {
+                      e.stopPropagation(); 
                     }
                   }}
                 >
@@ -204,6 +216,8 @@ const PautaTable = ({
                     if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(row.analistaResponsavel?.nome);
+                    } else if (librasAtivo) {
+                      e.stopPropagation(); 
                     }
                   }}
                 >
@@ -222,6 +236,8 @@ const PautaTable = ({
                       if (lendoTexto) {
                         e.stopPropagation();
                         lerTexto(getDataFormatada(row.dataReuniao));
+                      } else if (librasAtivo) {
+                        e.stopPropagation(); 
                       }
                     }}
                   >
@@ -256,6 +272,8 @@ const PautaTable = ({
                           if (lendoTexto) {
                             e.stopPropagation();
                             lerTexto(getDataFormatada(row.dataReuniao));
+                          } else if (librasAtivo) {
+                            e.stopPropagation(); 
                           }
                         }}
                       >
@@ -353,7 +371,7 @@ const NadaEncontrado = () => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para ler o texto da tela 
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   return (
     <Box
@@ -372,6 +390,8 @@ const NadaEncontrado = () => {
           if (lendoTexto) {
             e.stopPropagation();
             lerTexto(texts.pautaAtaModoVisualizacao.nadaEncontrado);
+          } else if (librasAtivo) {
+            e.stopPropagation(); 
           }
         }}
       >
@@ -384,6 +404,8 @@ const NadaEncontrado = () => {
           if (lendoTexto) {
             e.stopPropagation();
             lerTexto(texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde);
+          } else if (librasAtivo) {
+            e.stopPropagation(); 
           }
         }}
       >

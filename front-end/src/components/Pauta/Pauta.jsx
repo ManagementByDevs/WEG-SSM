@@ -17,7 +17,7 @@ const Pautas = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   // Estado para saber se a ata já foi apreciada pela DG
   const [isApreciada, setIsApreciada] = useState(false);
@@ -77,6 +77,8 @@ const Pautas = (props) => {
             if (lendoTexto) {
               e.stopPropagation();
               lerTexto(props.dados.numeroSequencial);
+            } else if (librasAtivo) {
+              e.stopPropagation();
             }
           }}
         >
@@ -91,6 +93,8 @@ const Pautas = (props) => {
               if (lendoTexto) {
                 e.stopPropagation();
                 lerTexto(getDataFormatada(props.dados.dataReuniao));
+              } else if (librasAtivo) {
+                e.stopPropagation();
               }
             }}
           >
@@ -143,6 +147,8 @@ const Pautas = (props) => {
                 if (lendoTexto) {
                   e.stopPropagation();
                   lerTexto(texts.pauta.comissao);
+                } else if (librasAtivo) {
+                  e.stopPropagation();
                 }
               }}
             >
@@ -160,6 +166,8 @@ const Pautas = (props) => {
                 if (lendoTexto) {
                   e.stopPropagation();
                   lerTexto(props.dados.comissao?.nomeForum);
+                } else if (librasAtivo) {
+                  e.stopPropagation();
                 }
               }}
             >
@@ -175,6 +183,8 @@ const Pautas = (props) => {
                 if (lendoTexto) {
                   e.stopPropagation();
                   lerTexto(texts.pauta.analistaResponsavel);
+                } else if (librasAtivo) {
+                  e.stopPropagation();
                 }
               }}
             >
@@ -189,6 +199,8 @@ const Pautas = (props) => {
                 if (lendoTexto) {
                   e.stopPropagation();
                   lerTexto(props.dados.analistaResponsavel?.nome);
+                } else if (librasAtivo) {
+                  e.stopPropagation();
                 }
               }}
             >
@@ -217,6 +229,8 @@ const Pautas = (props) => {
                     } else {
                       lerTexto(texts.pauta.naoPublicada);
                     }
+                  } else if (librasAtivo) {
+                    e.stopPropagation();
                   }
                 }}
               >

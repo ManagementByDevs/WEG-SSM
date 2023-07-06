@@ -36,8 +36,8 @@ public class AutenticacaoConfig {
     /**
      * Configurações do serviço utilizado para autenticação e encriptação de senhas
      *
-     * @param auth
-     * @throws Exception
+     * @param auth - AuthenticationManagerBuilder
+     * @throws Exception - Exception caso ocorra algum erro
      */
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -47,9 +47,9 @@ public class AutenticacaoConfig {
     /**
      * Configurações das rotas que serão acessadas com e sem autenticação, assim como opções adicionais
      *
-     * @param httpSecurity
-     * @return
-     * @throws Exception
+     * @param httpSecurity - HttpSecurity usado para a configuração
+     * @return - SecurityFilterChain com as configurações
+     * @throws Exception - Exception caso ocorra algum erro
      */
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
@@ -104,25 +104,29 @@ public class AutenticacaoConfig {
      */
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
+
         corsConfiguration.setAllowedOrigins(List.of(
                 "http://localhost:3000"
         ));
+
         corsConfiguration.setAllowedMethods(List.of(
                 "POST", "DELETE", "GET", "PUT"
         ));
+
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
+
         return source;
     }
 
     /**
      * Função usada para retornar um "AuthenticationManager" quando for preciso
      *
-     * @param ac
-     * @return
-     * @throws Exception
+     * @param ac - AuthenticationConfiguration usado para a configuração
+     * @return - AuthenticationManager com as configurações
+     * @throws Exception - Exception caso ocorra algum erro
      */
     @Bean
     protected AuthenticationManager authenticationManager(AuthenticationConfiguration ac) throws Exception {

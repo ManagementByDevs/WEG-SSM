@@ -54,7 +54,7 @@ public class DemandaService {
     /**
      * Função para buscar uma demanda pelo ID com paginação
      *
-     * @param id - ID da demanda
+     * @param id       - ID da demanda
      * @param pageable - Componente de paginação
      * @return - Retorno da demanda com o ID
      */
@@ -65,7 +65,7 @@ public class DemandaService {
     /**
      * Função para buscar uma demanda pelo seu status com paginação
      *
-     * @param status - Status da demanda
+     * @param status   - Status da demanda
      * @param pageable - Componente de paginação
      * @return - Retorno da demanda com o status
      */
@@ -76,7 +76,7 @@ public class DemandaService {
     /**
      * Função para buscar uma demanda pelo fórum com paginação
      *
-     * @param forum - Fórum da demanda
+     * @param forum    - Fórum da demanda
      * @param pageable - Componente de paginação
      * @return - Retorno da demanda com o fórum
      */
@@ -88,7 +88,7 @@ public class DemandaService {
      * Função para buscar uma demanda pelo departamento com paginação
      *
      * @param departamento - Departamento da demanda
-     * @param pageable - Componente de paginação
+     * @param pageable     - Componente de paginação
      * @return - Retorno da demanda com o departamento
      */
     public Page<Demanda> findByDepartamento(Departamento departamento, Pageable pageable) {
@@ -99,7 +99,7 @@ public class DemandaService {
      * Função para verificar se uma demanda existe pelo ID
      *
      * @param id - ID da demanda
-     * @return  - Retorno se a demanda existe ou não
+     * @return - Retorno se a demanda existe ou não
      */
     public boolean existsById(Long id) {
         return demandaRepository.existsById(id);
@@ -109,7 +109,7 @@ public class DemandaService {
      * Função para salvar uma demanda
      *
      * @param entity - Demanda a ser salva
-     * @param <S> - Tipo da demanda
+     * @param <S>    - Tipo da demanda
      * @return - Retorno da demanda salva
      */
     public <S extends Demanda> S save(S entity) {

@@ -29,7 +29,7 @@ export default function ItemTest(props) {
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   const [open, setOpen] = useState(false);
 

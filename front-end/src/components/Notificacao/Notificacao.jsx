@@ -30,7 +30,7 @@ const Notificacao = ({
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   // Função para marcar a notificação como lida
   const handleClick = () => {
@@ -188,6 +188,8 @@ const Notificacao = ({
             if (lendoTexto) {
               e.preventDefault();
               lerTexto(retornaTitulo());
+            } else if (librasAtivo) {
+              e.preventDefault();
             }
           }}
         >
@@ -203,6 +205,8 @@ const Notificacao = ({
             if (lendoTexto) {
               e.preventDefault();
               lerTexto(formatarData(notificacao.data))
+            } else if (librasAtivo) {
+              e.preventDefault();
             }
           }}
         >

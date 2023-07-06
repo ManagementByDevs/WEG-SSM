@@ -52,7 +52,7 @@ const HomeGerencia = () => {
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para ler o texto da tela */
-  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
   const { startRecognition, escutar, palavrasJuntas } = useContext(
@@ -950,6 +950,8 @@ const HomeGerencia = () => {
   const exportarExcel = () => {
     if (lendoTexto) {
       lerTexto(texts.homeGerencia.exportar);
+    } else if (librasAtivo) {
+      return;
     } else {
       let listaObjetosString = [];
 
@@ -1688,8 +1690,9 @@ const HomeGerencia = () => {
                         fontSize: FontConfig.default,
                       }}
                       onClick={() => {
-                        if (!lendoTexto) {
+                        if (!lendoTexto && !librasAtivo) {
                           exportarExcel();
+                        } else if (librasAtivo) {
                         } else {
                           lerTexto(texts.homeGerencia.exportar);
                         }
@@ -1718,8 +1721,9 @@ const HomeGerencia = () => {
                     variant="contained"
                     disableElevation
                     onClick={() => {
-                      if (!lendoTexto) {
+                      if (!lendoTexto && !librasAtivo) {
                         navigate("/criar-demanda");
+                      } else if (librasAtivo) {
                       } else {
                         lerTexto(texts.homeGerencia.criarDemanda);
                       }
@@ -1735,8 +1739,9 @@ const HomeGerencia = () => {
                     variant="contained"
                     disableElevation
                     onClick={() => {
-                      if (!lendoTexto) {
+                      if (!lendoTexto && !librasAtivo) {
                         navigate("/criar-pauta");
+                      } else if (librasAtivo) {
                       } else {
                         lerTexto(texts.homeGerencia.criarPauta);
                       }
