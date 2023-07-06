@@ -1,6 +1,16 @@
 import React, { useContext, useRef, useEffect } from "react";
 
-import { Box, FormControl, Select, MenuItem, Typography, Divider, IconButton, Paper, Tooltip, } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  Typography,
+  Divider,
+  IconButton,
+  Paper,
+  Tooltip,
+} from "@mui/material";
 
 import ResponsavelNegocio from "../../ResponsavelNegocio/ResponsavelNegocio";
 
@@ -32,7 +42,9 @@ const FormularioGeralProposta = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   // Variável para o input de anexos
   const inputFile = useRef(null);
@@ -111,11 +123,14 @@ const FormularioGeralProposta = (props) => {
   return (
     <Box className="flex flex-col">
       <Box className="mt-12" sx={{ minWidth: "55rem" }}>
-        <Box className="flex flex-row mb-8 " sx={{ marginLeft: "6.1rem", marginTop: "2%" }}>
+        <Box
+          className="flex flex-row mb-8 "
+          sx={{ marginLeft: "6.1rem", marginTop: "2%" }}
+        >
           {/* Box geral do formulário */}
           <Box sx={{ width: "50%" }}>
             {/* Período Execução */}
-            <Box className="flex mb-2 w-1/2" >
+            <Box className="flex mb-2 w-1/2">
               <Typography
                 sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
                 onClick={() => {
@@ -139,7 +154,7 @@ const FormularioGeralProposta = (props) => {
                 <Box
                   fontSize={FontConfig.medium}
                   color="text.primary"
-                  className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+                  className="flex outline-none border-solid border px-1 py-1.5 border-l-4"
                   sx={{
                     width: "100%;",
                     height: "40px",
@@ -173,7 +188,7 @@ const FormularioGeralProposta = (props) => {
                 <Box
                   fontSize={FontConfig.medium}
                   color="text.primary"
-                  className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+                  className="flex outline-none border-solid border px-1 py-1.5 border-l-4"
                   sx={{
                     width: "100%;",
                     height: "40px",
@@ -219,7 +234,7 @@ const FormularioGeralProposta = (props) => {
             </Box>
             <Box className="flex">
               <Box
-                className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+                className="flex items-center justify-between border-solid border px-1 py-1.5 border-l-4"
                 sx={{
                   backgroundColor: "background.default",
                   width: "20%",
@@ -276,9 +291,12 @@ const FormularioGeralProposta = (props) => {
                 sx={{ marginLeft: "30px", minWidth: 110 }}
               >
                 <Select
-                  labelId="demo-simple-select-standard-label"
+                  className="w-4/5 border-solid border-t border-r pl-1 text-center"
+                  sx={{
+                    borderLeft: "4px solid #00579d",
+                    height: "40px",
+                  }}
                   id="demo-simple-select-standard"
-                  sx={{ height: "40px" }}
                   value={props.gerais.unidadePaybackSimples || ""}
                   onChange={(e) =>
                     props.setGerais({
@@ -303,7 +321,7 @@ const FormularioGeralProposta = (props) => {
         </Box>
 
         {/* Link Jira */}
-        <Box className="flex flex-row mb-8 " sx={{ marginLeft: "6.1rem", }}>
+        <Box className="flex flex-row mb-8 " sx={{ marginLeft: "6.1rem" }}>
           <Box sx={{ width: "50%" }}>
             <Box className="flex mb-2">
               <Typography
@@ -326,7 +344,7 @@ const FormularioGeralProposta = (props) => {
             </Box>
             <Box sx={{ width: "67%" }}>
               <Box
-                className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+                className="flex items-center justify-between border-solid border px-1 py-1.5 border-l-4"
                 sx={{
                   width: "100%;",
                   height: "40px",
@@ -404,7 +422,7 @@ const FormularioGeralProposta = (props) => {
             </Box>
             <Box className="flex">
               <Box
-                className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+                className="flex items-center justify-between border-solid border px-1 py-1.5 border-l-4"
                 sx={{
                   width: "40%;",
                   height: "40px",
@@ -559,14 +577,10 @@ const FormularioGeralProposta = (props) => {
                   {props.dados.anexo.map((anexo, index) => (
                     <Paper
                       key={index}
-                      className="flex justify-between items-center"
-                      sx={{
-                        borderLeftWidth: "4px",
-                        borderLeftColor: "primary.main",
-                        borderLeftStyle: "solid",
-                        backgroundColor: "background.default",
-                        padding: "0.2rem 1rem",
-                      }}
+                      elevation={0}
+                      className="flex justify-between items-center mt-2 px-2 border border-l-4"
+                      sx={{ borderLeftColor: "primary.main" }}
+                      square
                     >
                       <Typography
                         sx={{

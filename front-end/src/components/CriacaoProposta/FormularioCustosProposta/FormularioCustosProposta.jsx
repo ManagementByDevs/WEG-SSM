@@ -152,14 +152,16 @@ const FormularioCustosProposta = (props) => {
         <Divider />
         {props.custos?.map((custo, index) => {
           return (
-            <Custos
-              key={index}
-              index={index}
-              dados={custo}
-              setCustos={props.setCustos}
-              custos={props.custos}
-              deletarCustos={deletarTabelaCustos}
-            />
+            <Box key={index}>
+              <Custos
+                index={index}
+                dados={custo}
+                setCustos={props.setCustos}
+                custos={props.custos}
+                deletarCustos={deletarTabelaCustos}
+              />
+              <Divider sx={{ marginTop: "1.3rem" }} />
+            </Box>
           );
         })}
       </Box>

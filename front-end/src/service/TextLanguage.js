@@ -606,10 +606,12 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsável",
           numeroSequencialDG: "Número Sequencial da Ata da DG",
           tour: {
-            tour1: "Aqui você pode ver os detalhes da ata e as propostas que pertencem a ela",
+            tour1:
+              "Aqui você pode ver os detalhes da ata e as propostas que pertencem a ela",
             tour2: "Clicando aqui você pode baixar o PDF da ata",
-            tour3: "Aqui ficam os botões de navegação entre as propostas, e caso necessário um botão para publicar a ata",
-          }
+            tour3:
+              "Aqui ficam os botões de navegação entre as propostas, e caso necessário um botão para publicar a ata",
+          },
         },
         detalhesDemandaPagina: {
           tour: {
@@ -1569,7 +1571,7 @@ const TextLanguage = (linguagem) => {
           aprovado: "Approved",
           reprovado: "Disapproved",
         },
-        responsavelNegocional: {
+        responsavelNegocio: {
           responsavelDoNegocio: "Business Responsible",
           insiraResponsavelDoNegocio: "Enter the business responsible...",
           area: "Area",
@@ -1657,10 +1659,12 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Responsable Analyst",
           numeroSequencialDG: "DG Minutes Sequential Number",
           tour: {
-            tour1: "Here you can see the details of the minutes and the proposals that belong to them",
+            tour1:
+              "Here you can see the details of the minutes and the proposals that belong to them",
             tour2: "Click here to download the PDF of the minutes",
-            tour3: "Here are the navigation buttons between the proposals, and if necessary a button to publish the minutes",
-          }
+            tour3:
+              "Here are the navigation buttons between the proposals, and if necessary a button to publish the minutes",
+          },
         },
         detalhesDemandaPagina: {
           tour: {
@@ -1951,7 +1955,8 @@ const TextLanguage = (linguagem) => {
           tour: {
             tour1: "Here are all the details of the proposal",
             tour2: "Click here to download the proposal in PDF",
-            tour3:"By clicking on this button it is possible to add the proposal to an agenda",
+            tour3:
+              "By clicking on this button it is possible to add the proposal to an agenda",
           },
         },
         detalhesPropostaEditMode: {
@@ -2598,7 +2603,7 @@ const TextLanguage = (linguagem) => {
           aprovado: "批准",
           reprovado: "未批准",
         },
-        responsavelNegocional: {
+        responsavelNegocio: {
           responsavelDoNegocio: "业务负责人",
           insiraResponsavelDoNegocio: "输入业务负责人...",
           area: "区域",
@@ -2682,8 +2687,9 @@ const TextLanguage = (linguagem) => {
           tour: {
             tour1: "在这里您可以查看会议记录的详细信息以及属于会议记录的提案",
             tour2: "单击此处下载会议纪要的 PDF 版本",
-            tour3: "以下是提案之间的导航按钮，如有必要，还有用于发布会议记录的按钮",
-          }
+            tour3:
+              "以下是提案之间的导航按钮，如有必要，还有用于发布会议记录的按钮",
+          },
         },
         detalhesDemandaPagina: {
           tour: {
@@ -2956,8 +2962,7 @@ const TextLanguage = (linguagem) => {
           tour: {
             tour1: "以下是该提案的所有详细信息",
             tour2: "单击此处下载 PDF 格式的提案",
-            tour3:
-              "通过单击此按钮，可以将提案添加到议程中",
+            tour3: "通过单击此按钮，可以将提案添加到议程中",
           },
         },
         detalhesPropostaEditMode: {
@@ -3697,10 +3702,12 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsable",
           numeroSequencialDG: "Número secuencial de actas del GD",
           tour: {
-            tour1: "Aquí puede ver el detalle de las actas y las propuestas que les corresponden",
+            tour1:
+              "Aquí puede ver el detalle de las actas y las propuestas que les corresponden",
             tour2: "Haga clic aquí para descargar el PDF del acta",
-            tour3: "Aquí están los botones de navegación entre las propuestas, y si es necesario un botón para publicar el acta",
-          }
+            tour3:
+              "Aquí están los botones de navegación entre las propuestas, y si es necesario un botón para publicar el acta",
+          },
         },
         detalhesDemandaPagina: {
           tour: {
