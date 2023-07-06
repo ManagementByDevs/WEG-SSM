@@ -44,9 +44,9 @@ public class AutenticacaoController {
     /**
      * Método POST para a realização da autenticação, recebendo um userDTO como body da requisição
      *
-     * @param userDTO
-     * @param response
-     * @return
+     * @param userDTO  - UserDTO com os dados de autenticação
+     * @param response - HttpServletResponse usado para a geração dos cookies
+     * @return - ResponseEntity com o usuário autenticado ou um erro de autenticação
      */
     @PostMapping("/auth")
     public ResponseEntity<Object> autenticacao(@RequestBody @Valid UserDTO userDTO, HttpServletResponse response) {

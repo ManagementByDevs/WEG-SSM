@@ -9,8 +9,17 @@ import net.weg.wegssm.model.entities.Usuario;
  */
 public class ForumUtil {
 
+    /**
+     * Objeto usado para converter o JSON para DTO e o DTO para Model
+     */
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Função para converter um JSON em um Forum
+     *
+     * @param forumJson - JSON do forum
+     * @return - Forum convertido
+     */
     public Forum convertJsonToModel(String forumJson) {
         try {
             return this.objectMapper.readValue(forumJson, Forum.class);

@@ -58,7 +58,7 @@ public class UserJpa implements UserDetails {
     /**
      * Constutor que recebe um usuário e cria um userJpa com as informações dele
      *
-     * @param usuario
+     * @param usuario - Usuário que será usado para a criação do userJpa
      */
     public UserJpa(Usuario usuario) {
         this.usuario = usuario;

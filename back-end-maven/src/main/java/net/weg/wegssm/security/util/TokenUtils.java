@@ -18,8 +18,9 @@ public class TokenUtils {
 
     /**
      * Função que gera os tokens de autenticação, com o email usuário sendo o "subject" principal do token
-     * @param usuario
-     * @return
+     *
+     * @param usuario - Usuário que será autenticado
+     * @return - Token gerado
      */
     public String gerarToken(UserJpa usuario) {
         return Jwts.builder()
@@ -33,7 +34,8 @@ public class TokenUtils {
 
     /**
      * Função que valida se um token recebido é válido para autenticação do usuário
-     * @param token
+     *
+     * @param token - Token recebido
      */
     public void validarToken(String token) {
         try {
