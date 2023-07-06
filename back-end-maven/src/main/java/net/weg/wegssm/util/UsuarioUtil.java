@@ -13,8 +13,17 @@ import javax.validation.Valid;
  */
 public class UsuarioUtil {
 
+    /**
+     * Objeto usado para converter o JSON para DTO e o DTO para Model
+     */
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Função para converter um JSON em um Usuario
+     *
+     * @param usuarioJson - JSON do usuario
+     * @return - Usuario convertido
+     */
     public Usuario convertJsonToModel(String usuarioJson) {
         try {
             return this.objectMapper.readValue(usuarioJson, Usuario.class);

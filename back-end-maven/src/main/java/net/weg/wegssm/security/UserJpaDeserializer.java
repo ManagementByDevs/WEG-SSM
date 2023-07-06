@@ -22,10 +22,10 @@ public class UserJpaDeserializer extends JsonDeserializer<UserJpa> {
     /**
      * Função para transformar o usuário recebido no cookie para a classe Usuario
      *
-     * @param p
-     * @param ctxt
-     * @return
-     * @throws IOException
+     * @param p    - Parser usado para ler o Json
+     * @param ctxt - Contexto usado para a deserialização
+     * @return - UserJpa com as informações do usuário
+     * @throws IOException - Exceção lançada caso ocorra algum erro na deserialização
      */
     @Override
     public UserJpa deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
@@ -34,14 +34,17 @@ public class UserJpaDeserializer extends JsonDeserializer<UserJpa> {
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         ArrayNode authoritiesNode = (ArrayNode) node.get("authorities");
+
         for (JsonNode authorityNode : authoritiesNode) {
             String authority = authorityNode.get("authority").asText();
             SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
             authorities.add(simpleGrantedAuthority);
         }
+
         Usuario usuario = mapper.convertValue(node.get("usuario"), Usuario.class);
         SimpleGrantedAuthority authority = authorities.get(0);
         usuario = new UsuarioFactory().getUsuario(authority, usuario);
+
         return new UserJpa(usuario);
     }
 

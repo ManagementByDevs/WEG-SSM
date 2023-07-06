@@ -13,13 +13,28 @@ import javax.validation.Valid;
  */
 public class EscopoPropostaUtil {
 
+    /**
+     * Objeto usado para converter o JSON para DTO e o DTO para Model
+     */
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Função para converter um JSON em um EscopoProposta
+     *
+     * @param escopoPropostaJson - JSON do escopo da proposta
+     * @return - EscopoProposta convertido
+     */
     public EscopoProposta convertJsonToModel(String escopoPropostaJson) {
         EscopoPropostaDTO escopoPropostaDTO = convertJsonToDTO(escopoPropostaJson);
         return convertDTOToModel(escopoPropostaDTO);
     }
 
+    /**
+     * Função para converter um JSON em um EscopoProposta sem passar pelo DTO
+     *
+     * @param escopoPropostaJson - JSON do escopo da proposta
+     * @return - EscopoProposta convertido
+     */
     public EscopoProposta convertJsonToModelDirect(String escopoPropostaJson) {
         try {
             return this.objectMapper.readValue(escopoPropostaJson, EscopoProposta.class);
@@ -28,6 +43,12 @@ public class EscopoPropostaUtil {
         }
     }
 
+    /**
+     * Função para converter um JSON para um objeto DTO do escopo da proposta
+     *
+     * @param escopoPropostaJson - JSON do escopo da proposta
+     * @return - DTO do escopo da proposta
+     */
     private EscopoPropostaDTO convertJsonToDTO(String escopoPropostaJson) {
         try {
             return this.objectMapper.readValue(escopoPropostaJson, EscopoPropostaDTO.class);
@@ -36,6 +57,12 @@ public class EscopoPropostaUtil {
         }
     }
 
+    /**
+     * Função para converter um DTO para um objeto Model do escopo da proposta
+     *
+     * @param escopoPropostaDTO - DTO do escopo da proposta
+     * @return - Model do escopo da proposta
+     */
     private EscopoProposta convertDTOToModel(@Valid EscopoPropostaDTO escopoPropostaDTO) {
         return this.objectMapper.convertValue(escopoPropostaDTO, EscopoProposta.class);
     }

@@ -27,13 +27,14 @@ public class JpaService implements UserDetailsService {
     /**
      * Função que busca o usuário no banco de dados caso ele exista, prosseguindo com a autenticação
      *
-     * @param username
-     * @return
-     * @throws UsernameNotFoundException
+     * @param username - Email do usuário
+     * @return - UserDetails com os dados do usuário
+     * @throws UsernameNotFoundException - Exceção lançada caso o usuário não seja encontrado
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(username);
+
         if (usuarioOptional.isEmpty()) {
             throw new UsernameNotFoundException("Usuário não encontrado!");
         }
