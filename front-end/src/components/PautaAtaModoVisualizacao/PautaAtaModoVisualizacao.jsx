@@ -305,9 +305,9 @@ const PautaTable = ({
                         }
                       >
                         {row.publicada ? (
-                          <PublicIcon sx={{ color: "primary.main" }} />
+                          <PublicIcon sx={{ color: "text.secondary" }} />
                         ) : (
-                          <PublicOffIcon sx={{ color: "primary.main" }} />
+                          <PublicOffIcon sx={{ color: "text.secondary" }} />
                         )}
                       </Tooltip>
                     </Box>

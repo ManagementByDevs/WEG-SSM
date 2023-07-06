@@ -179,6 +179,8 @@ const Demanda = (props) => {
               if (lendoTexto) {
                 e.stopPropagation();
                 lerTexto(props.demanda.titulo);
+              } else if (librasAtivo) {
+                e.stopPropagation();
               }
             }}
           >
@@ -199,6 +201,8 @@ const Demanda = (props) => {
                   if (lendoTexto) {
                     e.stopPropagation();
                     lerTexto(props.demanda.id);
+                  } else if (librasAtivo) {
+                    e.stopPropagation();
                   }
                 }}
               >
@@ -213,6 +217,8 @@ const Demanda = (props) => {
                     if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(formatarNomeStatus());
+                    } else if (librasAtivo) {
+                      e.stopPropagation();
                     }
                   }}
                 >
@@ -246,6 +252,8 @@ const Demanda = (props) => {
               if (lendoTexto) {
                 e.stopPropagation();
                 lerTexto(getPropostaFomartted(props.demanda.proposta));
+              } else if (librasAtivo) {
+                e.stopPropagation();
               }
             }}
           >
@@ -268,6 +276,8 @@ const Demanda = (props) => {
                 if (lendoTexto) {
                   e.stopPropagation();
                   lerTexto(props.demanda.solicitante?.nome);
+                } else if (librasAtivo) {
+                  e.stopPropagation();
                 }
               }}
             >
