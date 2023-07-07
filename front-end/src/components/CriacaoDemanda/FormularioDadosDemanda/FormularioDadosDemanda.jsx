@@ -11,7 +11,6 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -140,6 +139,7 @@ const FormularioDadosDemanda = (props) => {
               label={texts.formularioDadosDemanda.frequenciaDeUso}
               placeholder={texts.formularioDadosDemanda.digiteFrequenciaDeUso}
               fontConfig={FontConfig.default}
+              smartRecomendation
             />
           </Box>
         </Box>

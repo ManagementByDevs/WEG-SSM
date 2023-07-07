@@ -11,7 +11,6 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 /** Input padrão usado no sistema, com label acima */
 const InputComLabel = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -34,6 +33,11 @@ const InputComLabel = (props) => {
       props.saveInputValue(palavrasJuntas);
     }
   }, [palavrasJuntas]);
+
+  useEffect(() => {
+    if (props.smartRecomendation) {
+    }
+  }, []);
 
   return (
     <Box sx={{ width: "100%" }}>
