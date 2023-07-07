@@ -221,6 +221,16 @@ const Home = () => {
     setCarregamentoItens(false);
   }, [listaDemandas]);
 
+  useEffect(() => {
+    if (usuario) {
+      if (valorAba == "1") {
+        setParams({ ...params, solicitante: usuario })
+      } else {
+        setParams({ ...params, departamento: usuario.departamento })
+      }
+    }
+  }, [usuario]);
+
   /** UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal de ordenação */
   useEffect(() => {
     let textoNovo = "";
@@ -274,7 +284,6 @@ const Home = () => {
   const buscarUsuario = () => {
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((e) => {
       setUsuario(e);
-      setParams({ ...params, solicitante: e });
     });
   };
 
