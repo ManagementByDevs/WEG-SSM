@@ -267,7 +267,7 @@ const DetalhesDemanda = (props) => {
   const removerAnexo = (index) => {
     if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
       removeAnexosNovos(anexosDemanda[index]);
-      AnexoService.deleteById(anexosDemanda[index].id).then((response) => {});
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { });
     } else {
       setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     }
@@ -314,7 +314,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -322,7 +322,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosNovos([]);
   };
@@ -330,7 +330,7 @@ const DetalhesDemanda = (props) => {
   /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
   const excluirAnexosAdicionados = () => {
     for (let anexo of novosAnexos) {
-      AnexoService.deleteById(anexo.id).then(() => {});
+      AnexoService.deleteById(anexo.id).then(() => { });
     }
     setNovosAnexos([]);
   };
@@ -375,7 +375,7 @@ const DetalhesDemanda = (props) => {
   const atualizarBeneficios = (listaBeneficios) => {
     for (const beneficio of listaBeneficios) {
       if (beneficio.visible) {
-        BeneficioService.put(beneficio).then((response) => {});
+        BeneficioService.put(beneficio).then((response) => { });
       }
     }
   };
@@ -389,12 +389,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-          props.dados.beneficios[index].moeda.toLowerCase() &&
+        props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo?.toLowerCase() ==
-          props.dados.beneficios[index].memoriaCalculo?.toLowerCase()
+        props.dados.beneficios[index].memoriaCalculo?.toLowerCase()
       );
     });
   };
@@ -727,6 +727,13 @@ const DetalhesDemanda = (props) => {
         className="flex flex-col gap-3 border rounded px-10 py-4 border-t-6 relative"
         sx={{ width: "60rem", borderTopColor: "primary.main" }}
       >
+
+        {props.usuario?.id == props.dados.solicitante?.id || props.usuario.tipoUsuario != "SOLICITANTE" ? (
+          <StatusDemanda
+            status={props.dados.status}
+          />
+        ) : null}
+
         {/* Mostrar o icone de edição caso siga os requisitos */}
         <Box
           className="absolute cursor-pointer"
@@ -734,8 +741,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -744,8 +751,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -1510,6 +1517,78 @@ const DetalhesDemanda = (props) => {
         )}
       </Box>
     </Box>
+  );
+};
+
+// Status da Demanda
+const StatusDemanda = ({
+  status = "",
+}) => {
+
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext)
+
+  /** Retorna o texto do status recebido */
+  const getStatusFormatted = (status) => {
+    if (status == "CANCELLED") {
+      return texts.demanda.status.reprovada;
+    } else if (status == "BACKLOG_REVISAO") {
+      return texts.demanda.status.aguardandoRevisao;
+    } else if (status == "BACKLOG_EDICAO") {
+      return texts.demanda.status.aguardandoEdicao;
+    } else if (status == "BACKLOG_APROVACAO") {
+      return texts.demanda.status.emAprovacao;
+    } else if (status == "ASSESSMENT") {
+      return texts.demanda.status.aprovada;
+    } else if (status == "ASSESSMENT_APROVACAO" || status == "ASSESSMENT_EDICAO" || status == "ASSESSMENT_COMISSAO" || status == "ASSESSMENT_DG") {
+      return texts.demanda.status.emAndamento;
+    } else if (status == "DONE") {
+      return texts.demanda.status.emDesenvolvimento;
+    }
+  };
+
+  /** Retorna a cor hexadecimal do status da demanda */
+  const getCorStatus = (status) => {
+    if (status == "CANCELLED") {
+      return "#DA0303";
+    } else if (status == "BACKLOG_REVISAO") {
+      return "#C4C4C4";
+    } else if (status == "BACKLOG_EDICAO") {
+      return "#FFD600";
+    } else if (status == "BACKLOG_APROVACAO") {
+      return "#00579D";
+    } else if (status == "ASSESSMENT") {
+      return "#11B703";
+    } else if (status == "ASSESSMENT_APROVACAO" || status == "ASSESSMENT_EDICAO" || status == "ASSESSMENT_COMISSAO" || status == "ASSESSMENT_DG") {
+      return "#F7DC6F";
+    } else if (status == "DONE") {
+      return "#7EB61C";
+    }
+  };
+
+  return (
+    <Tooltip title={getStatusFormatted(status)}>
+      <Box
+        className="flex absolute right-2 top-0 cursor-pointer"
+      >
+        <Box
+          className="w-0 h-0 relative left-4"
+          sx={{
+            borderTop: `1.8rem solid ${getCorStatus(status)}`,
+            borderRight: "1.1rem solid transparent",
+            borderLeft: "0px solid transparent",
+          }}
+        />
+        <Box
+          className="w-0 h-0 relative"
+          sx={{
+            borderTop: `1.8rem solid ${getCorStatus(status)}`,
+            borderRight: "0rem solid transparent",
+            borderLeft: "1.1rem solid transparent",
+          }}
+        />
+      </Box>
+    </Tooltip>
   );
 };
 

@@ -97,7 +97,7 @@ const DemandaTable = ({
       return "#00579D";
     } else if (status == "ASSESSMENT") {
       return "#11B703";
-    } else if (status == "ASSESSMENT_APROVACAO") {
+    } else if (status == "ASSESSMENT_APROVACAO" || status == "ASSESSMENT_EDICAO" || status == "ASSESSMENT_COMISSAO" || status == "ASSESSMENT_DG") {
       return "#F7DC6F";
     } else if (status == "DONE") {
       return "#7EB61C";
@@ -116,7 +116,7 @@ const DemandaTable = ({
       return texts.demandaModoVisualizacao.statusDemanda?.emAprovacao;
     } else if (status == "ASSESSMENT") {
       return texts.demandaModoVisualizacao.statusDemanda?.aprovada;
-    } else if (status == "ASSESSMENT_APROVACAO") {
+    } else if (status == "ASSESSMENT_APROVACAO" || status == "ASSESSMENT_EDICAO" || status == "ASSESSMENT_COMISSAO" || status == "ASSESSMENT_DG") {
       return texts.demandaModoVisualizacao.statusDemanda?.emAndamento;
     } else if (status == "DONE") {
       return texts.demandaModoVisualizacao.statusDemanda?.emDesenvolvimento;

@@ -115,7 +115,7 @@ const Demanda = (props) => {
       return "#00579D";
     } else if (props.demanda.status == "ASSESSMENT") {
       return "#11B703";
-    } else if (props.demanda.status == "ASSESSMENT_APROVACAO") {
+    } else if (props.demanda.status == "ASSESSMENT_APROVACAO" || props.demanda.status == "ASSESSMENT_EDICAO" || props.demanda.status == "ASSESSMENT_COMISSAO" || props.demanda.status == "ASSESSMENT_DG") {
       return "#F7DC6F";
     } else if (props.demanda.status == "DONE") {
       return "#7EB61C";
@@ -134,7 +134,7 @@ const Demanda = (props) => {
       return texts.demanda.status.emAprovacao;
     } else if (props.demanda.status == "ASSESSMENT") {
       return texts.demanda.status.aprovada;
-    } else if (props.demanda.status == "ASSESSMENT_APROVACAO") {
+    } else if (props.demanda.status == "ASSESSMENT_APROVACAO" || props.demanda.status == "ASSESSMENT_EDICAO" || props.demanda.status == "ASSESSMENT_COMISSAO" || props.demanda.status == "ASSESSMENT_DG") {
       return texts.demanda.status.emAndamento;
     } else if (props.demanda.status == "DONE") {
       return texts.demanda.status.emDesenvolvimento;

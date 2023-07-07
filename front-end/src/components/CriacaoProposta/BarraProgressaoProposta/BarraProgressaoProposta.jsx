@@ -343,7 +343,7 @@ const BarraProgressaoProposta = (props) => {
       periodoExecucacaoInicio: escopo.inicioExecucao
         ? new Date(escopo.inicioExecucao).toISOString().slice(0, 10)
         : "",
-      periodoExecucacaoFim: escopo.inicioExecucacao
+      periodoExecucacaoFim: escopo.fimExecucao
         ? new Date(escopo.fimExecucao).toISOString().slice(0, 10)
         : "",
       qtdPaybackSimples: escopo.paybackValor,
