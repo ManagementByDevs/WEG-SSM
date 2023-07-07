@@ -48,8 +48,8 @@ const Caminho = (props) => {
     "criar-pauta",
   ];
 
-  /** Função responsável por retornar para o caminho desejado */
-  const getPathName = (item) => {
+  /** Função responsável por pegar o caminho no qual o usuário está */
+  const buscarNomeCaminho = (item) => {
     item = item.charAt(0).toUpperCase() + item.slice(1);
     let indexCaminho = listaRotasPT.findIndex((e) => e == item.toLowerCase());
 
@@ -87,11 +87,11 @@ const Caminho = (props) => {
                     if (!lendoTexto && !librasAtivo) {
                       navigate("/" + item);
                     } else {
-                      lerTexto(getPathName(item));
+                      lerTexto(buscarNomeCaminho(item));
                     }
                   }}
                 >
-                  {getPathName(item)}
+                  {buscarNomeCaminho(item)}
                 </Typography>
               ) : (
                 <Typography
@@ -99,10 +99,10 @@ const Caminho = (props) => {
                   fontSize={FontConfig.default}
                   sx={{ fontWeight: 500 }}
                   onClick={() => {
-                    lerTexto(getPathName(item));
+                    lerTexto(buscarNomeCaminho(item));
                   }}
                 >
-                  {getPathName(item)}
+                  {buscarNomeCaminho(item)}
                 </Typography>
               )}
             </Box>

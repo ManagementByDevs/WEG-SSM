@@ -46,11 +46,8 @@ const ContainerPauta = (props) => {
   };
 
   /** Função para formatar a data de acordo com a linguagem do sistema */
-  const getFormattedDate = (dateInMySQL) => {
+  const buscarDataFormatada = (dateInMySQL) => {
     let date = DateService.getDateByMySQLFormat(dateInMySQL);
-
-    console.log("Data: ", date, dateInMySQL);
-    console.log("Props", props.pauta);
 
     switch (texts.linguagem) {
       case "pt":
@@ -93,7 +90,7 @@ const ContainerPauta = (props) => {
   };
 
   /** Função para retornar a cor do background do componente de pauta corretamente */
-  const getBackgroundColor = () => {
+  const pegarCorDeFundo = () => {
     if (!pautaSelecionada) {
       return mode == "dark" ? "#22252C" : "#FFFFFF";
     } else {
@@ -110,7 +107,7 @@ const ContainerPauta = (props) => {
         borderColor: "primary.main",
         p: 4,
         margin: "1%",
-        backgroundColor: getBackgroundColor(),
+        backgroundColor: pegarCorDeFundo(),
       }}
       onClick={selecionarPauta}
     >
@@ -131,7 +128,7 @@ const ContainerPauta = (props) => {
           }}
         >
           {props.pauta.numeroSequencial} -&nbsp;
-          {getFormattedDate(props.pauta.dataReuniao)}
+          {buscarDataFormatada(props.pauta.dataReuniao)}
         </Typography>
       </Box>
 

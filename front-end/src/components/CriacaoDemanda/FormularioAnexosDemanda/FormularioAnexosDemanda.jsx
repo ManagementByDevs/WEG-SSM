@@ -74,7 +74,7 @@ const FormularioAnexosDemanda = (props) => {
   };
 
   /** Função para excluir um arquivo do banco de dados e do array */
-  const deleteFile = (desiredIndex) => {
+  const deletarArquivo = (desiredIndex) => {
     AnexoService.deleteById(props.dados[desiredIndex].id).then((response) => {
       props.setDados(props.dados.filter((_, index) => index !== desiredIndex));
     });
@@ -226,7 +226,7 @@ const FormularioAnexosDemanda = (props) => {
                           </Typography>
                         </td>
                         <td className="text-center">
-                          <IconButton onClick={() => deleteFile(index)}>
+                          <IconButton onClick={() => deletarArquivo(index)}>
                             <DeleteOutlineOutlinedIcon color="primary" />
                           </IconButton>
                         </td>
