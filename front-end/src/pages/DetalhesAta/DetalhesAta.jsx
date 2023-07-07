@@ -567,7 +567,7 @@ const DetalhesAta = (props) => {
                       onChange={salvarNumeroSequencialAtaDG}
                     />
                   </Box>
-                ) : (
+                ) : ata.publicada ? (
                   <Box
                     sx={{
                       marginBottom: "1%",
@@ -592,7 +592,6 @@ const DetalhesAta = (props) => {
 
                     <Typography
                       sx={{
-                        fontWeight: "600",
                         cursor: "default",
                         marginTop: "1%",
                         marginLeft: "1%",
@@ -604,7 +603,7 @@ const DetalhesAta = (props) => {
                       {ata.numeroSequencialDG}
                     </Typography>
                   </Box>
-                )}
+                ): null}
               </Box>
               <Divider sx={{ marginTop: "1%" }} />
             </Box>

@@ -157,6 +157,7 @@ const DetalhesProposta = ({
     return (
       proposta.escopo == "" ||
       proposta.escopo == null ||
+      proposta.escopo == "<p><br></p>" ||
       proposta.escopo == "<p><br/></p>"
     );
   };

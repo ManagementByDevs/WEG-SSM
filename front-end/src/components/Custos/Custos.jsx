@@ -161,14 +161,14 @@ const Custos = (props) => {
         <Box>
           {/* Dropdown tipo despesa */}
           <Box className="w-full flex justify-between items-end">
-            <FormControl variant="standard" sx={{ minWidth: "9rem" }}>
-              <InputLabel id="demo-simple-select-standard-label">
+            <FormControl variant="standard" sx={{ minWidth: "11rem" }}>
+              <InputLabel sx={{ marginLeft: "0.5rem" }} id="demo-simple-select-standard-label">
                 {texts.custos.tipoDaDespesa}
               </InputLabel>
               <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
-                className="border-t border-r text-center"
+                className="border-t border-r text-center pl-2"
                 sx={{
                   borderLeft: "4px solid #00579d",
                 }}

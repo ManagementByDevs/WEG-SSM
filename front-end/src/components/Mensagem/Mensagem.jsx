@@ -82,19 +82,21 @@ const Mensagem = ({ mensagem = EntitiesObjectService.mensagem() }) => {
                   </Typography>
                 ) : (
                   <Tooltip title={mensagem.anexo.nome}>
-                    <Box
-                      className="px-5 pb-2 mb-2 border rounded cursor-pointer flex flex-col justify-center items-center "
-                      sx={{ backgroundColor: "chat.outro" }}
-                      onClick={() => downloadAnexo(mensagem.anexo)}
-                    >
-                      <FolderOutlinedIcon
-                        sx={{ fontSize: "100px", color: "chat.eu" }}
-                      />
-                      <Typography sx={{ fontWeight: 600 }}>
-                        {mensagem.anexo.nome}
-                      </Typography>
-                    </Box>
-                  </Tooltip>
+                  <Box
+                    className="px-4 py-2.5 mb-1 flex items-center gap-2 border rounded cursor-pointer"
+                    sx={{
+                      backgroundColor: "chat.outro",
+                    }}
+                    onClick={() => downloadAnexo(mensagem.anexo)}
+                  >
+                    <FolderOutlinedIcon
+                      sx={{ fontSize: "32px", color: "chat.eu" }}
+                    />
+                    <Typography sx={{ fontWeight: 600 }}>
+                      {mensagem.anexo.nome}
+                    </Typography>
+                  </Box>
+                </Tooltip>
                 )}
               </Box>
 

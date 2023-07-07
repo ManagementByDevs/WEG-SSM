@@ -124,7 +124,7 @@ const FormularioGeralProposta = (props) => {
     <Box className="flex flex-col">
       <Box className="mt-12" sx={{ minWidth: "55rem" }}>
         <Box className="flex flex-col gap-2">
-          <Divider />
+          
           <Typography
             className="flex"
             sx={{
@@ -413,7 +413,7 @@ const FormularioGeralProposta = (props) => {
         </Box>
 
         <Box className="flex flex-col gap-2">
-          <Divider />
+          
 
           <Box className="flex items-center">
             <Typography
@@ -475,7 +475,7 @@ const FormularioGeralProposta = (props) => {
         <Box>
           {/* Anexos title */}
           <Box className="flex flex-col gap-2">
-            <Divider />
+            
             <Typography
               color="primary"
               sx={{

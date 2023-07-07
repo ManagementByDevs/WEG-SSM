@@ -249,10 +249,10 @@ const DetalhesPropostaEditMode = ({
       setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.problema}`);
       return false;
     }
-    if (!propostaAux.escopo || propostaAux.escopo == "<p><br></p>") {
-      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.escopo}`);
-      return false;
-    }
+    // if (!propostaAux.escopo || propostaAux.escopo == "<p><br></p>") {
+    //   setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.escopo}`);
+    //   return false;
+    // }
     if (!propostaAux.frequencia) {
       setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.frequencia}`);
       return false;
@@ -416,7 +416,6 @@ const DetalhesPropostaEditMode = ({
       propostaAux.parecerComissao = null;
     if (propostaAux.parecerDG == "NONE") propostaAux.parecerDG = null;
 
-    console.log(propostaAux);
     PropostaService.putComNovosDados(
       propostaAux,
       proposta.id,
@@ -449,6 +448,7 @@ const DetalhesPropostaEditMode = ({
 
   /** Handler salvar edição */
   const handleOnSaveEditClick = () => {
+    window.getSelection().removeAllRanges()
     setTextoModalConfirmacao("confirmEditar");
     setModalConfirmacao(true);
   };
