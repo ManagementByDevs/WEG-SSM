@@ -282,10 +282,17 @@ const Chat = () => {
   useEffect(() => {
     let listaChatsAux = listaChats.filter((chat) => {
       let demanda = chat.idProposta ? chat.idProposta : chat.idDemanda;
-console.log("DMENAD: ", demanda)
+
       // Pesquisa por Nome do usuario
-      // if (
-      //   demanda.nom
+      chat.usuariosChat.map((userChat) => {
+        console.log(userChat);
+        console.log("logado: ", user);
+        if(userChat.id =! user.usuario.tipoUsuario) {
+          if (userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())) {
+            return true;
+          }
+        }
+      });
 
       // Pesquisa por código PPM
       if (demanda.codigoPPM) {
