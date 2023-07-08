@@ -282,6 +282,11 @@ const Chat = () => {
   useEffect(() => {
     let listaChatsAux = listaChats.filter((chat) => {
       let demanda = chat.idProposta ? chat.idProposta : chat.idDemanda;
+console.log("DMENAD: ", demanda)
+      // Pesquisa por Nome do usuario
+      // if (
+      //   demanda.nom
+
       // Pesquisa por código PPM
       if (demanda.codigoPPM) {
         if (demanda.codigoPPM.toString().startsWith(pesquisaContato)) {
@@ -552,7 +557,6 @@ const Chat = () => {
             demanda.status == "Cancelled" &&
             !chatEspecifico.conversaEncerrada
           ) {
-            console.log("Tem conversa encerrada");
             ChatService.getByIdChat(chatEspecifico.id).then((e) => {
               ChatService.put(
                 {
@@ -692,7 +696,7 @@ const Chat = () => {
           status={"sucesso"}
           mensagem={texts.chat.chatReaberto}
         />
-        <Box className="p-2" sx={{ height: "94%" }}>
+        <Box className="p-2" sx={{ height: "90%" }}>
           <Caminho />
           <Box
             className="w-full h-full flex justify-center items-center"
@@ -700,7 +704,7 @@ const Chat = () => {
           >
             <Box
               className="flex justify-evenly items-center rounded border mt-4"
-              sx={{ width: "100rem", height: "100%" }}
+              sx={{ width: "85%", height: "100%",}}
             >
               <Box
                 className="flex items-center rounded border flex-col gap-3 overflow-y-auto overflow-x-hidden"
@@ -721,7 +725,7 @@ const Chat = () => {
                     component="input"
                     onChange={onChange}
                     sx={{
-                      backgroundColor: "input.main",
+                      backgroundColor: "transparent",
                       outline: "none",
                       color: "text.primary",
                       fontSize: FontConfig.medium,
