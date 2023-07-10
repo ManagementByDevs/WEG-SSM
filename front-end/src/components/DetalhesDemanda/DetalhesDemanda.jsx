@@ -737,7 +737,7 @@ const DetalhesDemanda = (props) => {
         {/* Mostrar o icone de edição caso siga os requisitos */}
         <Box
           className="absolute cursor-pointer"
-          sx={{ top: "10px", right: "10px" }}
+          sx={{ top: "20px", right: "40px" }}
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
