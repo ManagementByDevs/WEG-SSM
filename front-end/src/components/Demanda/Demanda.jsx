@@ -161,7 +161,7 @@ const Demanda = (props) => {
         sx={{
           "&:hover": { backgroundColor: "hover.main" },
           borderColor: "primary.main",
-          minWidth: "540px",
+          minWidth: "600px",
           height: "8.5rem",
           cursor: "pointer",
         }}
@@ -172,7 +172,7 @@ const Demanda = (props) => {
           <Typography
             className="overflow-hidden text-ellipsis whitespace-nowrap"
             fontSize={FontConfig.veryBig}
-            sx={{ fontWeight: "600", maxWidth: "75%" }}
+            sx={{ fontWeight: "600", maxWidth: "70%" }}
             color="text.primary"
             title={props.demanda.titulo}
             onClick={(e) => {
@@ -209,7 +209,7 @@ const Demanda = (props) => {
                 {texts.demandaModoVisualizacao.codigo} {props.demanda.id}
               </Typography>
 
-              <Box id="oitavo" className={`items-center text-justify flex`}>
+              <Box id="oitavo" className={`items-center text-justify flex w-full`}>
                 <Typography
                   fontSize={FontConfig?.default}
                   sx={{ fontWeight: "600" }}
