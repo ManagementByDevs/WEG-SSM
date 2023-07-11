@@ -1262,13 +1262,6 @@ public class PDFGeneratorService {
         paragraphComissaoHeader.add(comissaoValor);
         paragraphComissaoHeader.setSpacingBefore(5);
 
-        Chunk numSequencialAtaDG = new Chunk("Número Sequencial da Ata da DG: ", fontHeaderProposta);
-        Chunk valorNumSequencialAtaDG = new Chunk(ata.getNumeroSequencialDG(), fontHeader);
-        Paragraph paragraphNumSequencialAtaDG = new Paragraph();
-        paragraphNumSequencialAtaDG.add(numSequencialAtaDG);
-        paragraphNumSequencialAtaDG.add(valorNumSequencialAtaDG);
-        paragraphNumSequencialAtaDG.setSpacingBefore(5);
-
         document.add(img);
         document.add(paragraphData);
         document.add(paragraphAta);
@@ -1276,7 +1269,17 @@ public class PDFGeneratorService {
         document.add(paragraphDataAta);
         document.add(paragraphAnalistaResponsavelHeader);
         document.add(paragraphComissaoHeader);
-        document.add(paragraphNumSequencialAtaDG);
+
+        if (ata.getNumeroSequencialDG() != null) {
+            Chunk numSequencialAtaDG = new Chunk("Número Sequencial da Ata da DG: ", fontHeaderProposta);
+            Chunk valorNumSequencialAtaDG = new Chunk(ata.getNumeroSequencialDG(), fontHeader);
+            Paragraph paragraphNumSequencialAtaDG = new Paragraph();
+            paragraphNumSequencialAtaDG.add(numSequencialAtaDG);
+            paragraphNumSequencialAtaDG.add(valorNumSequencialAtaDG);
+            paragraphNumSequencialAtaDG.setSpacingBefore(5);
+
+            document.add(paragraphNumSequencialAtaDG);
+        }
 
         int contadorProposta = 1;
 
