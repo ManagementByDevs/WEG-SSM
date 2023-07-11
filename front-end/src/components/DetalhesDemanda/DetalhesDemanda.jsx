@@ -737,7 +737,7 @@ const DetalhesDemanda = (props) => {
         {/* Mostrar o icone de edição caso siga os requisitos */}
         <Box
           className="absolute cursor-pointer"
-          sx={{ top: "20px", right: "40px" }}
+          sx={{ top: "40px", right: "5px" }}
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
@@ -745,18 +745,16 @@ const DetalhesDemanda = (props) => {
             !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
-              fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main" }}
+              sx={{ color: "icon.main", fontSize: "25px" }}
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
             props.dados.status == "BACKLOG_EDICAO" &&
             editar ? (
             <EditOffOutlinedIcon
-              fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main" }}
+              sx={{ color: "icon.main", fontSize: "25px" }}
             />
           ) : null}
         </Box>

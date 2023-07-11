@@ -1,5 +1,21 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Autocomplete, Box, Checkbox, Divider, IconButton, MenuItem, Paper, Select, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Checkbox,
+  Divider,
+  IconButton,
+  MenuItem,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import * as _ from "lodash";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -49,11 +65,10 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 // Componente de edição da proposta
 const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
-  setPropostaData = () => { },
-  setIsEditing = () => { },
+  setPropostaData = () => {},
+  setIsEditing = () => {},
   emAprovacao = false,
 }) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -406,10 +421,14 @@ const DetalhesPropostaEditMode = ({
     });
 
     propostaAux.anexo = retornarIdsObjetos(propostaAux.anexo);
-    propostaAux.demanda = { id: propostaAux.demanda.id }
+    propostaAux.demanda = { id: propostaAux.demanda.id };
 
-    propostaAux.inicioExecucao = dateService.formatarDataRequisicao(propostaAux.inicioExecucao);
-    propostaAux.fimExecucao = dateService.formatarDataRequisicao(propostaAux.fimExecucao);
+    propostaAux.inicioExecucao = dateService.formatarDataRequisicao(
+      propostaAux.inicioExecucao
+    );
+    propostaAux.fimExecucao = dateService.formatarDataRequisicao(
+      propostaAux.fimExecucao
+    );
 
     // Se o usuário quiser setar algum parecer como NONE, deve-se apagar o parecer no banco
     if (propostaAux.parecerComissao == "NONE")
@@ -433,7 +452,7 @@ const DetalhesPropostaEditMode = ({
           "Proposta Editada",
           arquivo,
           CookieService.getUser().id
-        ).then(() => { });
+        ).then(() => {});
       });
     });
   };
@@ -448,7 +467,7 @@ const DetalhesPropostaEditMode = ({
 
   /** Handler salvar edição */
   const handleOnSaveEditClick = () => {
-    window.getSelection().removeAllRanges()
+    window.getSelection().removeAllRanges();
     setTextoModalConfirmacao("confirmEditar");
     setModalConfirmacao(true);
   };
@@ -647,12 +666,11 @@ const DetalhesPropostaEditMode = ({
   /** Handler para quando for selecionado um ou mais arquivos */
   const handleOnFilesSelect = () => {
     if (!existsInAnexos(inputFile.current.files)) {
-
       const listaAnexos = [...inputFile.current.files];
       for (const anexo of listaAnexos) {
         AnexoService.save(anexo).then((response) => {
           setProposta({ ...proposta, anexo: [...proposta.anexo, response] });
-        })
+        });
       }
       inputFile.current.value = "";
     } else {
@@ -695,8 +713,11 @@ const DetalhesPropostaEditMode = ({
   /** Handler para deletar um anexo */
   const handleOnDeleteAnexo = (file) => {
     let anexosAux = [...proposta.anexo];
-    anexosAux.splice(anexosAux.findIndex((oldFile) => oldFile == file), 1);
-    AnexoService.deleteById(file.id).then(() => { })
+    anexosAux.splice(
+      anexosAux.findIndex((oldFile) => oldFile == file),
+      1
+    );
+    AnexoService.deleteById(file.id).then(() => {});
 
     setProposta({ ...proposta, anexo: [...anexosAux] });
   };
@@ -831,7 +852,7 @@ const DetalhesPropostaEditMode = ({
       ...proposta,
       beneficios: [...beneficiosAux],
       inicioExecucao: DateService.getDateValue(proposta.inicioExecucao),
-      fimExecucao: DateService.getDateValue(proposta.fimExecucao)
+      fimExecucao: DateService.getDateValue(proposta.fimExecucao),
     });
   }, []);
 
@@ -870,7 +891,7 @@ const DetalhesPropostaEditMode = ({
         textoModal={textoModalConfirmacao}
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
       {/* Feedback de dados invalidos */}
       <Feedback
@@ -923,11 +944,11 @@ const DetalhesPropostaEditMode = ({
               onClick={() =>
                 lerTexto(
                   texts.detalhesProposta.data +
-                  " " +
-                  DateService.getTodaysDateUSFormat(
-                    DateService.getDateByMySQLFormat(proposta.data),
-                    texts.linguagem
-                  )
+                    " " +
+                    DateService.getTodaysDateUSFormat(
+                      DateService.getDateByMySQLFormat(proposta.data),
+                      texts.linguagem
+                    )
                 )
               }
             >
@@ -1029,8 +1050,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.solicitante.nome +
-                  " - " +
-                  proposta.solicitante.departamento.nome
+                    " - " +
+                    proposta.solicitante.departamento.nome
                 );
               }}
             >
@@ -1088,8 +1109,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.gerente.nome +
-                  " - " +
-                  proposta.gerente.departamento.nome
+                    " - " +
+                    proposta.gerente.departamento.nome
                 );
               }}
             >
@@ -1725,8 +1746,8 @@ const TabelaCustos = ({
   dados = EntitiesObjectService.tabelaCustos(),
   handleOnTabelaCustosChange = (
     newTabela = EntitiesObjectService.tabelaCustos()
-  ) => { },
-  handleDeleteTabelaCusto = () => { },
+  ) => {},
+  handleDeleteTabelaCusto = () => {},
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2036,7 +2057,7 @@ const TabelaCustos = ({
 
 const CC = ({
   cc = EntitiesObjectService.cc(),
-  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => { },
+  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2111,7 +2132,7 @@ const CC = ({
 // Mostra os custos na proposta
 const CustosRow = ({
   custo = EntitiesObjectService.custo(),
-  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => { },
+  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2153,9 +2174,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-        style: "currency",
-        currency: tipoMoeda,
-      })
+          style: "currency",
+          currency: tipoMoeda,
+        })
       : 0.0;
   };
 
@@ -2296,8 +2317,8 @@ const CustosRow = ({
 // Mostrar os benefícios da proposta
 const Beneficio = ({
   beneficio = EntitiesObjectService.beneficio(),
-  handleOnBeneficioChange = () => { },
-  handleDeleteBeneficio = () => { },
+  handleOnBeneficioChange = () => {},
+  handleDeleteBeneficio = () => {},
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2592,9 +2613,8 @@ const Beneficio = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
+  setProposta = () => {},
 }) => {
-
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -2726,9 +2746,8 @@ const ParecerComissaoInsertText = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
+  setProposta = () => {},
 }) => {
-
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
