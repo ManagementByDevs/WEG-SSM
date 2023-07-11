@@ -154,7 +154,27 @@ const SliderBar = (props) => {
                 setListaAnalistas={props.setListaAnalistas}
                 filtroProposta={props.filtroProposta}
               />
-            ) : (props.valorAba == 2 || props.valorAba == 3) &&
+            ) : props.valorAba == 2 && ((opcao.id > 1 && opcao.id <= 6 && props.usuario?.tipoUsuario == "GERENTE") || ((opcao.id == 4 || opcao.id == 2) && props.usuario?.tipoUsuario == "ANALISTA")) ? (
+              <Input
+                key={"Filtro " + index}
+                age={age}
+                handleChange={handleChange}
+                opcao={opcao}
+                filtro={props.filtro}
+                setFiltro={props.setFiltro}
+                filtroAtas={props.filtroAtas}
+                setFiltroAtas={props.setFiltroAtas}
+                listaForuns={props.listaForuns}
+                listaDepartamentos={props.listaDepartamentos}
+                listaSolicitantes={props.listaSolicitantes}
+                setListaSolicitantes={props.setListaSolicitantes}
+                listaGerentes={props.listaGerentes}
+                setListaGerentes={props.setListaGerentes}
+                listaAnalistas={props.listaAnalistas}
+                setListaAnalistas={props.setListaAnalistas}
+                filtroProposta={props.filtroProposta}
+              />
+            ) : props.valorAba == 3 &&
               opcao.id > 1 &&
               opcao.id <= 6 ? (
               <Input

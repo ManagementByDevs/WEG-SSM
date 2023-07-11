@@ -1667,6 +1667,7 @@ const HomeGerencia = () => {
                         filtroProposta={filtroProposta}
                         valorAba={valorAba}
                         limparFiltro={limparFiltro}
+                        usuario={usuario}
                       />
                     </Drawer>
                   </React.Fragment>
