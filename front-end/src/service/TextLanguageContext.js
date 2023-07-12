@@ -872,6 +872,7 @@ const TextLanguageContext = createContext({
         feedback1: "Preencha todos os campos!",
         feedback2: "Pauta atualizada com sucesso!",
       },
+      forum: "Fórum",
       selecioneAPauta: "Selecione a pauta",
       propostas: "Propostas",
       comissao: "Comissão",

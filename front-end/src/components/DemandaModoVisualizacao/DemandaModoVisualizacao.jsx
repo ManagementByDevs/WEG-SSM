@@ -11,7 +11,6 @@ import {
   Button,
 } from "@mui/material";
 
-import "./DemandaModoVisualizacao.css";
 import Demanda from "../Demanda/Demanda";
 import ModalMotivoRecusa from "../Modais/Modal-motivoRecusa/ModalMotivoRecusa";
 
@@ -130,7 +129,7 @@ const DemandaTable = ({
   };
 
   return (
-    <Paper sx={{ width: "100%" }} square>
+    <Paper sx={{ width: "100%", minWidth: "74rem"  }} square>
       {/* Abrindo o modal de motivo recusa */}
       {abrirModal && (
         <ModalMotivoRecusa
@@ -276,6 +275,7 @@ const DemandaTable = ({
                       sx={{
                         backgroundColor: getStatusColor(row.status),
                         width: "12px",
+                        minWidth: "12px",
                         height: "2rem",
                         borderRadius: "3px",
                       }}
