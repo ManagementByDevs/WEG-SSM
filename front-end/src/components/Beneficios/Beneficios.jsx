@@ -11,6 +11,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import "./Beneficios.css";
+import InputDinheiro from "../InputDinheiro/InputDinheiro";
 
 /** Componente de benefício editável utilizado na segunda etapa da criação da demanda */
 const Beneficios = (props) => {
@@ -46,11 +47,7 @@ const Beneficios = (props) => {
 
   /** Função para salvar o valor mensal do benefício */
   function salvarValorMensal(texto) {
-    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
-
-    if (regexp.test(texto)) {
       props.save({ ...props.dados, valor_mensal: texto });
-    }
   }
 
   return (
@@ -116,14 +113,13 @@ const Beneficios = (props) => {
             >
               <Box className="flex items-end" sx={{ width: "100%" }}>
                 <Box sx={{ width: "40%" }}>
-                  {/* Input de valor mensal */}
-                  <InputComLabel
-                    saveInputValue={salvarValorMensal}
-                    component="input"
+                  <InputDinheiro
                     label={texts.beneficios.valorMensal}
                     placeholder={texts.beneficios.exemploValorMensal}
                     fontConfig={FontConfig.default}
                     texto={props.dados?.valor_mensal}
+                    saveInputValue={salvarValorMensal}
+                    moeda={props.dados.moeda}
                   />
                 </Box>
                 <FormControl
