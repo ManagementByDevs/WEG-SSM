@@ -45,7 +45,7 @@ const FormularioBeneficiosDemanda = (props) => {
         {
           id: response.id,
           tipoBeneficio: "",
-          valor_mensal: "",
+          valor_mensal: "0,00",
           moeda: "",
           memoriaCalculo: "",
           visible: true,

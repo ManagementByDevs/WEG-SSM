@@ -1,9 +1,19 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import {
+  Box,
+  Avatar,
+  Typography,
+  Divider,
+  Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
-import { Box, Avatar, Typography, Divider, Tooltip, IconButton, Menu, MenuItem } from "@mui/material";
 
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
@@ -39,7 +49,6 @@ import logoWeg from "../../assets/logo-weg.png";
 
 /** Chat para conversa entre usuários do sistema */
 const Chat = () => {
-
   /** Context para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
 
@@ -112,6 +121,9 @@ const Chat = () => {
 
   /** Mensagem que está sendo digitada */
   const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
+
+  /** Guarda o chat atual */
+  const [chatAtual, setChatAtual] = useState(EntitiesObjectService.chat());
 
   /** Todas as mensagens do chat selecionado */
   const [mensagens, setMensagens] = useState([
@@ -198,7 +210,6 @@ const Chat = () => {
         );
 
         chatAux.msgNaoLidas = chatAux.msgNaoLidas + 1;
-        // setMsgNaoLidas(chatAux.msgNaoLidas);
         return [...listaAux];
       });
     };
@@ -219,6 +230,21 @@ const Chat = () => {
   useEffect(() => {
     const acaoNovaMensagem = (response) => {
       const mensagemRecebida = JSON.parse(response.body);
+
+      // Se o chat estiver encerrado, aparece alert para o usuário que não for analista
+      if (
+        mensagemRecebida.statusCodeValue == 403 &&
+        JSON.parse(mensagemRecebida.body).usuario.id != user.usuario.id
+      ) {
+        alert(texts.chat.vcNPodeEnviarMsg);
+        return;
+      }
+
+      // Se o chat estiver fechado, ignora qualquer nova mensagem que for recebida
+      if (mensagemRecebida.statusCodeValue == 403) {
+        return;
+      }
+
       let mensagemNova = {
         ...mensagemRecebida.body,
         texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
@@ -284,15 +310,15 @@ const Chat = () => {
       let demanda = chat.idProposta ? chat.idProposta : chat.idDemanda;
 
       // Pesquisa por Nome do usuario
-      chat.usuariosChat.map((userChat) => {
-        console.log(userChat);
-        console.log("logado: ", user);
-        if(userChat.id =! user.usuario.tipoUsuario) {
-          if (userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())) {
+      for (let userChat of chat.usuariosChat) {
+        if (userChat.id != user.usuario.id) {
+          if (
+            userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())
+          ) {
             return true;
           }
         }
-      });
+      }
 
       // Pesquisa por código PPM
       if (demanda.codigoPPM) {
@@ -390,7 +416,6 @@ const Chat = () => {
     if (!chatAux) return 0;
 
     let userAux = chatAux.usuariosChat.find((e) => e.id != user.usuario.id);
-
     return userAux.id;
   };
 
@@ -417,13 +442,17 @@ const Chat = () => {
   const submit = (event) => {
     if (mensagem.texto !== "") {
       event.preventDefault();
-      enviar(
-        `/app/weg_ssm/mensagem/${idChat}`,
-        JSON.stringify({
-          ...mensagem,
-          texto: mensagem.texto.replace(/\n/g, "%BREAK%"),
-        })
-      );
+      let message = {
+        ...mensagem,
+        texto: mensagem.texto.replace(/\n/g, "%BREAK%"),
+        idDestinatario: getIdDestinatario(),
+      };
+
+      try {
+        enviar(`/app/weg_ssm/mensagem/${idChat}`, JSON.stringify(message));
+      } catch (error) {
+        setChatAtual({ ...chatAtual, conversaEncerrada: true });
+      }
       setDefaultMensagem();
     }
   };
@@ -438,18 +467,10 @@ const Chat = () => {
           conversaEncerrada: true,
         },
         idChat
-      ).then((e) => {
+      ).then((chat) => {
         setFeedbackChatEncerrado(true);
-        listaChats.map((chat) => {
-          if (chat.id == idChat) {
-            let aux = [...listaChats];
-            aux.splice(listaChats.indexOf(chat), 1, {
-              ...chat,
-              conversaEncerrada: true,
-            });
-            setListaChats(aux);
-          }
-        });
+        setChatAtual(chat);
+        buscarChats();
       });
     });
   };
@@ -458,26 +479,21 @@ const Chat = () => {
   const abrirChat = () => {
     fecharModalAbrirChat();
     ChatService.getByIdChat(idChat).then((e) => {
-      if (e.idProposta.status != "Cancelled") {
+      // Verifica se o chat é pela demanda ou proposta
+      let demanda = e.idProposta ? e.idProposta : e.idDemanda;
+
+      if (demanda.status != "Cancelled") {
         ChatService.put(
           {
             ...e,
             conversaEncerrada: false,
           },
           idChat
-        ).then((e) => {
+        ).then((chat) => {
           setFeedbackChatAberto(true);
-          for (let chat of listaChats) {
-            if (chat.id == idChat) {
-              let aux = [...listaChats];
-              aux.splice(listaChats.indexOf(chat), 1, {
-                ...chat,
-                conversaEncerrada: false,
-              });
-              setListaChats(aux);
-              return;
-            }
-          }
+          setChatAtual(chat);
+          buscarChats();
+          updateResultadosPesquisa(chat);
         });
       } else {
         setFeedbackNaoPodeAbrir(true);
@@ -485,46 +501,15 @@ const Chat = () => {
     });
   };
 
-  /** Verifica se o chat está encerrado */
-  const isConversaEncerrada = () => {
-    for (let chatInput of listaChats) {
-      let demanda = chatInput.idProposta
-        ? chatInput.idProposta
-        : chatInput.idDemanda;
-      if (chatInput.id == idChat) {
-        if (chatInput.conversaEncerrada) {
-          console.log("entrou");
-          return true;
-        } else if (
-          demanda.status == "CANCELLED" ||
-          demanda.status == "Cancelled"
-        ) {
-          ChatService.getByIdChat(idChat).then((e) => {
-            ChatService.put(
-              {
-                ...e,
-                conversaEncerrada: true,
-              },
-              idChat
-            ).then((e) => {
-              listaChats.map((chat) => {
-                if (chat.id == idChat) {
-                  let aux = [...listaChats];
-                  aux.splice(listaChats.indexOf(chat), 1, {
-                    ...chat,
-                    conversaEncerrada: true,
-                  });
-                  setListaChats(aux);
-                }
-              });
-            });
-          });
-          return true;
+  const updateResultadosPesquisa = (chat) => {
+    setResultadosContato((prevState) => {
+      return prevState.map((chatAux) => {
+        if (chatAux.id == chat.id) {
+          return chat;
         }
-      }
-    }
-
-    return false;
+        return chatAux;
+      });
+    });
   };
 
   /** Envia um anexo para o tópico caso ele seja menor que 64KB */
@@ -544,7 +529,7 @@ const Chat = () => {
           );
           inputRef.current.value = "";
         })
-        .catch((error) => { });
+        .catch((error) => {});
     } else {
       setFeedbackAnexoGrande(true);
     }
@@ -556,10 +541,17 @@ const Chat = () => {
   const buscarChats = () => {
     ChatService.getByRemetente(user.usuario.id).then((chatResponse) => {
       if (chatResponse) {
-        for (let chatEspecifico of chatResponse) {
+        // Se existir uma resposta, salva a lista de chats
+        let listaChatsAux = [...chatResponse];
+
+        // Para cada chat, verifica se a demanda está cancelada
+        for (let chatEspecifico of listaChatsAux) {
+          // Salva a demanda ou proposta do chat em variável
           let demanda = chatEspecifico.idProposta
             ? chatEspecifico.idProposta
             : chatEspecifico.idDemanda;
+
+          // Se a demanda estiver cancelada e o chat estiver aberto, fecha o chat
           if (
             demanda.status == "Cancelled" &&
             !chatEspecifico.conversaEncerrada
@@ -571,23 +563,14 @@ const Chat = () => {
                   conversaEncerrada: true,
                 },
                 chatEspecifico.id
-              ).then((e) => {
-                listaChats.map((chat) => {
-                  if (chat.id == chatEspecifico.id) {
-                    let aux = [...chatResponse];
-                    aux.splice(chatResponse.indexOf(chat), 1, {
-                      ...chat,
-                      conversaEncerrada: true,
-                    });
-                    setListaChats(aux);
-                  }
-                });
-              });
+              );
             });
-          } else {
-            setListaChats([...chatResponse]);
+            chatEspecifico.conversaEncerrada = true;
           }
         }
+
+        // Por fim salva a lista de chats atualizada (caso em alguma instância tenha passado pelo if anterior)
+        setListaChats(listaChatsAux);
       }
     });
   };
@@ -595,11 +578,20 @@ const Chat = () => {
   /** Busca as mensagens do usuário */
   const carregar = () => {
     if (idChat) {
+      /** Procura as mensagens do chat */
       MensagemService.getMensagensChat(idChat).then((response) => {
         setMensagens(response);
 
         enviar(`/app/weg_ssm/enter/chat/${idChat}`, user.usuario.id);
       });
+
+      /** Procura o chat atual */
+      ChatService.getByIdChat(idChat).then((chat) => {
+        if (chat) {
+          setChatAtual(chat);
+        }
+      });
+
       setDefaultMensagem();
     }
   };
@@ -711,7 +703,7 @@ const Chat = () => {
           >
             <Box
               className="flex justify-evenly items-center rounded border mt-4"
-              sx={{ width: "85%", height: "100%",}}
+              sx={{ width: "85%", height: "100%" }}
             >
               <Box
                 className="flex items-center rounded border flex-col gap-3 overflow-y-auto overflow-x-hidden"
@@ -842,7 +834,7 @@ const Chat = () => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                      // src={usuarios[indexUsuario].foto}
+                        // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -956,9 +948,6 @@ const Chat = () => {
                     }}
                   >
                     <Box
-                      onChange={(e) => {
-                        // save(e);
-                      }}
                       className="w-full"
                       component="input"
                       sx={{
@@ -1012,14 +1001,8 @@ const Chat = () => {
                     />
                     <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
                       <Tooltip title={texts.chat.enviarMensagem}>
-                        <IconButton
-                          onClick={() => {
-                            // salvarTexto();
-                          }}
-                        >
-                          <SendOutlinedIcon
-                            sx={{ color: "primary.main", cursor: "pointer" }}
-                          />
+                        <IconButton>
+                          <SendOutlinedIcon sx={{ color: "primary.main" }} />
                         </IconButton>
                       </Tooltip>
                     </Box>
@@ -1055,7 +1038,6 @@ const Chat = () => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                      // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -1066,14 +1048,10 @@ const Chat = () => {
                           fontSize={FontConfig.veryBig}
                           fontWeight="600"
                         >
-                          {listaChats.map((chat) => {
+                          {chatAtual.usuariosChat.map((usuarioChat) => {
                             let nomeChat;
-                            if (chat.id == idChat) {
-                              chat.usuariosChat.map((usuarioChat) => {
-                                if (usuarioChat.id != user.usuario.id) {
-                                  nomeChat = usuarioChat.nome;
-                                }
-                              });
+                            if (usuarioChat.id != user.usuario.id) {
+                              nomeChat = usuarioChat.nome;
                             }
                             return nomeChat;
                           })}
@@ -1084,6 +1062,7 @@ const Chat = () => {
                             let demanda = chat.idProposta
                               ? chat.idProposta
                               : chat.idDemanda;
+
                             if (chat.id == idChat) {
                               if (demanda.solicitante.id == user.usuario.id) {
                                 cargoChat = texts.chat.analista;
@@ -1154,66 +1133,66 @@ const Chat = () => {
                               demanda.status != "Cancelled"
                             );
                           }) && (
-                              <>
-                                <div className="w-full flex justify-center">
-                                  <hr className="w-10/12 my-1.5" />
-                                </div>
+                            <>
+                              <div className="w-full flex justify-center">
+                                <hr className="w-10/12 my-1.5" />
+                              </div>
 
-                                {isConversaEncerrada() ? (
-                                  <MenuItem
-                                    className="gap-2"
+                              {chatAtual?.conversaEncerrada ? (
+                                <MenuItem
+                                  className="gap-2"
+                                  onClick={() => {
+                                    handleClose();
+                                    abrirModalAbrirChat();
+                                  }}
+                                >
+                                  <CommentOutlinedIcon
+                                    sx={{
+                                      fontSize: "25px",
+                                      color: "tertiary.main",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                  <Typography
+                                    color={"text.primary"}
+                                    fontSize={FontConfig.medium}
+                                    sx={{ fontWeight: 500 }}
                                     onClick={() => {
-                                      handleClose();
-                                      abrirModalAbrirChat();
+                                      lerTexto(texts.chat.reabrirChat);
                                     }}
                                   >
-                                    <CommentOutlinedIcon
-                                      sx={{
-                                        fontSize: "25px",
-                                        color: "tertiary.main",
-                                        cursor: "pointer",
-                                      }}
-                                    />
-                                    <Typography
-                                      color={"text.primary"}
-                                      fontSize={FontConfig.medium}
-                                      sx={{ fontWeight: 500 }}
-                                      onClick={() => {
-                                        lerTexto(texts.chat.reabrirChat);
-                                      }}
-                                    >
-                                      {texts.chat.reabrirChat}
-                                    </Typography>
-                                  </MenuItem>
-                                ) : (
-                                  <MenuItem
-                                    className="gap-2"
+                                    {texts.chat.reabrirChat}
+                                  </Typography>
+                                </MenuItem>
+                              ) : (
+                                <MenuItem
+                                  className="gap-2"
+                                  onClick={() => {
+                                    handleClose();
+                                    abrirModalCancelarChat();
+                                  }}
+                                >
+                                  <CommentsDisabledOutlinedIcon
+                                    sx={{
+                                      fontSize: "25px",
+                                      color: "tertiary.main",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                  <Typography
+                                    color={"text.primary"}
+                                    fontSize={FontConfig.medium}
+                                    sx={{ fontWeight: 500 }}
                                     onClick={() => {
-                                      handleClose();
-                                      abrirModalCancelarChat();
+                                      lerTexto(texts.chat.encerrarChat);
                                     }}
                                   >
-                                    <CommentsDisabledOutlinedIcon
-                                      sx={{
-                                        fontSize: "25px",
-                                        color: "tertiary.main",
-                                        cursor: "pointer",
-                                      }}
-                                    />
-                                    <Typography
-                                      color={"text.primary"}
-                                      fontSize={FontConfig.medium}
-                                      sx={{ fontWeight: 500 }}
-                                      onClick={() => {
-                                        lerTexto(texts.chat.encerrarChat);
-                                      }}
-                                    >
-                                      {texts.chat.encerrarChat}
-                                    </Typography>
-                                  </MenuItem>
-                                )}
-                              </>
-                            )}
+                                    {texts.chat.encerrarChat}
+                                  </Typography>
+                                </MenuItem>
+                              )}
+                            </>
+                          )}
                         </Box>
                       </Menu>
                     </Box>
@@ -1257,10 +1236,10 @@ const Chat = () => {
                       minHeight: "2.5rem",
                     }}
                   >
-                    {isConversaEncerrada() ? (
+                    {chatAtual?.conversaEncerrada ? (
                       <>
                         <Box
-                          disabled={true}
+                          disabled
                           className="w-full h-full flex items-center"
                           component="textarea"
                           sx={{

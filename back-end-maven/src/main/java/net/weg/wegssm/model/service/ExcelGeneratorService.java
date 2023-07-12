@@ -797,14 +797,25 @@ public class ExcelGeneratorService {
                         for (Beneficio beneficio : proposta.getBeneficios()) {
                             rowProposta.createCell(11).setCellValue("   - Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text() + "   ");
                         }
+
+                        // Aplicando estilo para as colunas da rowProposta
+                        int[] colunasStyle = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
+
+                        for (int colunaStyle : colunasStyle) {
+                            if (rowProposta.getCell(colunaStyle) != null) {
+                                rowProposta.getCell(colunaStyle).setCellStyle(alignCenter);
+                            }
+                        }
                     }
+
                     contadorProposta++;
+
                 }
                 rowNum = rowIndexProposta;
             }
 
             // Setando os estilos para as colunas
-            int[] colunasStyle = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21};
+            int[] colunasStyle = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
             for (int colunaStyle : colunasStyle) {
                 if (row.getCell(colunaStyle) != null) {
@@ -813,13 +824,13 @@ public class ExcelGeneratorService {
             }
 
             // Auto ajustando o tamanho das colunas de acordo com as informações
-            int[] colunasMenores = {1, 5, 6};
+            int[] colunasMenores = {1, 2, 3, 4, 5, 6, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
             for (int colunaAuto : colunasMenores) {
                 sheet.setColumnWidth(colunaAuto, 30 * 256);
             }
 
-            int[] colunasMaiores = {1, 7, 8, 9, 10, 11};
+            int[] colunasMaiores = {7, 8, 9, 10, 11};
 
             for (int colunaAuto : colunasMaiores) {
                 sheet.setColumnWidth(colunaAuto, 100 * 256);
@@ -861,16 +872,41 @@ public class ExcelGeneratorService {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
         // Criando estilos e fontes para o arquivo
-        CellStyle style = workbook.createCellStyle();
-
         Font font = workbook.createFont();
         font.setBold(true);
+        font.setColor(IndexedColors.WHITE.getIndex());
 
-        style.setFont(font);
+        Font fontIndex = workbook.createFont();
+        fontIndex.setBold(true);
+
+        CellStyle style = workbook.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setFont(font);
 
-        CellStyle alignLeft = workbook.createCellStyle();
-        alignLeft.setIndention((short) 2);
+        CellStyle indexStyle = workbook.createCellStyle();
+        indexStyle.setAlignment(HorizontalAlignment.CENTER);
+        indexStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        indexStyle.setBorderBottom(BorderStyle.THIN);
+        indexStyle.setBorderTop(BorderStyle.THIN);
+        indexStyle.setBorderLeft(BorderStyle.THIN);
+        indexStyle.setBorderRight(BorderStyle.THIN);
+        indexStyle.setFont(fontIndex);
+
+        CellStyle alignCenter = workbook.createCellStyle();
+        alignCenter.setAlignment(HorizontalAlignment.CENTER);
+        alignCenter.setVerticalAlignment(VerticalAlignment.CENTER);
+        alignCenter.setWrapText(true);
+        alignCenter.setBorderBottom(BorderStyle.THIN);
+        alignCenter.setBorderTop(BorderStyle.THIN);
+        alignCenter.setBorderLeft(BorderStyle.THIN);
+        alignCenter.setBorderRight(BorderStyle.THIN);
 
         // Cria uma linha de cabeçalho para a planilha
         XSSFRow headerRow = sheet.createRow(0);
@@ -940,33 +976,15 @@ public class ExcelGeneratorService {
                         row.createCell(9).setCellValue(Jsoup.parse(proposta.getEscopo()).text());
 
                         // Adicionando os custos
-                        int contadorCusto = 0;
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
-                                if (contadorCusto == 0) {
-                                    row.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
-                                } else {
-                                    Row rowCusto = sheet.createRow(rowIndexProposta);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
-                                    rowIndexProposta++;
-                                }
-
-                                contadorCusto++;
+                                row.createCell(10).setCellValue("   - Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100" + "   ");
                             }
                         }
 
                         // Adicionando os benefícios
-                        int contadorBeneficio = 0;
                         for (Beneficio beneficio : proposta.getBeneficios()) {
-                            if (contadorBeneficio == 0) {
-                                row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
-                            } else {
-                                Row roww = sheet.createRow(rowIndexProposta);
-                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
-                                rowIndexProposta++;
-                            }
-
-                            contadorBeneficio++;
+                            row.createCell(11).setCellValue("   - Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text() + "   ");
                         }
 
                         row.createCell(12).setCellValue(proposta.getFrequencia());
@@ -1012,31 +1030,15 @@ public class ExcelGeneratorService {
                         rowProposta.createCell(9).setCellValue(Jsoup.parse(proposta.getEscopo()).text());
 
                         // Adicionando os custos
-                        int contadorCusto = 0;
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
-                                if (contadorCusto == 0) {
-                                    rowProposta.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
-                                } else {
-                                    Row rowCusto = sheet.createRow(rowIndexProposta++);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
-                                }
-
-                                contadorCusto++;
+                                rowProposta.createCell(10).setCellValue("   - Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100" + "   ");
                             }
                         }
 
                         // Adicionando os benefícios
-                        int contadorBeneficio = 0;
                         for (Beneficio beneficio : proposta.getBeneficios()) {
-                            if (contadorBeneficio == 0) {
-                                rowProposta.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
-                            } else {
-                                Row roww = sheet.createRow(rowIndexProposta++);
-                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
-                            }
-
-                            contadorBeneficio++;
+                            rowProposta.createCell(11).setCellValue("   - Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text() + "");
                         }
 
                         rowProposta.createCell(12).setCellValue(proposta.getFrequencia());
@@ -1068,16 +1070,13 @@ public class ExcelGeneratorService {
 
                         row.createCell(22).setCellValue(anexos.toString());
 
-                        // Aplicando estilo para as células
-                        rowProposta.getCell(21).setCellStyle(alignLeft);
-                        rowProposta.getCell(19).setCellStyle(alignLeft);
 
-                        // Setando os estilos para as colunas rowProposta
-                        int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
+                        // Aplicando estilo para as colunas da rowProposta
+                        int[] colunasStyle = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
                         for (int colunaStyle : colunasStyle) {
                             if (rowProposta.getCell(colunaStyle) != null) {
-                                rowProposta.getCell(colunaStyle).setCellStyle(alignLeft);
+                                rowProposta.getCell(colunaStyle).setCellStyle(alignCenter);
                             }
                         }
                     }
@@ -1087,26 +1086,26 @@ public class ExcelGeneratorService {
                 rowNum = rowIndexProposta;
             }
 
-            // Setando os estilos para as colunas row
-            int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
+            // Setando os estilos para as colunas
+            int[] colunasStyle = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
             for (int colunaStyle : colunasStyle) {
                 if (row.getCell(colunaStyle) != null) {
-                    row.getCell(colunaStyle).setCellStyle(alignLeft);
+                    row.getCell(colunaStyle).setCellStyle(alignCenter);
                 }
             }
 
-            // Aplicando estilos para as células
-            row.getCell(0).setCellStyle(style);
-            row.getCell(19).setCellStyle(alignLeft);
-            row.getCell(21).setCellStyle(alignLeft);
-            row.getCell(22).setCellStyle(alignLeft);
-
             // Auto ajustando o tamanho das colunas de acordo com as informações
-            int[] colunasAutoSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
+            int[] colunasMenores = {1, 2, 3, 4, 5, 6, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
-            for (int colunaAuto : colunasAutoSize) {
-                sheet.autoSizeColumn(colunaAuto);
+            for (int colunaAuto : colunasMenores) {
+                sheet.setColumnWidth(colunaAuto, 30 * 256);
+            }
+
+            int[] colunasMaiores = {7, 8, 9, 10, 11};
+
+            for (int colunaAuto : colunasMaiores) {
+                sheet.setColumnWidth(colunaAuto, 100 * 256);
             }
 
             contadorAta++;

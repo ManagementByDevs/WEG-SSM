@@ -105,4 +105,13 @@ public class ChatService {
         return chatRepository.findByIdDemandaAndUsuariosChat(demanda, usuario);
     }
 
+    public boolean isChatEncerrado(Chat idChat) {
+        Optional<Chat> chat = chatRepository.findById(idChat.getId());
+
+        if (chat.isPresent()) {
+            return chat.get().getConversaEncerrada();
+        }
+
+        return true;
+    }
 }
