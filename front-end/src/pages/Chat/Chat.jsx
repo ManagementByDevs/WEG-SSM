@@ -724,11 +724,12 @@ const Chat = () => {
                     backgroundColor: "input.main",
                     width: "90%",
                     height: "5%",
+                    minHeight: "1.5rem",
                   }}
                 >
                   <Box
                     title={texts.chat.pesquisarChat}
-                    className="w-full"
+                    className="w-full h-full"
                     component="input"
                     onChange={onChange}
                     sx={{
@@ -1047,8 +1048,8 @@ const Chat = () => {
                   sx={{ width: "75%", height: "95%" }}
                 >
                   <Box
-                    className="flex justify-between items-center w-full rounded-t"
-                    sx={{ backgroundColor: "primary.main", height: "10%" }}
+                    className="flex justify-between items-center w-full rounded-t py-8"
+                    sx={{ backgroundColor: "primary.main", height: "4rem" }}
                   >
                     <Box className="flex items-center">
                       <Avatar
@@ -1253,6 +1254,7 @@ const Chat = () => {
                       backgroundColor: "input.main",
                       width: "90%",
                       height: "6.5%",
+                      minHeight: "2.5rem",
                     }}
                   >
                     {isConversaEncerrada() ? (
@@ -1290,8 +1292,10 @@ const Chat = () => {
                             outline: "none",
                             color: "text.primary",
                             fontSize: FontConfig.medium,
-                            paddingTop: "0.4rem",
                             resize: "none",
+                            overflow: "hidden",
+                            paddingTop: "0.3rem",
+                            minHeight: "2rem",
                           }}
                           placeholder={texts.chat.escrevaSuaMensagem}
                           value={mensagem.texto}
