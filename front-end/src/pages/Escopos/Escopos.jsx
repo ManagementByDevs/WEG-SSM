@@ -191,7 +191,7 @@ const Escopos = () => {
 
   /** Função para abrir o escopo para continuar a edição */
   const openEscopo = (escopo) => {
-    navigate("/editar-escopo", { state: escopo.id });
+    navigate("/escopos/editar-escopo", { state: escopo.id });
   };
 
   /** Função para deletar um escopo */

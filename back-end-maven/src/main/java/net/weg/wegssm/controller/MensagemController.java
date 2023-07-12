@@ -70,6 +70,10 @@ public class MensagemController {
         Mensagem mensagem = new Mensagem();
         BeanUtils.copyProperties(mensagemDTO, mensagem, "id");
 
+        if (chatService.isChatEncerrado(mensagemDTO.getIdChat())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"usuario\": {\"id\": " + mensagemDTO.getIdDestinatario() + " }}");
+        }
+
         mensagem.setUsuario(usuarioService.findById(mensagemDTO.getUsuario().getId()).get());
 
         mensagem = mensagemService.save(mensagem);

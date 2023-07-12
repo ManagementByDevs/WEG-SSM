@@ -432,9 +432,6 @@ const CriarPautaContent = () => {
                 fullWidth
                 inputProps={{ "aria-label": "Without label" }}
               >
-                <MenuItem value={comissao} disabled>
-                  {texts.modalAddPropostaPauta.comissao}
-                </MenuItem>
                 {listaComissoes?.map((e, index) => (
                   <MenuItem key={index} value={e} title={e.nomeForum}>
                     {e.siglaForum} - {e.nomeForum}

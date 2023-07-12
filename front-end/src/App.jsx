@@ -232,7 +232,7 @@ const App = () => {
                             element={<DetalhesDemandaPagina />}
                           />
                           <Route
-                            path="/editar-escopo"
+                            path="/escopos/editar-escopo"
                             element={<EditarEscopo />}
                           />
                           <Route path="/escopos" element={<Escopos />} />
@@ -240,7 +240,7 @@ const App = () => {
                           <Route path="/test" element={<Test />} />
                         </Route>
                         <Route
-                          path="/editar-escopo"
+                          path="escopos/editar-escopo"
                           element={<EditarEscopo />}
                         />
                         <Route path="/escopos" element={<Escopos />} />
