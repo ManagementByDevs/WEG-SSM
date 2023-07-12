@@ -153,6 +153,21 @@ const CriarPautaContent = () => {
     return false;
   };
 
+  // pega a data atual no formato que o input de data retorna
+  const getCurrentDateTime = () => {
+    const currentDateTime = new Date();
+  
+    const year = currentDateTime.getFullYear();
+    const month = String(currentDateTime.getMonth() + 1).padStart(2, "0");
+    const day = String(currentDateTime.getDate()).padStart(2, "0");
+    const hours = String(currentDateTime.getHours()).padStart(2, "0");
+    const minutes = String(currentDateTime.getMinutes()).padStart(2, "0");
+  
+    const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+  
+    return formattedDateTime;
+  };
+
   /** Verifica se a pauta é válida para criação */
   const isPautaValid = () => {
     if (numeroSequencial == "") {
@@ -163,6 +178,14 @@ const CriarPautaContent = () => {
 
     if (dataReuniao == "") {
       setFeedbackTexto(texts.criarPauta.addDataReuniao);
+      setFeedbackErroPauta(true);
+      return false;
+    }
+
+    console.log(dataReuniao);
+    console.log(getCurrentDateTime());
+    if (dataReuniao < getCurrentDateTime()) {
+      setFeedbackTexto(texts.criarPauta.dataReuniaoInvalida);
       setFeedbackErroPauta(true);
       return false;
     }
@@ -334,6 +357,8 @@ const CriarPautaContent = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, [search]);
+
+  
 
   return (
     <>

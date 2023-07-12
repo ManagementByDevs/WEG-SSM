@@ -990,6 +990,7 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "Adicione uma data de reunião!",
           addComissao: "Adicione uma comissão!",
           addProposta: "Adicione pelo menos uma proposta!",
+          dataReuniaoInvalida: "Data de reunião inválida!",
           tour: {
             tour1:
               "Nesta parte ficam os dados gerais para a criação de uma nova pauta.",
@@ -2039,6 +2040,7 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "Add a meeting date!",
           addComissao: "Add a commission!",
           addProposta: "Add at least one proposal!",
+          dataReuniaoInvalida: "Invalid meeting date!",
           tour: {
             tour1:
               "In this part are the general data for the creation of a new agenda",
@@ -3044,6 +3046,7 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "添加会议日期！",
           addComissao: "增加佣金！",
           addProposta: "至少添加一项提案！",
+          dataReuniaoInvalida: "无效的会议日期！",
           tour: {
             tour1: "这部分是创建新议程的一般数据",
             tour2: "您可以在此处填写议程的序号和会议日期",
@@ -4095,6 +4098,7 @@ const TextLanguage = (linguagem) => {
           addDataReuniao: "¡Agregue una fecha de reunión!",
           addComissao: "¡Agregue una comisión!",
           addProposta: "¡Agregue al menos una propuesta!",
+          dataReuniaoInvalida: "¡Fecha de reunión inválida!",
           tour: {
             tour1:
               "En esta parte se encuentran los datos generales para la creación de una nueva agenda",
