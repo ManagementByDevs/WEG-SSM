@@ -585,6 +585,7 @@ const TextLanguage = (linguagem) => {
           anexoMuitoPesado: "O anexo é muito pesado!",
           miniChatAberto: "Mini chat está aberto!",
           chatNaoPodeSerReaberto: "O chat não pode ser reaberto!",
+          vcNPodeEnviarMsg: "Você não pode enviar mensagens para esse chat!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Ata criada com sucesso!",
@@ -952,6 +953,7 @@ const TextLanguage = (linguagem) => {
             feedback1: "Preencha todos os campos!",
             feedback2: "Pauta atualizada com sucesso!",
           },
+          forum: "Fórum",
           selecioneAPauta: "Selecione a pauta",
           propostas: "Propostas",
           comissao: "Comissão",
@@ -1638,6 +1640,7 @@ const TextLanguage = (linguagem) => {
           anexoMuitoPesado: "The attachment is too heavy!",
           miniChatAberto: "Mini chat is open!",
           chatNaoPodeSerReaberto: "The chat cannot be reopened!",
+          vcNPodeEnviarMsg: "You cannot send messages to this chat!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Minutes created successfully!",
@@ -2000,6 +2003,7 @@ const TextLanguage = (linguagem) => {
             feedback1: "Fill in all fields!",
             feedback2: "Agenda updated successfully!",
           },
+          forum: "Forum",
           selecioneAPauta: "Select an agenda",
           propostas: "Proposals",
           comissao: "Commission",
@@ -2664,6 +2668,7 @@ const TextLanguage = (linguagem) => {
           anexoMuitoPesado: "附件太重了！",
           miniChatAberto: "迷你聊天已打开！",
           chatNaoPodeSerReaberto: "聊天无法重新打开！",
+          vcNPodeEnviarMsg: "您无法向此聊天发送消息！",
         },
         detalhesAta: {
           ataCriadaComSucesso: "会议记录创建成功！",
@@ -3006,6 +3011,7 @@ const TextLanguage = (linguagem) => {
             feedback1: "请填写所有字段！",
             feedback2: "提案添加成功！",
           },
+          forum: "论坛",
           selecioneAPauta: "选择会议记录",
           propostas: "提案",
           comissao: "委员会",
@@ -3681,6 +3687,7 @@ const TextLanguage = (linguagem) => {
           anexoMuitoPesado: "¡El archivo adjunto es demasiado pesado!",
           miniChatAberto: "¡Mini chat abierto!",
           chatNaoPodeSerReaberto: "¡El chat no puede ser reabierto!",
+          vcNPodeEnviarMsg: "¡No puedes enviar mensajes a este chat!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Ata creada con éxito!",
@@ -4055,6 +4062,7 @@ const TextLanguage = (linguagem) => {
             feedback1: "¡Rellene todos los campos!",
             feedback2: "¡Propuesta agregada con éxito!",
           },
+          forum: "Foro",
           selecioneAPauta: "Seleccione la pauta",
           propostas: "Propuestas",
           comissao: "Comisión",

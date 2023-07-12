@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -179,6 +180,8 @@ public class ChatController {
 
             chat.setMsgNaoLidas((long) mensagensNaoLidas.size());
         }
+
+        chats.sort(Comparator.comparing(Chat::getId).reversed());
 
         return ResponseEntity.status(HttpStatus.OK).body(chats);
     }

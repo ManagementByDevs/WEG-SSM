@@ -22,6 +22,7 @@
     "mkcert": "^1.5.1",
     "net": "^1.0.2",
     "react": "^18.2.0",
+    "react-currency-input-field": "^3.6.11",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
     "react-quill": "^2.0.0",

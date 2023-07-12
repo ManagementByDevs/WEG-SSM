@@ -118,7 +118,7 @@ const CriarPauta = () => {
       <Ajuda onClick={() => setIsTourOpen(true)} />
       <Box className="p-2">
         <Caminho feedback={true} />
-        <Box className="w-full flex justify-center mt-4">
+        <Box className="w-full flex justify-center mt-4 mb-6">
           <Box className="w-5/6 relative">
             <CriarPautaContent />
           </Box>

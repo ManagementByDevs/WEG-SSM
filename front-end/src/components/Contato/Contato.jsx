@@ -54,7 +54,7 @@ const Contato = ({
           sx={{
             width: "90%",
             minWidth: "195px",
-            minHeight: "10%",
+            minHeight: "4rem",
             cursor: "pointer",
             backgroundColor: corSelecionado,
             "&:hover": {
