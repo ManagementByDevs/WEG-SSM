@@ -74,14 +74,26 @@ const ModalRecusarDemanda = (props) => {
               cursor: "pointer",
             }}
           />
-          <Typography
-            fontSize={FontConfig.veryBig}
-            onClick={() => {
-              lerTexto(texts.modalRecusarDemanda.motivoDaRecusa);
-            }}
-          >
-            {texts.modalRecusarDemanda.motivoDaRecusa}
-          </Typography>
+
+          {props.aceitarGerente ? (
+            <Typography
+              fontSize={FontConfig.veryBig}
+              onClick={() => {
+                lerTexto(texts.modalAceitarDemanda.addRecomendacao);
+              }}
+            >
+              {texts.modalAceitarDemanda.addRecomendacao}
+            </Typography>
+          ) :
+            <Typography
+              fontSize={FontConfig.veryBig}
+              onClick={() => {
+                lerTexto(texts.modalRecusarDemanda.motivoDaRecusa);
+              }}
+            >
+              {texts.modalRecusarDemanda.motivoDaRecusa}
+            </Typography>
+          }
 
           {/* Textarea para escrita do motivo da recusa */}
           <Box className="drop-shadow-sm rounded text-center text-justify max-h-96 overflow-y-auto w-full px-2 mt-2">
@@ -123,27 +135,77 @@ const ModalRecusarDemanda = (props) => {
               )}
             </Tooltip>
           </Box>
-          <Box className="flex justify-end" sx={{ width: "90%" }}>
-            <Button
-              sx={{
-                backgroundColor: "primary.main",
-                color: "text.white",
-                fontSize: FontConfig.default,
-                marginTop: "2%",
-              }}
-              variant="contained"
-              onClick={() => {
-                if (!lendoTexto) {
-                  props.confirmRecusarDemanda();
-                } else if (librasAtivo) {
-                } else {
-                  lerTexto(texts.modalRecusarDemanda.enviar);
-                }
-              }}
-            >
-              {texts.modalRecusarDemanda.enviar}
-            </Button>
-          </Box>
+
+          {props.aceitarGerente ? (
+            <Box className="flex justify-between" sx={{ width: "95%" }}>
+              <Button
+                variant="container"
+                color="tertiary"
+                sx={{
+                  fontSize: FontConfig.default,
+                  marginTop: "2%",
+                  border: "solid 1px",
+                  borderColor: "tertiary.main"
+                }}
+                onClick={() => {
+                  if (!lendoTexto) {
+                    props.setMotivo("");
+                    props.setOpen(false);
+                  } else if (librasAtivo) {
+                  } else {
+                    lerTexto(texts.modalAceitarDemanda.cancelar);
+                  }
+                }}
+              >
+                {texts.modalAceitarDemanda.cancelar}
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                  marginTop: "2%",
+                  width: "5.3rem"
+                }}
+                variant="contained"
+                onClick={() => {
+                  if (!lendoTexto) {
+                    props.addRecomendacao();
+                  } else if (librasAtivo) {
+                  } else {
+                    lerTexto(texts.modalRecusarDemanda.enviar);
+                  }
+                }}
+              >
+                {texts.DetalhesDemanda.botaoSalvar}
+              </Button>
+
+            </Box>
+          ) : (
+            <Box className="flex justify-end" sx={{ width: "90%" }}>
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                  marginTop: "2%",
+                }}
+                variant="contained"
+                onClick={() => {
+                  if (!lendoTexto) {
+                    props.confirmRecusarDemanda();
+                  } else if (librasAtivo) {
+                  } else {
+                    lerTexto(texts.modalRecusarDemanda.enviar);
+                  }
+                }}
+              >
+                {texts.modalRecusarDemanda.enviar}
+              </Button>
+
+            </Box>
+          )}
+
         </Box>
       </Fade>
     </Modal>
