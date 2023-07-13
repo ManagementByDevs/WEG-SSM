@@ -32,11 +32,11 @@ class DateService {
     const mm = String(dataNova.getMonth() + 1).padStart(2, "0");
     const yyyy = dataNova.getFullYear();
 
-    return yyyy + "-" + mm + "-" + dd
+    return yyyy + "-" + mm + "-" + dd;
   }
 
   /**
-   * Retona data passada por parâmetro formatada de acordo com a linguagem recebida, não importando se é um Objeto Date ou String MySQL Date, 
+   * Retona data passada por parâmetro formatada de acordo com a linguagem recebida, não importando se é um Objeto Date ou String MySQL Date,
    * se não passado nada, retorna a data de hoje no mesmo formato
    * @returns Data formatada de acordo com a linguagem
    */
@@ -55,7 +55,9 @@ class DateService {
       case "es":
         return dd + "/" + mm + "/" + yyyy;
       case "ch":
-        return ChineseLanguageService.formatarDataCompleta(yyyy + "/" + mm + "/" + dd + "/null");
+        return ChineseLanguageService.formatarDataCompleta(
+          yyyy + "/" + mm + "/" + dd + "/null"
+        );
       default:
         return yyyy + "-" + mm + "-" + dd;
     }
@@ -78,7 +80,9 @@ class DateService {
       case "es":
         return dd + "/" + mm + "/" + yyyy;
       case "ch":
-        return ChineseLanguageService.formatarDataCompleta(yyyy + "/" + mm + "/" + dd + "/null");
+        return ChineseLanguageService.formatarDataCompleta(
+          yyyy + "/" + mm + "/" + dd + "/null"
+        );
       default:
         return dd + "/" + mm + "/" + yyyy;
     }
@@ -89,13 +93,13 @@ class DateService {
    * @returns Data no padrão americano
    */
   getTodaysDateUSFormat(date, linguagem) {
-    const newDate = new Date(date);
-    const dd = String(newDate.getDate()).padStart(2, "0");
-    const mm = String(newDate.getMonth() + 1).padStart(2, "0");
-    const yyyy = newDate.getFullYear();
+    const newDate = new Date(date.replace(/-/g, "/"));
+    const dd = String(newDate.getUTCDate()).padStart(2, "0");
+    const mm = String(newDate.getUTCMonth() + 1).padStart(2, "0");
+    const yyyy = newDate.getUTCFullYear();
 
-    let hora = newDate.getHours();
-    let minutos = newDate.getMinutes();
+    let hora = newDate.getUTCHours();
+    let minutos = newDate.getUTCMinutes();
 
     if (hora.toString().length == 1) {
       hora = "0" + hora.toString();
@@ -112,7 +116,9 @@ class DateService {
       case "es":
         return dd + "/" + mm + "/" + yyyy + " - " + hora + ":" + minutos;
       case "ch":
-        return ChineseLanguageService.formatarDataCompleta(yyyy + "/" + mm + "/" + dd + "/" + hora + "-" + minutos);
+        return ChineseLanguageService.formatarDataCompleta(
+          yyyy + "/" + mm + "/" + dd + "/" + hora + "-" + minutos
+        );
       default:
         return dd + "/" + mm + "/" + yyyy + " - " + hora + ":" + minutos;
     }
@@ -139,7 +145,9 @@ class DateService {
       case "es":
         return dd + "/" + mm + "/" + yyyy + " " + hh + ":" + min;
       case "ch":
-        return ChineseLanguageService.formatarDataCompleta(yyyy + "/" + mm + "/" + dd + "/" + hh + "-" + min);
+        return ChineseLanguageService.formatarDataCompleta(
+          yyyy + "/" + mm + "/" + dd + "/" + hh + "-" + min
+        );
       default:
         return yyyy + "-" + mm + "-" + dd + " " + hh + ":" + min;
     }
@@ -156,8 +164,8 @@ class DateService {
     }
 
     let date = dataMysql.replace(/[-]/g, "/").replace(/[T]/g, " ");
-    date = Date.parse(date);
-    return new Date(date);
+
+    return date;
   }
 
   /**
@@ -168,17 +176,18 @@ class DateService {
   getHorasFormatado = (data) => {
     let dataFormatada = new Date(this.getDateByMySQLFormat(data));
 
-    return `${dataFormatada.getHours()}:${dataFormatada.getMinutes() < 10
-      ? "0" + dataFormatada.getMinutes()
-      : dataFormatada.getMinutes()
-      }
+    return `${dataFormatada.getHours()}:${
+      dataFormatada.getMinutes() < 10
+        ? "0" + dataFormatada.getMinutes()
+        : dataFormatada.getMinutes()
+    }
     `;
   };
 
   formatarDataRequisicao = (data) => {
     data = new Date(data);
     return data.toISOString();
-  }
+  };
 }
 
 export default new DateService();

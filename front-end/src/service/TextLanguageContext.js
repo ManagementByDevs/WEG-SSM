@@ -326,6 +326,7 @@ const TextLanguageContext = createContext({
       nenhumAnexoAdicionado: "Nenhum anexo adicionado",
       cancelar: "Cancelar",
       aceitar: "Aceitar",
+      addRecomendacao: "Adicionar Recomendações"
     },
     modalConfirmacao: {
       mensagensModal: {

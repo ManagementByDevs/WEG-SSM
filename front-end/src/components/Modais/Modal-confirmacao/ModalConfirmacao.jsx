@@ -1,9 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
-import { Modal, Typography, Box, Button } from "@mui/material";
+import { Modal, Typography, Box, Button, Tooltip } from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import EditIcon from "@mui/icons-material/Edit";
+
+import ModalRecusarDemanda from "../Modal-recusarDemanda/ModalRecusarDemanda";
 
 import FontContext from "../../../service/FontContext";
 import TextLanguageContext from "../../../service/TextLanguageContext";
@@ -11,6 +14,7 @@ import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
 /** Modal padrão usado para confirmação de ações (ex: criação de demanda, aprovação de demanda) */
 const ModalConfirmacao = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -21,6 +25,12 @@ const ModalConfirmacao = (props) => {
   const { lendoTexto, lerTexto, librasAtivo } = useContext(
     SpeechSynthesisContext
   );
+
+  // Variável utilizada para abrir o modal de adicionar detalhes
+  const [modalMaisDetalhes, setModalMaisDetalhes] = useState(false);
+
+  // Variável utilizada para armazenar a recomendação
+  const [recomendacao, setRecomendacao] = useState("");
 
   /** Função para retornar um tipo de mensagem no modal */
   const mensagemModal = (tipoMensagem) => {
@@ -72,88 +82,139 @@ const ModalConfirmacao = (props) => {
     }
   };
 
+  /** Função para salvar a recomendação do modal */
+  const addRecomendacao = () => {
+    props.setRecomendacao(recomendacao);
+    setModalMaisDetalhes(false);
+  }
+
   return (
-    <Modal
-      open={props.open}
-      onClose={() => {
-        props.setOpen(false);
-      }}
-      closeAfterTransition
-    >
-      <Fade in={props.open}>
-        <Box
-          className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
-          sx={{
-            transform: "translate(-50%, -50%)",
-            width: 450,
-            bgcolor: "background.paper",
-            borderRadius: "5px",
-            borderTop: "10px solid #00579D",
-            boxShadow: 24,
-            p: 2,
-          }}
-        >
-          <ErrorOutlineIcon sx={{ fontSize: "100px", color: "primary.main" }} />
-          <Typography
-            fontSize={FontConfig.veryBig}
-            className="text-center"
-            sx={{ mt: 2 }}
-            onClick={() => {
-              lerTexto(mensagemModal(props.textoModal));
+    <>
+
+      {/* Modal para adicionar mais detalhes */}
+      <ModalRecusarDemanda
+        open={modalMaisDetalhes}
+        setOpen={setModalMaisDetalhes}
+        addRecomendacao={addRecomendacao}
+        motivo={recomendacao}
+        setMotivo={setRecomendacao}
+        aceitarGerente={true}
+      />
+
+      {/* Modal de confirmação */}
+      <Modal
+        open={props.open}
+        onClose={() => {
+          props.setOpen(false);
+        }}
+        closeAfterTransition
+      >
+        <Fade in={props.open}>
+          <Box
+            className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
+            sx={{
+              transform: "translate(-50%, -50%)",
+              width: 450,
+              bgcolor: "background.paper",
+              borderRadius: "5px",
+              borderTop: "10px solid #00579D",
+              boxShadow: 24,
+              p: 2,
             }}
           >
-            {mensagemModal(props.textoModal)}
-          </Typography>
-          <Box className="flex justify-center items-center mt-5">
-            {/* Botão de cancelar */}
-            <Button
+            <ErrorOutlineIcon sx={{ fontSize: "100px", color: "primary.main" }} />
+            <Typography
+              fontSize={FontConfig.veryBig}
+              className="text-center"
+              sx={{ mt: 2 }}
               onClick={() => {
-                if (!lendoTexto) {
-                  props.setOpen(false);
-                  if (props.onCancelClick) {
-                    props.onCancelClick(true);
+                lerTexto(mensagemModal(props.textoModal));
+              }}
+            >
+              {mensagemModal(props.textoModal)}
+            </Typography>
+            <Box className="flex justify-center items-center mt-5">
+              {/* Botão de cancelar */}
+              <Button
+                onClick={() => {
+                  if (!lendoTexto) {
+                    props.setOpen(false);
+                    if (props.onCancelClick) {
+                      props.onCancelClick(true);
+                    }
+                  } else if (librasAtivo) {
+                  } else {
+                    lerTexto(texts.modalConfirmacao.cancelar);
                   }
-                } else if (librasAtivo) {
-                } else {
-                  lerTexto(texts.modalConfirmacao.cancelar);
-                }
-              }}
-              variant="container"
-              disableElevation
-              color="tertiary"
-              sx={{
-                border: "solid 1px",
-                borderColor: "tertiary.main",
-                margin: "10px",
-                width: "7.5rem",
-                fontSize: FontConfig.big,
-              }}
-            >
-              {texts.modalConfirmacao.cancelar}
-            </Button>
+                }}
+                variant="container"
+                disableElevation
+                color="tertiary"
+                sx={{
+                  border: "solid 1px",
+                  borderColor: "tertiary.main",
+                  margin: "10px",
+                  width: "7.5rem",
+                  fontSize: FontConfig.big,
+                }}
+              >
+                {texts.modalConfirmacao.cancelar}
+              </Button>
 
-            {/* Botão de confirmação */}
-            <Button
-              onClick={() => {
-                if (!lendoTexto) {
-                  props.setOpen(false);
-                  props.onConfirmClick(false);
-                } else if (librasAtivo) {
-                } else {
-                  lerTexto(mensagemBotao(props.textoBotao));
-                }
-              }}
-              variant="contained"
-              disableElevation
-              color="primary"
-              sx={{ margin: "10px", width: "7.5rem", fontSize: FontConfig.big }}
-            >
-              {mensagemBotao(props.textoBotao)}
-            </Button>
+              {/* Botão de confirmação */}
+              {props.aceitarGerente ? (
+                <Button
+                  onClick={() => {
+                    if (!lendoTexto) {
+                      props.setOpen(false);
+                      props.onConfirmClick(false);
+                      props.setRecomendacao(recomendacao)
+                    } else if (librasAtivo) {
+                    } else {
+                      lerTexto(mensagemBotao(props.textoBotao));
+                    }
+                  }}
+                  variant="contained"
+                  disableElevation
+                  color="primary"
+                  sx={{ margin: "10px", width: "7.5rem", fontSize: FontConfig.big }}
+                >
+                  {mensagemBotao(props.textoBotao)}
+                </Button>
+              ) :
+                <Button
+                  onClick={() => {
+                    if (!lendoTexto) {
+                      props.setOpen(false);
+                      props.onConfirmClick(false);
+                    } else if (librasAtivo) {
+                    } else {
+                      lerTexto(mensagemBotao(props.textoBotao));
+                    }
+                  }}
+                  variant="contained"
+                  disableElevation
+                  color="primary"
+                  sx={{ margin: "10px", width: "7.5rem", fontSize: FontConfig.big }}
+                >
+                  {mensagemBotao(props.textoBotao)}
+                </Button>
+              }
+
+              {props.aceitarGerente && (
+                <Tooltip title={texts.modalAceitarDemanda.addRecomendacao} sx={{ position: "absolute", right: 50, color: "primary.main" }}>
+                  <EditIcon
+                    onClick={() => {
+                      setModalMaisDetalhes(true);
+                    }}
+                  />
+                </Tooltip>
+              )}
+            </Box>
           </Box>
-        </Box>
-      </Fade>
-    </Modal>
+        </Fade>
+      </Modal>
+    </>
   );
 };
 

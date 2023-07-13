@@ -41,6 +41,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -115,8 +116,7 @@ const DetalhesDemanda = (props) => {
   const [openModal, setOpenModal] = useState(false);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
-    useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
 
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
@@ -141,6 +141,8 @@ const DetalhesDemanda = (props) => {
 
   // Variável utilizada para armazenar a proposta da demanda em html
   const propostaDaDemanda = useRef(null);
+
+  const [recomendacao, setRecomendacao] = useState("")
 
   // useEffect utilizado para atualizar o valor html do campo
   useEffect(() => {
@@ -482,20 +484,38 @@ const DetalhesDemanda = (props) => {
 
   /** Função para aceitar a demanda como gerente, enviando-a para a criação de proposta */
   const aprovarDemandaGerencia = () => {
-    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(() => {
-      salvarHistorico("Demanda Aprovada");
-      navegarHome(1);
+    if (recomendacao == "" || recomendacao == null) {
+      DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(() => {
+        salvarHistorico("Demanda Aprovada");
+        navegarHome(1);
 
-      const notificacao = NotificacaoService.createNotificationObject(
-        NotificacaoService.aprovadoGerente,
-        props.dados,
-        CookieService.getUser().id
-      );
-      enviar(
-        `/app/weg_ssm/notificacao/${props.dados.solicitante.id}`,
-        JSON.stringify(notificacao)
-      );
-    });
+        const notificacao = NotificacaoService.createNotificationObject(
+          NotificacaoService.aprovadoGerente,
+          props.dados,
+          CookieService.getUser().id
+        );
+        enviar(
+          `/app/weg_ssm/notificacao/${props.dados.solicitante.id}`,
+          JSON.stringify(notificacao)
+        );
+      });
+    } else {
+      DemandaService.atualizarStatusERecomendacao(props.dados.id, "ASSESSMENT", recomendacao).then(() => {
+        salvarHistorico("Demanda Aprovada");
+        navegarHome(1);
+
+        const notificacao = NotificacaoService.createNotificationObject(
+          NotificacaoService.aprovadoGerente,
+          props.dados,
+          CookieService.getUser().id
+        );
+        enviar(
+          `/app/weg_ssm/notificacao/${props.dados.solicitante.id}`,
+          JSON.stringify(notificacao)
+        );
+      });
+    }
+
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -741,6 +761,8 @@ const DetalhesDemanda = (props) => {
         onConfirmClick={aprovarDemandaGerencia}
         textoModal="aceitarDemanda"
         textoBotao="aceitar"
+        aceitarGerente={true}
+        setRecomendacao={setRecomendacao}
       />
       <Box></Box>
       <Box

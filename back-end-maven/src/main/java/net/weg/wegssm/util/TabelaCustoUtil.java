@@ -37,7 +37,6 @@ public class TabelaCustoUtil {
         try {
             return this.objectMapper.readValue(tabelaCustoJSON, TabelaCustoDTO.class);
         } catch (Exception e) {
-            System.out.println("deu erro aq");
             throw new RuntimeException(e);
         }
     }

@@ -3562,6 +3562,22 @@ public class DemandaController {
     }
 
     /**
+     * Função utilizada pelo gerente, para atualizar o status e mandar uma recomendacao na demanda
+     *
+     * @param id           - id da demanda
+     * @param status       - novo status
+     * @param recomendacao - string de recomendacao
+     * @return - demanda atualizada
+     */
+    @PutMapping("/status_motivo_recusa/{id}/{status}/{recomendacao}")
+    public ResponseEntity<Object> atualizarStatusERecomendacao(@PathVariable(value = "id") Long id, @PathVariable(value = "status") Status status, @PathVariable(value = "recomendacao") String recomendacao) {
+        Demanda demanda = demandaService.findById(id).get();
+        demanda.setStatus(status);
+        demanda.setMotivoRecusa(recomendacao);
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
+    }
+
+    /**
      * Função para adicionar um novo objeto Historico em uma demanda, salvando sua edição
      *
      * @param idDemanda     - ID da demanda a receber o histórico
