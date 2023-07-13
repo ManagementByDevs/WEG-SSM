@@ -325,11 +325,30 @@ const BarraProgressaoProposta = (props) => {
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-      listaNova.push({ ...beneficio, visible: true });
+      listaNova.push({ ...beneficio, visible: true, valor_mensal: formatarValorMensal(beneficio.valor_mensal) });
     }
 
     setListaBeneficios(listaNova);
   };
+
+  /** Função para formatar o valor mensal de um benefício ao recebê-lo */
+  const formatarValorMensal = (valor_mensal) => {
+    if (!valor_mensal) return;
+    let valorMensalString = valor_mensal.toString();
+    let arrayValor = valorMensalString.split(".");
+
+    if (arrayValor.length == 1) {
+      return valor_mensal + ",00"
+    } else if (arrayValor[1].length == 1) {
+      if (arrayValor[1].charAt(0)) {
+        return valor_mensal + "0"
+      } else {
+        return arrayValor[0] + ",0" + arrayValor[1]
+      }
+    } else {
+      return arrayValor[0] + "," + arrayValor[1]
+    }
+  }
 
   /** Função para buscar um escopo que já foi salvo */
   const carregarEscopoSalvo = (escopo) => {
@@ -368,19 +387,6 @@ const BarraProgressaoProposta = (props) => {
     return bytes.map((byte, i) => textoBinario.charCodeAt(i));
   }
 
-  /** Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco */
-  const carregarTextoEscopo = (escopo) => {
-    let reader = new FileReader();
-    reader.onload = function () {
-      setEscopo(reader.result);
-    };
-
-    if (escopo.escopo) {
-      let blob = new Blob([converterBase64(escopo.escopo)]);
-      reader.readAsText(blob);
-    }
-  };
-
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = () => {
     try {
@@ -393,7 +399,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -442,8 +448,9 @@ const BarraProgressaoProposta = (props) => {
     for (let beneficio of listaBeneficios) {
       if (beneficio.visible) {
         let beneficioFinal = { ...beneficio };
+        beneficioFinal.valor_mensal = parseFloat(beneficio.valor_mensal.replace(",", "."))
         delete beneficioFinal.visible;
-        beneficioService.put(beneficioFinal).then((response) => {});
+        beneficioService.put(beneficioFinal).then((response) => { });
       }
     }
   };
@@ -594,7 +601,7 @@ const BarraProgressaoProposta = (props) => {
           perfilDespesa: custo.perfilDespesa,
           periodoExecucao: custo.periodoExecucao,
           horas: custo.horas,
-          valorHora: custo.valorHora,
+          valorHora: parseFloat(custo.valorHora.replace(",", ".")),
         });
       }
 
@@ -606,7 +613,6 @@ const BarraProgressaoProposta = (props) => {
         tipoDespesa: tabelaCustos.tipoDespesa,
       });
     }
-
     return listaNova;
   };
 

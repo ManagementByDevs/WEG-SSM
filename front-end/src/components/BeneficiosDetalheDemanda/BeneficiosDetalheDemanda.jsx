@@ -31,6 +31,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
+import InputDinheiro from "../InputDinheiro/InputDinheiro";
 
 /** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
@@ -66,7 +67,6 @@ const BeneficiosDetalheDemanda = (props) => {
     }
   }, [mode]);
 
-  /** UseEffect para setar o valor em html na variável */
   useEffect(() => {
     if (
       memoriaCalculo.current &&
@@ -74,7 +74,7 @@ const BeneficiosDetalheDemanda = (props) => {
     ) {
       memoriaCalculo.current.innerHTML = props.beneficio.memoriaCalculo;
     }
-  });
+  })
 
   /** useEffect utilizado para setar o valor do input de valor_mensal de um benefício com o input de voz */
   useEffect(() => {
@@ -112,7 +112,7 @@ const BeneficiosDetalheDemanda = (props) => {
   const formatarTipoBeneficio = (tipoBeneficio) => {
     const novoTipo =
       tipoBeneficio?.charAt(0) +
-        tipoBeneficio?.substring(1, tipoBeneficio?.length)?.toLowerCase() ||
+      tipoBeneficio?.substring(1, tipoBeneficio?.length)?.toLowerCase() ||
       texts.DetalhesDemanda.real;
     return novoTipo;
   };
@@ -266,56 +266,20 @@ const BeneficiosDetalheDemanda = (props) => {
                         <td align="center" className="p-2">
                           <Box className="flex items-center justify-center">
                             {/* Input de valor mensal */}
-                            <Input
-                              value={props.beneficio.valor_mensal || ""}
-                              fontSize={FontConfig.medium}
-                              onChange={(e) => {
+                            <InputDinheiro
+                              placeholder={texts.BeneficiosDetalheDemanda.digiteValorMensal}
+                              fontConfig={FontConfig.medium}
+                              texto={props.beneficio?.valor_mensal}
+                              saveInputValue={(e) => {
                                 props.setBeneficio(
                                   {
                                     ...props.beneficio,
-                                    valor_mensal: e.target.value,
+                                    valor_mensal: e
                                   },
                                   props.index
                                 );
                               }}
-                              className="border-solid border px-1 text-center"
-                              sx={{
-                                borderLeft: "4px solid #00579d",
-                              }}
-                              fullWidth
-                              placeholder={
-                                texts.BeneficiosDetalheDemanda.digiteValorMensal
-                              }
-                              endAdornment={
-                                <InputAdornment position="end">
-                                  <Tooltip
-                                    className="hover:cursor-pointer"
-                                    title={texts.homeGerencia.gravarAudio}
-                                    onClick={() => {
-                                      startRecognition("valor_mensal");
-                                    }}
-                                  >
-                                    {escutar &&
-                                    localClique == "valor_mensal" ? (
-                                      <MicOutlinedIcon
-                                        sx={{
-                                          cursor: "pointer",
-                                          color: "primary.main",
-                                          fontSize: "1.3rem",
-                                        }}
-                                      />
-                                    ) : (
-                                      <MicNoneOutlinedIcon
-                                        sx={{
-                                          cursor: "pointer",
-                                          color: "text.secondary",
-                                          fontSize: "1.3rem",
-                                        }}
-                                      />
-                                    )}
-                                  </Tooltip>
-                                </InputAdornment>
-                              }
+                              moeda={props.beneficio.moeda}
                             />
                           </Box>
                         </td>
@@ -455,17 +419,39 @@ const BeneficiosDetalheDemanda = (props) => {
                 {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
                   props.beneficio.tipoBeneficio != "Qualitativo" && (
                     <>
+                      {/* Valor Mensal */}
                       <td align="center" className="p-2">
-                        {/* Valor mensal */}
-                        <Typography
-                          fontSize={FontConfig.medium}
-                          color="text.primary"
-                          onClick={() => {
-                            lerTexto(props.beneficio.valor_mensal);
-                          }}
-                        >
-                          {props.beneficio.valor_mensal}
-                        </Typography>
+                        {props.beneficio.moeda == "Real" ? (
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            color="text.primary"
+                            onClick={() => {
+                              lerTexto(props.beneficio.valor_mensal);
+                            }}
+                          >
+                            R$ {props.beneficio.valor_mensal}
+                          </Typography>
+                        ) : props.beneficio.moeda == "Dolar" ? (
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            color="text.primary"
+                            onClick={() => {
+                              lerTexto(props.beneficio.valor_mensal);
+                            }}
+                          >
+                            $ {props.beneficio.valor_mensal}
+                          </Typography>
+                        ) : props.beneficio.moeda == "Euro" ? (
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            color="text.primary"
+                            onClick={() => {
+                              lerTexto(props.beneficio.valor_mensal);
+                            }}
+                          >
+                            {props.beneficio.valor_mensal} €
+                          </Typography>
+                        ) : null}
                       </td>
                       <td align="center" className="p-2">
                         {/* Moeda do benefício */}

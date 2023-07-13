@@ -54,6 +54,7 @@ import AnexoService from "../../service/anexoService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 import dateService from "../../service/dateService";
+import InputDinheiro from "../InputDinheiro/InputDinheiro";
 
 // Variável de exemplo de proposta
 const propostaExample = EntitiesObjectService.proposta();
@@ -65,8 +66,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 // Componente de edição da proposta
 const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
-  setPropostaData = () => {},
-  setIsEditing = () => {},
+  setPropostaData = () => { },
+  setIsEditing = () => { },
   emAprovacao = false,
 }) => {
   // Context para alterar o tamanho da fonte
@@ -264,10 +265,6 @@ const DetalhesPropostaEditMode = ({
       setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.problema}`);
       return false;
     }
-    // if (!propostaAux.escopo || propostaAux.escopo == "<p><br></p>") {
-    //   setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.escopo}`);
-    //   return false;
-    // }
     if (!propostaAux.frequencia) {
       setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.frequencia}`);
       return false;
@@ -383,6 +380,20 @@ const DetalhesPropostaEditMode = ({
     return listaNova;
   };
 
+  /** Função para a formatação do valor mensal dos benefícios para salvamento no banco */
+  const formatarBeneficios = (listaBeneficios) => {
+    let listaFinal = [];
+    for (const beneficio of listaBeneficios) {
+      if (beneficio.visible) {
+        let novoBeneficio = { ...beneficio }
+        delete novoBeneficio.visible;
+        novoBeneficio.valor_mensal = parseFloat(novoBeneficio.valor_mensal.replace(",", "."));
+        listaFinal.push(novoBeneficio);
+      }
+    }
+    return listaFinal;
+  }
+
   /** Salva as edições da proposta no banco de dados */
   const saveProposal = () => {
     // Verificação dos campos
@@ -391,6 +402,7 @@ const DetalhesPropostaEditMode = ({
     // Dando erro ao salvar qualquer campo com editor de texto que contenha acento
     let propostaAux = EntitiesObjectService.proposta();
     propostaAux = JSON.parse(JSON.stringify(proposta));
+    propostaAux.beneficios = formatarBeneficios(propostaAux.beneficios);
 
     let novasTabelasCusto = JSON.parse(
       JSON.stringify(propostaAux.tabelaCustos)
@@ -452,7 +464,7 @@ const DetalhesPropostaEditMode = ({
           "Proposta Editada",
           arquivo,
           CookieService.getUser().id
-        ).then(() => {});
+        ).then(() => { });
       });
     });
   };
@@ -717,7 +729,7 @@ const DetalhesPropostaEditMode = ({
       anexosAux.findIndex((oldFile) => oldFile == file),
       1
     );
-    AnexoService.deleteById(file.id).then(() => {});
+    AnexoService.deleteById(file.id).then(() => { });
 
     setProposta({ ...proposta, anexo: [...anexosAux] });
   };
@@ -891,7 +903,7 @@ const DetalhesPropostaEditMode = ({
         textoModal={textoModalConfirmacao}
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       {/* Feedback de dados invalidos */}
       <Feedback
@@ -944,11 +956,11 @@ const DetalhesPropostaEditMode = ({
               onClick={() =>
                 lerTexto(
                   texts.detalhesProposta.data +
-                    " " +
-                    DateService.getTodaysDateUSFormat(
-                      DateService.getDateByMySQLFormat(proposta.data),
-                      texts.linguagem
-                    )
+                  " " +
+                  DateService.getTodaysDateUSFormat(
+                    DateService.getDateByMySQLFormat(proposta.data),
+                    texts.linguagem
+                  )
                 )
               }
             >
@@ -1050,8 +1062,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.solicitante.nome +
-                    " - " +
-                    proposta.solicitante.departamento.nome
+                  " - " +
+                  proposta.solicitante.departamento.nome
                 );
               }}
             >
@@ -1109,8 +1121,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.gerente.nome +
-                    " - " +
-                    proposta.gerente.departamento.nome
+                  " - " +
+                  proposta.gerente.departamento.nome
                 );
               }}
             >
@@ -1746,8 +1758,8 @@ const TabelaCustos = ({
   dados = EntitiesObjectService.tabelaCustos(),
   handleOnTabelaCustosChange = (
     newTabela = EntitiesObjectService.tabelaCustos()
-  ) => {},
-  handleDeleteTabelaCusto = () => {},
+  ) => { },
+  handleDeleteTabelaCusto = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2057,7 +2069,7 @@ const TabelaCustos = ({
 
 const CC = ({
   cc = EntitiesObjectService.cc(),
-  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
+  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2132,7 +2144,7 @@ const CC = ({
 // Mostra os custos na proposta
 const CustosRow = ({
   custo = EntitiesObjectService.custo(),
-  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
+  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2174,9 +2186,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -2317,8 +2329,8 @@ const CustosRow = ({
 // Mostrar os benefícios da proposta
 const Beneficio = ({
   beneficio = EntitiesObjectService.beneficio(),
-  handleOnBeneficioChange = () => {},
-  handleDeleteBeneficio = () => {},
+  handleOnBeneficioChange = () => { },
+  handleDeleteBeneficio = () => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2334,13 +2346,6 @@ const Beneficio = ({
 
   // Estado se é um beneficio com tipo qualitativo
   const [isQualitativo, setIsQualitativo] = useState(false);
-
-  /** Debounce o setState passado por parâmetro */
-  const debounceState = _.debounce((setState, value) => {
-    setState(value);
-  }, 100);
-
-  const regexOnlyNumber = new RegExp(/^[0-9]*\.?[0-9]*$/);
 
   // Modules usados para o React Quill
   const modulesQuill = {
@@ -2390,16 +2395,6 @@ const Beneficio = ({
 
     handleOnBeneficioChange({
       ...beneficioAux,
-    });
-  };
-
-  // Handler do valor mensal do benefício
-  const handleOnValorMensalChange = (event) => {
-    if (!regexOnlyNumber.test(event.target.value)) return;
-
-    handleOnBeneficioChange({
-      ...beneficio,
-      valor_mensal: event.target.value,
     });
   };
 
@@ -2547,16 +2542,17 @@ const Beneficio = ({
               <>
                 {/* Input de valor mensal */}
                 <td className="text-center p-2">
-                  <InputCustom
-                    label="valorMensal"
-                    defaultText={beneficio.valor_mensal}
-                    saveProposal={(text) =>
-                      handleOnValorMensalChange({ target: { value: text } })
-                    }
-                    sx={{ fontConfig: FontConfig.default }}
-                    regex={regexOnlyNumber}
-                    multiline={true}
-                    handleOnMicChange={handleOnMicChange}
+                  <InputDinheiro
+                    placeholder={texts.beneficios.exemploValorMensal}
+                    fontConfig={FontConfig.default}
+                    texto={beneficio.valor_mensal}
+                    saveInputValue={(valor) => {
+                      handleOnBeneficioChange({
+                        ...beneficio,
+                        valor_mensal: valor
+                      });
+                    }}
+                    moeda={beneficio.moeda}
                   />
                 </td>
                 {/* Select da moeda do benefício */}
@@ -2613,7 +2609,7 @@ const Beneficio = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2746,7 +2742,7 @@ const ParecerComissaoInsertText = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);

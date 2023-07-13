@@ -18,6 +18,7 @@ import ColorModeContext from "../../service/TemaContext";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
+import InputDinheiro from "../InputDinheiro/InputDinheiro";
 
 // Componente para criar uma linha na tabela de custos
 const LinhaTabelaCustos = (props) => {
@@ -287,50 +288,18 @@ const LinhaTabelaCustos = (props) => {
         />
       </td>
       <td align="center" className="pt-5 pb-5">
-        <Input
+        <InputDinheiro
           className="w-3/5 border-solid border pl-1 text-center"
-          sx={{
-            borderLeft: "4px solid #00579d",
-          }}
-          fontSize={FontConfig.medium}
           placeholder={texts.linhaTabelaCustos.digiteValor}
-          value={props.dados.custos[props.index].valorHora || ""}
-          onChange={(e) => {
-            if (!verificarCaracteres(e.target.value)) {
-              let aux = [...props.custos];
-              aux[props.indexCusto].custos[props.index].valorHora =
-                e.target.value;
-              props.setCustos(aux);
-            }
+          fontConfig={FontConfig.medium}
+          texto={props.dados.custos[props.index].valorHora || ""}
+          saveInputValue={(valor) => {
+            let aux = [...props.custos];
+            aux[props.indexCusto].custos[props.index].valorHora =
+              valor;
+            props.setCustos(aux);
           }}
-          endAdornment={
-            <InputAdornment position="end">
-              <Tooltip title={texts.homeGerencia.gravarAudio}>
-                <IconButton
-                  onClick={() => {
-                    startRecognition("valorHora");
-                  }}
-                  size="small"
-                >
-                  {escutar && localClique == "valorHora" ? (
-                    <MicOutlinedIcon
-                      sx={{
-                        color: "primary.main",
-                        fontSize: "1.3rem",
-                      }}
-                    />
-                  ) : (
-                    <MicNoneOutlinedIcon
-                      sx={{
-                        color: "text.secondary",
-                        fontSize: "1.3rem",
-                      }}
-                    />
-                  )}
-                </IconButton>
-              </Tooltip>
-            </InputAdornment>
-          }
+          moeda={"Real"}
         />
       </td>
       <td>
