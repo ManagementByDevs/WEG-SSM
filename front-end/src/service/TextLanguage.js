@@ -645,6 +645,10 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsável",
           nenhumaPropostaAdicionada: "Nenhuma proposta adicionada",
           numeroSequencialAta: "Número Sequencial da Ata",
+          voltarSumario: "Voltar ao sumário",
+          inserirParecer: "Inserir Parecer",
+          fechar: "Fechar",
+          addParecer: "Adicionar Parecer",
           tour: {
             tour1:
               "Aqui você pode ver os detalhes da pauta e suas respectivas propostas",
@@ -1701,6 +1705,10 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Responsible Analyst",
           nenhumaPropostaAdicionada: "No proposal added",
           numeroSequencialAta: "Minutes Sequential Number",
+          voltarSumario: "Back to summary",
+          inserirParecer: "Insert Opinion",
+          fechar: "Close",
+          addParecer: "Add Opinion",
           tour: {
             tour1:
               "Here you can see the details of the agenda and their respective proposals",
@@ -2728,6 +2736,10 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "责任分析师",
           nenhumaPropostaAdicionada: "未添加提案",
           numeroSequencialAta: "分钟序号",
+          voltarSumario: "返回摘要",
+          inserirParecer: "插入意见",
+          fechar: "关闭",
+          addParecer: "添加意见",
           tour: {
             tour1: "在这里您可以看到议程的详细信息及其各自的提案",
             tour2: "单击此处下载 PDF 格式的议程",
@@ -3750,6 +3762,10 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Analista Responsable",
           nenhumaPropostaAdicionada: "No se ha añadido ninguna propuesta",
           numeroSequencialAta: "Número secuencial de minutos",
+          voltarSumario: "Volver al resumen",
+          inserirParecer: "Insertar opinión",
+          fechar: "Cerrar",
+          addParecer: "Agregar opinión",
           tour: {
             tour1: "Desde este botón es posible crear los minutos",
             tour2: "Haga clic aquí para descargar la agenda en PDF",

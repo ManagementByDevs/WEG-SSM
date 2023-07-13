@@ -8,7 +8,8 @@ import {
   Tooltip,
   IconButton,
   Input,
-  Chip,
+  TextField,
+  MenuItem,
 } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
@@ -18,6 +19,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AddHomeOutlinedIcon from "@mui/icons-material/AddHomeOutlined";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+import CloseIcon from "@mui/icons-material/Close";
+import UndoIcon from "@mui/icons-material/Undo";
 
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
@@ -27,6 +31,8 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
 import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalConfirmacao";
+import Ajuda from "../../components/Ajuda/Ajuda";
+import CaixaTextoQuill from "../../components/CaixaTextoQuill/CaixaTextoQuill";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -44,8 +50,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import Tour from "reactour";
 
-import Ajuda from "../../components/Ajuda/Ajuda";
-
 /** Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf */
 const DetalhesPauta = (props) => {
   /** Context para alterar a linguagem do sistema */
@@ -55,7 +59,9 @@ const DetalhesPauta = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   /** Navigate utilizado para navegar para uma determianda página */
   const navigate = useNavigate();
@@ -73,6 +79,9 @@ const DetalhesPauta = (props) => {
 
   /** Variável de verificação utilizada para mostrar o sumário ou uma proposta */
   const [proposta, setProposta] = useState(false);
+
+  /** Proposta a ser adicionado o parecer da comissão */
+  const [propostaParecer, setPropostaParecer] = useState(null);
 
   /** Variável utilizada para passar para a próxima proposta */
   const [botaoProximo, setBotaoProximo] = useState(true);
@@ -178,6 +187,7 @@ const DetalhesPauta = (props) => {
   const onClickProposta = (index) => {
     setIndexProposta(index);
     setDadosProposta(pauta.propostas[index]);
+    setPropostaParecer(null);
     setProposta(true);
   };
 
@@ -190,6 +200,7 @@ const DetalhesPauta = (props) => {
         setProposta(false);
         setDadosProposta(pauta.propostas[indexProposta + 1]);
         setIndexProposta(indexProposta + 1);
+        setPropostaParecer(null);
       }
     } else if (librasAtivo) {
     } else {
@@ -207,6 +218,7 @@ const DetalhesPauta = (props) => {
       setProposta(false);
       setDadosProposta(pauta.propostas[indexProposta - 1]);
       setIndexProposta(indexProposta - 1);
+      setPropostaParecer(null);
     }
   };
 
@@ -470,10 +482,14 @@ const DetalhesPauta = (props) => {
     setNumeroSequencialAta(event.target.value);
   };
 
+  /** Mostrar campos para inserir parecer da proposta */
+  const abrirParecerProposta = (event, proposta) => {
+    event.stopPropagation();
+    setPropostaParecer(proposta);
+  };
+
   return (
     <FundoComHeader>
-      {/* Tradução para libras */}
-
       {/* Tour de ajuda para a criação da pauta*/}
       <Tour
         steps={stepsTour}
@@ -689,7 +705,7 @@ const DetalhesPauta = (props) => {
 
             {/* Verificação para mostrar o sumário da pauta ou uma proposta */}
             {!proposta ? (
-              // Mostrar o sumário com os títulos das propostas
+              // Mostra o sumário com os títulos das propostas
               <Box>
                 <Box className="border-b">
                   <Typography
@@ -710,36 +726,61 @@ const DetalhesPauta = (props) => {
                 </Box>
                 <Box className="flex flex-col items-center justify-center">
                   {isSummaryVisible ? (
-                    pauta.propostas?.map((proposta, index) => {
-                      return (
-                        <Box
-                          key={index}
-                          className="w-full flex items-center border-solid border border-l-4 px-4 py-2 mt-4 cursor-pointer"
-                          sx={{
-                            borderLeftColor: "primary.main",
-                            backgroundColor: "background.default",
-                            fontWeight: "300",
-                            "&:hover": { backgroundColor: "component.main" },
-                          }}
-                          onClick={() => {
-                            if (lendoTexto) {
-                              lerTexto(proposta.titulo);
-                            } else if (librasAtivo) {
-                            } else {
-                              onClickProposta(index);
-                            }
-                          }}
-                        >
-                          <Typography
-                            fontSize={FontConfig.medium}
-                            className="truncate"
-                            color="primary"
+                    <>
+                      {pauta.propostas?.map((proposta, index) => {
+                        return (
+                          <Box
+                            key={index}
+                            className="w-full flex items-center border-solid border border-l-4 px-4 py-2 mt-4 cursor-pointer"
+                            sx={{
+                              borderLeftColor: "primary.main",
+                              backgroundColor: "background.default",
+                              fontWeight: "300",
+                              "&:hover": { backgroundColor: "component.main" },
+                            }}
+                            onClick={() => {
+                              if (lendoTexto) {
+                                lerTexto(proposta.titulo);
+                              } else if (librasAtivo) {
+                              } else {
+                                onClickProposta(index);
+                              }
+                            }}
                           >
-                            {index + 1} - {proposta.titulo}
-                          </Typography>
+                            <Box className="w-full flex justify-between items-center">
+                              <Typography
+                                fontSize={FontConfig.medium}
+                                className="truncate"
+                                color="primary"
+                              >
+                                {index + 1} - {proposta.titulo}
+                              </Typography>
+
+                              <Tooltip title={texts.detalhesPauta.addParecer}>
+                                <IconButton
+                                  size="small"
+                                  onClick={(event) =>
+                                    abrirParecerProposta(event, proposta)
+                                  }
+                                >
+                                  <TextFieldsIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </Box>
+                          </Box>
+                        );
+                      })}
+                      {!!propostaParecer && (
+                        <Box className="w-full mt-4">
+                          <Divider />
+                          <InserirParecer
+                            proposta={propostaParecer}
+                            setProposta={setPropostaParecer}
+                            setPauta={setPauta}
+                          />
                         </Box>
-                      );
-                    })
+                      )}
+                    </>
                   ) : (
                     <Typography
                       fontSize={FontConfig.medium}
@@ -753,7 +794,7 @@ const DetalhesPauta = (props) => {
                 </Box>
               </Box>
             ) : (
-              // Mostrar uma proposta e seus dados
+              // Mostra uma proposta e seus dados
               <Box className="w-full">
                 <Box className="flex items-center justify-center relative border-b mb-4">
                   <Typography
@@ -766,17 +807,28 @@ const DetalhesPauta = (props) => {
                   >
                     {texts.detalhesPauta.proposta} {indexProposta + 1}
                   </Typography>
-                  <Box className="absolute right-0">
-                    <IconButton onClick={onDeletePropostaClick} color="primary">
-                      <DeleteIcon
-                        sx={{
-                          width: "32px",
-                          height: "32px",
-                        }}
-                      />
-                    </IconButton>
+                  <Box className="w-full flex justify-between items-center absolute">
+                    <Tooltip title="Voltar ao sumário">
+                      <IconButton color="primary" onClick={voltarSumario}>
+                        <UndoIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={texts.DetalhesDemanda.remover}>
+                      <IconButton
+                        onClick={onDeletePropostaClick}
+                        color="primary"
+                      >
+                        <DeleteIcon
+                          sx={{
+                            width: "28px",
+                            height: "28px",
+                          }}
+                        />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
                 </Box>
+
                 <DetalhesProposta
                   setDadosProposta={setDadosProposta}
                   parecerComissao={dadosProposta.parecerComissao || ""}
@@ -844,6 +896,132 @@ const DetalhesPauta = (props) => {
         </Box>
       </Box>
     </FundoComHeader>
+  );
+};
+
+const InserirParecer = ({
+  proposta = EntitiesObjectService.proposta(),
+  setProposta = () => {},
+  setPauta = () => {},
+}) => {
+  /** Context para alterar a linguagem do sistema */
+  const { texts } = useContext(TextLanguageContext);
+
+  /** Context para alterar o tamanho da fonte */
+  const { FontConfig } = useContext(FontContext);
+
+  /** Fechar inserir o parecer */
+  const handleOnCloseParecerClick = () => {
+    setProposta(null);
+  };
+
+  /** Adiciona o novo parecer da comissão na proposta */
+  const handleOnParecerComissaoChange = (event) => {
+    setProposta({ ...proposta, parecerComissao: event.target.value });
+  };
+
+  /** Adiciona a nova informação do parecer da comissão na proposta */
+  const handleOnInformacaoComissaoChange = (event) => {
+    setProposta({ ...proposta, parecerInformacao: event });
+  };
+
+  /** Salva a pauta com as novas informações da proposta */
+  const handleChangePauta = () => {
+    setPauta((prevState) => {
+      let listAux = [];
+      for (let propostaAux of prevState.propostas) {
+        if (propostaAux.id === proposta.id) {
+          listAux = [...listAux, proposta];
+        } else {
+          listAux = [...listAux, propostaAux];
+        }
+      }
+      return { ...prevState, propostas: listAux };
+    });
+  };
+
+  /** Salva a pauta toda vez que a proposta for atualizada */
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      handleChangePauta();
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [proposta]);
+
+  return (
+    <Box className="mt-3">
+      <Box className="w-full flex justify-between items-center">
+        <Typography
+          fontSize={FontConfig.veryBig}
+          color="primary"
+          fontWeight={600}
+        >
+          {texts.detalhesPauta.inserirParecer}
+        </Typography>
+        <Tooltip title={texts.detalhesPauta.fechar}>
+          <IconButton color="primary" onClick={handleOnCloseParecerClick}>
+            <CloseIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+      <Box>
+        <Typography>
+          <Typography color="primary" component="span" fontWeight={600}>
+            {texts.detalhesPauta.proposta}:
+          </Typography>{" "}
+          {proposta.titulo}
+        </Typography>
+        <Typography fontSize={FontConfig.default}>
+          <Typography
+            color="primary"
+            component="span"
+            fontWeight={600}
+            fontSize={FontConfig.default}
+          >
+            {texts.detalhesProposta.ppm}
+          </Typography>{" "}
+          {proposta.codigoPPM}
+        </Typography>
+      </Box>
+
+      <Box className="flex items-end gap-2">
+        {/* Parecer da comissão */}
+        <Typography>{texts.detalhesPauta.comissao}: </Typography>
+        <TextField
+          select
+          label={texts.detalhesProposta.parecer}
+          value={proposta.parecerComissao ? proposta.parecerComissao : ""}
+          onChange={handleOnParecerComissaoChange}
+          variant="standard"
+          size="small"
+          sx={{ width: "10rem", marginLeft: "0.5rem" }}
+        >
+          <MenuItem key={"Aprovado"} value={"APROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.aprovado}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.reprovado}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Mais informações"} value={"MAIS_INFORMACOES"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.devolvido}
+            </Typography>
+          </MenuItem>
+        </TextField>
+      </Box>
+      <Box className="mt-4">
+        <CaixaTextoQuill
+          texto={proposta.parecerInformacao}
+          onChange={handleOnInformacaoComissaoChange}
+          label="parecerComissao"
+        />
+      </Box>
+    </Box>
   );
 };
 

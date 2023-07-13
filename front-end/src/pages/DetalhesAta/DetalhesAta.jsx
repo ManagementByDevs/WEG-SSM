@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useContext } from "react";
+import { React, useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import Tour from "reactour";
@@ -14,6 +14,9 @@ import {
   ButtonBase,
   Input,
   Chip,
+  IconButton,
+  TextField,
+  MenuItem,
 } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
@@ -22,12 +25,16 @@ import DensitySmallIcon from "@mui/icons-material/DensitySmall";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+import CloseIcon from "@mui/icons-material/Close";
+import UndoIcon from "@mui/icons-material/Undo";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import Feedback from "../../components/Feedback/Feedback";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
 import Ajuda from "../../components/Ajuda/Ajuda";
+import CaixaTextoQuill from "../../components/CaixaTextoQuill/CaixaTextoQuill";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -67,6 +74,9 @@ const DetalhesAta = (props) => {
 
   /** Variável de verificação utilizada para mostrar o sumário ou uma proposta */
   const [proposta, setProposta] = useState(false);
+
+  /** Proposta a ser adicionado o parecer da comissão */
+  const [propostaParecer, setPropostaParecer] = useState(null);
 
   /** Variável utilizada para mostrar os dados de uma proposta */
   const [dadosProposta, setDadosProposta] = useState(null);
@@ -158,6 +168,7 @@ const DetalhesAta = (props) => {
   const onClickProposta = (index) => {
     setIndexProposta(index);
     setDadosProposta(ata.propostas[index]);
+    setPropostaParecer(null);
     setProposta(true);
   };
 
@@ -170,6 +181,7 @@ const DetalhesAta = (props) => {
       } else {
         setProposta(false);
         setDadosProposta(ata.propostas[indexProposta - 1]);
+        setPropostaParecer(null);
         setIndexProposta(indexProposta - 1);
       }
     } else if (librasAtivo) {
@@ -185,6 +197,7 @@ const DetalhesAta = (props) => {
       } else {
         setProposta(false);
         setDadosProposta(ata.propostas[indexProposta + 1]);
+        setPropostaParecer(null);
         setIndexProposta(indexProposta + 1);
       }
     } else if (librasAtivo) {
@@ -362,6 +375,12 @@ const DetalhesAta = (props) => {
   /** Função para salvar o número sequencial da ata da dg digitado no input */
   const salvarNumeroSequencialAtaDG = (event) => {
     setNumeroSequencialAtaDG(event.target.value);
+  };
+
+  /** Mostrar campos para inserir parecer da proposta */
+  const abrirParecerProposta = (event, proposta) => {
+    event.stopPropagation();
+    setPropostaParecer(proposta);
   };
 
   return (
@@ -603,7 +622,7 @@ const DetalhesAta = (props) => {
                       {ata.numeroSequencialDG}
                     </Typography>
                   </Box>
-                ): null}
+                ) : null}
               </Box>
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
@@ -646,22 +665,53 @@ const DetalhesAta = (props) => {
                           }
                         }}
                       >
-                        <Typography
-                          fontSize={FontConfig.medium}
-                          className="truncate"
-                          color="primary"
-                        >
-                          {index + 1} - {proposta.titulo}
-                        </Typography>
+                        <Box className="w-full flex justify-between items-center">
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            className="truncate"
+                            color="primary"
+                          >
+                            {index + 1} - {proposta.titulo}
+                          </Typography>
+
+                          <Tooltip title={texts.detalhesPauta.addParecer}>
+                            <IconButton
+                              size="small"
+                              onClick={(event) =>
+                                abrirParecerProposta(event, proposta)
+                              }
+                            >
+                              <TextFieldsIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
                       </Box>
                     );
                   })}
+
+                  {!!propostaParecer && !ata.publicadaDg ? (
+                    <Box className="w-full mt-4">
+                      <Divider />
+                      <InserirParecer
+                        proposta={propostaParecer}
+                        setProposta={setPropostaParecer}
+                        setAta={setAta}
+                      />
+                    </Box>
+                  ) : (
+                    !!propostaParecer && (
+                      <Box className="w-full mt-4">
+                        <Divider />
+                        <ParecerDGOnlyRead proposta={propostaParecer} />
+                      </Box>
+                    )
+                  )}
                 </Box>
               </Box>
             ) : (
               // Mostrar uma proposta e seus dados
               <Box>
-                <Box className="flex justify-center items-center border-b mb-4">
+                <Box className="flex justify-center items-center border-b mb-4 relative">
                   <Typography
                     fontSize={FontConfig.smallTitle}
                     fontWeight={500}
@@ -671,6 +721,13 @@ const DetalhesAta = (props) => {
                   >
                     {texts.detalhesPauta.proposta} {indexProposta + 1}
                   </Typography>
+                  <Box className="w-full flex justify-between items-center absolute">
+                    <Tooltip title="Voltar ao sumário">
+                      <IconButton color="primary" onClick={voltarSumario}>
+                        <UndoIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                 </Box>
                 <DetalhesProposta
                   emAprovacao={true}
@@ -733,6 +790,191 @@ const DetalhesAta = (props) => {
         </Box>
       </Box>
     </FundoComHeader>
+  );
+};
+
+const InserirParecer = ({
+  proposta = EntitiesObjectService.proposta(),
+  setProposta = () => {},
+  setAta = () => {},
+}) => {
+  /** Context para alterar a linguagem do sistema */
+  const { texts } = useContext(TextLanguageContext);
+
+  /** Context para alterar o tamanho da fonte */
+  const { FontConfig } = useContext(FontContext);
+
+  /** Fechar inserir o parecer */
+  const handleOnCloseParecerClick = () => {
+    setProposta(null);
+  };
+
+  /** Adiciona o novo parecer da dg na proposta */
+  const handleOnParecerDGChange = (event) => {
+    setProposta({ ...proposta, parecerDG: event.target.value });
+  };
+
+  /** Adiciona a nova informação do parecer da dg na proposta */
+  const handleOnInformacaoDGChange = (event) => {
+    setProposta({ ...proposta, parecerInformacaoDG: event });
+  };
+
+  /** Salva a pauta com as novas informações da proposta */
+  const handleChangePauta = () => {
+    setAta((prevState) => {
+      let listAux = [];
+      for (let propostaAux of prevState.propostas) {
+        if (propostaAux.id === proposta.id) {
+          listAux = [...listAux, proposta];
+        } else {
+          listAux = [...listAux, propostaAux];
+        }
+      }
+      return { ...prevState, propostas: listAux };
+    });
+  };
+
+  /** Salva a pauta toda vez que a proposta for atualizada */
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      handleChangePauta();
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [proposta]);
+
+  return (
+    <Box className="mt-3">
+      <Box className="w-full flex justify-between items-center">
+        <Typography
+          fontSize={FontConfig.veryBig}
+          color="primary"
+          fontWeight={600}
+        >
+          {texts.detalhesPauta.inserirParecer}
+        </Typography>
+        <Tooltip title={texts.detalhesPauta.fechar}>
+          <IconButton color="primary" onClick={handleOnCloseParecerClick}>
+            <CloseIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+      <Box>
+        <Typography>
+          <Typography color="primary" component="span" fontWeight={600}>
+            {texts.detalhesPauta.proposta}:
+          </Typography>{" "}
+          {proposta.titulo}
+        </Typography>
+        <Typography fontSize={FontConfig.default}>
+          <Typography
+            color="primary"
+            component="span"
+            fontWeight={600}
+            fontSize={FontConfig.default}
+          >
+            {texts.detalhesProposta.ppm}
+          </Typography>{" "}
+          {proposta.codigoPPM}
+        </Typography>
+      </Box>
+
+      <Box className="flex items-end gap-2">
+        {/* Parecer da comissão */}
+        <Typography>{texts.detalhesPauta.comissao}: </Typography>
+        <TextField
+          select
+          label={texts.detalhesProposta.parecer}
+          value={proposta.parecerDG ? proposta.parecerDG : ""}
+          onChange={handleOnParecerDGChange}
+          variant="standard"
+          size="small"
+          sx={{ width: "10rem", marginLeft: "0.5rem" }}
+        >
+          <MenuItem key={"Aprovado"} value={"APROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.aprovado}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.reprovado}
+            </Typography>
+          </MenuItem>
+        </TextField>
+      </Box>
+      <Box className="mt-4">
+        <CaixaTextoQuill
+          texto={proposta.parecerInformacaoDG}
+          onChange={handleOnInformacaoDGChange}
+          label="parecerComissao"
+        />
+      </Box>
+    </Box>
+  );
+};
+
+// Visualizar o parecer da DG
+const ParecerDGOnlyRead = ({ proposta = EntitiesObjectService.proposta() }) => {
+  // Context para obter as configurações das fontes do sistema
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  // Variável para armazenar o parecer da DG
+  const parecerDGInformacoesBox = useRef(null);
+
+  // UseEffect utilizado para armazenar o valor do parecer da dg
+  useEffect(() => {
+    if (parecerDGInformacoesBox.current) {
+      parecerDGInformacoesBox.current.innerHTML =
+        proposta.parecerInformacaoDG == null ||
+        proposta.parecerInformacaoDG == "null"
+          ? texts.detalhesProposta.semInformacoesAdicionais
+          : proposta.parecerInformacaoDG;
+    }
+  }, []);
+
+  // Função para formatar o parecer da DG
+  const getParecerDGFomartted = (parecer) => {
+    return parecer
+      ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
+      : texts.detalhesProposta.semParecer;
+  };
+
+  return (
+    <Box>
+      <Box className="flex">
+        <Box className="flex items-center mt-4">
+          {/* DG */}
+          <Typography
+            fontSize={FontConfig.medium}
+            onClick={() => lerTexto(texts.detalhesProposta.direcaoGeral)}
+          >
+            {texts.detalhesProposta.direcaoGeral}:&nbsp;
+          </Typography>
+          {/* Parecer da DG */}
+          <Typography
+            fontSize={FontConfig.medium}
+            fontWeight="bold"
+            onClick={() => lerTexto(getParecerDGFomartted(proposta.parecerDG))}
+          >
+            {getParecerDGFomartted(proposta.parecerDG)}
+          </Typography>
+        </Box>
+      </Box>
+      {/* Comporta o texto do parecer da comissão */}
+      <Box
+        ref={parecerDGInformacoesBox}
+        className="mt-2 mx-4 border-l-2 px-2"
+        sx={{ borderColor: "primary.main" }}
+        onClick={() => lerTexto(parecerDGInformacoesBox.current.innerText)}
+      />
+    </Box>
   );
 };
 
