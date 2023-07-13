@@ -327,6 +327,7 @@ const TextLanguage = (linguagem) => {
           nenhumAnexoAdicionado: "Nenhum anexo adicionado",
           cancelar: "Cancelar",
           aceitar: "Aceitar",
+          addRecomendacao: "Adicionar Recomendações"
         },
         modalConfirmacao: {
           mensagensModal: {
@@ -1426,6 +1427,7 @@ const TextLanguage = (linguagem) => {
           nenhumAnexoAdicionado: "No attachments added",
           cancelar: "Cancel",
           aceitar: "Accept",
+          addRecomendacao: "Add Recommendations"
         },
         modalConfirmacao: {
           mensagensModal: {
@@ -2473,6 +2475,7 @@ const TextLanguage = (linguagem) => {
           nenhumAnexoAdicionado: "没有添加附件",
           cancelar: "取消",
           aceitar: "接受",
+          addRecomendacao: "添加推荐"
         },
         modalConfirmacao: {
           mensagensModal: {
@@ -3489,6 +3492,7 @@ const TextLanguage = (linguagem) => {
           nenhumAnexoAdicionado: "Ningún archivo adjunto agregado",
           cancelar: "Cancelar",
           aceitar: "Aceptar",
+          addRecomendacao: "Añadir recomendaciones"
         },
         modalConfirmacao: {
           mensagensModal: {

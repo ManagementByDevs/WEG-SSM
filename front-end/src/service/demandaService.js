@@ -70,6 +70,10 @@ class DemandaService {
         return (await axios.put(`/demanda/status/${idDemanda}/${statusNovo}`, { withCredentials: true })).data;
     }
 
+    async atualizarStatusERecomendacao(idDemanda, statusNovo, recomendacao){
+        return (await axios.put(`/demanda/status_motivo_recusa/${idDemanda}/${statusNovo}/${recomendacao}`, { withCredentials: true })).data;
+    }
+
     async put(demanda) {
         let form = new FormData();
         form.append("demanda", JSON.stringify(demanda));

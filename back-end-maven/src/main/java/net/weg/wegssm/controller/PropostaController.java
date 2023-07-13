@@ -4165,7 +4165,7 @@ public class PropostaController {
         }
 
         PropostaUtil propostaUtil = new PropostaUtil();
-        Proposta proposta = propostaUtil.convertJaCriadaJsonToModel(propostaJSON);
+        Proposta proposta = propostaUtil.convertJsonToModelDirect(propostaJSON);
 
         proposta.setId(id);
 
@@ -4174,7 +4174,7 @@ public class PropostaController {
         // Faz a atualização dos dados da proposta que devem ser adicionados (benefícios, tabelas...)
         Proposta propostaNovosDados = new Proposta();
         if (novaPropostaJSON != null) {
-            propostaNovosDados = propostaUtil.convertJaCriadaJsonToModel(novaPropostaJSON);
+            propostaNovosDados = propostaUtil.convertJsonToModelDirect(novaPropostaJSON);
 
             ArrayList<Beneficio> beneficios = new ArrayList<>(); // Array aux que vai receber os novos beneficios
             for (Beneficio beneficio : propostaNovosDados.getBeneficios()) {
