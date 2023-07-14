@@ -295,8 +295,7 @@ const LinhaTabelaCustos = (props) => {
           texto={props.dados.custos[props.index].valorHora || ""}
           saveInputValue={(valor) => {
             let aux = [...props.custos];
-            aux[props.indexCusto].custos[props.index].valorHora =
-              valor;
+            aux[props.indexCusto].custos[props.index].valorHora = valor;
             props.setCustos(aux);
           }}
           moeda={"Real"}

@@ -808,6 +808,8 @@ const TextLanguage = (linguagem) => {
           esqueciSenha: "Esqueci a senha",
           lembrarme: "Lembrar-me",
           entrar: "Entrar",
+          login: "Login",
+          visibiliade: "Visibilidade",
           feedback: {
             dadosInvalidos: "Dados inválidos!",
             preenchaTodosOsCampos: "Preencha todos os campos!",
@@ -1863,6 +1865,8 @@ const TextLanguage = (linguagem) => {
           esqueciSenha: "Forgot Password",
           lembrarme: "Remember me",
           entrar: "Login",
+          login: "Login",
+          visibiliade: "Visibility",
           feedback: {
             dadosInvalidos: "Invalid data!",
             preenchaTodosOsCampos: "Fill in all fields!",
@@ -2882,6 +2886,8 @@ const TextLanguage = (linguagem) => {
           esqueciSenha: "忘记密码",
           lembrarme: "记住我",
           entrar: "登录",
+          login: "登录",
+          visibiliade: "可见性",
           feedback: {
             dadosInvalidos: "无效数据！",
             preenchaTodosOsCampos: "填写所有字段！",
@@ -3931,6 +3937,8 @@ const TextLanguage = (linguagem) => {
           esqueciSenha: "Olvidé mi contraseña",
           lembrarme: "Recordarme",
           entrar: "Entrar",
+          login: "Login",
+          visibiliade: "Visibilidad",
           feedback: {
             dadosInvalidos: "Datos inválidos!",
             preenchaTodosOsCampos: "¡Rellene todos los campos!",

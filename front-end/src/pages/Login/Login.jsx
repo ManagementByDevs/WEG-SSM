@@ -1,14 +1,31 @@
 import { React, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Box, Paper, TextField, InputAdornment, FormControlLabel, Checkbox, Typography, IconButton, } from "@mui/material";
+import {
+  Button,
+  Box,
+  Paper,
+  TextField,
+  InputAdornment,
+  FormControlLabel,
+  Checkbox,
+  Typography,
+  IconButton,
+  Input,
+  Divider,
+  Tooltip,
+} from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
 
 import LogoWeg from "../../assets/logo-weg.png";
+import LogoAzul from "../../assets/LogoAzul.png";
+import Grid from "../../assets/GridSemFundo.png";
+
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -17,7 +34,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página de login, para que o usuário tenha acesso ao restante do sistema */
 const Login = (props) => {
-
   /** useContext que contém os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -25,7 +41,9 @@ const Login = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
-  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   /** Variável para usar função de navegação do react-router-dom */
   let navigate = useNavigate();
@@ -43,7 +61,10 @@ const Login = (props) => {
   const [dadosFaltantes, setDadosFaltantes] = useState(false);
 
   /** Feedback para ver se o navegador é compatível com a API de síntese de fala */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
 
   /** Função para mudar a visualização da senha (visível ou em formato padrão) */
   const mudarVisualizacaoSenha = () => {
@@ -69,7 +90,7 @@ const Login = (props) => {
         try {
           await AutenticacaoService.login(dados);
           navigate("/");
-        } catch (error) { 
+        } catch (error) {
           // Abrir o modal de feedback de dados inválidos
           setDadosInvalidos(true);
         }
@@ -87,13 +108,12 @@ const Login = (props) => {
     }
   };
 
-  return (
-    <FundoComHeader lendo={lendoTexto}>
-      <Paper
+  /**
+   * <Paper
         sx={{ height: "100%"}}
         className="flex justify-center items-center"
       >
-        {/* Div Principal com as opções do login */}
+         Div Principal com as opções do login 
         <Paper
           sx={{
             backgroundColor: "background.default",
@@ -105,10 +125,10 @@ const Login = (props) => {
         >
           <Box className="w-full h-full border-t-12 border-[#00579D] rounded shadow-2xl flex flex-col items-center justify-center space-y-10">
             <Box>
-              {/* Logo WEG */}
+              Logo WEG 
               <img className="w-36" src={LogoWeg}></img>
             </Box>
-            {/* Input de texto do email do usuário */}
+             Input de texto do email do usuário 
             <TextField
               value={dados.email}
               onChange={(e) => {
@@ -123,8 +143,8 @@ const Login = (props) => {
               variant="filled"
               color="primary"
             />
-            {/* Input de senha (usa os ícones e o tipo do input conforme a variável "senha", também chamando a função
-                        "mudarVisualizacaoSenha" no click) */}
+             Input de senha (usa os ícones e o tipo do input conforme a variável "senha", também chamando a função
+                        "mudarVisualizacaoSenha" no click) 
             <TextField
               value={dados.senha}
               onChange={(e) => {
@@ -153,9 +173,9 @@ const Login = (props) => {
               }}
               variant="filled"
             />
-            {/* Div para checkbox "lembrar-me" e "Esqueci a senha" */}
+             Div para checkbox "lembrar-me" e "Esqueci a senha" 
             <div className="w-8/12 flex justify-between items-center">
-              {/* Checkbox com label para função de "lembrar-me" */}
+               Checkbox com label para função de "lembrar-me" 
               <FormControlLabel
                 control={<Checkbox />}
                 label={texts.login.lembrarme}
@@ -163,7 +183,7 @@ const Login = (props) => {
                   lerTexto(texts.login.lembrarme);
                 }}
               />
-              {/* Texto "Esqueci a Senha" (Usa a fonte média) */}
+               Texto "Esqueci a Senha" (Usa a fonte média) 
               <Typography
                 fontSize={FontConfig.medium}
                 variant="h2"
@@ -176,9 +196,9 @@ const Login = (props) => {
                 {texts.login.esqueciSenha}
               </Typography>
             </div>
-            {/* Div para centralizar o botão de login */}
+             Div para centralizar o botão de login 
             <div className="w-8/12 flex justify-center">
-              {/* Botão para entrar no sistema */}
+               Botão para entrar no sistema 
               <Button
                 onClick={fazerLogin}
                 variant="contained"
@@ -196,7 +216,7 @@ const Login = (props) => {
               </Button>
             </div>
 
-            {/* Feedback de dados inválidos */}
+             Feedback de dados inválidos 
             {dadosInvalidos && (
               <Feedback
                 open={dadosInvalidos}
@@ -211,7 +231,7 @@ const Login = (props) => {
               />
             )}
 
-            {/* Feedback de dados faltantes / não preenchidos */}
+             Feedback de dados faltantes / não preenchidos 
             {dadosFaltantes && (
               <Feedback
                 open={dadosFaltantes}
@@ -225,7 +245,7 @@ const Login = (props) => {
                 setTexto={props.setTexto}
               />
             )}
-            {/* Feedback navegador incompativel */}
+             Feedback navegador incompativel 
             <Feedback
               open={feedbackErroNavegadorIncompativel}
               handleClose={() => {
@@ -240,6 +260,172 @@ const Login = (props) => {
           </Box>
         </Paper>
       </Paper>
+   */
+
+  return (
+    <FundoComHeader>
+      {/* Feedback de dados inválidos  */}
+      {dadosInvalidos && (
+        <Feedback
+          open={dadosInvalidos}
+          handleClose={() => {
+            setDadosInvalidos(false);
+          }}
+          status={"erro"}
+          mensagem={texts.login.feedback.dadosInvalidos}
+          lendo={lendoTexto}
+          texto={props.texto}
+          setTexto={props.setTexto}
+        />
+      )}
+      {/* Feedback de dados faltantes / não preenchidos  */}
+      {dadosFaltantes && (
+        <Feedback
+          open={dadosFaltantes}
+          handleClose={() => {
+            setDadosFaltantes(false);
+          }}
+          status={"erro"}
+          mensagem={texts.login.feedback.preenchaTodosOsCampos}
+          lendo={lendoTexto}
+          texto={props.texto}
+          setTexto={props.setTexto}
+        />
+      )}
+      {/* Feedback navegador incompativel  */}
+      <Feedback
+        open={feedbackErroNavegadorIncompativel}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback13}
+        lendo={lendoTexto}
+        texto={props.texto}
+        setTexto={props.setTexto}
+      />
+      <Box
+        className="w-full flex justify-center items-center"
+        sx={{ height: "95%" }}
+      >
+        {/* Modal de login */}
+        <Box>
+          {/* Título Login */}
+          <Box className="w-full flex justify-between items-center mb-1">
+            <Typography
+              fontSize={FontConfig.title}
+              fontWeight={600}
+              color={"primary"}
+            >
+              {texts.login.login}
+            </Typography>
+
+            <img src={Grid} className="h-8" alt="Grid" />
+          </Box>
+
+          <Divider />
+
+          {/* Formulario */}
+          <Box className="flex gap-4 mt-2">
+            {/* Inputs */}
+            <Box className="flex flex-col gap-4 mt-2 w-80">
+              <Input
+                className="border-t border-r text-center p-2"
+                sx={{
+                  borderLeft: "4px solid #00579d",
+                }}
+                value={dados.email}
+                onChange={(e) => {
+                  atualizarInput(1, e);
+                }}
+                onKeyDown={(e) => {
+                  eventoTeclado(e);
+                }}
+                placeholder={texts.login.email}
+                fullWidth
+                endAdornment={
+                  <InputAdornment position="end">
+                    <Tooltip title={texts.login.email}>
+                      <AlternateEmailIcon />
+                    </Tooltip>
+                  </InputAdornment>
+                }
+              />
+              <Box className="flex flex-col gap-2">
+                <Input
+                  className="border-t border-r text-center p-2"
+                  sx={{
+                    borderLeft: "4px solid #00579d",
+                  }}
+                  value={dados.senha}
+                  onChange={(e) => {
+                    atualizarInput(2, e);
+                  }}
+                  onKeyDown={(e) => {
+                    eventoTeclado(e);
+                  }}
+                  type={senha ? "password" : "text"}
+                  placeholder={texts.login.senha}
+                  fullWidth
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <Tooltip
+                        title={texts.login.visibilidade}
+                        className="cursor-pointer"
+                        onClick={mudarVisualizacaoSenha}
+                      >
+                        {senha ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </Tooltip>
+                    </InputAdornment>
+                  }
+                />
+              </Box>
+            </Box>
+
+            {/* Entrar */}
+            <Box className="flex flex-col justify-end gap-5 mt-2">
+              <Box className="w-full flex justify-start">
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label={texts.login.lembrarme}
+                  onClick={() => {
+                    lerTexto(texts.login.lembrarme);
+                  }}
+                />
+              </Box>
+              {/* <Box className="h-full flex flex-col justify-end gap-2"> */}
+
+              <Button
+                className="w-44 h-12"
+                variant="contained"
+                disableElevation
+                onClick={fazerLogin}
+              >
+                <Typography
+                  onClick={() => {
+                    lerTexto(texts.login.entrar);
+                  }}
+                >
+                  {texts.login.entrar}
+                </Typography>
+              </Button>
+              {/* </Box> */}
+            </Box>
+          </Box>
+
+          {/* Logos */}
+          <Box className="w-full flex justify-center items-center gap-2 mt-8">
+            <img src={LogoAzul} className="h-12" alt="WEG" />
+            {/* <Divider orientation="vertical" flexItem />
+            <Box
+              className="p-1.5 rounded"
+              sx={{ backgroundColor: "primary.main" }}
+            >
+              <img src={SsmBranca} className="h-10" alt="WEG-SSM" />
+            </Box> */}
+          </Box>
+        </Box>
+      </Box>
     </FundoComHeader>
   );
 };
