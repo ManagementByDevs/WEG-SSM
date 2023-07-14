@@ -1728,6 +1728,7 @@ const HomeGerencia = () => {
                   // Botão de criar pauta
                   <Button
                     className="gap-2"
+                    sx={{minWidth: "9rem"}}
                     variant="contained"
                     disableElevation
                     onClick={() => {

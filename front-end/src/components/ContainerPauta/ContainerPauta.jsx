@@ -47,8 +47,7 @@ const ContainerPauta = (props) => {
 
   /** Função para formatar a data de acordo com a linguagem do sistema */
   const buscarDataFormatada = (dateInMySQL) => {
-    let date = DateService.getDateByMySQLFormat(dateInMySQL);
-
+    let date = new Date(dateInMySQL);
     switch (texts.linguagem) {
       case "pt":
         return (
@@ -88,6 +87,7 @@ const ContainerPauta = (props) => {
         );
     }
   };
+  
 
   /** Função para retornar a cor do background do componente de pauta corretamente */
   const pegarCorDeFundo = () => {

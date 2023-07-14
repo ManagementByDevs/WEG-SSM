@@ -343,7 +343,7 @@ const PautaGrid = ({
       sx={{
         display: "grid",
         gap: "1rem",
-        gridTemplateColumns: "repeat(auto-fit, minmax(700px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
       }}
     >
       {listaPautas?.map((pauta, index) => {
