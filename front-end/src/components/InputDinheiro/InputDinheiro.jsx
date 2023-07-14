@@ -1,16 +1,13 @@
 import React, { useEffect, useContext } from "react";
 
-import { Box, Typography, Tooltip, Input } from "@mui/material";
+import { Box, Typography, Tooltip, Input, TextField, InputAdornment } from "@mui/material";
 
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
-import CurrencyInput from 'react-currency-input-field';
-
 import TextLanguageContext from "../../service/TextLanguageContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
-import { typography } from "@mui/system";
 
 /** Input usado para valores em dinheiro */
 const InputDinheiro = (props) => {
@@ -71,31 +68,56 @@ const InputDinheiro = (props) => {
     useEffect(() => {
         if (props.smartRecomendation) {
         }
+
+        if (props.texto) {
+            let valorInicial = props.texto.toString().replace(",", "")
+            while (valorInicial.charAt(0) == "0") {
+                valorInicial = valorInicial.substring(1, valorInicial.length)
+            }
+
+            let casaInteiraFinal = valorInicial.substring(0, valorInicial.length - 2);
+            if (!casaInteiraFinal) {
+                casaInteiraFinal = "0";
+            }
+
+            let casaDecimalFinal = valorInicial.substring(valorInicial.length - 2, valorInicial.length);
+            if (casaDecimalFinal.length == 1) {
+                casaDecimalFinal = "0" + casaDecimalFinal
+            }
+            if (casaDecimalFinal.length == 0) {
+                casaDecimalFinal = "00";
+            }
+
+            let valorFinal = casaInteiraFinal + "," + casaDecimalFinal;
+            props.saveInputValue(valorFinal);
+        }
     }, []);
 
     return (
         <Box sx={{ width: "100%" }}>
-            <Box className="flex">
-                {/* Label acima do input */}
-                <Typography
-                    fontSize={props.fontConfig}
-                    sx={{ fontWeight: "600", cursor: "default" }}
-                    gutterBottom
-                    onClick={() => {
-                        lerTexto(props.label);
-                    }}
-                >
-                    {props.label}
-                </Typography>
-                <Typography
-                    fontSize={props.fontConfig}
-                    sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
-                    className="text-red-600"
-                    gutterBottom
-                >
-                    *
-                </Typography>
-            </Box>
+            {props.label ? (
+                <Box className="flex">
+                    {/* Label acima do input */}
+                    <Typography
+                        fontSize={props.fontConfig}
+                        sx={{ fontWeight: "600", cursor: "default" }}
+                        gutterBottom
+                        onClick={() => {
+                            lerTexto(props.label);
+                        }}
+                    >
+                        {props.label}
+                    </Typography>
+                    <Typography
+                        fontSize={props.fontConfig}
+                        sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
+                        className="text-red-600"
+                        gutterBottom
+                    >
+                        *
+                    </Typography>
+                </Box>
+            ) : null}
             <Box
                 className="flex items-center justify-between border-solid border border-l-4 px-1 py-1.5 drop-shadow-sm rounded"
                 sx={{
@@ -105,20 +127,38 @@ const InputDinheiro = (props) => {
                     borderLeftColor: "primary.main",
                 }}
             >
-                <Input
+                <TextField
                     value={props.texto}
                     onChange={(e) => {
                         save(e);
                     }}
                     fontSize={props.fontConfig}
                     className="outline-none no-underline"
+                    variant="standard"
                     sx={{
                         width: "95%",
                         fontWeight: "300",
+                        padding: "0",
+                        marginRight: "10px"
                     }}
                     placeholder={props.placeholder}
-                    inputProps={{
-                        
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                {props.moeda == "Euro" ? (
+                                    <Typography>€</Typography>
+                                ) : null}
+                            </InputAdornment>
+                        ),
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                {props.moeda == "Dolar" ? (
+                                    <Typography>$</Typography>
+                                ) : props.moeda == "Real" ? (
+                                    <Typography>R$</Typography>
+                                ) : null}
+                            </InputAdornment>
+                        )
                     }}
                 />
                 <Tooltip

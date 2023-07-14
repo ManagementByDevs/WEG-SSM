@@ -62,7 +62,7 @@ const Beneficios = (props) => {
     >
       <Box className="flex flex-col" sx={{ width: "30%", marginTop: "1%" }}>
         <Box className="" sx={{ width: "100%", margin: "1%" }}>
-          <FormControl sx={{ width: "70%", height: "35%", minWidth: "12rem" }}>
+          <FormControl sx={{ width: "80%", height: "35%", minWidth: "12rem" }}>
             <InputLabel
               id="demo-simple-select-label"
               sx={{ margin: "-2px 0 0 0" }}
@@ -106,13 +106,13 @@ const Beneficios = (props) => {
         {/* Verificação para mostar o input de valor mensal */}
         {props.dados?.tipoBeneficio === "Real" ||
           props.dados?.tipoBeneficio === "Potencial" ? (
-          <Box className="flex items-end" sx={{ minWidth: "275px" }}>
+          <Box className="flex items-end" sx={{minWidth: "60%"}}>
             <Box
               className="flex items-end"
               sx={{ width: "92%", margin: "3% 1% 1% 1%" }}
             >
               <Box className="flex items-end" sx={{ width: "100%" }}>
-                <Box sx={{ width: "40%" }}>
+                <Box sx={{ width: "60%" }}>
                   <InputDinheiro
                     label={texts.beneficios.valorMensal}
                     placeholder={texts.beneficios.exemploValorMensal}
@@ -166,7 +166,7 @@ const Beneficios = (props) => {
       {props.dados?.tipoBeneficio === "Real" ||
         props.dados?.tipoBeneficio === "Potencial" ||
         props.dados?.tipoBeneficio === "Qualitativo" ? (
-        <Box className="flex items-center" sx={{ width: "65%" }}>
+        <Box className="flex items-center" sx={{ width: "65%", maxWidth: "65%" }}>
           {/* Input que permite estilização para a memória de cálculo do benefício */}
           <Box className="flex flex-col overflow-auto w-full h-full">
             <Box className="flex">

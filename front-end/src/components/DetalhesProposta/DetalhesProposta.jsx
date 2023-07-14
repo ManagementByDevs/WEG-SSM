@@ -138,7 +138,7 @@ const DetalhesProposta = ({
   /** Função passada para o componente detalhes proposta edit mode */
   const setPropostaNewData = (proposta = EntitiesObjectService.proposta()) => {
     setFeedbackEditSuccess(true);
-    setProposta(JSON.parse(JSON.stringify(proposta)));
+    setProposta({ ...proposta, beneficios: receberBeneficios(proposta.beneficios) });
   };
 
   /** Função acionada quando o usúario clica no ícone de editar */
@@ -183,10 +183,38 @@ const DetalhesProposta = ({
     // Buscando os dados da proposta usando o propostaId
     PropostaService.getById(propostaId).then((proposal) => {
       // Arrumando alguns textos
-      setProposta(proposal);
+      setProposta({ ...proposal, beneficios: receberBeneficios(proposal.beneficios) });
       setIsLoading(false);
     });
   }, []);
+
+  /** Função para receber os benefícios do banco de dados, adicionando o atributo "visible" neles */
+  const receberBeneficios = (listaBeneficios) => {
+    let listaNova = [];
+    for (let beneficio of listaBeneficios) {
+      listaNova.push({ ...beneficio, visible: true, valor_mensal: formatarValorMensal(beneficio.valor_mensal) });
+    }
+    return listaNova;
+  };
+
+  /** Função para formatar o valor mensal de um benefício ao recebê-lo */
+  const formatarValorMensal = (valor_mensal) => {
+    if (!valor_mensal) return;
+    let valorMensalString = valor_mensal.toString();
+    let arrayValor = valorMensalString.split(".");
+
+    if (arrayValor.length == 1) {
+      return valor_mensal + ",00"
+    } else if (arrayValor[1].length == 1) {
+      if (arrayValor[1].charAt(0)) {
+        return valor_mensal + "0"
+      } else {
+        return arrayValor[0] + ",0" + arrayValor[1]
+      }
+    } else {
+      return arrayValor[0] + "," + arrayValor[1]
+    }
+  }
 
   // se a proposta estiver vazia, irá retornar um componente vazio
   if (Object.values(proposta).some((value) => value === undefined))
@@ -1268,13 +1296,39 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
               <>
                 {/* valor mensal */}
                 <td className="text-center p-1">
-                  <Typography
-                    fontSize={FontConfig.default}
-                    onClick={() => lerTexto(beneficio.valor_mensal)}
-                  >
-                    {beneficio.valor_mensal}
-                  </Typography>
+                  {beneficio.moeda == "Real" ? (
+                    <Typography
+                      fontSize={FontConfig.medium}
+                      color="text.primary"
+                      onClick={() => {
+                        lerTexto(beneficio.valor_mensal);
+                      }}
+                    >
+                      R$ {beneficio.valor_mensal}
+                    </Typography>
+                  ) : beneficio.moeda == "Dolar" ? (
+                    <Typography
+                      fontSize={FontConfig.medium}
+                      color="text.primary"
+                      onClick={() => {
+                        lerTexto(beneficio.valor_mensal);
+                      }}
+                    >
+                      $ {beneficio.valor_mensal}
+                    </Typography>
+                  ) : beneficio.moeda == "Euro" ? (
+                    <Typography
+                      fontSize={FontConfig.medium}
+                      color="text.primary"
+                      onClick={() => {
+                        lerTexto(beneficio.valor_mensal);
+                      }}
+                    >
+                      {beneficio.valor_mensal} €
+                    </Typography>
+                  ) : null}
                 </td>
+
                 {/* Moeda */}
                 <td className="text-center p-1">
                   <Typography

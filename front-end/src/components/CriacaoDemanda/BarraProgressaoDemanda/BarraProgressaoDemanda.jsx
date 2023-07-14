@@ -304,7 +304,7 @@ const BarraProgressaoDemanda = () => {
     if (!lendoTexto && !librasAtivo) {
       setEtapaAtiva((prevActiveStep) => prevActiveStep - 1);
     } else if (librasAtivo) {
-        return;
+      return;
     } else {
       lerTexto(texts.barraProgressaoDemanda.botaoVoltar);
     }
@@ -373,7 +373,8 @@ const BarraProgressaoDemanda = () => {
   const salvarBeneficios = () => {
     for (let beneficio of paginaBeneficios) {
       if (beneficio.visible) {
-        let beneficioFinal = { ...beneficio };
+        console.log(beneficio);
+        let beneficioFinal = { ...beneficio, valor_mensal: parseFloat(beneficio.valor_mensal.replace(",", ".")) };
         delete beneficioFinal.visible;
         beneficioService.put(beneficioFinal).then((response) => { });
       }

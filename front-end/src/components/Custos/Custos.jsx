@@ -89,7 +89,8 @@ const Custos = (props) => {
         aux += 0;
       }
     }
-    setValorTotal(aux.toFixed(2));
+    aux = aux.toFixed(2).toString().replace(".", ",")
+    setValorTotal(aux);
   }, [props.custos]);
 
   /** UseEffect para atualizar a porcentagem total dos custos */
