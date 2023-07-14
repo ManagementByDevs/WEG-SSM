@@ -417,6 +417,8 @@ const TextLanguageContext = createContext({
     },
     modalHistoricoDemanda: {
       historico: "Histórico",
+      baixarVersao: "Baixar Versão",
+      informacaoAdicional: "Parecer Adicional"
     },
     modalInformarMotivo: {
       informarMotivo: "Informar Motivo",

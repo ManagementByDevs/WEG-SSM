@@ -4170,6 +4170,7 @@ public class PropostaController {
         proposta.setId(id);
 
         deleteTabelaCustosRows(propostaOptional.get(), proposta);
+        System.out.println(proposta.getTabelaCustos().get(0).getCustos().get(0));
 
         // Faz a atualização dos dados da proposta que devem ser adicionados (benefícios, tabelas...)
         Proposta propostaNovosDados = new Proposta();
@@ -4232,6 +4233,19 @@ public class PropostaController {
         // Salvando os novos dados dos benefícios
         for (Beneficio beneficio : proposta.getBeneficios()) {
             beneficioService.save(beneficio);
+        }
+
+        // Salvando os custos, ccs e tabelas de custo existentes
+        for (TabelaCusto tabelaCusto : proposta.getTabelaCustos()) {
+            for (Custo custo : tabelaCusto.getCustos()) {
+                custoService.save(custo);
+            }
+
+            for (CC cc : tabelaCusto.getCcs()) {
+                ccsService.save(cc);
+            }
+
+            tabelaCustoService.save(tabelaCusto);
         }
 
         if (novaPropostaJSON != null) {

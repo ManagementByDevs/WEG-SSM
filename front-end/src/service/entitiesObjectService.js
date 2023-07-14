@@ -112,7 +112,7 @@ class EntitiesObjectService {
       perfilDespesa: "",
       periodoExecucao: 0,
       horas: 0,
-      valorHora: 0,
+      valorHora: "",
     };
   }
 

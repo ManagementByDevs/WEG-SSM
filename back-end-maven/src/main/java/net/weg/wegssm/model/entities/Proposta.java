@@ -146,7 +146,7 @@ public class Proposta {
     /**
      * Motivo da recusa da proposta
      */
-    @Column(length = 1000)
+    @Column(length = 999999999)
     private String motivoRecusa;
 
     /**

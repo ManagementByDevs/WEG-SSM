@@ -365,9 +365,6 @@ const TextLanguage = (linguagem) => {
           botaoCancelar: "Cancelar",
           botaoCriar: "Criar",
         },
-        modalHistoricoDemanda: {
-          historico: "Histórico",
-        },
         modalFiltroGerencia: {
           filtros: "Filtros",
           semResultados: "Sem Resultados",
@@ -415,6 +412,8 @@ const TextLanguage = (linguagem) => {
         },
         modalHistoricoDemanda: {
           historico: "Histórico",
+          baixarVersao: "Baixar Versão",
+          informacaoAdicional: "Parecer Adicional"
         },
         modalInformarMotivo: {
           informarMotivo: "Informar Motivo",
@@ -1475,6 +1474,8 @@ const TextLanguage = (linguagem) => {
         },
         modalHistoricoDemanda: {
           historico: "History",
+          baixarVersao: "Download Version",
+          informacaoAdicional: "Additional Information"
         },
         modalInformarMotivo: {
           informarMotivo: "Inform Motive",
@@ -2522,6 +2523,8 @@ const TextLanguage = (linguagem) => {
         },
         modalHistoricoDemanda: {
           historico: "历史",
+          baixarVersao: "下载版本",
+          informacaoAdicional: "附加信息"
         },
         modalInformarMotivo: {
           informarMotivo: "输入原因",
@@ -3536,6 +3539,8 @@ const TextLanguage = (linguagem) => {
         },
         modalHistoricoDemanda: {
           historico: "Histórico",
+          baixarVersao: "Descargar versión",
+          informacaoAdicional: "Información adicional"
         },
         modalInformarMotivo: {
           informarMotivo: "Informar Motivo",

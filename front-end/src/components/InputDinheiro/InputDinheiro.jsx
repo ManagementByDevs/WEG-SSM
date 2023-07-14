@@ -70,7 +70,9 @@ const InputDinheiro = (props) => {
         }
 
         if (props.texto) {
-            let valorInicial = props.texto.toString().replace(",", "")
+            let valorInicial = props.texto.toString().replace(".", ",");
+            valorInicial = valorInicial.replace(",", "")
+
             while (valorInicial.charAt(0) == "0") {
                 valorInicial = valorInicial.substring(1, valorInicial.length)
             }

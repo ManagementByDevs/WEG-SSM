@@ -37,6 +37,12 @@ public class Historico {
     private String acaoRealizada;
 
     /**
+     * Informação adicional presente (motivo de recusa, parecer, etc)
+     */
+    @Column(length = 999999999)
+    private String informacaoAdicional;
+
+    /**
      * Autor do histórico
      */
     @ManyToOne

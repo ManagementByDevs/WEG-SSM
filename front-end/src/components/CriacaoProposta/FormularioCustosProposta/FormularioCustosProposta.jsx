@@ -102,6 +102,11 @@ const FormularioCustosProposta = (props) => {
     }
   };
 
+  /** Função para formatar um valor em formato double para string (troca de "." por ",") */
+  const formatarCusto = (valor) => {
+    return valor.toString().replace(".", ",");
+  }
+
   return (
     <Box className="flex flex-col">
       <Box className="flex w-full justify-between items-end mt-10 mb-2">
@@ -134,7 +139,7 @@ const FormularioCustosProposta = (props) => {
             }
           >
             {texts.formularioCustosProposta.moeda}
-            {valorTotal}
+            {formatarCusto(valorTotal)}
           </Typography>
         </Box>
         <Button

@@ -18,6 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DownloadIcon from "@mui/icons-material/Download";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 import ModalConfirmacao from "../Modais/Modal-confirmacao/ModalConfirmacao";
@@ -38,6 +39,7 @@ import CookieService from "../../service/cookieService";
 import { WebSocketContext } from "../../service/WebSocketService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
+import ModalMotivoRecusa from "../Modais/Modal-motivoRecusa/ModalMotivoRecusa";
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
@@ -114,6 +116,9 @@ const DetalhesDemanda = (props) => {
 
   // UseState para exibir o modal de confirmação de edição da demanda
   const [openModal, setOpenModal] = useState(false);
+
+  /** UseState determinando o estado do modal de motivo recusa */
+  const [modalMotivoRecusa, setModalMotivoRecusa] = useState(false);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
   const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
@@ -580,6 +585,7 @@ const DetalhesDemanda = (props) => {
       data: new Date(),
       acaoRealizada: acaoRealizada,
       autor: { id: CookieService.getUser().id },
+      informacaoAdicional: (motivoRecusaDemanda && (acaoRealizada == "Demanda Devolvida" || acaoRealizada == "Demanda Reprovada")) ? motivoRecusaDemanda : null
     };
     return historico;
   };
@@ -764,7 +770,16 @@ const DetalhesDemanda = (props) => {
         aceitarGerente={true}
         setRecomendacao={setRecomendacao}
       />
-      <Box></Box>
+
+      {/* Modal de motivo recusa */}
+      {modalMotivoRecusa && (
+        <ModalMotivoRecusa
+          open={true}
+          setOpen={setModalMotivoRecusa}
+          motivoRecusa={props.dados?.motivoRecusa}
+        />
+      )}
+
       <Box
         id="primeiro"
         className="flex flex-col gap-3 border rounded px-10 py-4 border-t-6 relative"
@@ -779,7 +794,7 @@ const DetalhesDemanda = (props) => {
 
         {/* Mostrar o icone de edição caso siga os requisitos */}
         <Box
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer flex flex-col"
           sx={{ top: "40px", right: "5px" }}
           onClick={editarDemanda}
         >
@@ -798,6 +813,28 @@ const DetalhesDemanda = (props) => {
             <EditOffOutlinedIcon
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main", fontSize: "25px" }}
+            />
+          ) : null}
+
+          {props.usuario?.id == props.dados.solicitante?.id && props.dados.status == "BACKLOG_EDICAO" ? (
+            <InfoOutlinedIcon
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!lendoTexto && !librasAtivo) {
+                  setModalMotivoRecusa(true);
+                } else if (librasAtivo) {
+
+                } else {
+                  lerTexto(texts.demanda.motivo);
+                }
+              }}
+              id="setimo"
+              className="delay-120 hover:scale-110 duration-300 mt-3"
+              sx={{
+                color: "icon.main",
+                cursor: "pointer",
+                fontSize: "25px",
+              }}
             />
           ) : null}
         </Box>
