@@ -17,6 +17,8 @@ import FormularioAnexosDemanda from "../FormularioAnexosDemanda/FormularioAnexos
 import ModalConfirmacao from "../../Modais/Modal-confirmacao/ModalConfirmacao";
 import Feedback from "../../Feedback/Feedback";
 
+import DOMPurify from "dompurify";
+
 import DemandaService from "../../../service/demandaService";
 import EscopoService from "../../../service/escopoService";
 import ExportPdfService from "../../../service/exportPdfService";
@@ -26,6 +28,7 @@ import UsuarioService from "../../../service/usuarioService";
 import CookieService from "../../../service/cookieService";
 import beneficioService from "../../../service/beneficioService";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
+import DemandaSimilaridade from "../../../service/demandaSimilaridade";
 
 /** Componente principal usado para criação de demanda, redirecionando para as etapas respectivas e
  * salvando a demanda e escopos no banco de dados
@@ -236,8 +239,23 @@ const BarraProgressaoDemanda = () => {
       anexo: retornarIdsObjetos(paginaArquivos),
       solicitante: { id: usuario.id },
     };
+
     return objetoDemanda;
   };
+
+  const retornarObjetoDemandaConsulta = () => {
+    
+    let problemaSemHtml = DOMPurify.sanitize(paginaDados.problema, {ALLOWED_TAGS: []});
+    let propostaSemHtml = DOMPurify.sanitize(paginaDados.proposta, {ALLOWED_TAGS: []});
+
+    const objeto = {
+      titulo: paginaDados.titulo,
+      problema:problemaSemHtml,
+      proposta: propostaSemHtml,
+    }
+
+    return objeto;
+  }
 
   /** Função para criar e retornar um objeto de histórico para salvamento */
   const retornaObjetoHistorico = () => {
@@ -282,21 +300,28 @@ const BarraProgressaoDemanda = () => {
 
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
+    
+    let variavel = retornarObjetoDemandaConsulta();
 
-    DemandaService.post(demandaFinal).then((demanda) => {
-      ExportPdfService.exportDemanda(demanda.id).then((file) => {
-        // Salvamento do histórico número 1 da demanda
-        let arquivo = new Blob([file], { type: "application/pdf" });
-        DemandaService.addHistorico(
-          demanda.id,
-          retornaObjetoHistorico(),
-          arquivo
-        ).then((response) => {
-          direcionarHome();
-          excluirEscopo();
-        });
-      });
-    });
+    DemandaSimilaridade.postSimilaridade(variavel).then((response) => {
+      console.log(response);
+    })
+
+    // DemandaService.post(demandaFinal).then((demanda) => {
+    //   ExportPdfService.exportDemanda(demanda.id).then((file) => {
+    //     // Salvamento do histórico número 1 da demanda
+    //     let arquivo = new Blob([file], { type: "application/pdf" });
+    //     DemandaService.addHistorico(
+    //       demanda.id,
+    //       retornaObjetoHistorico(),
+    //       arquivo
+    //     ).then((response) => {
+    //       direcionarHome();
+    //       excluirEscopo();
+    //     });
+    //   });
+    // });
+   
   };
 
   /** Função para voltar para a etapa anterior na criação da demanda */
