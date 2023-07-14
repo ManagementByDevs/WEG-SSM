@@ -924,16 +924,6 @@ const TextLanguageContext = createContext({
       muitoGrande: "Muito Grande",
       numero: "Número",
       limparFilros: "Limpar Filtros",
-
-      aprovada: "Aprovada",
-      reprovada: "Reprovada",
-      aguardandoRevisao: "Aguardando Revisão",
-      aguardandoEdicao: "Aguardando Edição",
-      emAprovacao: "Em Aprovação",
-      aprovada: "Aprovada",
-      emAndamento: "Em Andamento",
-      emDesenvolvimento: "Em Desenvolvimento",
-
       cancelled: "Cancelled",
       businessCase: "Business Case",
       done: "Done",
@@ -941,7 +931,6 @@ const TextLanguageContext = createContext({
       assessmentEdicao: "Assessment - Edição",
       assessmentComissao: "Assessment - Comissão",
       assessmentDg: "Assessment - DG",
-
       ata: "Ata",
       pauta: "Pauta",
       semAtribuicao: "Sem Atribuição",

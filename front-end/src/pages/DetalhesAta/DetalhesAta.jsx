@@ -19,6 +19,8 @@ import {
   MenuItem,
 } from "@mui/material";
 
+
+import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
@@ -388,10 +390,6 @@ const DetalhesAta = (props) => {
     setPropostaParecer(null);
   };
 
-  useEffect(() => {
-    console.log("ATA: ", ata);
-  }, [ata]);
-
   return (
     // Começo com o header da página
     <FundoComHeader>
@@ -515,7 +513,7 @@ const DetalhesAta = (props) => {
                         ": " +
                         DateService.getTodaysDateUSFormat(
                           ata.dataReuniao,
-                          texts.linguagem
+                          texts.linguagem, "ata"
                         )
                     );
                   }}
@@ -525,7 +523,7 @@ const DetalhesAta = (props) => {
                   <Typography component="span">
                     {DateService.getTodaysDateUSFormat(
                       ata.dataReuniao,
-                      texts.linguagem
+                      texts.linguagem, "ata"
                     )}
                   </Typography>
                 </Typography>
@@ -697,7 +695,7 @@ const DetalhesAta = (props) => {
                                   abrirParecerProposta(event, proposta)
                                 }
                               >
-                                <TextFieldsIcon />
+                                <RateReviewOutlinedIcon />
                               </IconButton>
                             </Tooltip>
                           )}
@@ -909,13 +907,19 @@ const InserirParecer = ({
     return () => clearTimeout(delayDebounceFn);
   }, [proposta]);
 
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
   return (
     <Box className="mt-3">
       <Box className="w-full flex justify-between items-center">
-        <Typography
+      <Typography
           fontSize={FontConfig.veryBig}
           color="primary"
           fontWeight={600}
+          onClick={() => {
+            lerTexto(texts.detalhesPauta.inserirParecer);
+          }}
         >
           {texts.detalhesPauta.inserirParecer}
         </Typography>
@@ -926,23 +930,46 @@ const InserirParecer = ({
         </Tooltip>
       </Box>
       <Box>
-        <Typography>
-          <Typography color="primary" component="span" fontWeight={600}>
+      <Box className="flex gap-2">
+          <Typography
+            color="primary"
+            component="span"
+            fontWeight={600}
+            onClick={() => {
+              lerTexto(texts.detalhesPauta.proposta);
+            }}
+          >
             {texts.detalhesPauta.proposta}:
-          </Typography>{" "}
-          {proposta.titulo}
-        </Typography>
-        <Typography fontSize={FontConfig.default}>
+          </Typography>
+          <Typography
+            onClick={() => {
+              lerTexto(proposta.titulo);
+            }}
+          >
+            {proposta.titulo}
+          </Typography>
+        </Box>
+        <Box className="flex gap-2">
           <Typography
             color="primary"
             component="span"
             fontWeight={600}
             fontSize={FontConfig.default}
+            onClick={() => {
+              lerTexto(texts.detalhesProposta.ppm);
+            }}
           >
             {texts.detalhesProposta.ppm}
-          </Typography>{" "}
-          {proposta.codigoPPM}
-        </Typography>
+          </Typography>
+          <Typography
+            fontSize={FontConfig.default}
+            onClick={() => {
+              lerTexto(proposta.codigoPPM);
+            }}
+          >
+            {proposta.codigoPPM}
+          </Typography>
+        </Box>
       </Box>
 
       <Box className="flex items-end gap-2">

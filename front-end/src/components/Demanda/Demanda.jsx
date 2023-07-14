@@ -63,17 +63,6 @@ const Demanda = (props) => {
     }
   }, [props.demanda]);
 
-  /** Função para receber a altura da div principal da demanda (é maior caso o solicitante seja o usuário logado) */
-  const retornaAlturaDemanda = () => {
-    if (
-      props.demanda?.solicitante?.email != CookieService.getCookie("jwt").sub
-    ) {
-      return "8rem";
-    } else {
-      return "10rem";
-    }
-  };
-
   // Função para abrir o chat caso o solicitante da demanda/proposta não seja o usuario
   const entrarChat = (e) => {
     e.stopPropagation();
@@ -161,7 +150,7 @@ const Demanda = (props) => {
         sx={{
           "&:hover": { backgroundColor: "hover.main" },
           borderColor: "primary.main",
-          minWidth: "600px",
+          minWidth: "500px",
           height: "8.5rem",
           cursor: "pointer",
         }}
@@ -263,7 +252,7 @@ const Demanda = (props) => {
         </Box>
         <Box
           className="flex justify-end items-center relative"
-          sx={{ marginTop: ".5%", height: "2rem", paddingBottom: "1rem" }}
+          sx={{height: "2rem", paddingBottom: "1rem" }}
         >
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
           {props.demanda?.solicitante?.email !=
