@@ -145,6 +145,11 @@ const LinhaTabelaCustos = (props) => {
     return temLetra;
   }
 
+  /** Função para formatar um valor em formato double para string (troca de "." por ",") */
+  const formatarCusto = (valor) => {
+    return valor.toString().replace(".", ",");
+  }
+
   return (
     <TableRow className="border-b">
       <td align="center" className="pt-5 pb-5">
@@ -303,7 +308,8 @@ const LinhaTabelaCustos = (props) => {
       </td>
       <td>
         <Box className="flex justify-center items-center relative">
-          {props.dados.custos[props.index].total || ""}
+          {texts.formularioCustosProposta.moeda}
+          {formatarCusto(props.dados.custos[props.index].total || 0)}
           <Box className="absolute right-2">
             <Tooltip title={texts.linhaTabelaCustos.titleExcluirLinha}>
               <IconButton

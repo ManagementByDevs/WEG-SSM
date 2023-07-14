@@ -1,5 +1,17 @@
-import React, { useContext, useState } from "react";
-import { List, Typography, Divider, InputLabel, MenuItem, FormControl, Select, Autocomplete, TextField, Box, Button } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  List,
+  Typography,
+  Divider,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Autocomplete,
+  TextField,
+  Box,
+  Button,
+} from "@mui/material";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -22,7 +34,6 @@ import UsuarioService from "../../service/usuarioService";
 
 /** SliderBar para os filtros e ordenações */
 const SliderBar = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -134,7 +145,7 @@ const SliderBar = (props) => {
       {props.valorAba != 5 ? (
         <Box className="flex flex-col w-full items-center mt-5">
           {opcoesFiltrar.map((opcao, index) =>
-            props.valorAba == 1 && opcao.id <= 6 ? (
+            props.valorAba == 1 && opcao.id == 1 ? (
               <Input
                 key={"Filtro " + index}
                 age={age}
@@ -153,8 +164,14 @@ const SliderBar = (props) => {
                 listaAnalistas={props.listaAnalistas}
                 setListaAnalistas={props.setListaAnalistas}
                 filtroProposta={props.filtroProposta}
+                valorAba={props.valorAba}
               />
-            ) : props.valorAba == 2 && ((opcao.id > 1 && opcao.id <= 6 && props.usuario?.tipoUsuario == "GERENTE") || ((opcao.id == 4 || opcao.id == 2) && props.usuario?.tipoUsuario == "ANALISTA")) ? (
+            ) : props.valorAba == 2 &&
+              ((opcao.id > 1 &&
+                opcao.id <= 6 &&
+                props.usuario?.tipoUsuario == "GERENTE") ||
+                ((opcao.id == 4 || opcao.id == 2) &&
+                  props.usuario?.tipoUsuario == "ANALISTA")) ? (
               <Input
                 key={"Filtro " + index}
                 age={age}
@@ -173,10 +190,9 @@ const SliderBar = (props) => {
                 listaAnalistas={props.listaAnalistas}
                 setListaAnalistas={props.setListaAnalistas}
                 filtroProposta={props.filtroProposta}
+                valorAba={props.valorAba}
               />
-            ) : props.valorAba == 3 &&
-              opcao.id > 1 &&
-              opcao.id <= 6 ? (
+            ) : props.valorAba == 3 && opcao.id > 1 && opcao.id <= 6 ? (
               <Input
                 key={"Filtro " + index}
                 age={age}
@@ -195,6 +211,7 @@ const SliderBar = (props) => {
                 listaAnalistas={props.listaAnalistas}
                 setListaAnalistas={props.setListaAnalistas}
                 filtroProposta={props.filtroProposta}
+                valorAba={props.valorAba}
               />
             ) : props.valorAba == 4 && opcao.id <= 8 ? (
               <Input
@@ -215,6 +232,7 @@ const SliderBar = (props) => {
                 listaAnalistas={props.listaAnalistas}
                 setListaAnalistas={props.setListaAnalistas}
                 filtroProposta={props.filtroProposta}
+                valorAba={props.valorAba}
               />
             ) : props.valorAba == 6 && (opcao.id == 9 || opcao.id == 10) ? (
               <Input
@@ -235,6 +253,7 @@ const SliderBar = (props) => {
                 listaAnalistas={props.listaAnalistas}
                 setListaAnalistas={props.setListaAnalistas}
                 filtroProposta={props.filtroProposta}
+                valorAba={props.valorAba}
               />
             ) : null
           )}
@@ -303,7 +322,8 @@ const SliderBar = (props) => {
             />
           ) : (
             props.valorAba > 4 &&
-            opcao.id != 1 && opcao.id != 2 && (
+            opcao.id != 1 &&
+            opcao.id != 2 && (
               <SideBarOrdenacao
                 key={"Ordenação" + index}
                 opcao={opcao}
@@ -339,7 +359,7 @@ const SliderBar = (props) => {
       </Box>
     </List>
   );
-}
+};
 
 function Input(props) {
   // Context para alterar a linguagem do sistema
@@ -494,6 +514,10 @@ function Input(props) {
     getOptionLabel: (option) => option.nome,
   };
 
+  useEffect(() => {
+    console.log(props.valorAba);
+  }, []);
+
   return (
     <Box className="flex flex-col items-center w-full mb-5">
       {props.opcao.id == 2 ? (
@@ -604,75 +628,106 @@ function Input(props) {
             {props.opcao.tipo}
           </InputLabel>
           {props.opcao.id == 1 ? (
-            props?.valorAba == "1" ? (
-              // Input de status para a aba "Minhas Demandas"
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={props.filtro.status}
-                label={"Icon" + texts.sideBarFiltro.status}
-                onChange={selecionarStatus}
-              >
-                <MenuItem selected value={""}>
-                  {texts.sideBarFiltro.semFiltro}
-                </MenuItem>
-                <MenuItem value={"CANCELLED"}>
-                  {texts.sideBarFiltro.reprovada}
-                </MenuItem>
-                <MenuItem value={"BACKLOG_REVISAO"}>
-                  {texts.sideBarFiltro.aguardandoRevisao}
-                </MenuItem>
-                <MenuItem value={"BACKLOG_EDICAO"}>
-                  {texts.sideBarFiltro.aguardandoEdicao}
-                </MenuItem>
-                <MenuItem value={"BACKLOG_APROVACAO"}>
-                  {texts.sideBarFiltro.emAprovacao}
-                </MenuItem>
-                <MenuItem value={"ASSESSMENT"}>
-                  {texts.sideBarFiltro.aprovada}
-                </MenuItem>
-                <MenuItem value={"ASSESSMENT_APROVACAO"}>
-                  {texts.sideBarFiltro.emAndamento}
-                </MenuItem>
-                <MenuItem value={"DONE"}>
-                  {texts.sideBarFiltro.emDesenvolvimento}
-                </MenuItem>
-              </Select>
-            ) : (
-              // Input de status para a aba "Propostas"
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={props.filtro.status}
-                label={"Icon" + texts.sideBarFiltro.status}
-                onChange={selecionarStatus}
-              >
-                <MenuItem selected value={""}>
-                  {texts.sideBarFiltro.semFiltro}
-                </MenuItem>
-                <MenuItem value={"CANCELLED"}>
-                  {texts.sideBarFiltro.cancelled}
-                </MenuItem>
-                <MenuItem value={"BUSINESS_CASE"}>
-                  {texts.sideBarFiltro.businessCase}
-                </MenuItem>
-                <MenuItem value={"DONE"}>
-                  {texts.sideBarFiltro.done}
-                </MenuItem>
-                <MenuItem value={"ASSESSMENT_APROVACAO"}>
-                  {texts.sideBarFiltro.assessment}
-                </MenuItem>
-                <MenuItem value={"ASSESSMENT_EDICAO"}>
-                  {texts.sideBarFiltro.assessmentEdicao}
-                </MenuItem>
-                <MenuItem value={"ASSESSMENT_COMISSAO"}>
-                  {texts.sideBarFiltro.assessmentComissao}
-                </MenuItem>
-                <MenuItem value={"ASSESSMENT_DG"}>
-                  {texts.sideBarFiltro.assessmentDg}
-                </MenuItem>
-              </Select>
-            )
+            <>
+              {props.valorAba == 1 ? (
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={props.statusFiltroAtual}
+                  label={"Icon" + texts.sideBarFiltro.status}
+                  onChange={selecionarStatus}
+                >
+                  <MenuItem selected value={""}>
+                    {texts.sideBarFiltro.semFiltro}
+                  </MenuItem>
+                  <MenuItem value={"ASSESSMENT"}>
+                    {texts.sideBarFiltro.aprovada}
+                  </MenuItem>
+                  <MenuItem value={"CANCELLED"}>
+                    {texts.sideBarFiltro.reprovada}
+                  </MenuItem>
+                  <MenuItem value={"BACKLOG_EDICAO"}>
+                    {texts.sideBarFiltro.aguardandoEdicao}
+                  </MenuItem>
+                  <MenuItem value={"BACKLOG_REVISAO"}>
+                    {texts.sideBarFiltro.aguardandoRevisao}
+                  </MenuItem>
+                  <MenuItem value={"BACKLOG_APROVACAO"}>
+                    {texts.sideBarFiltro.emAprovacao}
+                  </MenuItem>
+                  <MenuItem value={"ASSESSMENT_APROVACAO"}>
+                    {texts.sideBarFiltro.emAndamento}
+                  </MenuItem>
+                  <MenuItem value={"DONE"}>
+                    {texts.sideBarFiltro.emDesenvolvimento}
+                  </MenuItem>
+                </Select>
+              ) : (
+                // Input de status para a aba "Propostas"
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={props.filtro.status}
+                  label={"Icon" + texts.sideBarFiltro.status}
+                  onChange={selecionarStatus}
+                >
+                  <MenuItem selected value={""}>
+                    {texts.sideBarFiltro.semFiltro}
+                  </MenuItem>
+                  <MenuItem value={"CANCELLED"}>
+                    {texts.sideBarFiltro.cancelled}
+                  </MenuItem>
+                  <MenuItem value={"BUSINESS_CASE"}>
+                    {texts.sideBarFiltro.businessCase}
+                  </MenuItem>
+                  <MenuItem value={"DONE"}>{texts.sideBarFiltro.done}</MenuItem>
+                  <MenuItem value={"ASSESSMENT_APROVACAO"}>
+                    {texts.sideBarFiltro.assessment}
+                  </MenuItem>
+                  <MenuItem value={"ASSESSMENT_EDICAO"}>
+                    {texts.sideBarFiltro.assessmentEdicao}
+                  </MenuItem>
+                  <MenuItem value={"ASSESSMENT_COMISSAO"}>
+                    {texts.sideBarFiltro.assessmentComissao}
+                  </MenuItem>
+                  <MenuItem value={"ASSESSMENT_DG"}>
+                    {texts.sideBarFiltro.assessmentDg}
+                  </MenuItem>
+                </Select>
+                // <Select
+                //   labelId="demo-simple-select-label"
+                //   id="demo-simple-select"
+                //   value={props.statusFiltroAtual}
+                //   label={"Icon" + texts.sideBarFiltro.status}
+                //   onChange={selecionarStatus}
+                // >
+                //   <MenuItem selected value={""}>
+                //     {texts.sideBarFiltro.semFiltro}
+                //   </MenuItem>
+                //   <MenuItem value={"ASSESSMENT"}>
+                //     {texts.sideBarFiltro.aprovada}
+                //   </MenuItem>
+                //   <MenuItem value={"CANCELLED"}>
+                //     {texts.sideBarFiltro.reprovada}
+                //   </MenuItem>
+                //   <MenuItem value={"BACKLOG_EDICAO"}>
+                //     {texts.sideBarFiltro.aguardandoEdicao}
+                //   </MenuItem>
+                //   <MenuItem value={"BACKLOG_REVISAO"}>
+                //     {texts.sideBarFiltro.aguardandoRevisao}
+                //   </MenuItem>
+                //   <MenuItem value={"BACKLOG_APROVACAO"}>
+                //     {texts.sideBarFiltro.emAprovacao}
+                //   </MenuItem>
+                //   <MenuItem value={"ASSESSMENT_APROVACAO"}>
+                //     {texts.sideBarFiltro.emAndamento}
+                //   </MenuItem>
+                //   <MenuItem value={"DONE"}>
+                //     {texts.sideBarFiltro.emDesenvolvimento}
+                //   </MenuItem>
+                // </Select>
+              )}
+            </>
           ) : props.opcao.id == 3 ? (
             // Input de fórum
             <Select

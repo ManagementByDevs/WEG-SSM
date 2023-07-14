@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Typography, Box, Tooltip, IconButton } from "@mui/material";
 
 import DownloadIcon from "@mui/icons-material/Download";
@@ -7,7 +7,10 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+
 import DateService from "../../service/dateService";
+import ModalParecerAdicionalHistorico from "../Modais/Modal-parecerAdicionalHistorico/ModalParecerAdicionalHistorico";
 
 /** Componente de representação de um histórico da demanda, sendo repetido dentro de uma lista no componente ModalHistoricoDemanda
  * Objeto de histórico recebido pelo props (props.historico)
@@ -22,6 +25,9 @@ const ContainerHistorico = (props) => {
 
   /** Context para ler o texto da tela */
   const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  /** UseState determinando o estado do modal de parecer adicional */
+  const [modalParecerAdicional, setModalParecerAdicional] = useState(false);
 
   /** Função para transformar uma string em base64 para um ArrayBuffer, usada para baixar anexos */
   function converterBase64(base64) {
@@ -38,8 +44,8 @@ const ContainerHistorico = (props) => {
       arquivo instanceof File
         ? arquivo
         : new Blob([converterBase64(arquivo.dados)], {
-            type: "application/pdf",
-          });
+          type: "application/pdf",
+        });
     let nomeArquivo =
       arquivo instanceof File ? arquivo.name : `${arquivo.nome}`;
 
@@ -102,72 +108,99 @@ const ContainerHistorico = (props) => {
   };
 
   return (
-    <Box
-      className="flex justify-between items-center border border-solid"
-      sx={{
-        borderLeft: "8px solid",
-        borderColor: "primary.main",
-        width: "90%",
-        height: "4.5rem",
-        borderRadius: "5px",
-        p: 2,
-        margin: "1%",
-      }}
-    >
-      {/* Nome do autor */}
-      <Typography
-        sx={{ width: "40%" }}
-        fontWeight={650}
-        fontSize={FontConfig.veryBig}
-        onClick={() => { lerTexto(props.historico?.autor.nome); }}
-      >
-        {props.historico?.autor.nome}
-      </Typography>
+    <>
+      {/* Modal de motivo recusa */}
+      {modalParecerAdicional && (
+        <ModalParecerAdicionalHistorico
+          open={true}
+          setOpen={setModalParecerAdicional}
+          parecerAdicional={props.historico.informacaoAdicional}
+        />
+      )}
+
       <Box
+        className="flex justify-between items-center border border-solid"
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItens: "center",
-          flexDirection: "column",
-          textAlign: "center",
+          borderLeft: "8px solid",
+          borderColor: "primary.main",
+          width: "90%",
+          height: "4.5rem",
+          borderRadius: "5px",
+          p: 2,
+          margin: "1%",
         }}
       >
-        {/* Data do histórico */}
+        {/* Nome do autor */}
         <Typography
-          fontSize={FontConfig.small}
-          onClick={() => {
-            lerTexto(
-              DateService.getFullDateUSFormat(
-                props.historico?.data,
-                texts.linguagem
-              )
-            );
+          sx={{ width: "40%" }}
+          fontWeight={650}
+          fontSize={FontConfig.veryBig}
+          onClick={() => { lerTexto(props.historico?.autor.nome); }}
+        >
+          {props.historico?.autor.nome}
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItens: "center",
+            flexDirection: "column",
+            textAlign: "center",
           }}
         >
-          {DateService.getFullDateUSFormat(
-            props.historico?.data,
-            texts.linguagem
-          )}
-        </Typography>
+          {/* Data do histórico */}
+          <Typography
+            fontSize={FontConfig.small}
+            onClick={() => {
+              lerTexto(
+                DateService.getFullDateUSFormat(
+                  props.historico?.data,
+                  texts.linguagem
+                )
+              );
+            }}
+          >
+            {DateService.getFullDateUSFormat(
+              props.historico?.data,
+              texts.linguagem
+            )}
+          </Typography>
 
-        {/* Texto da ação feita */}
-        <Typography
-          fontSize={FontConfig.big}
-          onClick={() => {
-            lerTexto(props.historico?.acaoRealizada);
-          }}
-        >
-          {traduzirLinguagem(props.historico?.acaoRealizada)}
-        </Typography>
+          {/* Texto da ação feita */}
+          <Typography
+            fontSize={FontConfig.big}
+            onClick={() => {
+              lerTexto(props.historico?.acaoRealizada);
+            }}
+          >
+            {traduzirLinguagem(props.historico?.acaoRealizada)}
+          </Typography>
+        </Box>
+
+        <Box className="flex w-1/5 justify-end">
+          {props.historico.informacaoAdicional ? (
+            <Tooltip title={texts.modalHistoricoDemanda.informacaoAdicional}>
+              <IconButton onClick={() => { setModalParecerAdicional(true); }} >
+                <InfoOutlinedIcon
+                  sx={{
+                    color: "text.primary",
+                    cursor: "pointer",
+                    fontSize: "25px",
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
+          ) : null}
+
+          {/* Botão para baixar o documento do histórico */}
+          <Tooltip title={texts.modalHistoricoDemanda.baixarVersao}>
+            <IconButton onClick={baixarHistorico}>
+              <DownloadIcon sx={{ color: "text.primary" }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
       </Box>
-
-      {/* Botão para baixar o documento do histórico */}
-      <Tooltip title="Baixar">
-        <IconButton onClick={baixarHistorico}>
-          <DownloadIcon sx={{ color: "text.primary" }} />
-        </IconButton>
-      </Tooltip>
-    </Box>
+    </>
   );
 };
 

@@ -19,5 +19,6 @@ public class HistoricoDTO {
     private DocumentoHistorico documentoHistorico;
     @NotNull
     private Usuario autor;
+    private String informacaoAdicional;
 
 }

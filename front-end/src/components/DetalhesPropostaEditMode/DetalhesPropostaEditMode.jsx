@@ -399,25 +399,31 @@ const DetalhesPropostaEditMode = ({
     // Verificação dos campos
     if (!isAllFieldsValid()) return;
 
-    // Dando erro ao salvar qualquer campo com editor de texto que contenha acento
     let propostaAux = EntitiesObjectService.proposta();
     propostaAux = JSON.parse(JSON.stringify(proposta));
     propostaAux.beneficios = formatarBeneficios(propostaAux.beneficios);
 
-    let novasTabelasCusto = JSON.parse(
-      JSON.stringify(propostaAux.tabelaCustos)
-    ).filter((tabelaCusto) => {
-      if (tabelaCusto.id < 0) {
-        // Se o ID for negativo ele é uma nova tabela de custos
-        propostaAux.tabelaCustos.splice(
-          propostaAux.tabelaCustos.findIndex(
-            (element) => element == tabelaCusto
-          ),
-          1
-        );
-        return tabelaCusto;
+    let novasTabelasCusto = [];
+    let tabelasCustosExistentes = [];
+    for (const tabelaCusto of propostaAux.tabelaCustos) {
+
+      let listaCustos = [];
+      for (const custo of tabelaCusto.custos) {
+        listaCustos.push({ ...custo, valorHora: parseFloat(custo.valorHora.replace(",", ".")) });
       }
-    });
+
+      let listaCCs = [];
+      for (const cc of tabelaCusto.ccs) {
+        listaCCs.push({ ...cc });
+      }
+
+      if (tabelaCusto.id < 0) {
+        novasTabelasCusto.push({ ...tabelaCusto, custos: listaCustos, ccs: listaCCs });
+      } else {
+        tabelasCustosExistentes.push({ ...tabelaCusto, custos: listaCustos, ccs: listaCCs });
+      }
+    }
+    propostaAux.tabelaCustos = tabelasCustosExistentes;
 
     let novosBeneficios = JSON.parse(
       JSON.stringify(propostaAux.beneficios)
@@ -499,11 +505,6 @@ const DetalhesPropostaEditMode = ({
   const handleOnPPMChange = (event) => {
     if (!regexOnlyNumber.test(event.target.value)) return;
     setProposta({ ...proposta, codigoPPM: event.target.value });
-  };
-
-  /** Handler da data da proposta */
-  const handleOnDataChange = (event) => {
-    setProposta({ ...proposta, data: event.target.value });
   };
 
   /** Handler do isPublicada da proposta */
@@ -827,6 +828,31 @@ const DetalhesPropostaEditMode = ({
     }
   };
 
+  /** Função para carregar os custos quando forem recebidos através de um escopo salvo */
+  const receberCustos = (tabelaCustos) => {
+    let listaTabelasCustos = [];
+    for (const tabela of tabelaCustos) {
+
+      let listaCustos = [];
+      for (const custo of tabela.custos) {
+        let novoCusto = { ...custo };
+        if (custo.valorHora) {
+          novoCusto.valorHora = custo.valorHora.toFixed(2).toString().replace(".", ",")
+        }
+        listaCustos.push(novoCusto);
+      }
+
+      let listaCCs = [];
+      for (const cc of tabela.ccs) {
+        listaCCs.push({ ...cc });
+      }
+
+      listaTabelasCustos.push({ ...tabela, custos: listaCustos, ccs: listaCCs });
+    }
+
+    return listaTabelasCustos;
+  }
+
   // ***************************************** Fim Handlers ***************************************** //
 
   // ***************************************** UseEffects ***************************************** //
@@ -862,6 +888,7 @@ const DetalhesPropostaEditMode = ({
 
     setProposta({
       ...proposta,
+      tabelaCustos: receberCustos(proposta.tabelaCustos),
       beneficios: [...beneficiosAux],
       inicioExecucao: DateService.getDateValue(proposta.inicioExecucao),
       fimExecucao: DateService.getDateValue(proposta.fimExecucao),
@@ -2219,16 +2246,6 @@ const CustosRow = ({
     handleOnCustoChange({ ...custo, horas: event.target.value });
   };
 
-  // Handler para quando o tipo de despesa for alterado
-  const handleOnValorHoraChange = (event) => {
-    if (!regexOnlyNumber.test(event.target.value)) return;
-
-    handleOnCustoChange({
-      ...custo,
-      valorHora: event.target.value,
-    });
-  };
-
   const handleOnMicChange = () => {
     switch (localClique) {
       case "tipoDespesa":
@@ -2299,16 +2316,15 @@ const CustosRow = ({
       </td>
       <td className="p-2 text-center">
         {/* Valor da Hora */}
-        <InputCustom
-          label="valorHora"
-          defaultText={custo.valorHora}
-          saveProposal={(text) =>
-            handleOnValorHoraChange({ target: { value: text } })
-          }
-          sx={{ fontConfig: FontConfig.default }}
-          regex={regexOnlyNumber}
-          multiline={true}
-          handleOnMicChange={handleOnMicChange}
+        <InputDinheiro
+          className="w-3/5 border-solid border pl-1 text-center"
+          placeholder={texts.linhaTabelaCustos.digiteValor}
+          fontConfig={FontConfig.default}
+          texto={custo.valorHora}
+          saveInputValue={(valor) => {
+            handleOnCustoChange({ ...custo, valorHora: valor });
+          }}
+          moeda={"Real"}
         />
       </td>
       <td className="p-2 text-center">
@@ -2316,10 +2332,10 @@ const CustosRow = ({
         <Typography
           fontSize={FontConfig.default}
           onClick={() => {
-            lerTexto(getValorFormatted(custo.horas * custo.valorHora));
+            lerTexto(getValorFormatted(custo.horas * parseFloat(custo.valorHora.replace(",", "."))));
           }}
         >
-          {getValorFormatted(custo.horas * custo.valorHora)}
+          {getValorFormatted(custo.horas * parseFloat(custo.valorHora.replace(",", ".")))}
         </Typography>
       </td>
     </TableRow>

@@ -373,7 +373,6 @@ const BarraProgressaoDemanda = () => {
   const salvarBeneficios = () => {
     for (let beneficio of paginaBeneficios) {
       if (beneficio.visible) {
-        console.log(beneficio);
         let beneficioFinal = { ...beneficio, valor_mensal: parseFloat(beneficio.valor_mensal.replace(",", ".")) };
         delete beneficioFinal.visible;
         beneficioService.put(beneficioFinal).then((response) => { });

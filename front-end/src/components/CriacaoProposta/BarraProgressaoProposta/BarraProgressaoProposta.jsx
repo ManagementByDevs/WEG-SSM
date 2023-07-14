@@ -331,6 +331,31 @@ const BarraProgressaoProposta = (props) => {
     setListaBeneficios(listaNova);
   };
 
+  /** Função para carregar os custos quando forem recebidos através de um escopo salvo */
+  const receberCustos = (tabelaCustos) => {
+    let listaTabelasCustos = [];
+    for (const tabela of tabelaCustos) {
+
+      let listaCustos = [];
+      for (const custo of tabela.custos) {
+        let novoCusto = { ...custo };
+        if(custo.valorHora) {
+          novoCusto.valorHora = custo.valorHora.toString().replace(".", ",")
+        }
+        listaCustos.push(novoCusto);
+      }
+
+      let listaCCs = [];
+      for (const cc of tabela.ccs) {
+        listaCCs.push({ ...cc });
+      }
+
+      listaTabelasCustos.push({ ...tabela, custos: listaCustos, ccs: listaCCs });
+    }
+
+    setCustos(listaTabelasCustos);
+  }
+
   /** Função para formatar o valor mensal de um benefício ao recebê-lo */
   const formatarValorMensal = (valor_mensal) => {
     if (!valor_mensal) return;
@@ -373,19 +398,11 @@ const BarraProgressaoProposta = (props) => {
     });
 
     receberBeneficios(escopo.beneficios);
-    setCustos(escopo.tabelaCustos);
+    receberCustos(escopo.tabelaCustos);
     setEscopo(escopo.escopo);
 
     setCarregamento(false);
   };
-
-  /** Função para transformar uma string em base64 para um ArrayBuffer, usada para baixar anexos */
-  function converterBase64(base64) {
-    const textoBinario = window.atob(base64);
-    const bytes = new Uint8Array(textoBinario.length);
-
-    return bytes.map((byte, i) => textoBinario.charCodeAt(i));
-  }
 
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = () => {
@@ -448,7 +465,11 @@ const BarraProgressaoProposta = (props) => {
     for (let beneficio of listaBeneficios) {
       if (beneficio.visible) {
         let beneficioFinal = { ...beneficio };
-        beneficioFinal.valor_mensal = parseFloat(beneficio.valor_mensal.replace(",", "."))
+
+        if (typeof (beneficioFinal.valor_mensal) == "string") {
+          beneficioFinal.valor_mensal = parseFloat(beneficioFinal.valor_mensal.replace(",", "."))
+        }
+
         delete beneficioFinal.visible;
         beneficioService.put(beneficioFinal).then((response) => { });
       }

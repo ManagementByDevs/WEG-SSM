@@ -92,14 +92,30 @@ class DateService {
    * Retona data passada por parâmetro formatada no padrão americano
    * @returns Data no padrão americano
    */
-  getTodaysDateUSFormat(date, linguagem) {
-    const newDate = new Date(date.replace(/-/g, "/"));
-    const dd = String(newDate.getUTCDate()).padStart(2, "0");
-    const mm = String(newDate.getUTCMonth() + 1).padStart(2, "0");
-    const yyyy = newDate.getUTCFullYear();
-
-    let hora = newDate.getUTCHours();
-    let minutos = newDate.getUTCMinutes();
+  getTodaysDateUSFormat(date, linguagem, onde) {
+    let newDate;
+    let dd;
+    let mm;
+    let yyyy;
+    let hora;
+    let minutos;
+    if (onde == "ata") {
+      const dateParts = date.split(/[T.]/);
+      const dateFormatted = `${dateParts[0]} ${dateParts[1]}`;
+      newDate = new Date(dateFormatted);
+      dd = String(newDate.getDate()).padStart(2, "0");
+      mm = String(newDate.getMonth() + 1).padStart(2, "0");
+      yyyy = newDate.getFullYear();
+      hora = newDate.getHours();
+      minutos = newDate.getMinutes();
+    } else {
+      newDate = new Date(date.replace(/-/g, "/"));
+      dd = String(newDate.getUTCDate()).padStart(2, "0");
+      mm = String(newDate.getUTCMonth() + 1).padStart(2, "0");
+      yyyy = newDate.getUTCFullYear();
+      hora = newDate.getUTCHours();
+      minutos = newDate.getUTCMinutes();
+    }
 
     if (hora.toString().length == 1) {
       hora = "0" + hora.toString();

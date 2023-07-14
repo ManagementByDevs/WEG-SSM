@@ -57,7 +57,7 @@ public class Demanda {
     /**
      * Motivo da recusa da demanda
      */
-    @Column(length = 1000)
+    @Column(length = 999999999)
     private String motivoRecusa;
 
     /**
