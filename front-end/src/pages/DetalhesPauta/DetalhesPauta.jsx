@@ -12,6 +12,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
+import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
@@ -763,7 +764,7 @@ const DetalhesPauta = (props) => {
                                     abrirParecerProposta(event, proposta)
                                   }
                                 >
-                                  <TextFieldsIcon />
+                                  <RateReviewOutlinedIcon />
                                 </IconButton>
                               </Tooltip>
                             </Box>
@@ -949,6 +950,9 @@ const InserirParecer = ({
     return () => clearTimeout(delayDebounceFn);
   }, [proposta]);
 
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
   return (
     <Box className="mt-3">
       <Box className="w-full flex justify-between items-center">
@@ -956,6 +960,9 @@ const InserirParecer = ({
           fontSize={FontConfig.veryBig}
           color="primary"
           fontWeight={600}
+          onClick={() => {
+            lerTexto(texts.detalhesPauta.inserirParecer);
+          }}
         >
           {texts.detalhesPauta.inserirParecer}
         </Typography>
@@ -966,28 +973,57 @@ const InserirParecer = ({
         </Tooltip>
       </Box>
       <Box>
-        <Typography>
-          <Typography color="primary" component="span" fontWeight={600}>
+        <Box className="flex gap-2">
+          <Typography
+            color="primary"
+            component="span"
+            fontWeight={600}
+            onClick={() => {
+              lerTexto(texts.detalhesPauta.proposta);
+            }}
+          >
             {texts.detalhesPauta.proposta}:
-          </Typography>{" "}
-          {proposta.titulo}
-        </Typography>
-        <Typography fontSize={FontConfig.default}>
+          </Typography>
+          <Typography
+            onClick={() => {
+              lerTexto(proposta.titulo);
+            }}
+          >
+            {proposta.titulo}
+          </Typography>
+        </Box>
+        <Box className="flex gap-2">
           <Typography
             color="primary"
             component="span"
             fontWeight={600}
             fontSize={FontConfig.default}
+            onClick={() => {
+              lerTexto(texts.detalhesProposta.ppm);
+            }}
           >
             {texts.detalhesProposta.ppm}
-          </Typography>{" "}
-          {proposta.codigoPPM}
-        </Typography>
+          </Typography>
+          <Typography
+            fontSize={FontConfig.default}
+            onClick={() => {
+              lerTexto(proposta.codigoPPM);
+            }}
+          >
+            {proposta.codigoPPM}
+          </Typography>
+        </Box>
       </Box>
 
       <Box className="flex items-end gap-2">
         {/* Parecer da comissão */}
-        <Typography>{texts.detalhesPauta.comissao}: </Typography>
+        <Typography
+          onClick={() => {
+            lerTexto(texts.detalhesPauta.comissao);
+          }}
+        >
+          {texts.detalhesPauta.comissao}:{" "}
+        </Typography>
         <TextField
           select
           label={texts.detalhesProposta.parecer}
