@@ -383,6 +383,15 @@ const DetalhesAta = (props) => {
     setPropostaParecer(proposta);
   };
 
+  /** Fechar inserir o parecer */
+  const handleOnCloseParecerClick = () => {
+    setPropostaParecer(null);
+  };
+
+  useEffect(() => {
+    console.log("ATA: ", ata);
+  }, [ata]);
+
   return (
     // Começo com o header da página
     <FundoComHeader>
@@ -674,16 +683,24 @@ const DetalhesAta = (props) => {
                             {index + 1} - {proposta.titulo}
                           </Typography>
 
-                          <Tooltip title={texts.detalhesPauta.addParecer}>
-                            <IconButton
-                              size="small"
-                              onClick={(event) =>
-                                abrirParecerProposta(event, proposta)
+                          {(ata.publicada || ata.publicadaDg) && (
+                            <Tooltip
+                              title={
+                                !ata.publicadaDg
+                                  ? texts.detalhesPauta.addParecer
+                                  : texts.detalhesAta.visualizarParecer
                               }
                             >
-                              <TextFieldsIcon />
-                            </IconButton>
-                          </Tooltip>
+                              <IconButton
+                                size="small"
+                                onClick={(event) =>
+                                  abrirParecerProposta(event, proposta)
+                                }
+                              >
+                                <TextFieldsIcon />
+                              </IconButton>
+                            </Tooltip>
+                          )}
                         </Box>
                       </Box>
                     );
@@ -702,7 +719,56 @@ const DetalhesAta = (props) => {
                     !!propostaParecer && (
                       <Box className="w-full mt-4">
                         <Divider />
-                        <ParecerDGOnlyRead proposta={propostaParecer} />
+                        <Box className="flex justify-between items-center mt-2">
+                          <Typography
+                            fontSize={FontConfig.veryBig}
+                            color="primary"
+                            fontWeight={600}
+                          >
+                            {texts.detalhesProposta.pareceres}
+                          </Typography>
+                          <Tooltip title={texts.detalhesPauta.fechar}>
+                            <IconButton
+                              color="primary"
+                              onClick={handleOnCloseParecerClick}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+
+                        {/* Dados da proposta selecionada */}
+                        <Box className="mb-3">
+                          <Typography>
+                            <Typography
+                              color="primary"
+                              component="span"
+                              fontWeight={600}
+                            >
+                              {texts.detalhesPauta.proposta}:
+                            </Typography>{" "}
+                            {propostaParecer.titulo}
+                          </Typography>
+                          <Typography fontSize={FontConfig.default}>
+                            <Typography
+                              color="primary"
+                              component="span"
+                              fontWeight={600}
+                              fontSize={FontConfig.default}
+                            >
+                              {texts.detalhesProposta.ppm}
+                            </Typography>{" "}
+                            {propostaParecer.codigoPPM}
+                          </Typography>
+                        </Box>
+
+                        <ParecerComissaoOnlyRead proposta={propostaParecer} />
+                        {ata.publicada && (
+                          <ParecerDGOnlyRead
+                            proposta={propostaParecer}
+                            setProposta={setPropostaParecer}
+                          />
+                        )}
                       </Box>
                     )
                   )}
@@ -880,8 +946,8 @@ const InserirParecer = ({
       </Box>
 
       <Box className="flex items-end gap-2">
-        {/* Parecer da comissão */}
-        <Typography>{texts.detalhesPauta.comissao}: </Typography>
+        {/* Parecer da dg */}
+        <Typography>{texts.propostaDeAta.parecerDG}: </Typography>
         <TextField
           select
           label={texts.detalhesProposta.parecer}
@@ -948,8 +1014,8 @@ const ParecerDGOnlyRead = ({ proposta = EntitiesObjectService.proposta() }) => {
 
   return (
     <Box>
-      <Box className="flex">
-        <Box className="flex items-center mt-4">
+      <Box className="mt-4 relative">
+        <Box className="flex items-center mt-2">
           {/* DG */}
           <Typography
             fontSize={FontConfig.medium}
@@ -973,6 +1039,92 @@ const ParecerDGOnlyRead = ({ proposta = EntitiesObjectService.proposta() }) => {
         className="mt-2 mx-4 border-l-2 px-2"
         sx={{ borderColor: "primary.main" }}
         onClick={() => lerTexto(parecerDGInformacoesBox.current.innerText)}
+      />
+    </Box>
+  );
+};
+
+// Visualizar o parecer da comissão
+const ParecerComissaoOnlyRead = ({
+  proposta = EntitiesObjectService.proposta(),
+}) => {
+  // Context para obter as configurações das fontes do sistema
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  // Variável para armazenar as informações do parecer da comissão
+  const parecerComissaoInformacoesBox = useRef(null);
+
+  // useEffect para atualizar o texto do parecer da comissão
+  useEffect(() => {
+    if (parecerComissaoInformacoesBox.current) {
+      parecerComissaoInformacoesBox.current.innerHTML =
+        proposta.parecerInformacao == null ||
+        proposta.parecerInformacao == "null"
+          ? texts.detalhesProposta.semInformacoesAdicionais
+          : proposta.parecerInformacao;
+    }
+  }, []);
+
+  // Função para formatar o parecer
+  const getParecerComissaoFomartted = (parecer) => {
+    if (!parecer) {
+      return texts.detalhesProposta.semParecer;
+    }
+
+    switch (parecer) {
+      case "APROVADO":
+        return texts.detalhesProposta.aprovado;
+      case "REPROVADO":
+        return texts.detalhesProposta.reprovado;
+      case "MAIS_INFORMACOES":
+        return texts.detalhesProposta.devolvido;
+    }
+  };
+
+  return (
+    <Box>
+      <Box className="flex">
+        <Box className="flex items-center">
+          {/* nome do forum */}
+          <Typography
+            fontSize={FontConfig.medium}
+            onClick={() =>
+              lerTexto(
+                texts.detalhesProposta.comissao +
+                  ": " +
+                  proposta.forum.nomeForum
+              )
+            }
+          >
+            {texts.detalhesProposta.comissao}: {proposta.forum.nomeForum}
+            :&nbsp;
+          </Typography>
+          {/* Parecer da comissao */}
+          <Typography
+            fontSize={FontConfig.medium}
+            fontWeight="bold"
+            onClick={() =>
+              lerTexto(getParecerComissaoFomartted(proposta.parecerComissao))
+            }
+          >
+            {getParecerComissaoFomartted(proposta.parecerComissao)}
+          </Typography>
+        </Box>
+      </Box>
+      {/* Comporta o texto do parecer da comissão */}
+      <Box
+        ref={parecerComissaoInformacoesBox}
+        className="mt-2 mx-4 border-l-2 px-2"
+        sx={{ borderColor: "primary.main" }}
+        onClick={() =>
+          lerTexto(parecerComissaoInformacoesBox.current.innerText)
+        }
       />
     </Box>
   );

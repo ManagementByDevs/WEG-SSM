@@ -327,7 +327,7 @@ const TextLanguage = (linguagem) => {
           nenhumAnexoAdicionado: "Nenhum anexo adicionado",
           cancelar: "Cancelar",
           aceitar: "Aceitar",
-          addRecomendacao: "Adicionar Recomendações"
+          addRecomendacao: "Adicionar Recomendações",
         },
         modalConfirmacao: {
           mensagensModal: {
@@ -607,6 +607,7 @@ const TextLanguage = (linguagem) => {
           comissao: "Comissão",
           analistaResponsavel: "Analista Responsável",
           numeroSequencialDG: "Número Sequencial da Ata da DG",
+          visualizarParecer: "Visualizar Parecer",
           tour: {
             tour1:
               "Aqui você pode ver os detalhes da ata e as propostas que pertencem a ela",
@@ -1427,7 +1428,7 @@ const TextLanguage = (linguagem) => {
           nenhumAnexoAdicionado: "No attachments added",
           cancelar: "Cancel",
           aceitar: "Accept",
-          addRecomendacao: "Add Recommendations"
+          addRecomendacao: "Add Recommendations",
         },
         modalConfirmacao: {
           mensagensModal: {
@@ -1668,6 +1669,7 @@ const TextLanguage = (linguagem) => {
           comissao: "Comission",
           analistaResponsavel: "Responsable Analyst",
           numeroSequencialDG: "DG Minutes Sequential Number",
+          visualizarParecer: "View Opinion",
           tour: {
             tour1:
               "Here you can see the details of the minutes and the proposals that belong to them",
@@ -2475,7 +2477,7 @@ const TextLanguage = (linguagem) => {
           nenhumAnexoAdicionado: "没有添加附件",
           cancelar: "取消",
           aceitar: "接受",
-          addRecomendacao: "添加推荐"
+          addRecomendacao: "添加推荐",
         },
         modalConfirmacao: {
           mensagensModal: {
@@ -2702,6 +2704,7 @@ const TextLanguage = (linguagem) => {
           comissao: "委员会",
           analistaResponsavel: "负责分析师",
           numeroSequencialDG: "DG 会议纪要序号",
+          visualizarParecer: "查看意见",
           tour: {
             tour1: "在这里您可以查看会议记录的详细信息以及属于会议记录的提案",
             tour2: "单击此处下载会议纪要的 PDF 版本",
@@ -3492,7 +3495,7 @@ const TextLanguage = (linguagem) => {
           nenhumAnexoAdicionado: "Ningún archivo adjunto agregado",
           cancelar: "Cancelar",
           aceitar: "Aceptar",
-          addRecomendacao: "Añadir recomendaciones"
+          addRecomendacao: "Añadir recomendaciones",
         },
         modalConfirmacao: {
           mensagensModal: {
@@ -3727,6 +3730,7 @@ const TextLanguage = (linguagem) => {
           comissao: "Comisión",
           analistaResponsavel: "Analista Responsable",
           numeroSequencialDG: "Número secuencial de actas del GD",
+          visualizarParecer: "Ver parecer",
           tour: {
             tour1:
               "Aquí puede ver el detalle de las actas y las propuestas que les corresponden",
