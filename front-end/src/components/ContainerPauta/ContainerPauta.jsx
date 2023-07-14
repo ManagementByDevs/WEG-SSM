@@ -54,9 +54,8 @@ const ContainerPauta = (props) => {
 
   /** Função para formatar a data de acordo com a linguagem do sistema */
   const buscarDataFormatada = (dateInMySQL) => {
-    let date = DateService.getDateByMySQLFormat(dateInMySQL);
+    let date = new Date(dateInMySQL);
 
-    return "data";
     switch (texts.linguagem) {
       case "pt":
         return (
@@ -138,6 +137,9 @@ const ContainerPauta = (props) => {
                     lerTexto(proposta.codigoPPM);
                   }}
                 >
+                  <Typography component={"span"} color={"primary"}>
+                    {texts.detalhes}
+                  </Typography>
                   {proposta.codigoPPM}
                 </Typography>
               </Box>
