@@ -108,160 +108,6 @@ const Login = (props) => {
     }
   };
 
-  /**
-   * <Paper
-        sx={{ height: "100%"}}
-        className="flex justify-center items-center"
-      >
-         Div Principal com as opções do login 
-        <Paper
-          sx={{
-            backgroundColor: "background.default",
-            width: "28%",
-            height: "60%",
-            minHeight: "32rem",
-            minWidth: "26rem",
-          }}
-        >
-          <Box className="w-full h-full border-t-12 border-[#00579D] rounded shadow-2xl flex flex-col items-center justify-center space-y-10">
-            <Box>
-              Logo WEG 
-              <img className="w-36" src={LogoWeg}></img>
-            </Box>
-             Input de texto do email do usuário 
-            <TextField
-              value={dados.email}
-              onChange={(e) => {
-                atualizarInput(1, e);
-              }}
-              onKeyDown={(e) => {
-                eventoTeclado(e);
-              }}
-              className="w-8/12"
-              id="filled-basic"
-              label={texts.login.email}
-              variant="filled"
-              color="primary"
-            />
-             Input de senha (usa os ícones e o tipo do input conforme a variável "senha", também chamando a função
-                        "mudarVisualizacaoSenha" no click) 
-            <TextField
-              value={dados.senha}
-              onChange={(e) => {
-                atualizarInput(2, e);
-              }}
-              onKeyDown={(e) => {
-                eventoTeclado(e);
-              }}
-              className="w-8/12"
-              id="input-with-icon-textfield"
-              label={texts.login.senha}
-              color="primary"
-              type={senha ? "password" : "text"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Mudar visibilidade senha"
-                      onClick={mudarVisualizacaoSenha}
-                      edge="end"
-                    >
-                      {senha ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              variant="filled"
-            />
-             Div para checkbox "lembrar-me" e "Esqueci a senha" 
-            <div className="w-8/12 flex justify-between items-center">
-               Checkbox com label para função de "lembrar-me" 
-              <FormControlLabel
-                control={<Checkbox />}
-                label={texts.login.lembrarme}
-                onClick={() => {
-                  lerTexto(texts.login.lembrarme);
-                }}
-              />
-               Texto "Esqueci a Senha" (Usa a fonte média) 
-              <Typography
-                fontSize={FontConfig.medium}
-                variant="h2"
-                color="text.primary"
-                className="underline hover:cursor-pointer"
-                onClick={() => {
-                  lerTexto(texts.login.esqueciSenha);
-                }}
-              >
-                {texts.login.esqueciSenha}
-              </Typography>
-            </div>
-             Div para centralizar o botão de login 
-            <div className="w-8/12 flex justify-center">
-               Botão para entrar no sistema 
-              <Button
-                onClick={fazerLogin}
-                variant="contained"
-                size="large"
-                color="primary"
-                className="self-end w-2/6"
-              >
-                <Typography
-                  onClick={() => {
-                    lerTexto(texts.login.entrar);
-                  }}
-                >
-                  {texts.login.entrar}
-                </Typography>
-              </Button>
-            </div>
-
-             Feedback de dados inválidos 
-            {dadosInvalidos && (
-              <Feedback
-                open={dadosInvalidos}
-                handleClose={() => {
-                  setDadosInvalidos(false);
-                }}
-                status={"erro"}
-                mensagem={texts.login.feedback.dadosInvalidos}
-                lendo={lendoTexto}
-                texto={props.texto}
-                setTexto={props.setTexto}
-              />
-            )}
-
-             Feedback de dados faltantes / não preenchidos 
-            {dadosFaltantes && (
-              <Feedback
-                open={dadosFaltantes}
-                handleClose={() => {
-                  setDadosFaltantes(false);
-                }}
-                status={"erro"}
-                mensagem={texts.login.feedback.preenchaTodosOsCampos}
-                lendo={lendoTexto}
-                texto={props.texto}
-                setTexto={props.setTexto}
-              />
-            )}
-             Feedback navegador incompativel 
-            <Feedback
-              open={feedbackErroNavegadorIncompativel}
-              handleClose={() => {
-                setFeedbackErroNavegadorIncompativel(false);
-              }}
-              status={"erro"}
-              mensagem={texts.homeGerencia.feedback.feedback13}
-              lendo={lendoTexto}
-              texto={props.texto}
-              setTexto={props.setTexto}
-            />
-          </Box>
-        </Paper>
-      </Paper>
-   */
-
   return (
     <FundoComHeader>
       {/* Feedback de dados inválidos  */}
@@ -393,7 +239,6 @@ const Login = (props) => {
                   }}
                 />
               </Box>
-              {/* <Box className="h-full flex flex-col justify-end gap-2"> */}
 
               <Button
                 className="w-44 h-12"
@@ -416,13 +261,6 @@ const Login = (props) => {
           {/* Logos */}
           <Box className="w-full flex justify-center items-center gap-2 mt-8">
             <img src={LogoAzul} className="h-12" alt="WEG" />
-            {/* <Divider orientation="vertical" flexItem />
-            <Box
-              className="p-1.5 rounded"
-              sx={{ backgroundColor: "primary.main" }}
-            >
-              <img src={SsmBranca} className="h-10" alt="WEG-SSM" />
-            </Box> */}
           </Box>
         </Box>
       </Box>
