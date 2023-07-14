@@ -123,7 +123,7 @@ class EntitiesObjectService {
   pauta() {
     return {
       analistaResponsavel: {},
-      comissao: "",
+      comissao: this.forum(),
       dataReuniao: "",
       id: 0,
       numeroSequencial: "",

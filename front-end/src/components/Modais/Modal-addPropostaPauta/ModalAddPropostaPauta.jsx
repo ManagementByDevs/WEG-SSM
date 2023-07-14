@@ -46,7 +46,9 @@ const ModalAddPropostaPauta = (props) => {
   const { mode } = useContext(TemaContext);
 
   /** Context para ler o texto da tela */
-  const { lendoTexto, lerTexto, librasAtivo } = useContext(SpeechSynthesisContext);
+  const { lendoTexto, lerTexto, librasAtivo } = useContext(
+    SpeechSynthesisContext
+  );
 
   // Navigate utilizado para navegação entre as páginas
   const navigate = useNavigate();
