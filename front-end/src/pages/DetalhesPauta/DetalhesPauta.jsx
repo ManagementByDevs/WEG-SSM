@@ -598,6 +598,7 @@ const DetalhesPauta = (props) => {
                   component="span"
                   className="whitespace-nowrap"
                   sx={{ fontWeight: "600", cursor: "default" }}
+                  fontSize={FontConfig.medium}
                   onClick={() => {
                     lerTexto(
                       texts.detalhesPauta.numeroSequencial +
@@ -616,6 +617,7 @@ const DetalhesPauta = (props) => {
               {/* Comissão */}
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "2%" }}
+                fontSize={FontConfig.medium}
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.comissao +
@@ -625,7 +627,7 @@ const DetalhesPauta = (props) => {
                 }}
               >
                 {texts.detalhesPauta.comissao}:{" "}
-                <Typography component="span">
+                <Typography component="span" fontSize={FontConfig.default}>
                   {pauta.comissao.siglaForum} - {pauta.comissao.nomeForum}
                 </Typography>
               </Typography>
@@ -633,6 +635,7 @@ const DetalhesPauta = (props) => {
               {/* Data da reunião da comissão */}
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
+                fontSize={FontConfig.medium}
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.reuniaoDoForum +
@@ -645,7 +648,7 @@ const DetalhesPauta = (props) => {
                 }}
               >
                 {texts.detalhesPauta.reuniaoDoForum}:{" "}
-                <Typography component="span">
+                <Typography component="span" fontSize={FontConfig.default}>
                   {DateService.getFullDateUSFormat(
                     DateService.getDateByMySQLFormat(pauta?.dataReuniao),
                     texts.linguagem
@@ -656,6 +659,7 @@ const DetalhesPauta = (props) => {
               {/* Analista responsável */}
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
+                fontSize={FontConfig.medium}
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.analistaResponsavel +
@@ -665,7 +669,7 @@ const DetalhesPauta = (props) => {
                 }}
               >
                 {texts.detalhesPauta.analistaResponsavel}:{" "}
-                <Typography component="span">
+                <Typography component="span" fontSize={FontConfig.default}>
                   {pauta.analistaResponsavel.nome}
                 </Typography>
               </Typography>
@@ -681,6 +685,7 @@ const DetalhesPauta = (props) => {
               >
                 <Typography
                   sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
+                  fontSize={FontConfig.medium}
                   onClick={() => {
                     lerTexto(texts.detalhesPauta.numeroSequencialAta);
                   }}

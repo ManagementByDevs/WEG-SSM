@@ -19,8 +19,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-
-import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
+import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
@@ -480,6 +479,7 @@ const DetalhesAta = (props) => {
                   <Typography
                     className="cursor-default mt-2"
                     fontWeight={600}
+                    fontSize={FontConfig.medium}
                     onClick={() => {
                       lerTexto(
                         texts.detalhesAta.numeroSequencial +
@@ -507,23 +507,26 @@ const DetalhesAta = (props) => {
                   className="cursor-default"
                   sx={{ marginTop: "1%" }}
                   fontWeight={600}
+                  fontSize={FontConfig.medium}
                   onClick={() => {
                     lerTexto(
                       texts.detalhesAta.dataReuniao +
                         ": " +
                         DateService.getTodaysDateUSFormat(
                           ata.dataReuniao,
-                          texts.linguagem, "ata"
+                          texts.linguagem,
+                          "ata"
                         )
                     );
                   }}
                 >
                   {/* {data reunião} */}
                   {texts.detalhesAta.dataReuniao}:{" "}
-                  <Typography component="span">
+                  <Typography component="span" fontSize={FontConfig.default}>
                     {DateService.getTodaysDateUSFormat(
                       ata.dataReuniao,
-                      texts.linguagem, "ata"
+                      texts.linguagem,
+                      "ata"
                     )}
                   </Typography>
                 </Typography>
@@ -531,6 +534,7 @@ const DetalhesAta = (props) => {
                   className="cursor-default"
                   sx={{ marginTop: "1%" }}
                   fontWeight={600}
+                  fontSize={FontConfig.medium}
                   onClick={() => {
                     lerTexto(
                       texts.detalhesAta.analistaResponsavel +
@@ -541,7 +545,7 @@ const DetalhesAta = (props) => {
                 >
                   {/* {analista responsavel} */}
                   {texts.detalhesAta.analistaResponsavel}:{" "}
-                  <Typography component="span">
+                  <Typography component="span" fontSize={FontConfig.default}>
                     {ata.analistaResponsavel.nome}
                   </Typography>
                 </Typography>
@@ -549,6 +553,7 @@ const DetalhesAta = (props) => {
                   className="cursor-default"
                   sx={{ marginTop: "1%" }}
                   fontWeight={600}
+                  fontSize={FontConfig.medium}
                   onClick={() => {
                     lerTexto(
                       texts.detalhesAta.comissao + ": " + ata.comissao.nomeForum
@@ -556,7 +561,7 @@ const DetalhesAta = (props) => {
                   }}
                 >
                   {texts.detalhesAta.comissao}:{" "}
-                  <Typography component="span">
+                  <Typography component="span" fontSize={FontConfig.default}>
                     {ata.comissao.siglaForum} - {ata.comissao.nomeForum}
                   </Typography>
                 </Typography>
@@ -575,6 +580,7 @@ const DetalhesAta = (props) => {
                         fontWeight: "600",
                         cursor: "default",
                       }}
+                      fontSize={FontConfig.medium}
                     >
                       {texts.detalhesAta.numeroSequencialDG}:
                     </Typography>
@@ -913,7 +919,7 @@ const InserirParecer = ({
   return (
     <Box className="mt-3">
       <Box className="w-full flex justify-between items-center">
-      <Typography
+        <Typography
           fontSize={FontConfig.veryBig}
           color="primary"
           fontWeight={600}
@@ -930,7 +936,7 @@ const InserirParecer = ({
         </Tooltip>
       </Box>
       <Box>
-      <Box className="flex gap-2">
+        <Box className="flex gap-2">
           <Typography
             color="primary"
             component="span"
