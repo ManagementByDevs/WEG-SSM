@@ -1,16 +1,13 @@
-import { React, useState, useContext, useEffect } from "react";
+import { React, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
   Button,
   Box,
-  Paper,
-  TextField,
   InputAdornment,
   FormControlLabel,
   Checkbox,
   Typography,
-  IconButton,
   Input,
   Divider,
   Tooltip,
@@ -20,8 +17,6 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
 
 import LogoWeg from "../../assets/logo-weg.png";
-import LogoAzul from "../../assets/LogoAzul.png";
-import Grid from "../../assets/GridSemFundo.png";
 
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -166,7 +161,7 @@ const Login = (props) => {
               {texts.login.login}
             </Typography>
 
-            <img src={Grid} className="h-8" alt="Grid" />
+            <img src={LogoWeg} className="h-7" alt="Logo WEG" />
           </Box>
 
           <Divider />
@@ -256,11 +251,6 @@ const Login = (props) => {
               </Button>
               {/* </Box> */}
             </Box>
-          </Box>
-
-          {/* Logos */}
-          <Box className="w-full flex justify-center items-center gap-2 mt-8">
-            <img src={LogoAzul} className="h-12" alt="WEG" />
           </Box>
         </Box>
       </Box>
