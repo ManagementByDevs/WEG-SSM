@@ -202,11 +202,10 @@ class PropostaService {
     ).data;
   }
 
-  async addHistorico(idProposta, texto, documento, usuario) {
+  async addHistorico(idProposta, historico, documento) {
     let form = new FormData();
-    form.set("acao", texto);
+    form.set("historicoJson", JSON.stringify(historico));
     form.set("documento", documento);
-    form.set("usuarioId", usuario);
 
     return (
       await axios.put(`/proposta/add-historico/${idProposta}`, form, {

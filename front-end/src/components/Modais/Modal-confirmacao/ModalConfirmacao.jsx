@@ -202,7 +202,11 @@ const ModalConfirmacao = (props) => {
               }
 
               {props.aceitarGerente && (
-                <Tooltip title={texts.modalAceitarDemanda.addRecomendacao} sx={{ position: "absolute", right: 50, color: "primary.main" }}>
+                <Tooltip
+                  title={texts.modalAceitarDemanda.addRecomendacao}
+                  className="hover:cursor-pointer"
+                  sx={{ position: "absolute", right: 50, color: "primary.main" }}
+                >
                   <EditIcon
                     onClick={() => {
                       setModalMaisDetalhes(true);

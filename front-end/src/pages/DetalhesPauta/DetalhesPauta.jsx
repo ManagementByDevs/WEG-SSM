@@ -247,6 +247,17 @@ const DetalhesPauta = (props) => {
     setModal(true);
   };
 
+  /** Função para criar e retornar um objeto de histórico para salvamento */
+  const retornaObjetoHistorico = (acaoRealizada, informacaoAdicional) => {
+    const historico = {
+      data: new Date(),
+      acaoRealizada: acaoRealizada,
+      autor: { id: CookieService.getUser().id },
+      informacaoAdicional: informacaoAdicional
+    };
+    return historico;
+  };
+
   /** Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida */
   const deletePropostaFromPauta = () => {
     pauta.propostas = retornarIdsObjetos(pauta.propostas);
@@ -265,10 +276,9 @@ const DetalhesPauta = (props) => {
             let arquivo = new Blob([file], { type: "application/pdf" });
             PropostaService.addHistorico(
               response.id,
-              "Removida da Pauta #" + newPauta.numeroSequencial,
-              arquivo,
-              CookieService.getUser().id
-            ).then(() => {});
+              retornaObjetoHistorico("Removida da Pauta #" + newPauta.numeroSequencial, null),
+              arquivo
+            ).then(() => { });
           });
         }
       );
@@ -445,30 +455,27 @@ const DetalhesPauta = (props) => {
             case "APROVADO":
               PropostaService.addHistorico(
                 response.id,
-                "Adicionada na Ata #" + numeroSequencialAta,
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => {});
+                retornaObjetoHistorico("Adicionada na Ata #" + numeroSequencialAta, formatarHtml(proposta.parecerInformacao)),
+                arquivo
+              ).then(() => { });
               break;
             case "REPROVADO":
               PropostaService.addHistorico(
                 response.id,
-                "Proposta Reprovada",
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => {});
+                retornaObjetoHistorico("Proposta Reprovada", formatarHtml(proposta.parecerInformacao)),
+                arquivo
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 response.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "MAIS_INFORMACOES":
               PropostaService.addHistorico(
                 response.id,
-                "Enviada para Edição",
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => {});
+                retornaObjetoHistorico("Enviada para Edição", formatarHtml(proposta.parecerInformacao)),
+                arquivo
+              ).then(() => { });
               break;
           }
         });
@@ -537,7 +544,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
 
       {/* Modal de confirmação para criar uma ata */}
@@ -547,7 +554,7 @@ const DetalhesPauta = (props) => {
         textoModal={"criarAta"}
         textoBotao={"sim"}
         onConfirmClick={criarAtas}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
 
       <Box className="p-2 mb-16" sx={{ minWidth: "58rem" }}>
@@ -601,8 +608,8 @@ const DetalhesPauta = (props) => {
                   onClick={() => {
                     lerTexto(
                       texts.detalhesPauta.numeroSequencial +
-                        ": " +
-                        pauta.numeroSequencial
+                      ": " +
+                      pauta.numeroSequencial
                     );
                   }}
                 >
@@ -619,8 +626,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.comissao +
-                      ": " +
-                      pauta.comissao.nomeForum
+                    ": " +
+                    pauta.comissao.nomeForum
                   );
                 }}
               >
@@ -636,11 +643,11 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.reuniaoDoForum +
-                      ": " +
-                      DateService.getFullDateUSFormat(
-                        DateService.getDateByMySQLFormat(pauta?.dataReuniao),
-                        texts.linguagem
-                      )
+                    ": " +
+                    DateService.getFullDateUSFormat(
+                      DateService.getDateByMySQLFormat(pauta?.dataReuniao),
+                      texts.linguagem
+                    )
                   );
                 }}
               >
@@ -659,8 +666,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.analistaResponsavel +
-                      ": " +
-                      pauta.analistaResponsavel.nome
+                    ": " +
+                    pauta.analistaResponsavel.nome
                   );
                 }}
               >
@@ -902,8 +909,8 @@ const DetalhesPauta = (props) => {
 
 const InserirParecer = ({
   proposta = EntitiesObjectService.proposta(),
-  setProposta = () => {},
-  setPauta = () => {},
+  setProposta = () => { },
+  setPauta = () => { },
 }) => {
   /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);

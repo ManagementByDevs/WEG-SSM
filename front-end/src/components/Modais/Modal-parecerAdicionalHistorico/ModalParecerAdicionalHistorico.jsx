@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 
 import { Modal, Typography, Box, Fade } from "@mui/material";
 
@@ -7,6 +7,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextLanguageContext from "../../../service/TextLanguageContext";
 import FontContext from "../../../service/FontContext";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
+import { useEffect } from "react";
+import { useState } from "react";
 
 /** Modal para ver o motivo da recusa de demanda para o solicitante */
 const ModalParecerAdicionalHistorico = (props) => {
@@ -19,6 +21,31 @@ const ModalParecerAdicionalHistorico = (props) => {
 
   /** Context para ler o texto da tela */
   const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  // Variável utilizada para armazenar o texto
+  const referenciaTexto = useRef(null);
+
+  /** Variável para carregar o texto do modal quando a variável de referência carregar */
+  const [dadosAtribuidos, setDadosAtribuidos] = useState(false);
+
+  // Função utilizada para formatar o texto da informação, caso seja HTML
+  const getTextoFomartted = (texto) => {
+    return texto[0].toUpperCase() + texto.substring(1).toLowerCase();
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (referenciaTexto.current) {
+        setDadosAtribuidos(true);
+      }
+    }, 10)
+  }, [])
+
+  useEffect(() => {
+    if (dadosAtribuidos) {
+      referenciaTexto.current.innerHTML = props.parecerAdicional;
+    }
+  }, [dadosAtribuidos])
 
   return (
     <Modal
@@ -71,8 +98,9 @@ const ModalParecerAdicionalHistorico = (props) => {
             <Typography
               fontSize={FontConfig.normal}
               onClick={() => { lerTexto(props.parecerAdicional); }}
+              ref={referenciaTexto}
             >
-              {props.parecerAdicional}
+              {getTextoFomartted(props.parecerAdicional)}
             </Typography>
           </Box>
         </Box>

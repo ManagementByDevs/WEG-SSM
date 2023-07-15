@@ -339,7 +339,7 @@ const BarraProgressaoProposta = (props) => {
       let listaCustos = [];
       for (const custo of tabela.custos) {
         let novoCusto = { ...custo };
-        if(custo.valorHora) {
+        if (custo.valorHora) {
           novoCusto.valorHora = custo.valorHora.toString().replace(".", ",")
         }
         listaCustos.push(novoCusto);
@@ -743,6 +743,16 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
+  /** Função para criar e retornar um objeto de histórico para salvamento */
+  const retornaObjetoHistorico = (acaoRealizada) => {
+    const historico = {
+      data: new Date(),
+      acaoRealizada: acaoRealizada,
+      autor: { id: CookieService.getUser().id },
+    };
+    return historico;
+  };
+
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = async () => {
     if (lendoTexto) {
@@ -797,9 +807,8 @@ const BarraProgressaoProposta = (props) => {
                               propostaService
                                 .addHistorico(
                                   response.id,
-                                  "Proposta Criada",
-                                  arquivo,
-                                  CookieService.getUser().id
+                                  retornaObjetoHistorico("Proposta Criada"),
+                                  arquivo
                                 )
                                 .then((propostaResponse) => {
                                   setCarregamentoProposta(false);

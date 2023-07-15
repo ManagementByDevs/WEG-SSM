@@ -742,7 +742,7 @@ function Input(props) {
               </MenuItem>
               {props.listaForuns.map((forum) => {
                 return (
-                  <MenuItem key={"Fórum" + forum.idForum} value={forum}>
+                  <MenuItem key={"Fórum" + forum.idForum} value={forum} title={forum.nomeForum}>
                     {forum.nomeForum}
                   </MenuItem>
                 );

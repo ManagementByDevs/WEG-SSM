@@ -288,6 +288,17 @@ const DetalhesAta = (props) => {
     return texto;
   };
 
+  /** Função para criar e retornar um objeto de histórico para salvamento */
+  const retornaObjetoHistorico = (acaoRealizada, informacaoAdicional) => {
+    const historico = {
+      data: new Date(),
+      acaoRealizada: acaoRealizada,
+      autor: { id: CookieService.getUser().id },
+      informacaoAdicional: informacaoAdicional
+    };
+    return historico;
+  };
+
   /** Atualiza a lista de propostas passada por parâmetro */
   const updatePropostas = (
     listaPropostasToUpdate = [EntitiesObjectService.proposta()]
@@ -305,24 +316,22 @@ const DetalhesAta = (props) => {
             case "REPROVADO":
               PropostaService.addHistorico(
                 response.id,
-                "Reprovada pela DG",
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => {});
+                retornaObjetoHistorico("Reprovada pela DG", formatarHtml(proposta.parecerInformacaoDG)),
+                arquivo
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "APROVADO":
               PropostaService.addHistorico(
                 response.id,
-                "Aprovada pela DG",
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => {});
+                retornaObjetoHistorico("Aprovada pela DG", formatarHtml(proposta.parecerInformacaoDG)),
+                arquivo
+              ).then(() => { });
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => {}
+                () => { }
               );
               break;
           }
@@ -360,7 +369,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
+    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
 
     navigate("/", { state: { feedback: true } });
   };
@@ -483,8 +492,8 @@ const DetalhesAta = (props) => {
                     onClick={() => {
                       lerTexto(
                         texts.detalhesAta.numeroSequencial +
-                          ": " +
-                          ata.numeroSequencial
+                        ": " +
+                        ata.numeroSequencial
                       );
                     }}
                   >
@@ -510,11 +519,11 @@ const DetalhesAta = (props) => {
                   onClick={() => {
                     lerTexto(
                       texts.detalhesAta.dataReuniao +
-                        ": " +
-                        DateService.getTodaysDateUSFormat(
-                          ata.dataReuniao,
-                          texts.linguagem, "ata"
-                        )
+                      ": " +
+                      DateService.getTodaysDateUSFormat(
+                        ata.dataReuniao,
+                        texts.linguagem, "ata"
+                      )
                     );
                   }}
                 >
@@ -534,8 +543,8 @@ const DetalhesAta = (props) => {
                   onClick={() => {
                     lerTexto(
                       texts.detalhesAta.analistaResponsavel +
-                        ": " +
-                        ata.analistaResponsavel.nome
+                      ": " +
+                      ata.analistaResponsavel.nome
                     );
                   }}
                 >
@@ -859,8 +868,8 @@ const DetalhesAta = (props) => {
 
 const InserirParecer = ({
   proposta = EntitiesObjectService.proposta(),
-  setProposta = () => {},
-  setAta = () => {},
+  setProposta = () => { },
+  setAta = () => { },
 }) => {
   /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
@@ -913,7 +922,7 @@ const InserirParecer = ({
   return (
     <Box className="mt-3">
       <Box className="w-full flex justify-between items-center">
-      <Typography
+        <Typography
           fontSize={FontConfig.veryBig}
           color="primary"
           fontWeight={600}
@@ -930,7 +939,7 @@ const InserirParecer = ({
         </Tooltip>
       </Box>
       <Box>
-      <Box className="flex gap-2">
+        <Box className="flex gap-2">
           <Typography
             color="primary"
             component="span"
@@ -1026,7 +1035,7 @@ const ParecerDGOnlyRead = ({ proposta = EntitiesObjectService.proposta() }) => {
     if (parecerDGInformacoesBox.current) {
       parecerDGInformacoesBox.current.innerHTML =
         proposta.parecerInformacaoDG == null ||
-        proposta.parecerInformacaoDG == "null"
+          proposta.parecerInformacaoDG == "null"
           ? texts.detalhesProposta.semInformacoesAdicionais
           : proposta.parecerInformacaoDG;
     }
@@ -1092,7 +1101,7 @@ const ParecerComissaoOnlyRead = ({
     if (parecerComissaoInformacoesBox.current) {
       parecerComissaoInformacoesBox.current.innerHTML =
         proposta.parecerInformacao == null ||
-        proposta.parecerInformacao == "null"
+          proposta.parecerInformacao == "null"
           ? texts.detalhesProposta.semInformacoesAdicionais
           : proposta.parecerInformacao;
     }
@@ -1124,8 +1133,8 @@ const ParecerComissaoOnlyRead = ({
             onClick={() =>
               lerTexto(
                 texts.detalhesProposta.comissao +
-                  ": " +
-                  proposta.forum.nomeForum
+                ": " +
+                proposta.forum.nomeForum
               )
             }
           >
