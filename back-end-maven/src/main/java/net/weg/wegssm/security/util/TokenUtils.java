@@ -22,12 +22,12 @@ public class TokenUtils {
      * @param usuario - Usuário que será autenticado
      * @return - Token gerado
      */
-    public String gerarToken(UserJpa usuario) {
+    public String gerarToken(UserJpa usuario, Integer tempoExpiracao) {
         return Jwts.builder()
                 .setIssuer("WEG SSM")
                 .setSubject(usuario.getUsuario().getEmail())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + 3600000))
+                .setExpiration(new Date(new Date().getTime() + (tempoExpiracao * 1000)))
                 .signWith(SignatureAlgorithm.HS256, senhaForte)
                 .compact();
     }
