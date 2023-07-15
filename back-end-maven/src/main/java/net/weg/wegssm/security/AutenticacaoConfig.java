@@ -54,7 +54,7 @@ public class AutenticacaoConfig {
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/weg_ssm/login", "/weg_ssm/login/auth", "/weg_ssm/usuario/email").permitAll()
+                .antMatchers("/weg_ssm/login", "/weg_ssm/login/auth", "/weg_ssm/login/auth/lembrar-senha", "/weg_ssm/usuario/email").permitAll()
 
                 .antMatchers(HttpMethod.POST, "/weg_ssm/proposta").hasAnyAuthority("ANALISTA", "GESTOR")
                 .antMatchers(HttpMethod.POST, "/weg_ssm/proposta/sem-arquivos").hasAnyAuthority("ANALISTA", "GESTOR")

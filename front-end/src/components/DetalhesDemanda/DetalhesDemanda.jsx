@@ -585,7 +585,8 @@ const DetalhesDemanda = (props) => {
       data: new Date(),
       acaoRealizada: acaoRealizada,
       autor: { id: CookieService.getUser().id },
-      informacaoAdicional: (motivoRecusaDemanda && (acaoRealizada == "Demanda Devolvida" || acaoRealizada == "Demanda Reprovada")) ? motivoRecusaDemanda : null
+      informacaoAdicional: (motivoRecusaDemanda && (acaoRealizada == "Demanda Devolvida" || acaoRealizada == "Demanda Reprovada")) ? motivoRecusaDemanda :
+        recomendacao ? recomendacao : null
     };
     return historico;
   };

@@ -1,5 +1,6 @@
 package net.weg.wegssm.security;
 
+import net.weg.wegssm.model.service.UsuarioService;
 import net.weg.wegssm.security.dto.UserDTO;
 import net.weg.wegssm.security.util.CookieUtils;
 import net.weg.wegssm.security.util.TokenUtils;
@@ -36,6 +37,11 @@ public class AutenticacaoController {
     private CookieUtils cookieUtils = new CookieUtils();
 
     /**
+     * UsuarioService para o salvamento do estado da senha
+     */
+    private UsuarioService usuarioService;
+
+    /**
      * AuthenticationManager usado para realizar o processo de autenticação (Criado pela AutenticacaoConfig)
      */
     @Autowired
@@ -56,8 +62,38 @@ public class AutenticacaoController {
 
         if (authentication.isAuthenticated()) {
             UserJpa userJpa = (UserJpa) authentication.getPrincipal();
-            response.addCookie(cookieUtils.gerarTokenCookie(userJpa));
-            response.addCookie(cookieUtils.gerarUserCookie(userJpa));
+            response.addCookie(cookieUtils.gerarTokenCookie(userJpa, 3600));
+            response.addCookie(cookieUtils.gerarUserCookie(userJpa, 3600));
+
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(userJpa.getUsername(),
+                            userJpa.getPassword(), userJpa.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(
+                    usernamePasswordAuthenticationToken);
+
+            return ResponseEntity.status(HttpStatus.OK).body(userJpa.getUsuario());
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    /**
+     * Método POST para a realização da autenticação com "lembrar senha", recebendo um userDTO como body da requisição
+     *
+     * @param userDTO  - UserDTO com os dados de autenticação
+     * @param response - HttpServletResponse usado para a geração dos cookies
+     * @return - ResponseEntity com o usuário autenticado ou um erro de autenticação
+     */
+    @PostMapping("/auth/lembrar-senha")
+    public ResponseEntity<Object> autenticacaoLembrarSenha(@RequestBody @Valid UserDTO userDTO, HttpServletResponse response) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getSenha());
+
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+        if (authentication.isAuthenticated()) {
+            UserJpa userJpa = (UserJpa) authentication.getPrincipal();
+            response.addCookie(cookieUtils.gerarTokenCookie(userJpa, 259200));
+            response.addCookie(cookieUtils.gerarUserCookie(userJpa, 259200));
 
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                     new UsernamePasswordAuthenticationToken(userJpa.getUsername(),

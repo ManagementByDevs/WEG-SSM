@@ -4170,7 +4170,6 @@ public class PropostaController {
         proposta.setId(id);
 
         deleteTabelaCustosRows(propostaOptional.get(), proposta);
-        System.out.println(proposta.getTabelaCustos().get(0).getCustos().get(0));
 
         // Faz a atualização dos dados da proposta que devem ser adicionados (benefícios, tabelas...)
         Proposta propostaNovosDados = new Proposta();
@@ -4349,34 +4348,24 @@ public class PropostaController {
      * Função para adicionar um objeto de Historico em uma proposta
      *
      * @param idProposta ID da proposta a ser adicionado o histórico
-     * @param usuarioId  ID do usuário que fez a mudança
-     * @param acao       String da ação feita na proposta
+     * @param historicoJson Histórico DTO em formato string, com seus principais atributos
      * @param documento  Documento PDF da proposta para salvamento de seu estado atual
      * @return ResponseEntity com a proposta editada
      */
     @PutMapping("/add-historico/{idProposta}")
     public ResponseEntity<Object> addHistorico(@PathVariable(value = "idProposta") Long idProposta,
-                                               @RequestParam("usuarioId") Long usuarioId,
-                                               @RequestParam("acao") String acao,
+                                               @RequestParam("historicoJson") String historicoJson,
                                                @RequestParam("documento") MultipartFile documento) {
         Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
         if (propostaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
         }
 
-        Optional<Usuario> usuarioOptional = usuarioService.findById(usuarioId);
-        if (usuarioOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
-        }
+        // Conversão do históricoJson
+        HistoricoUtil util = new HistoricoUtil();
+        Historico historico = util.convertJsonToModel(historicoJson);
 
         Proposta proposta = propostaOptional.get();
-        Usuario usuario = usuarioOptional.get();
-
-        Historico historico = new Historico();
-        historico.setAutor(usuario);
-        historico.setData(new Date());
-        historico.setAcaoRealizada(acao);
-
         List<Historico> listaHistorico = proposta.getHistoricoProposta();
         historico.setDocumentoMultipart(documento);
 

@@ -89,14 +89,8 @@ const ModalAddPropostaPauta = (props) => {
   // UseState para armazenar a data da reunião
   const [inputDataReuniao, setInputDataReuniao] = useState("");
 
-  const comissaoEstatico = {
-    idForum: 0,
-    nomeForum: texts.modalAddPropostaPauta.comissao,
-    siglaForum: texts.modalAddPropostaPauta.comissao,
-  };
-
   // UseState para armazenar a comissão
-  const [comissao, setComissao] = useState(comissaoEstatico);
+  const [comissao, setComissao] = useState(props.proposta.forum);
 
   // useEffect utilizado para obter as pautas e os foruns
   useEffect(() => {
@@ -119,6 +113,11 @@ const ModalAddPropostaPauta = (props) => {
   // função para adicionar uma nova pauta
   const addPauta = () => {
     setnovaPauta(true);
+    setComissao(() => {
+      for (const forum of listaComissoes) {
+        if (forum.id == props.proposta.forum.id) return forum;
+      }
+    });
   };
 
   // função para mudar o valor do select na nova pauta criada
@@ -178,6 +177,16 @@ const ModalAddPropostaPauta = (props) => {
     return listaNova;
   };
 
+  /** Função para criar e retornar um objeto de histórico para salvamento */
+  const retornaObjetoHistorico = (acaoRealizada) => {
+    const historico = {
+      data: new Date(),
+      acaoRealizada: acaoRealizada,
+      autor: { id: CookieService.getUser().id }
+    };
+    return historico;
+  };
+
   // Função para adicionar a proposta na pauta selecionada
   const addPropostaInPauta = () => {
     if (lendoTexto) {
@@ -210,10 +219,9 @@ const ModalAddPropostaPauta = (props) => {
               let arquivo = new Blob([file], { type: "application/pdf" });
               PropostaService.addHistorico(
                 response.id,
-                "Adicionada na Pauta #" + res.numeroSequencial,
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => {});
+                retornaObjetoHistorico("Adicionada na Pauta #" + res.numeroSequencial),
+                arquivo
+              ).then(() => { });
             });
           }
         );
@@ -240,10 +248,9 @@ const ModalAddPropostaPauta = (props) => {
               let arquivo = new Blob([file], { type: "application/pdf" });
               PropostaService.addHistorico(
                 response.id,
-                "Adicionada na Pauta #" + res.numeroSequencial,
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => {});
+                retornaObjetoHistorico("Adicionada na Pauta #" + res.numeroSequencial),
+                arquivo
+              ).then(() => { });
             });
           }
         );
@@ -466,19 +473,21 @@ const ModalAddPropostaPauta = (props) => {
                         variant="standard"
                       />
                     </Box>
+
                     <FormControl size="small">
                       <Select
                         value={comissao}
                         onChange={handleChange}
                         displayEmpty
                         inputProps={{ "aria-label": "Without label" }}
+
                       >
-                        <MenuItem value={comissao} disabled>
+                        <MenuItem selected value={comissao} disabled>
                           {texts.modalAddPropostaPauta.forum}
                         </MenuItem>
-                        {listaComissoes?.map((e, index) => (
-                          <MenuItem key={index} value={e} title={e.nomeForum}>
-                            {e.siglaForum}
+                        {listaComissoes.map((forum) => (
+                          <MenuItem key={"Fórum" + forum.idForum} value={forum} title={forum.nomeForum}>
+                            {forum.siglaForum}
                           </MenuItem>
                         ))}
                       </Select>
