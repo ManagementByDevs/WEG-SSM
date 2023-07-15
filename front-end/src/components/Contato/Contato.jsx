@@ -50,10 +50,10 @@ const Contato = ({
         <Box
           id="segundo"
           onClick={onClick}
-          className="flex justify-evenly items-center rounded-lg border p-1"
+          className="flex justify-evenly items-center rounded-lg border p-3"
           sx={{
             width: "90%",
-            minWidth: "195px",
+            minWidth: "100px",
             minHeight: "4rem",
             cursor: "pointer",
             backgroundColor: corSelecionado,
@@ -112,7 +112,7 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
         <Avatar />
       </Box>
       {/* Informações adicioanais do usuário e da demanda respectiva */}
-      <Box className="flex w-4/5 justify-content flex-col">
+      <Box className="ml-1 flex w-4/5 justify-content flex-col">
         <Box className="flex justify-between">
           <Box className="flex w-full justify-between relative">
             <Typography

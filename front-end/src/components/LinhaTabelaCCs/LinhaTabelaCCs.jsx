@@ -98,7 +98,7 @@ const LinhaTabelaCCs = (props) => {
             </IconButton>
           </Tooltip>
         </Box>
-        <Box className="w-full flex gap-2 p-5">
+        <Box className="w-full flex gap-2" sx={{padding: "1.4rem"}}>
           <Input
             className="w-3/5 border-solid border pl-1 text-center"
             sx={{

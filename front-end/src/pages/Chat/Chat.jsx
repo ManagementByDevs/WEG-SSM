@@ -703,11 +703,11 @@ const Chat = () => {
           >
             <Box
               className="flex justify-evenly items-center rounded border mt-4"
-              sx={{ width: "85%", height: "100%" }}
+              sx={{ width: "85%", height: "100%", minWidth: "40rem" }}
             >
               <Box
                 className="flex items-center rounded border flex-col gap-3 overflow-y-auto overflow-x-hidden"
-                sx={{ width: "20%", height: "95%" }}
+                sx={{ width: "20%", height: "95%", minWidth: "12rem" }}
               >
                 <Box
                   id="primeiro"
@@ -807,7 +807,7 @@ const Chat = () => {
               {!idChat && !visibilidade ? (
                 <Box
                   className="flex flex-col items-center justify-center rounded border"
-                  sx={{ width: "75%", height: "95%", cursor: "default" }}
+                  sx={{ width: "75%", height: "95%", minWidth: "27rem", cursor: "default" }}
                 >
                   <img src={logoWeg} alt="chat" />
                   <Typography
@@ -824,7 +824,7 @@ const Chat = () => {
               ) : isTourOpen ? (
                 <Box
                   className="flex flex-col items-center justify-between rounded border"
-                  sx={{ width: "75%", height: "95%" }}
+                  sx={{ width: "75%", height: "95%", minWidth: "27rem" }}
                 >
                   <Box
                     className="flex justify-between items-center w-full rounded-t"
@@ -1011,7 +1011,7 @@ const Chat = () => {
               ) : visibilidade ? (
                 <Box
                   className="flex flex-col items-center justify-center rounded border"
-                  sx={{ width: "75%", height: "95%", cursor: "default" }}
+                  sx={{ width: "75%", height: "95%", minWidth: "27rem", cursor: "default" }}
                 >
                   <img src={logoWeg} alt="chat" />
                   <Typography
@@ -1028,7 +1028,7 @@ const Chat = () => {
               ) : (
                 <Box
                   className="flex flex-col items-center justify-between rounded border"
-                  sx={{ width: "75%", height: "95%" }}
+                  sx={{ width: "75%", height: "95%", minWidth: "27rem" }}
                 >
                   <Box
                     className="flex justify-between items-center w-full rounded-t py-8"

@@ -657,7 +657,9 @@ const DetalhesProposta = ({
                             lerTexto(bu.nomeBu);
                           }}
                         >
+                          <Typography fontSize={FontConfig.default}>
                           {bu.siglaBu} - {bu.nomeBu}
+                          </Typography>
                         </li>
                       );
                     })}
@@ -1562,6 +1564,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
         ref={parecerComissaoInformacoesBox}
         className="mt-2 mx-4 border-l-2 px-2"
         sx={{ borderColor: "primary.main" }}
+        fontSize={FontConfig.medium}
         onClick={() =>
           lerTexto(parecerComissaoInformacoesBox.current.innerText)
         }
@@ -1686,6 +1689,7 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
       <Box
         ref={parecerDGInformacoesBox}
         className="mt-2 mx-4 border-l-2 px-2"
+        fontSize={FontConfig.medium}
         sx={{ borderColor: "primary.main" }}
         onClick={() => lerTexto(parecerDGInformacoesBox.current.innerText)}
       />

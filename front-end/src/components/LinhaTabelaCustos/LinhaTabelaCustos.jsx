@@ -248,8 +248,9 @@ const LinhaTabelaCustos = (props) => {
       </td>
       <td align="center" className="pt-5 pb-5">
         <Input
-          className="w-3/5 border-solid border pl-1 text-center"
+          className="border-solid border pl-1 text-center"
           sx={{
+            width: "80%",
             borderLeft: "4px solid #00579d",
           }}
           fontSize={FontConfig.medium}
@@ -294,7 +295,10 @@ const LinhaTabelaCustos = (props) => {
       </td>
       <td align="center" className="pt-5 pb-5">
         <InputDinheiro
-          className="w-3/5 border-solid border pl-1 text-center"
+          className="border-solid border pl-1 text-center"
+          sx={{
+            width: "70%",
+          }}
           placeholder={texts.linhaTabelaCustos.digiteValor}
           fontConfig={FontConfig.medium}
           texto={props.dados.custos[props.index].valorHora || ""}
@@ -310,7 +314,7 @@ const LinhaTabelaCustos = (props) => {
         <Box className="flex justify-center items-center relative">
           {texts.formularioCustosProposta.moeda}
           {formatarCusto(props.dados.custos[props.index].total || 0)}
-          <Box className="absolute right-2">
+          <Box className="">
             <Tooltip title={texts.linhaTabelaCustos.titleExcluirLinha}>
               <IconButton
                 onClick={() =>

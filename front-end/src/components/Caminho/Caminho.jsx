@@ -30,7 +30,7 @@ const Caminho = (props) => {
   const caminhoURL = useLocation().pathname;
 
   /** Variável que armazena o caminho url sem a "/" */
-  const listaCaminho = caminhoURL.split("/").filter((item) => item !== "");
+  const listaCaminho = caminhoURL.split("/").filter((item) => item !== "").filter((item) => isNaN(item*1));
 
   /** Lista para armazenar as rotas utilizadas pelo caminho */
   const listaRotasPT = [
@@ -72,7 +72,6 @@ const Caminho = (props) => {
           }}
         />
       </Tooltip>
-      <ArrowForwardIosOutlinedIcon sx={{ fontSize: "15px" }} />
       {/* Mostrando o caminho atual no sistema */}
       {listaCaminho.map((item, index) => {
         const caminho = listaCaminho.slice(0, index + 1).join("/");
@@ -80,6 +79,12 @@ const Caminho = (props) => {
 
         return (
           <Box className="flex items-center" key={index}>
+            {/* {
+              console.log("item: ", item, " é numero: ", isNaN(item * 1))
+            } */}
+            {index <= listaCaminho.length - 1 && (
+              <ArrowForwardIosOutlinedIcon sx={{ fontSize: "15px" }} />
+            )}
             {!props.feedback ? (
               <Typography
                 className="cursor-pointer"
@@ -106,9 +111,6 @@ const Caminho = (props) => {
               >
                 {nomeCaminho}
               </Typography>
-            )}
-            {index < listaCaminho.length - 1 && (
-              <ArrowForwardIosOutlinedIcon sx={{ fontSize: "15px" }} />
             )}
           </Box>
         );

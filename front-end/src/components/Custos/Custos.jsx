@@ -229,7 +229,7 @@ const Custos = (props) => {
                       <th
                         align="center"
                         className="p-3 w-0"
-                        style={{ width: "15%", minWidth: "200px" }}
+                        style={{ width: "25%", minWidth: "150px" }}
                       >
                         <Typography
                           fontSize={FontConfig.big}
@@ -245,7 +245,7 @@ const Custos = (props) => {
                       <th
                         align="center"
                         className="p-3 w-0"
-                        style={{ width: "15%" }}
+                        style={{ width: "25%" }}
                       >
                         <Typography
                           fontSize={FontConfig.big}
@@ -261,7 +261,7 @@ const Custos = (props) => {
                       <th
                         align="center"
                         className="p-3 w-0"
-                        style={{ width: "20%" }}
+                        style={{ width: "30%", minWidth: "6rem" }}
                       >
                         <Typography
                           fontSize={FontConfig.big}
@@ -275,7 +275,7 @@ const Custos = (props) => {
                         </Typography>
                       </th>
                       <th
-                        align="center"
+                        align="start"
                         className="p-3 w-0"
                         style={{ width: "20%" }}
                       >
@@ -372,12 +372,12 @@ const Custos = (props) => {
               <TableContainer component={Paper} elevation={0} square>
                 <Table sx={{ minWidth: "100%" }} aria-label="customized table">
                   <TableHead
-                    sx={{ backgroundColor: "primary.main", height: "4.9rem" }}
+                    sx={{ backgroundColor: "primary.main", height: "4.2rem" }}
                   >
                     <TableRow>
                       <th
                         align="center"
-                        className="p-3 w-0"
+                        className="p-4 w-0"
                         style={{ width: "10%" }}
                       >
                         <Typography
