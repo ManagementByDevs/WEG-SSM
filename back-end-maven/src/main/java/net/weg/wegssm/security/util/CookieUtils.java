@@ -26,11 +26,11 @@ public class CookieUtils {
      * @param userJpa UserJpa usado para a geração do token JWT
      * @return Cookie com o token JWT
      */
-    public Cookie gerarTokenCookie(UserJpa userJpa) {
-        String token = tokenUtils.gerarToken(userJpa);
+    public Cookie gerarTokenCookie(UserJpa userJpa, Integer tempoExpiracao) {
+        String token = tokenUtils.gerarToken(userJpa, tempoExpiracao);
         Cookie cookie = new Cookie("jwt", token);
         cookie.setPath("/");
-        cookie.setMaxAge(3600);
+        cookie.setMaxAge(tempoExpiracao);
         return cookie;
     }
 
@@ -65,7 +65,7 @@ public class CookieUtils {
      * @param userJpa UserJpa usado como o usuário presente no cookie
      * @return Cookie com o usuário recebido
      */
-    public Cookie gerarUserCookie(UserJpa userJpa) {
+    public Cookie gerarUserCookie(UserJpa userJpa, Integer tempoExpiracao) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             String userJson = URLEncoder.encode(
@@ -73,7 +73,7 @@ public class CookieUtils {
                     StandardCharsets.UTF_8);
             Cookie cookie = new Cookie("user", userJson);
             cookie.setPath("/");
-            cookie.setMaxAge(3600);
+            cookie.setMaxAge(tempoExpiracao);
             return cookie;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -120,7 +120,7 @@ public class CookieUtils {
      * @return Cookie JWT renovado
      */
     public Cookie renovarCookieToken(UserJpa userJpa) {
-        Cookie cookie = new Cookie("jwt", tokenUtils.gerarToken(userJpa));
+        Cookie cookie = new Cookie("jwt", tokenUtils.gerarToken(userJpa, 3600));
         cookie.setPath("/");
         cookie.setMaxAge(3600);
         return cookie;

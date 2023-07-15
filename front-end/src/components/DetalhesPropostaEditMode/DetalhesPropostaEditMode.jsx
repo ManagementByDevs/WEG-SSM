@@ -467,12 +467,22 @@ const DetalhesPropostaEditMode = ({
         let arquivo = new Blob([file], { type: "application/pdf" });
         PropostaService.addHistorico(
           response.id,
-          "Proposta Editada",
-          arquivo,
-          CookieService.getUser().id
+          retornaObjetoHistorico("Proposta Editada"),
+          arquivo
         ).then(() => { });
       });
     });
+  };
+
+
+  /** Função para criar e retornar um objeto de histórico para salvamento */
+  const retornaObjetoHistorico = (acaoRealizada) => {
+    const historico = {
+      data: new Date(),
+      acaoRealizada: acaoRealizada,
+      autor: { id: CookieService.getUser().id },
+    };
+    return historico;
   };
 
   // ***************************************** Handlers ***************************************** //
