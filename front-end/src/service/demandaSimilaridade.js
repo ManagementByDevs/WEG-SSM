@@ -6,8 +6,6 @@ const api = axios.create({
 
 class DemandaSimilaridade {
     async postSimilaridade(demanda) {
-        console.log(demanda)
-
         return (await api.post(`/similaridade`, demanda,  {headers: { "Content-Type": "application/json" }},)).data;
     }
 }

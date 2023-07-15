@@ -1,15 +1,16 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-import { Modal, Typography, Box, Fade, Button, Tooltip, TextField, } from "@mui/material";
+import { Modal, Typography, Box, Fade, Button, Tooltip, Dialog, DialogContent } from "@mui/material";
 
-import CloseIcon from "@mui/icons-material/Close";
-import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
-import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
+import EntitiesObjectService from "../../../service/entitiesObjectService";
 import TextLanguageContext from "../../../service/TextLanguageContext";
 import FontContext from "../../../service/FontContext";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../../service/SpeechRecognitionService";
+import DetalhesDemanda from "../../DetalhesDemanda/DetalhesDemanda";
 
 /** Modal de recusar demanda na etapa de aprovação inicial (analista e gerente) */
 const ModalSimilaridade = (props) => {
@@ -28,10 +29,8 @@ const ModalSimilaridade = (props) => {
     SpeechRecognitionContext
   );
 
-  // Função para alterar o texto do motivo
-  const alterarTexto = (e) => {
-    props.setMotivo(e.target.value);
-  };
+  /** Variável para abrir o modal de detalhes da demanda */
+  const [modalDetalhesDemanda, setModalDetalhesDemanda] = useState(false);
 
   // // ********************************************** Gravar audio **********************************************
 
@@ -42,169 +41,128 @@ const ModalSimilaridade = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  /** Handler de quando for fechado o modal de detalhes da proposta */
+  const handleOnCloseModalDemanda = () => {
+    setModalDetalhesDemanda({ demandaId: 0, open: false });
+  };
+
+  /** Abre modal de detalhes da demanda */
+  const expandirDemanda = (demandaAux = EntitiesObjectService.demanda()) => {
+    if (demandaAux.id == 0) return;
+
+    setModalDetalhesDemanda({ demandaId: demandaAux.id, open: true });
+  };
+
   return (
     <Modal
       open={props.open}
-      onClose={() => { props.setOpen(false); }}
+      onClose={() => {
+        props.setOpen(false);
+      }}
       closeAfterTransition
     >
+      {/* <Dialog
+        open={modalDetalhesDemanda.open}
+        onClose={handleOnCloseModalDemanda}
+        maxWidth="md"
+      >
+        <DialogContent>
+          <DetalhesDemanda
+            propostaId={modalDetalhesDemanda.propostaId}
+            onlyView
+          />
+        </DialogContent>
+      </Dialog> */}
+
       <Fade in={props.open}>
         <Box
-          id="teste"
           className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
           sx={{
             transform: "translate(-50%, -50%)",
+            width: 450,
             bgcolor: "background.paper",
             borderRadius: "5px",
             borderTop: "10px solid #00579D",
             boxShadow: 24,
-            p: 4,
-            width: 480,
-            height: 350,
+            p: 2,
           }}
         >
-          <CloseIcon
+          <ErrorOutlineIcon sx={{ fontSize: "100px", color: "primary.main" }} />
+          <Typography
+            fontSize={FontConfig.veryBig}
+            className="text-center"
+            sx={{ mt: 2 }}
             onClick={() => {
-              props.setOpen(false);
+              lerTexto(texts.modalSimilaridade.avisoSimilaridade);
             }}
-            sx={{
-              position: "absolute",
-              left: "93%",
-              top: "3%",
-              cursor: "pointer",
+          >
+            {texts.modalSimilaridade.avisoSimilaridade}
+          </Typography>
+
+          <Typography
+            fontSize={FontConfig.default}
+            className="text-center"
+            sx={{ mt: 2 }}
+            onClick={() => {
+              lerTexto(texts.modalSimilaridade.descricao)
             }}
-          />
+          >
+            {texts.modalSimilaridade.descricao}
+          </Typography>
 
-          {props.aceitarGerente ? (
-            <Typography
-              fontSize={FontConfig.veryBig}
+          <Box className="flex justify-center items-center mt-5">
+            {/* Botão de ignorar */}
+            <Button
               onClick={() => {
-                lerTexto(texts.modalAceitarDemanda.addRecomendacao);
+                if (!lendoTexto) {
+                  props.setOpen(false);
+                  props.criarSemVerificacao(false);
+                } else if (librasAtivo) {
+                } else {
+                  lerTexto(texts.modalSimilaridade.ignorar);
+                }
+              }}
+              variant="container"
+              disableElevation
+              color="tertiary"
+              sx={{
+                border: "solid 1px",
+                borderColor: "tertiary.main",
+                margin: "10px",
+                width: "7.5rem",
+                fontSize: FontConfig.big,
               }}
             >
-              {texts.modalAceitarDemanda.addRecomendacao}
-            </Typography>
-          ) :
-            <Typography
-              fontSize={FontConfig.veryBig}
-              onClick={() => {
-                lerTexto(texts.modalRecusarDemanda.motivoDaRecusa);
-              }}
-            >
-              {texts.modalRecusarDemanda.motivoDaRecusa}
-            </Typography>
-          }
+              {texts.modalSimilaridade.ignorar}
+            </Button>
 
-          {/* Textarea para escrita do motivo da recusa */}
-          <Box className="drop-shadow-sm rounded text-center text-justify max-h-96 overflow-y-auto w-full px-2 mt-2">
-            <TextField
-              multiline
-              minRows={6}
-              variant="outlined"
-              fullWidth
-              value={props.motivo}
-              fontSize={FontConfig.medium}
-              onChange={(e) => {
-                alterarTexto(e, "problema");
-              }}
-              placeholder={texts.modalRecusarDemanda.informeMotivo}
-            />
-            <Tooltip
-              className="absolute cursor-pointer right-3 top-2 "
-              title={texts.homeGerencia.gravarAudio}
+            {/* Botão de cancelar a criação da demanda */}
+            <Button
               onClick={() => {
-                startRecognition();
+                if (!lendoTexto) {
+                  props.setOpen(false);
+                } else if (librasAtivo) {
+                } else {
+                  lerTexto(texts.modalSimilaridade.cancelar);
+                }
               }}
+              variant="contained"
+              disableElevation
+              color="primary"
+              sx={{ margin: "10px", width: "7.5rem", fontSize: FontConfig.big }}
             >
-              {escutar ? (
-                <MicOutlinedIcon
-                  sx={{
-                    cursor: "pointer",
-                    color: "primary.main",
-                    fontSize: "1.3rem",
-                  }}
-                />
-              ) : (
-                <MicNoneOutlinedIcon
-                  sx={{
-                    cursor: "pointer",
-                    color: "text.secondary",
-                    fontSize: "1.3rem",
-                  }}
-                />
-              )}
+              {texts.modalSimilaridade.cancelar}
+            </Button>
+
+            <Tooltip title={texts.modalSimilaridade.visualizarDemanda}>
+              <AssignmentIcon
+                sx={{ position: "absolute", right: 40, color: "primary.main", fontSize: "30px" }}
+                onClick={() => {
+                  expandirDemanda()
+                }}
+              ></AssignmentIcon>
             </Tooltip>
           </Box>
-
-          {props.aceitarGerente ? (
-            <Box className="flex justify-between" sx={{ width: "95%" }}>
-              <Button
-                variant="container"
-                color="tertiary"
-                sx={{
-                  fontSize: FontConfig.default,
-                  marginTop: "2%",
-                  border: "solid 1px",
-                  borderColor: "tertiary.main"
-                }}
-                onClick={() => {
-                  if (!lendoTexto) {
-                    props.setMotivo("");
-                    props.setOpen(false);
-                  } else if (librasAtivo) {
-                  } else {
-                    lerTexto(texts.modalAceitarDemanda.cancelar);
-                  }
-                }}
-              >
-                {texts.modalAceitarDemanda.cancelar}
-              </Button>
-              <Button
-                sx={{
-                  backgroundColor: "primary.main",
-                  color: "text.white",
-                  fontSize: FontConfig.default,
-                  marginTop: "2%",
-                  width: "5.3rem"
-                }}
-                variant="contained"
-                onClick={() => {
-                  if (!lendoTexto) {
-                    props.addRecomendacao();
-                  } else if (librasAtivo) {
-                  } else {
-                    lerTexto(texts.modalRecusarDemanda.enviar);
-                  }
-                }}
-              >
-                {texts.DetalhesDemanda.botaoSalvar}
-              </Button>
-
-            </Box>
-          ) : (
-            <Box className="flex justify-end" sx={{ width: "90%" }}>
-              <Button
-                sx={{
-                  backgroundColor: "primary.main",
-                  color: "text.white",
-                  fontSize: FontConfig.default,
-                  marginTop: "2%",
-                }}
-                variant="contained"
-                onClick={() => {
-                  if (!lendoTexto) {
-                    props.confirmRecusarDemanda();
-                  } else if (librasAtivo) {
-                  } else {
-                    lerTexto(texts.modalRecusarDemanda.enviar);
-                  }
-                }}
-              >
-                {texts.modalRecusarDemanda.enviar}
-              </Button>
-            </Box>
-          )}
-
         </Box>
       </Fade>
     </Modal>

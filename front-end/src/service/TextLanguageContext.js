@@ -983,6 +983,13 @@ const TextLanguageContext = createContext({
         tour10: "Clicando aqui é possível criar a pauta.",
       },
     },
+    modalSimilaridade:{
+      avisoSimilaridade: "Aviso de Similaridade",
+      descricao: "A demanda que você tentou criar é semelhante a uma demanda já existente no sistema. Caso deseje, é possível visualizar a demanda semelhante e cancelar o processo, ou ignorar e criar sua demanda.",
+      ignorar: "Ignorar",
+      visualizarDemanda: "Visualizar demanda",
+      cancelar: "Cancelar"
+    }
   },
   setTexts: () => { },
 });

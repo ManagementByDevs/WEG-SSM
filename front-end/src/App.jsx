@@ -228,7 +228,7 @@ const App = () => {
                           <Route path="/chat" element={<Chat />} />
                           <Route path="/chat/:id" element={<Chat />} />
                           <Route
-                            path="/detalhes-demanda"
+                            path="/detalhes-demanda/:id"
                             element={<DetalhesDemandaPagina />}
                           />
                           <Route

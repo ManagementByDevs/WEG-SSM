@@ -15,6 +15,7 @@ import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDem
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioAnexosDemanda from "../FormularioAnexosDemanda/FormularioAnexosDemanda";
 import ModalConfirmacao from "../../Modais/Modal-confirmacao/ModalConfirmacao";
+import ModalSimilaridade from "../../Modais/Modal-similaridade/ModalSimilaridade"
 import Feedback from "../../Feedback/Feedback";
 
 import DOMPurify from "dompurify";
@@ -88,6 +89,9 @@ const BarraProgressaoDemanda = () => {
   const [carregamentoDemanda, setCarregamentoDemanda] = useState(true);
 
   const [erro, setErro] = useState(false);
+
+  /** Variável utilizada para abrir o modal de aviso de similaridade */
+  const [modalSimilaridade, setModalSimilaridade] = useState(false);
 
   /** Variável para interromper o salvamento de escopos enquanto a demanda estiver sendo criada */
   let criandoDemanda = false;
@@ -244,13 +248,13 @@ const BarraProgressaoDemanda = () => {
   };
 
   const retornarObjetoDemandaConsulta = () => {
-    
-    let problemaSemHtml = DOMPurify.sanitize(paginaDados.problema, {ALLOWED_TAGS: []});
-    let propostaSemHtml = DOMPurify.sanitize(paginaDados.proposta, {ALLOWED_TAGS: []});
+
+    let problemaSemHtml = DOMPurify.sanitize(paginaDados.problema, { ALLOWED_TAGS: [] });
+    let propostaSemHtml = DOMPurify.sanitize(paginaDados.proposta, { ALLOWED_TAGS: [] });
 
     const objeto = {
       titulo: paginaDados.titulo,
-      problema:problemaSemHtml,
+      problema: problemaSemHtml,
       proposta: propostaSemHtml,
     }
 
@@ -295,34 +299,55 @@ const BarraProgressaoDemanda = () => {
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
   const criarDemanda = () => {
-    setCarregamentoDemanda(true);
-    criandoDemanda = true;
-
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
-    
+
     let variavel = retornarObjetoDemandaConsulta();
 
     DemandaSimilaridade.postSimilaridade(variavel).then((response) => {
-      console.log(response);
-    })
+      if (response.message === "Nenhuma demanda similar encontrada.") {
+        setCarregamentoDemanda(true);
+        criandoDemanda = true;
 
-    // DemandaService.post(demandaFinal).then((demanda) => {
-    //   ExportPdfService.exportDemanda(demanda.id).then((file) => {
-    //     // Salvamento do histórico número 1 da demanda
-    //     let arquivo = new Blob([file], { type: "application/pdf" });
-    //     DemandaService.addHistorico(
-    //       demanda.id,
-    //       retornaObjetoHistorico(),
-    //       arquivo
-    //     ).then((response) => {
-    //       direcionarHome();
-    //       excluirEscopo();
-    //     });
-    //   });
-    // });
-   
+        DemandaService.post(demandaFinal).then((demanda) => {
+          ExportPdfService.exportDemanda(demanda.id).then((file) => {
+            // Salvamento do histórico número 1 da demanda
+            let arquivo = new Blob([file], { type: "application/pdf" });
+            DemandaService.addHistorico(
+              demanda.id,
+              retornaObjetoHistorico(),
+              arquivo
+            ).then((response) => {
+              direcionarHome();
+              excluirEscopo();
+            });
+          });
+        });
+      } else {
+        setModalSimilaridade(true);
+      }
+    })
   };
+
+  const criarDemandaSemVerificacao = () => {
+    let demandaFinal = retornaObjetoDemanda();
+    demandaFinal.status = "BACKLOG_REVISAO";
+
+    DemandaService.post(demandaFinal).then((demanda) => {
+      ExportPdfService.exportDemanda(demanda.id).then((file) => {
+        // Salvamento do histórico número 1 da demanda
+        let arquivo = new Blob([file], { type: "application/pdf" });
+        DemandaService.addHistorico(
+          demanda.id,
+          retornaObjetoHistorico(),
+          arquivo
+        ).then((response) => {
+          direcionarHome();
+          excluirEscopo();
+        });
+      });
+    });
+  }
 
   /** Função para voltar para a etapa anterior na criação da demanda */
   const voltarEtapa = () => {
@@ -398,7 +423,6 @@ const BarraProgressaoDemanda = () => {
   const salvarBeneficios = () => {
     for (let beneficio of paginaBeneficios) {
       if (beneficio.visible) {
-        console.log(beneficio);
         let beneficioFinal = { ...beneficio, valor_mensal: parseFloat(beneficio.valor_mensal.replace(",", ".")) };
         delete beneficioFinal.visible;
         beneficioService.put(beneficioFinal).then((response) => { });
@@ -422,6 +446,12 @@ const BarraProgressaoDemanda = () => {
         }}
         status={"erro"}
         mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
+      />
+
+      <ModalSimilaridade
+        open={modalSimilaridade}
+        setOpen={setModalSimilaridade}
+        criarSemVerificacao={criarDemandaSemVerificacao}
       />
 
       {carregamentoDemanda ? (
