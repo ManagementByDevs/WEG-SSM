@@ -15,10 +15,21 @@ import {
   FormControl,
   MenuItem,
   TextField,
+  RadioGroup,
+  IconButton,
+  Tooltip,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Input,
+  Radio,
 } from "@mui/material";
 
 import { red } from "@mui/material/colors";
+
 import CloseIcon from "@mui/icons-material/Close";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import Feedback from "../../Feedback/Feedback";
 import ContainerPauta from "../../ContainerPauta/ContainerPauta";
@@ -287,6 +298,16 @@ const ModalAddPropostaPauta = (props) => {
     return isPropostaInPauta;
   };
 
+  /** Handler de quando alguma pauta for selecionada */
+  const handleOnPautaSelect = (event) => {
+    setIndexPautaSelecionada(event.target.value);
+  };
+
+  useEffect(() => {
+    console.log("index pauta selecionada:", indexPautaSelecionada);
+    console.log("pautas:", listaPautas);
+  }, [indexPautaSelecionada]);
+
   return (
     <>
       {/* Feedback proposta atualizada */}
@@ -381,17 +402,25 @@ const ModalAddPropostaPauta = (props) => {
             >
               {/* Exibe as pautas do sistema */}
               {listaPautas.length > 0 || novaPauta ? (
-                listaPautas.map((pauta, index) => {
-                  return (
-                    <ContainerPauta
-                      key={index}
-                      pauta={pauta}
-                      setIndexPautaSelecionada={setIndexPautaSelecionada}
-                      index={index}
-                      indexPautaSelecionada={indexPautaSelecionada}
-                    />
-                  );
-                })
+                <>
+                  <RadioGroup
+                    className="w-full"
+                    value={indexPautaSelecionada}
+                    onChange={handleOnPautaSelect}
+                  >
+                    {listaPautas.map((pauta, index) => {
+                      return (
+                        <ContainerPauta
+                          key={index}
+                          pauta={pauta}
+                          setIndexPautaSelecionada={setIndexPautaSelecionada}
+                          index={index}
+                          indexPautaSelecionada={indexPautaSelecionada}
+                        />
+                      );
+                    })}
+                  </RadioGroup>
+                </>
               ) : (
                 <>
                   <Typography
@@ -497,17 +526,113 @@ const ModalAddPropostaPauta = (props) => {
               )}
             </Box>
 
-            <Divider
-              sx={{
-                marginTop: "2%",
-                width: "80%",
-                borderColor: "tertiary.main",
-              }}
-            />
+            <Divider />
 
             {/* Parte de baixo do componente, com a opção de selecionar se é uma pauta publicada ou não publicada, 
                         assim como opção de criar nova pauta ou adicionar em alguma pauta */}
-            <Box
+            <Box className="w-full p-3">
+              {/* Botão de add uma nova pauta */}
+              <Box className="w-full flex items-center justify-between">
+                <Box className="flex items-center gap-2">
+                  <Typography
+                    fontSize={FontConfig.big}
+                    fontWeight={600}
+                    color={"primary"}
+                  >
+                    {texts.modalAddPropostaPauta.novaPauta}
+                  </Typography>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={addPauta}
+                    disabled={novaPauta}
+                  >
+                    <AddCircleIcon />
+                  </IconButton>
+                </Box>
+                {novaPauta && (
+                  <Tooltip title="Fechar nova pauta">
+                    <IconButton
+                      size="small"
+                      color="primary"
+                      onClick={() => setnovaPauta(false)}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Box>
+
+              {novaPauta && (
+                <Paper
+                  className="w-full border-l-4 p-2"
+                  sx={{ borderLeftColor: "primary.main" }}
+                  square
+                >
+                  <Box className="w-full flex gap-2 items-center">
+                    <Box className="w-1/3 flex items-center">
+                      <Input
+                        value={numSequencial}
+                        onChange={(e) => setNumSequencial(e.target.value)}
+                        fullWidth
+                        placeholder={texts.modalAddPropostaPauta.numSequencial}
+                      />
+                    </Box>
+
+                    <Box className="flex gap-2 justify-between items-center">
+                      <FormControl size="small">
+                        <Select
+                          value={comissao}
+                          onChange={handleChange}
+                          displayEmpty
+                          variant="standard"
+                        >
+                          <MenuItem value={comissao} disabled>
+                            {texts.modalAddPropostaPauta.forum}
+                          </MenuItem>
+                          {listaComissoes?.map((e, index) => (
+                            <MenuItem key={index} value={e} title={e.nomeForum}>
+                              {e.siglaForum}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <Input
+                        className="w-fit"
+                        style={{ colorScheme: mode }}
+                        value={inputDataReuniao}
+                        onChange={(e) => setInputDataReuniao(e.target.value)}
+                        type="datetime-local"
+                      />
+                    </Box>
+                  </Box>
+                </Paper>
+              )}
+
+              <Divider />
+
+              <Box className="w-full flex justify-center mt-4">
+                {/* <Radio
+                  checked={selectedValue === "a"}
+                  onChange={handleChange}
+                  value="a"
+                  name="radio-buttons"
+                  inputProps={{ "aria-label": "A" }}
+                /> */}
+                <Button
+                  disableElevation
+                  disabled={
+                    indexPautaSelecionada == null && !novaPautaSelecionada
+                  }
+                  variant="contained"
+                  onClick={addPropostaInPauta}
+                >
+                  {texts.modalAddPropostaPauta.adicionar}
+                </Button>
+              </Box>
+            </Box>
+
+            {/* <Box
               className="flex justify-center items-center flex-col"
               sx={{ p: 1.5 }}
             >
@@ -585,7 +710,7 @@ const ModalAddPropostaPauta = (props) => {
                   {texts.modalAddPropostaPauta.adicionar}
                 </Button>
               </Box>
-            </Box>
+            </Box> */}
           </Box>
         </Fade>
       </Modal>
