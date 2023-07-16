@@ -11,6 +11,7 @@ import {
   Input,
   Divider,
   Tooltip,
+  Paper,
 } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -150,10 +151,15 @@ const Login = (props) => {
         sx={{ height: "95%" }}
       >
         {/* Modal de login */}
-        <Box>
+        <Paper
+          className="p-6 border-t-4"
+          sx={{ borderTopColor: "primary.main" }}
+          elevation={2}
+        >
           {/* Título Login */}
-          <Box className="w-full flex justify-between items-center mb-1">
+          <Box className="w-full flex flex-col items-center gap-4 mb-8">
             <Typography
+              align="center"
               fontSize={FontConfig.title}
               fontWeight={600}
               color={"primary"}
@@ -161,15 +167,13 @@ const Login = (props) => {
               {texts.login.login}
             </Typography>
 
-            <img src={LogoWeg} className="h-7" alt="Logo WEG" />
+            <img src={LogoWeg} className="h-10" alt="Logo WEG" />
           </Box>
 
-          <Divider />
-
           {/* Formulario */}
-          <Box className="flex gap-4 mt-2">
+          <Box className="gap-2 flex flex-col items-center mt-2 w-96">
             {/* Inputs */}
-            <Box className="flex flex-col gap-4 mt-2 w-80">
+            <Box className="w-full flex flex-col gap-5 mb-3">
               <Input
                 className="border-t border-r text-center p-2"
                 sx={{
@@ -224,8 +228,8 @@ const Login = (props) => {
             </Box>
 
             {/* Entrar */}
-            <Box className="flex flex-col justify-end gap-5 mt-2">
-              <Box className="w-full flex justify-start">
+            <Box className="w-full flex flex-col justify-end gap-5 mt-2">
+              <Box className="w-full flex justify-center">
                 <FormControlLabel
                   control={<Checkbox />}
                   label={texts.login.lembrarme}
@@ -236,7 +240,7 @@ const Login = (props) => {
               </Box>
 
               <Button
-                className="w-44 h-12"
+                className="w-full h-11"
                 variant="contained"
                 disableElevation
                 onClick={fazerLogin}
@@ -249,10 +253,9 @@ const Login = (props) => {
                   {texts.login.entrar}
                 </Typography>
               </Button>
-              {/* </Box> */}
             </Box>
           </Box>
-        </Box>
+        </Paper>
       </Box>
     </FundoComHeader>
   );
