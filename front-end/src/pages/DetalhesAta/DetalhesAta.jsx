@@ -293,7 +293,7 @@ const DetalhesAta = (props) => {
       data: new Date(),
       acaoRealizada: acaoRealizada,
       autor: { id: CookieService.getUser().id },
-      informacaoAdicional: informacaoAdicional
+      informacaoAdicional: informacaoAdicional,
     };
     return historico;
   };
@@ -315,22 +315,28 @@ const DetalhesAta = (props) => {
             case "REPROVADO":
               PropostaService.addHistorico(
                 response.id,
-                retornaObjetoHistorico("Reprovada pela DG", formatarHtml(proposta.parecerInformacaoDG)),
+                retornaObjetoHistorico(
+                  "Reprovada pela DG",
+                  formatarHtml(proposta.parecerInformacaoDG)
+                ),
                 arquivo
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "APROVADO":
               PropostaService.addHistorico(
                 response.id,
-                retornaObjetoHistorico("Aprovada pela DG", formatarHtml(proposta.parecerInformacaoDG)),
+                retornaObjetoHistorico(
+                  "Aprovada pela DG",
+                  formatarHtml(proposta.parecerInformacaoDG)
+                ),
                 arquivo
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => { }
+                () => {}
               );
               break;
           }
@@ -368,7 +374,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
+    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
 
     navigate("/", { state: { feedback: true } });
   };
@@ -492,8 +498,8 @@ const DetalhesAta = (props) => {
                     onClick={() => {
                       lerTexto(
                         texts.detalhesAta.numeroSequencial +
-                        ": " +
-                        ata.numeroSequencial
+                          ": " +
+                          ata.numeroSequencial
                       );
                     }}
                   >
@@ -520,12 +526,12 @@ const DetalhesAta = (props) => {
                   onClick={() => {
                     lerTexto(
                       texts.detalhesAta.dataReuniao +
-                      ": " +
-                      DateService.getTodaysDateUSFormat(
-                        ata.dataReuniao,
-                        texts.linguagem,
-                        "ata"
-                      )
+                        ": " +
+                        DateService.getTodaysDateUSFormat(
+                          ata.dataReuniao,
+                          texts.linguagem,
+                          "ata"
+                        )
                     );
                   }}
                 >
@@ -547,8 +553,8 @@ const DetalhesAta = (props) => {
                   onClick={() => {
                     lerTexto(
                       texts.detalhesAta.analistaResponsavel +
-                      ": " +
-                      ata.analistaResponsavel.nome
+                        ": " +
+                        ata.analistaResponsavel.nome
                     );
                   }}
                 >
@@ -669,122 +675,114 @@ const DetalhesAta = (props) => {
                 <Box className="flex flex-col items-center justify-center">
                   {ata.propostas?.map((proposta, index) => {
                     return (
-                      <Box
-                        key={index}
-                        className="w-full flex items-center border-solid border border-l-4 px-4 py-2 mt-4 cursor-pointer"
-                        sx={{
-                          borderLeftColor: "primary.main",
-                          backgroundColor: "background.default",
-                          fontWeight: "300",
-                          "&:hover": { backgroundColor: "component.main" },
-                        }}
-                        onClick={() => {
-                          if (lendoTexto) {
-                            lerTexto(proposta.titulo);
-                          } else if (librasAtivo) {
-                          } else {
-                            onClickProposta(index);
-                          }
-                        }}
-                      >
-                        <Box className="w-full flex justify-between items-center">
-                          <Typography
-                            fontSize={FontConfig.medium}
-                            className="truncate"
-                            color="primary"
-                          >
-                            {index + 1} - {proposta.titulo}
-                          </Typography>
-
-                          {(ata.publicada || ata.publicadaDg) && (
-                            <Tooltip
-                              title={
-                                !ata.publicadaDg
-                                  ? texts.detalhesPauta.addParecer
-                                  : texts.detalhesAta.visualizarParecer
-                              }
+                      <Box key={index} className="w-full">
+                        <Box
+                          className="w-full flex items-center border-solid border border-l-4 px-4 py-2 mt-4 cursor-pointer"
+                          sx={{
+                            borderLeftColor: "primary.main",
+                            backgroundColor: "background.default",
+                            fontWeight: "300",
+                            "&:hover": { backgroundColor: "component.main" },
+                          }}
+                          onClick={() => {
+                            if (lendoTexto) {
+                              lerTexto(proposta.titulo);
+                            } else if (librasAtivo) {
+                            } else {
+                              onClickProposta(index);
+                            }
+                          }}
+                        >
+                          <Box className="w-full flex justify-between items-center">
+                            <Typography
+                              fontSize={FontConfig.medium}
+                              className="truncate"
+                              color="primary"
                             >
-                              <IconButton
-                                size="small"
-                                onClick={(event) =>
-                                  abrirParecerProposta(event, proposta)
+                              {index + 1} - {proposta.titulo}
+                            </Typography>
+
+                            {(ata.publicada || ata.publicadaDg) && (
+                              <Tooltip
+                                title={
+                                  !ata.publicadaDg
+                                    ? texts.detalhesPauta.addParecer
+                                    : texts.detalhesAta.visualizarParecer
                                 }
                               >
-                                <RateReviewOutlinedIcon />
-                              </IconButton>
-                            </Tooltip>
-                          )}
+                                <IconButton
+                                  size="small"
+                                  onClick={(event) =>
+                                    abrirParecerProposta(event, proposta)
+                                  }
+                                >
+                                  <RateReviewOutlinedIcon />
+                                </IconButton>
+                              </Tooltip>
+                            )}
+                          </Box>
                         </Box>
+
+                        {!!propostaParecer &&
+                        !ata.publicadaDg &&
+                        proposta.id == propostaParecer.id ? (
+                          <InserirParecer
+                            proposta={propostaParecer}
+                            setProposta={setPropostaParecer}
+                            setAta={setAta}
+                          />
+                        ) : (
+                          !!propostaParecer &&
+                          proposta.id == propostaParecer.id && (
+                            <Box className="w-full mt-1">
+                              <Box className="flex justify-between items-center mt-2">
+                                <Typography
+                                  fontSize={FontConfig.veryBig}
+                                  color="primary"
+                                  fontWeight={600}
+                                >
+                                  {texts.detalhesProposta.pareceres}
+                                </Typography>
+                                <Tooltip title={texts.detalhesPauta.fechar}>
+                                  <IconButton
+                                    color="primary"
+                                    onClick={handleOnCloseParecerClick}
+                                  >
+                                    <CloseIcon />
+                                  </IconButton>
+                                </Tooltip>
+                              </Box>
+
+                              {/* Dados da proposta selecionada */}
+                              <Box className="mb-3">
+                                <Typography fontSize={FontConfig.default}>
+                                  <Typography
+                                    color="primary"
+                                    component="span"
+                                    fontWeight={600}
+                                    fontSize={FontConfig.default}
+                                  >
+                                    {texts.detalhesProposta.ppm}
+                                  </Typography>{" "}
+                                  {propostaParecer.codigoPPM}
+                                </Typography>
+                              </Box>
+
+                              <ParecerComissaoOnlyRead
+                                proposta={propostaParecer}
+                              />
+                              {ata.publicada && (
+                                <ParecerDGOnlyRead
+                                  proposta={propostaParecer}
+                                  setProposta={setPropostaParecer}
+                                />
+                              )}
+                            </Box>
+                          )
+                        )}
                       </Box>
                     );
                   })}
-
-                  {!!propostaParecer && !ata.publicadaDg ? (
-                    <Box className="w-full mt-4">
-                      <Divider />
-                      <InserirParecer
-                        proposta={propostaParecer}
-                        setProposta={setPropostaParecer}
-                        setAta={setAta}
-                      />
-                    </Box>
-                  ) : (
-                    !!propostaParecer && (
-                      <Box className="w-full mt-4">
-                        <Divider />
-                        <Box className="flex justify-between items-center mt-2">
-                          <Typography
-                            fontSize={FontConfig.veryBig}
-                            color="primary"
-                            fontWeight={600}
-                          >
-                            {texts.detalhesProposta.pareceres}
-                          </Typography>
-                          <Tooltip title={texts.detalhesPauta.fechar}>
-                            <IconButton
-                              color="primary"
-                              onClick={handleOnCloseParecerClick}
-                            >
-                              <CloseIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </Box>
-
-                        {/* Dados da proposta selecionada */}
-                        <Box className="mb-3">
-                          <Typography>
-                            <Typography
-                              color="primary"
-                              component="span"
-                              fontWeight={600}
-                            >
-                              {texts.detalhesPauta.proposta}:
-                            </Typography>{" "}
-                            {propostaParecer.titulo}
-                          </Typography>
-                          <Typography fontSize={FontConfig.default}>
-                            <Typography
-                              color="primary"
-                              component="span"
-                              fontWeight={600}
-                              fontSize={FontConfig.default}
-                            >
-                              {texts.detalhesProposta.ppm}
-                            </Typography>{" "}
-                            {propostaParecer.codigoPPM}
-                          </Typography>
-                        </Box>
-
-                        <ParecerComissaoOnlyRead proposta={propostaParecer} />
-                        {ata.publicada && (
-                          <ParecerDGOnlyRead
-                            proposta={propostaParecer}
-                            setProposta={setPropostaParecer}
-                          />
-                        )}
-                      </Box>
-                    )
-                  )}
                 </Box>
               </Box>
             ) : (
@@ -874,8 +872,8 @@ const DetalhesAta = (props) => {
 
 const InserirParecer = ({
   proposta = EntitiesObjectService.proposta(),
-  setProposta = () => { },
-  setAta = () => { },
+  setProposta = () => {},
+  setAta = () => {},
 }) => {
   /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
@@ -926,7 +924,7 @@ const InserirParecer = ({
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   return (
-    <Box className="mt-3">
+    <Box className="mt-1">
       <Box className="w-full flex justify-between items-center">
         <Typography
           fontSize={FontConfig.veryBig}
@@ -945,25 +943,6 @@ const InserirParecer = ({
         </Tooltip>
       </Box>
       <Box>
-        <Box className="flex gap-2">
-          <Typography
-            color="primary"
-            component="span"
-            fontWeight={600}
-            onClick={() => {
-              lerTexto(texts.detalhesPauta.proposta);
-            }}
-          >
-            {texts.detalhesPauta.proposta}:
-          </Typography>
-          <Typography
-            onClick={() => {
-              lerTexto(proposta.titulo);
-            }}
-          >
-            {proposta.titulo}
-          </Typography>
-        </Box>
         <Box className="flex gap-2">
           <Typography
             color="primary"
@@ -1041,7 +1020,7 @@ const ParecerDGOnlyRead = ({ proposta = EntitiesObjectService.proposta() }) => {
     if (parecerDGInformacoesBox.current) {
       parecerDGInformacoesBox.current.innerHTML =
         proposta.parecerInformacaoDG == null ||
-          proposta.parecerInformacaoDG == "null"
+        proposta.parecerInformacaoDG == "null"
           ? texts.detalhesProposta.semInformacoesAdicionais
           : proposta.parecerInformacaoDG;
     }
@@ -1107,7 +1086,7 @@ const ParecerComissaoOnlyRead = ({
     if (parecerComissaoInformacoesBox.current) {
       parecerComissaoInformacoesBox.current.innerHTML =
         proposta.parecerInformacao == null ||
-          proposta.parecerInformacao == "null"
+        proposta.parecerInformacao == "null"
           ? texts.detalhesProposta.semInformacoesAdicionais
           : proposta.parecerInformacao;
     }
@@ -1139,8 +1118,8 @@ const ParecerComissaoOnlyRead = ({
             onClick={() =>
               lerTexto(
                 texts.detalhesProposta.comissao +
-                ": " +
-                proposta.forum.nomeForum
+                  ": " +
+                  proposta.forum.nomeForum
               )
             }
           >

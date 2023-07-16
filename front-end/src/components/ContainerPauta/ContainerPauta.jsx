@@ -190,6 +190,7 @@ const ContainerPauta = (props) => {
           <FormControlLabel
             onClick={handleOnRadioClick}
             value={props.index}
+            disabled={props.novaPauta}
             control={<Radio size="small" />}
             label={
               <Typography

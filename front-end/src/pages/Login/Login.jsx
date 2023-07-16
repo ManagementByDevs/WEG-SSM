@@ -211,7 +211,7 @@ const Login = (props) => {
                   endAdornment={
                     <InputAdornment position="end">
                       <Tooltip
-                        title={texts.login.visibilidade}
+                        title={texts.login.visibiliade}
                         className="cursor-pointer"
                         onClick={mudarVisualizacaoSenha}
                       >

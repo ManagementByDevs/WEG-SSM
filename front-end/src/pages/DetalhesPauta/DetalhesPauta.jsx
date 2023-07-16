@@ -12,7 +12,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
+import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
@@ -253,7 +253,7 @@ const DetalhesPauta = (props) => {
       data: new Date(),
       acaoRealizada: acaoRealizada,
       autor: { id: CookieService.getUser().id },
-      informacaoAdicional: informacaoAdicional
+      informacaoAdicional: informacaoAdicional,
     };
     return historico;
   };
@@ -276,9 +276,12 @@ const DetalhesPauta = (props) => {
             let arquivo = new Blob([file], { type: "application/pdf" });
             PropostaService.addHistorico(
               response.id,
-              retornaObjetoHistorico("Removida da Pauta #" + newPauta.numeroSequencial, null),
+              retornaObjetoHistorico(
+                "Removida da Pauta #" + newPauta.numeroSequencial,
+                null
+              ),
               arquivo
-            ).then(() => { });
+            ).then(() => {});
           });
         }
       );
@@ -455,27 +458,36 @@ const DetalhesPauta = (props) => {
             case "APROVADO":
               PropostaService.addHistorico(
                 response.id,
-                retornaObjetoHistorico("Adicionada na Ata #" + numeroSequencialAta, formatarHtml(proposta.parecerInformacao)),
+                retornaObjetoHistorico(
+                  "Adicionada na Ata #" + numeroSequencialAta,
+                  formatarHtml(proposta.parecerInformacao)
+                ),
                 arquivo
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "REPROVADO":
               PropostaService.addHistorico(
                 response.id,
-                retornaObjetoHistorico("Proposta Reprovada", formatarHtml(proposta.parecerInformacao)),
+                retornaObjetoHistorico(
+                  "Proposta Reprovada",
+                  formatarHtml(proposta.parecerInformacao)
+                ),
                 arquivo
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(
                 response.demanda.id,
                 "CANCELLED"
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "MAIS_INFORMACOES":
               PropostaService.addHistorico(
                 response.id,
-                retornaObjetoHistorico("Enviada para Edição", formatarHtml(proposta.parecerInformacao)),
+                retornaObjetoHistorico(
+                  "Enviada para Edição",
+                  formatarHtml(proposta.parecerInformacao)
+                ),
                 arquivo
-              ).then(() => { });
+              ).then(() => {});
               break;
           }
         });
@@ -544,7 +556,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
 
       {/* Modal de confirmação para criar uma ata */}
@@ -554,7 +566,7 @@ const DetalhesPauta = (props) => {
         textoModal={"criarAta"}
         textoBotao={"sim"}
         onConfirmClick={criarAtas}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
 
       <Box className="p-2 mb-16" sx={{ minWidth: "58rem" }}>
@@ -609,8 +621,8 @@ const DetalhesPauta = (props) => {
                   onClick={() => {
                     lerTexto(
                       texts.detalhesPauta.numeroSequencial +
-                      ": " +
-                      pauta.numeroSequencial
+                        ": " +
+                        pauta.numeroSequencial
                     );
                   }}
                 >
@@ -628,8 +640,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.comissao +
-                    ": " +
-                    pauta.comissao.nomeForum
+                      ": " +
+                      pauta.comissao.nomeForum
                   );
                 }}
               >
@@ -646,11 +658,11 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.reuniaoDoForum +
-                    ": " +
-                    DateService.getFullDateUSFormat(
-                      DateService.getDateByMySQLFormat(pauta?.dataReuniao),
-                      texts.linguagem
-                    )
+                      ": " +
+                      DateService.getFullDateUSFormat(
+                        DateService.getDateByMySQLFormat(pauta?.dataReuniao),
+                        texts.linguagem
+                      )
                   );
                 }}
               >
@@ -670,8 +682,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.analistaResponsavel +
-                    ": " +
-                    pauta.analistaResponsavel.nome
+                      ": " +
+                      pauta.analistaResponsavel.nome
                   );
                 }}
               >
@@ -742,57 +754,58 @@ const DetalhesPauta = (props) => {
                     <>
                       {pauta.propostas?.map((proposta, index) => {
                         return (
-                          <Box
-                            key={index}
-                            className="w-full flex items-center border-solid border border-l-4 px-4 py-2 mt-4 cursor-pointer"
-                            sx={{
-                              borderLeftColor: "primary.main",
-                              backgroundColor: "background.default",
-                              fontWeight: "300",
-                              "&:hover": { backgroundColor: "component.main" },
-                            }}
-                            onClick={() => {
-                              if (lendoTexto) {
-                                lerTexto(proposta.titulo);
-                              } else if (librasAtivo) {
-                              } else {
-                                onClickProposta(index);
-                              }
-                            }}
-                          >
-                            <Box className="w-full flex justify-between items-center">
-                              <Typography
-                                fontSize={FontConfig.medium}
-                                className="truncate"
-                                color="primary"
-                              >
-                                {index + 1} - {proposta.titulo}
-                              </Typography>
-
-                              <Tooltip title={texts.detalhesPauta.addParecer}>
-                                <IconButton
-                                  size="small"
-                                  onClick={(event) =>
-                                    abrirParecerProposta(event, proposta)
-                                  }
+                          <Box key={index} className="w-full">
+                            <Box
+                              className="w-full flex items-center border-solid border border-l-4 px-4 py-2 mt-4 cursor-pointer"
+                              sx={{
+                                borderLeftColor: "primary.main",
+                                backgroundColor: "background.default",
+                                fontWeight: "300",
+                                "&:hover": {
+                                  backgroundColor: "component.main",
+                                },
+                              }}
+                              onClick={() => {
+                                if (lendoTexto) {
+                                  lerTexto(proposta.titulo);
+                                } else if (librasAtivo) {
+                                } else {
+                                  onClickProposta(index);
+                                }
+                              }}
+                            >
+                              <Box className="w-full flex justify-between items-center">
+                                <Typography
+                                  fontSize={FontConfig.medium}
+                                  className="truncate"
+                                  color="primary"
                                 >
-                                  <RateReviewOutlinedIcon />
-                                </IconButton>
-                              </Tooltip>
+                                  {index + 1} - {proposta.titulo}
+                                </Typography>
+
+                                <Tooltip title={texts.detalhesPauta.addParecer}>
+                                  <IconButton
+                                    size="small"
+                                    onClick={(event) =>
+                                      abrirParecerProposta(event, proposta)
+                                    }
+                                  >
+                                    <RateReviewOutlinedIcon />
+                                  </IconButton>
+                                </Tooltip>
+                              </Box>
                             </Box>
+                            {!!propostaParecer &&
+                              propostaParecer.id == proposta.id && (
+                                <InserirParecer
+                                  proposta={propostaParecer}
+                                  setProposta={setPropostaParecer}
+                                  setPauta={setPauta}
+                                />
+                              )}
                           </Box>
                         );
                       })}
-                      {!!propostaParecer && (
-                        <Box className="w-full mt-4">
-                          <Divider />
-                          <InserirParecer
-                            proposta={propostaParecer}
-                            setProposta={setPropostaParecer}
-                            setPauta={setPauta}
-                          />
-                        </Box>
-                      )}
                     </>
                   ) : (
                     <Typography
@@ -914,8 +927,8 @@ const DetalhesPauta = (props) => {
 
 const InserirParecer = ({
   proposta = EntitiesObjectService.proposta(),
-  setProposta = () => { },
-  setPauta = () => { },
+  setProposta = () => {},
+  setPauta = () => {},
 }) => {
   /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
@@ -966,7 +979,7 @@ const InserirParecer = ({
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   return (
-    <Box className="mt-3">
+    <Box className="mt-1">
       <Box className="w-full flex justify-between items-center">
         <Typography
           fontSize={FontConfig.veryBig}
@@ -985,25 +998,6 @@ const InserirParecer = ({
         </Tooltip>
       </Box>
       <Box>
-        <Box className="flex gap-2">
-          <Typography
-            color="primary"
-            component="span"
-            fontWeight={600}
-            onClick={() => {
-              lerTexto(texts.detalhesPauta.proposta);
-            }}
-          >
-            {texts.detalhesPauta.proposta}:
-          </Typography>
-          <Typography
-            onClick={() => {
-              lerTexto(proposta.titulo);
-            }}
-          >
-            {proposta.titulo}
-          </Typography>
-        </Box>
         <Box className="flex gap-2">
           <Typography
             color="primary"
