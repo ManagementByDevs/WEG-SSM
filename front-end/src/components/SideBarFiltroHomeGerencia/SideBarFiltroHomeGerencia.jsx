@@ -408,7 +408,7 @@ function Input(props) {
 
   /** Função para atualizar os filtros quando um status for selecionado */
   const selecionarStatus = (event) => {
-    props.setFiltro({ ...props.filtro, status: event.target.value });
+    props.setFiltro({ ...props.filtro, status: event.target.value || "" });
   };
 
   /** Função para atualizar os filtros quando a atribuição for selecionada */
@@ -513,10 +513,6 @@ function Input(props) {
     options: props.listaSolicitantes,
     getOptionLabel: (option) => option.nome,
   };
-
-  useEffect(() => {
-    console.log(props.valorAba);
-  }, []);
 
   return (
     <Box className="flex flex-col items-center w-full mb-5">
@@ -633,7 +629,7 @@ function Input(props) {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={props.statusFiltroAtual}
+                  value={props.filtro.status}
                   label={"Icon" + texts.sideBarFiltro.status}
                   onChange={selecionarStatus}
                 >

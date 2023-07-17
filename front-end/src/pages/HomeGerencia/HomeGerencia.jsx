@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Box, Button, IconButton, Tab, Tooltip, Drawer } from "@mui/material";
+import { Box, Button, IconButton, Tab, Tooltip, Drawer, Chip, Typography } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import Tour from "reactour";
@@ -1199,6 +1199,97 @@ const HomeGerencia = () => {
     setState({ ...state, [anchor]: open });
   };
 
+  /** Função para formatar o nome do status da demanda para o solicitante */
+  const formatarNomeStatus = (status) => {
+    if (status == "CANCELLED") {
+      return texts.demanda.status.reprovada;
+    } else if (status == "BACKLOG_REVISAO") {
+      return texts.demanda.status.aguardandoRevisao;
+    } else if (status == "BACKLOG_EDICAO") {
+      return texts.demanda.status.aguardandoEdicao;
+    } else if (status == "BACKLOG_APROVACAO") {
+      return texts.demanda.status.emAprovacao;
+    } else if (status == "ASSESSMENT") {
+      return texts.demanda.status.aprovada;
+    } else if (status == "ASSESSMENT_APROVACAO" || status == "ASSESSMENT_EDICAO" || status == "ASSESSMENT_COMISSAO" || status == "ASSESSMENT_DG") {
+      return texts.demanda.status.emAndamento;
+    } else if (status == "DONE") {
+      return texts.demanda.status.emDesenvolvimento;
+    }
+  };
+
+  /** Função para retornar uma lista com os filtros atuais para amostra abaixo da barra de pesquisa */
+  const retornarAmostraFiltros = () => {
+    let listaFiltros = [];
+
+    if (filtrosAtuais.solicitante && (valorAba == 4)) {
+      listaFiltros.push({ nome: "solicitante", valor: "Solicitante: " + filtrosAtuais.solicitante.nome })
+    }
+    if (filtrosAtuais.forum && (valorAba == 3 || valorAba == 4)) {
+      listaFiltros.push({ nome: "forum", valor: filtrosAtuais.forum.siglaForum })
+    }
+    if (filtrosAtuais.tamanho && (valorAba == 3 || valorAba == 4)) {
+      listaFiltros.push({ nome: "tamanho", valor: filtrosAtuais.tamanho })
+    }
+    if (filtrosAtuais.gerente && (valorAba == 2 || valorAba == 3 || valorAba == 4)) {
+      listaFiltros.push({ nome: "gerente", valor: "Gerente: " + filtrosAtuais.gerente.nome })
+    }
+    if (filtrosAtuais.departamento && (valorAba == 2 || valorAba == 3 || valorAba == 4)) {
+      listaFiltros.push({ nome: "departamento", valor: filtrosAtuais.departamento.nome })
+    }
+    if (filtrosAtuais.analista && (valorAba == 3 || valorAba == 4)) {
+      listaFiltros.push({ nome: "analista", valor: "Analista: " + filtrosAtuais.analista.nome })
+    }
+    if (filtrosAtuais.presenteEm && (valorAba == 4)) {
+      listaFiltros.push({ nome: "presenteEm", valor: "Atribuição: " + (filtrosAtuais.presenteEm == "Solta" ? "Sem Atribuição" : filtrosAtuais.presenteEm) })
+    }
+    if (filtrosAtuais.status && (valorAba == 1 || valorAba == 4)) {
+      listaFiltros.push({ nome: "status", valor: (valorAba == 1 ? formatarNomeStatus(filtrosAtuais.status) : filtrosAtuais.status) })
+    }
+    if ((paramsAtas.apreciada || paramsAtas.naoApreciada) && (valorAba == 6)) {
+      listaFiltros.push({ nome: "apreciada", valor: paramsAtas.apreciada ? "Apreciada" : "Não Apreciada" })
+    }
+    if ((paramsAtas.publicada || paramsAtas.naoPublicada) && (valorAba == 6)) {
+      listaFiltros.push({ nome: "apreciada", valor: paramsAtas.publicada ? "Publicada" : "Não Publicada" })
+    }
+
+    return listaFiltros;
+  }
+
+  /** Função para limpar um determinado filtro */
+  const removerFiltro = (nomeFiltro) => {
+    if (nomeFiltro == "solicitante") {
+      setFiltrosAtuais({ ...filtrosAtuais, solicitante: null })
+    }
+    if (nomeFiltro == "forum") {
+      setFiltrosAtuais({ ...filtrosAtuais, forum: "" })
+    }
+    if (nomeFiltro == "tamanho") {
+      setFiltrosAtuais({ ...filtrosAtuais, tamanho: "" })
+    }
+    if (nomeFiltro == "gerente") {
+      setFiltrosAtuais({ ...filtrosAtuais, gerente: null })
+    }
+    if (nomeFiltro == "departamento") {
+      setFiltrosAtuais({ ...filtrosAtuais, departamento: "" })
+    }
+    if (nomeFiltro == "analista") {
+      setFiltrosAtuais({ ...filtrosAtuais, analista: null })
+    }
+    if (nomeFiltro == "presenteEm") {
+      setFiltrosAtuais({ ...filtrosAtuais, presenteEm: "" })
+    }
+    if (nomeFiltro == "status") {
+      setFiltrosAtuais({ ...filtrosAtuais, status: "" })
+    }
+    if (nomeFiltro == "apreciada") {
+      setParamsAtas({ ...paramsAtas, apreciada: false, naoApreciada: false });
+    }
+    if (nomeFiltro == "publicada") {
+      setParamsAtas({ ...paramsAtas, publicada: false, naoPublicada: false });
+    }
+  }
+
   return (
     <FundoComHeader>
       {/* {!fecharChatMinimizado && (
@@ -1728,7 +1819,7 @@ const HomeGerencia = () => {
                   // Botão de criar pauta
                   <Button
                     className="gap-2"
-                    sx={{minWidth: "9rem"}}
+                    sx={{ minWidth: "9rem" }}
                     variant="contained"
                     disableElevation
                     onClick={() => {
@@ -1751,21 +1842,92 @@ const HomeGerencia = () => {
                   <ClipLoader color="#00579D" size={110} />
                 </Box>
               ) : (
-                <Box className="mt-6" id="sextoMinhasDemandas">
-                  <Box>
-                    <TabPanel sx={{ padding: 0 }} value="1">
-                      <Ajuda
-                        onClick={() => {
-                          setIsTourMinhasDemandasOpen(true);
-                          setState({ ...state, ["right"]: false });
-                        }}
-                      />
-                      <Box>
-                        {isTourMinhasDemandasOpen ? (
+                <>
+                  {retornarAmostraFiltros().length > 0 ? (
+                    <Box className="mt-4 mb-4 h-6 flex items-center">
+                      <Typography
+                        key={"LabelMostrarResultados"}
+                        fontSize={FontConfig.medium}
+                        color="text.secondary"
+                        mr={2}
+                      >
+                        {texts.sideBarFiltro.mostrandoResultados}
+                      </Typography>
+
+                      {retornarAmostraFiltros().map((filtro, index) => (
+                        <Chip
+                          key={"FiltroAmostra" + index}
+                          label={filtro.valor}
+                          sx={{ fontSize: FontConfig.small, marginRight: "0.5rem" }}
+                          onDelete={() => { removerFiltro(filtro.nome) }}
+                        />
+                      ))}
+                    </Box>
+                  ) : null}
+                  <Box className="mt-6" id="sextoMinhasDemandas">
+                    <Box>
+                      <TabPanel sx={{ padding: 0 }} value="1">
+                        <Ajuda
+                          onClick={() => {
+                            setIsTourMinhasDemandasOpen(true);
+                            setState({ ...state, ["right"]: false });
+                          }}
+                        />
+                        <Box>
+                          {isTourMinhasDemandasOpen ? (
+                            <DemandaGerencia
+                              key={1}
+                              isTourDemandasOpen={isTourDemandasOpen}
+                              setIsTourDemandasOpen={setIsTourDemandasOpen}
+                              dados={{
+                                analista: {},
+                                beneficios: [{}],
+                                buSolicitante: {},
+                                busBeneficiados: [{}],
+                                departamento: {},
+                                frequencia: "",
+                                gerente: {},
+                                tamanho: "",
+                                id: 0,
+                                titulo: texts.homeGerencia.demandaParaTour,
+                                problema: "",
+                                proposta: "",
+                                motivoRecusa: "",
+                                status: "ASSESSMENT",
+                                data: "",
+                                solicitante: {
+                                  nome: texts.homeGerencia.demandaParaTour,
+                                  tour: true
+                                },
+                              }}
+                              semHistorico={true}
+                              tipo="demanda"
+                            />
+                          ) : (
+                            <DemandaModoVisualizacao
+                              listaDemandas={listaItens}
+                              onDemandaClick={verDemanda}
+                              myDemandas={true}
+                              nextModoVisualizacao={nextModoVisualizacao}
+                            />
+                          )}
+                        </Box>
+                      </TabPanel>
+                    </Box>
+                    {/* Valores para as abas selecionadas */}
+                    <Box id="primeiroDemandas">
+                      <TabPanel sx={{ padding: 0 }} value="2">
+                        <Ajuda
+                          onClick={() => {
+                            setIsTourDemandasOpen(true);
+                            setState({ ...state, ["right"]: false });
+                          }}
+                        />
+                        {isTourDemandasOpen ? (
                           <DemandaGerencia
                             key={1}
                             isTourDemandasOpen={isTourDemandasOpen}
-                            setIsTourDemandasOpen={setIsTourDemandasOpen}
+                            setFeedbackAbrirChat={setFeedbackAbrirChat}
                             dados={{
                               analista: {},
                               beneficios: [{}],
@@ -1780,237 +1942,189 @@ const HomeGerencia = () => {
                               problema: "",
                               proposta: "",
                               motivoRecusa: "",
-                              status: "ASSESSMENT",
+                              status: "BACKLOG_REVISAO",
                               data: "",
                               solicitante: {
                                 nome: texts.homeGerencia.demandaParaTour,
-                                tour: true
                               },
                             }}
-                            semHistorico={true}
                             tipo="demanda"
                           />
                         ) : (
-                          <DemandaModoVisualizacao
+                          <DemandaGerenciaModoVisualizacao
                             listaDemandas={listaItens}
                             onDemandaClick={verDemanda}
-                            myDemandas={true}
+                            setFeedbackAbrirChat={setFeedbackAbrirChat}
                             nextModoVisualizacao={nextModoVisualizacao}
                           />
                         )}
-                      </Box>
-                    </TabPanel>
-                  </Box>
-                  {/* Valores para as abas selecionadas */}
-                  <Box id="primeiroDemandas">
-                    <TabPanel sx={{ padding: 0 }} value="2">
-                      <Ajuda
-                        onClick={() => {
-                          setIsTourDemandasOpen(true);
-                          setState({ ...state, ["right"]: false });
-                        }}
-                      />
-                      {isTourDemandasOpen ? (
-                        <DemandaGerencia
-                          key={1}
-                          isTourDemandasOpen={isTourDemandasOpen}
-                          setFeedbackAbrirChat={setFeedbackAbrirChat}
-                          dados={{
-                            analista: {},
-                            beneficios: [{}],
-                            buSolicitante: {},
-                            busBeneficiados: [{}],
-                            departamento: {},
-                            frequencia: "",
-                            gerente: {},
-                            tamanho: "",
-                            id: 0,
-                            titulo: texts.homeGerencia.demandaParaTour,
-                            problema: "",
-                            proposta: "",
-                            motivoRecusa: "",
-                            status: "BACKLOG_REVISAO",
-                            data: "",
-                            solicitante: {
-                              nome: texts.homeGerencia.demandaParaTour,
-                            },
-                          }}
-                          tipo="demanda"
-                        />
-                      ) : (
-                        <DemandaGerenciaModoVisualizacao
-                          listaDemandas={listaItens}
-                          onDemandaClick={verDemanda}
-                          setFeedbackAbrirChat={setFeedbackAbrirChat}
-                          nextModoVisualizacao={nextModoVisualizacao}
-                        />
-                      )}
-                    </TabPanel>
-                  </Box>
-                  {!usuarioGerente && (
-                    <>
-                      <TabPanel
-                        sx={{ padding: 0 }}
-                        value="3"
-                        onClick={() => { }}
-                      >
-                        <Ajuda
-                          onClick={() => {
-                            setIsTourCriarPropostasOpen(true);
-                            setState({ ...state, ["right"]: false });
-                          }}
-                        />
-                        <Box id="primeiroCriarPropostas">
-                          {isTourCriarPropostasOpen ? (
-                            <DemandaGerencia
-                              key={1}
-                              isTourDemandasOpen={isTourDemandasOpen}
-                              setFeedbackAbrirChat={setFeedbackAbrirChat}
-                              dados={{
-                                analista: {},
-                                beneficios: [{}],
-                                buSolicitante: {},
-                                busBeneficiados: [{}],
-                                departamento: {},
-                                frequencia: "",
-                                gerente: {},
-                                tamanho: "",
-                                id: 0,
-                                titulo: texts.homeGerencia.demandaParaTour,
-                                problema: "",
-                                proposta: "",
-                                motivoRecusa: "",
-                                status: "ASSESSMENT",
-                                data: "",
-                                solicitante: {
-                                  nome: texts.homeGerencia.demandaParaTour,
-                                },
-                              }}
-                              tipo="proposta"
-                            />
-                          ) : (
-                            <DemandaGerenciaModoVisualizacao
-                              listaDemandas={listaItens}
-                              onDemandaClick={verDemanda}
-                              setFeedbackAbrirChat={setFeedbackAbrirChat}
-                              nextModoVisualizacao={nextModoVisualizacao}
-                              isChatVisible
-                            />
-                          )}
-                        </Box>
                       </TabPanel>
-                      <TabPanel sx={{ padding: 0 }} value="4">
-                        <Box id="primeiroPropostas">
+                    </Box>
+                    {!usuarioGerente && (
+                      <>
+                        <TabPanel
+                          sx={{ padding: 0 }}
+                          value="3"
+                          onClick={() => { }}
+                        >
                           <Ajuda
                             onClick={() => {
-                              setIsTourPropostasOpen(true);
+                              setIsTourCriarPropostasOpen(true);
                               setState({ ...state, ["right"]: false });
                             }}
                           />
-                          {isTourPropostasOpen ? (
-                            <DemandaGerencia
-                              key={1}
-                              isTourDemandasOpen={isTourDemandasOpen}
-                              setFeedbackAbrirChat={setFeedbackAbrirChat}
-                              dados={{
-                                analista: {},
-                                beneficios: [{}],
-                                buSolicitante: {},
-                                busBeneficiados: [{}],
-                                departamento: {},
-                                frequencia: "",
-                                gerente: {},
-                                tamanho: "",
-                                id: 0,
-                                titulo: texts.homeGerencia.demandaParaTour,
-                                problema: "",
-                                proposta: "",
-                                motivoRecusa: "",
-                                status: "ASSESSMENT",
-                                data: "",
-                                solicitante: {
-                                  nome: texts.homeGerencia.demandaParaTour,
-                                },
-                              }}
-                              tipo="proposta"
-                            />
-                          ) : (
-                            <Box>
+                          <Box id="primeiroCriarPropostas">
+                            {isTourCriarPropostasOpen ? (
+                              <DemandaGerencia
+                                key={1}
+                                isTourDemandasOpen={isTourDemandasOpen}
+                                setFeedbackAbrirChat={setFeedbackAbrirChat}
+                                dados={{
+                                  analista: {},
+                                  beneficios: [{}],
+                                  buSolicitante: {},
+                                  busBeneficiados: [{}],
+                                  departamento: {},
+                                  frequencia: "",
+                                  gerente: {},
+                                  tamanho: "",
+                                  id: 0,
+                                  titulo: texts.homeGerencia.demandaParaTour,
+                                  problema: "",
+                                  proposta: "",
+                                  motivoRecusa: "",
+                                  status: "ASSESSMENT",
+                                  data: "",
+                                  solicitante: {
+                                    nome: texts.homeGerencia.demandaParaTour,
+                                  },
+                                }}
+                                tipo="proposta"
+                              />
+                            ) : (
                               <DemandaGerenciaModoVisualizacao
                                 listaDemandas={listaItens}
-                                onDemandaClick={verProposta}
+                                onDemandaClick={verDemanda}
                                 setFeedbackAbrirChat={setFeedbackAbrirChat}
                                 nextModoVisualizacao={nextModoVisualizacao}
-                                isProposta={true}
+                                isChatVisible
                               />
-                            </Box>
-                          )}
+                            )}
+                          </Box>
+                        </TabPanel>
+                        <TabPanel sx={{ padding: 0 }} value="4">
+                          <Box id="primeiroPropostas">
+                            <Ajuda
+                              onClick={() => {
+                                setIsTourPropostasOpen(true);
+                                setState({ ...state, ["right"]: false });
+                              }}
+                            />
+                            {isTourPropostasOpen ? (
+                              <DemandaGerencia
+                                key={1}
+                                isTourDemandasOpen={isTourDemandasOpen}
+                                setFeedbackAbrirChat={setFeedbackAbrirChat}
+                                dados={{
+                                  analista: {},
+                                  beneficios: [{}],
+                                  buSolicitante: {},
+                                  busBeneficiados: [{}],
+                                  departamento: {},
+                                  frequencia: "",
+                                  gerente: {},
+                                  tamanho: "",
+                                  id: 0,
+                                  titulo: texts.homeGerencia.demandaParaTour,
+                                  problema: "",
+                                  proposta: "",
+                                  motivoRecusa: "",
+                                  status: "ASSESSMENT",
+                                  data: "",
+                                  solicitante: {
+                                    nome: texts.homeGerencia.demandaParaTour,
+                                  },
+                                }}
+                                tipo="proposta"
+                              />
+                            ) : (
+                              <Box>
+                                <DemandaGerenciaModoVisualizacao
+                                  listaDemandas={listaItens}
+                                  onDemandaClick={verProposta}
+                                  setFeedbackAbrirChat={setFeedbackAbrirChat}
+                                  nextModoVisualizacao={nextModoVisualizacao}
+                                  isProposta={true}
+                                />
+                              </Box>
+                            )}
+                          </Box>
+                        </TabPanel>
+                        <Box id="primeiroPautas">
+                          <TabPanel sx={{ padding: 0 }} value="5">
+                            <Ajuda
+                              onClick={() => {
+                                setIsTourPautasOpen(true);
+                                setState({ ...state, ["right"]: false });
+                              }}
+                            />
+                            {isTourPautasOpen ? (
+                              <Pauta
+                                key={1}
+                                isTourDemandasOpen={isTourDemandasOpen}
+                                dados={{
+                                  numeroSequencial: "Pauta para Tour",
+                                }}
+                                tipo="pauta"
+                              />
+                            ) : (
+                              <PautaAtaModoVisualizacao
+                                listaPautas={listaItens}
+                                onItemClick={(pauta) => {
+                                  navigate("/detalhes-pauta", {
+                                    state: { pauta },
+                                  });
+                                }}
+                                nextModoVisualizacao={nextModoVisualizacao}
+                                setPautaSelecionada={setPautaSelecionada}
+                              />
+                            )}
+                          </TabPanel>
                         </Box>
-                      </TabPanel>
-                      <Box id="primeiroPautas">
-                        <TabPanel sx={{ padding: 0 }} value="5">
-                          <Ajuda
-                            onClick={() => {
-                              setIsTourPautasOpen(true);
-                              setState({ ...state, ["right"]: false });
-                            }}
-                          />
-                          {isTourPautasOpen ? (
-                            <Pauta
-                              key={1}
-                              isTourDemandasOpen={isTourDemandasOpen}
-                              dados={{
-                                numeroSequencial: "Pauta para Tour",
+                        <Box id="primeiroAtas">
+                          <TabPanel sx={{ padding: 0 }} value="6">
+                            <Ajuda
+                              onClick={() => {
+                                setIsTourAtasOpen(true);
+                                setState({ ...state, ["right"]: false });
                               }}
-                              tipo="pauta"
                             />
-                          ) : (
-                            <PautaAtaModoVisualizacao
-                              listaPautas={listaItens}
-                              onItemClick={(pauta) => {
-                                navigate("/detalhes-pauta", {
-                                  state: { pauta },
-                                });
-                              }}
-                              nextModoVisualizacao={nextModoVisualizacao}
-                              setPautaSelecionada={setPautaSelecionada}
-                            />
-                          )}
-                        </TabPanel>
-                      </Box>
-                      <Box id="primeiroAtas">
-                        <TabPanel sx={{ padding: 0 }} value="6">
-                          <Ajuda
-                            onClick={() => {
-                              setIsTourAtasOpen(true);
-                              setState({ ...state, ["right"]: false });
-                            }}
-                          />
-                          {isTourAtasOpen ? (
-                            <Pauta
-                              key={1}
-                              isTourDemandasOpen={isTourDemandasOpen}
-                              dados={{
-                                numeroSequencial: "Ata para Tour",
-                              }}
-                              tipo="ata"
-                            />
-                          ) : (
-                            <PautaAtaModoVisualizacao
-                              listaPautas={listaItens}
-                              onItemClick={(ata) => {
-                                navigate("/detalhes-ata", { state: { ata } });
-                              }}
-                              nextModoVisualizacao={nextModoVisualizacao}
-                              setPautaSelecionada={setPautaSelecionada}
-                              isAta={true}
-                            />
-                          )}
-                        </TabPanel>
-                      </Box>
-                    </>
-                  )}
-                </Box>
+                            {isTourAtasOpen ? (
+                              <Pauta
+                                key={1}
+                                isTourDemandasOpen={isTourDemandasOpen}
+                                dados={{
+                                  numeroSequencial: "Ata para Tour",
+                                }}
+                                tipo="ata"
+                              />
+                            ) : (
+                              <PautaAtaModoVisualizacao
+                                listaPautas={listaItens}
+                                onItemClick={(ata) => {
+                                  navigate("/detalhes-ata", { state: { ata } });
+                                }}
+                                nextModoVisualizacao={nextModoVisualizacao}
+                                setPautaSelecionada={setPautaSelecionada}
+                                isAta={true}
+                              />
+                            )}
+                          </TabPanel>
+                        </Box>
+                      </>
+                    )}
+                  </Box>
+                </>
               )}
             </TabContext>
           )}

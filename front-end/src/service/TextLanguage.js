@@ -1090,6 +1090,8 @@ const TextLanguage = (linguagem) => {
           ata: "Ata",
           pauta: "Pauta",
           semAtribuicao: "Sem Atribuição",
+          removerFiltro: "Remover Filtro",
+          mostrandoResultados: "Mostrando resultados de:"
         },
       }
     : linguagem == "en"
@@ -2140,7 +2142,6 @@ const TextLanguage = (linguagem) => {
           ordenar: "Order",
           filtrar: "Filter",
           limparFiltro: "Clear Filters",
-
           aprovada: "Approved",
           reprovada: "Rejected",
           aguardandoRevisao: "Awaiting Review",
@@ -2149,6 +2150,8 @@ const TextLanguage = (linguagem) => {
           aprovada: "Approved",
           emAndamento: "In Progress",
           emDesenvolvimento: "In Development",
+          removerFiltro: "Remove Filter",
+          mostrandoResultados: "Showing results from:"
         },
       }
     : linguagem == "ch"
@@ -3154,7 +3157,6 @@ const TextLanguage = (linguagem) => {
           ordenar: "排序",
           filtrar: "过滤器",
           limparFiltro: "清除过滤器",
-
           aprovada: "批准",
           reprovada: "拒绝",
           aguardandoRevisao: "等待审查",
@@ -3163,6 +3165,8 @@ const TextLanguage = (linguagem) => {
           aprovada: "批准",
           emAndamento: "进行中",
           emDesenvolvimento: "正在开发中",
+          removerFiltro: "删除过滤器",
+          mostrandoResultados: "显示结果来自："
         },
       }
     : linguagem == "es"
@@ -4212,7 +4216,6 @@ const TextLanguage = (linguagem) => {
           ordenar: "Ordenar",
           filtrar: "Filtrar",
           limparFiltro: "Filtros Claros",
-
           reprovada: "Rechazada",
           aguardandoRevisao: "Esperando Revisión",
           aguardandoEdicao: "Esperando Edición",
@@ -4220,7 +4223,6 @@ const TextLanguage = (linguagem) => {
           aprovada: "Aprobada",
           emAndamento: "En Curso",
           emDesenvolvimento: "En Desarollo",
-
           cancelled: "Cancelled",
           businessCase: "Business Case",
           done: "Done",
@@ -4228,10 +4230,11 @@ const TextLanguage = (linguagem) => {
           assessmentEdicao: "Assessment - Edição",
           assessmentComissao: "Assessment - Comissão",
           assessmentDg: "Assessment - DG",
-
           ata: "Ata",
           pauta: "Pauta",
           semAtribuicao: "Sin Atribución",
+          removerFiltro: "Quitar Filtro",
+          mostrandoResultados: "Mostrando resultados de:"
         },
       }
     : null;
