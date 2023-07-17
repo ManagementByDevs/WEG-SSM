@@ -756,7 +756,7 @@ const HomeGerencia = () => {
   const limparOrdenacao = () => {
     setOrdenacaoPPM([false, false]);
     setOrdenacaoDate([false, false]);
-    setOrdenacaoScore([false, false]);
+    setOrdenacaoScore([false, true]);
     setOrdenacaoTitulo([false, false]);
   }
 

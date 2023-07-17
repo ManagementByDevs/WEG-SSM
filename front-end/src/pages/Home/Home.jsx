@@ -323,7 +323,7 @@ const Home = () => {
   const limparFiltro = () => {
     setStatusFiltroAtual("");
     setOrdenacaoTitulo([false, false]);
-    setOrdenacaoScore([false, false]);
+    setOrdenacaoScore([false, true]);
     setOrdenacaoDate([false, false]);
   }
 
@@ -676,6 +676,10 @@ const Home = () => {
                   {texts.home.criarDemanda}
                   <AddIcon />
                 </Button>
+              </Box>
+
+              <Box className="mt-2 h-4">
+
               </Box>
 
               <Box className="mt-6" id="quinto">

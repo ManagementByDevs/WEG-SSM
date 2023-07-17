@@ -488,7 +488,7 @@ public class ExcelGeneratorService {
                 // Adicionando informações nas respectivas colunas
                 row.createCell(0).setCellValue(contadorProposta);
                 row.createCell(1).setCellValue(proposta.getCodigoPPM());
-                row.createCell(2).setCellValue(proposta.getData());
+                row.createCell(2).setCellValue(proposta.getData().toString());
                 row.createCell(3).setCellValue(proposta.getTitulo());
                 row.createCell(4).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                 row.createCell(5).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
@@ -698,7 +698,7 @@ public class ExcelGeneratorService {
                         // Aplicando as informações nas colunas
                         row.createCell(2).setCellValue(proposta.getTitulo());
                         row.createCell(3).setCellValue(proposta.getCodigoPPM());
-                        row.createCell(4).setCellValue(proposta.getData());
+                        row.createCell(4).setCellValue(proposta.getData().toString());
                         row.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         row.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
                         row.createCell(7).setCellValue(Jsoup.parse(proposta.getProblema()).text());
@@ -968,7 +968,7 @@ public class ExcelGeneratorService {
                     if (contadorProposta == 0) {
                         row.createCell(2).setCellValue(proposta.getTitulo());
                         row.createCell(3).setCellValue(proposta.getCodigoPPM());
-                        row.createCell(4).setCellValue(proposta.getData());
+                        row.createCell(4).setCellValue(proposta.getData().toString());
                         row.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         row.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
                         row.createCell(7).setCellValue(Jsoup.parse(proposta.getProblema()).text());

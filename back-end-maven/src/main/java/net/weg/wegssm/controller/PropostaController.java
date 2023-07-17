@@ -4454,7 +4454,11 @@ public class PropostaController {
 
         switch (parecerGerencia) {
             case APROVADO -> {
-                proposta.setStatus(Status.ASSESSMENT_DG);
+                if(proposta.getPublicada()) {
+                    proposta.setStatus(Status.ASSESSMENT_DG);
+                } else {
+                    proposta.setStatus(Status.DONE);
+                }
                 proposta.setPresenteEm("Ata");
             }
             case REPROVADO -> {
