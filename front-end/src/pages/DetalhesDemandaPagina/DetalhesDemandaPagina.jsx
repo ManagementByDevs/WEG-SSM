@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ClipLoader } from "react-spinners";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { Box, IconButton } from "@mui/material";
 
@@ -23,6 +23,8 @@ import DemandaService from "../../service/demandaService";
 /** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
 const DetalhesDemandaPagina = () => {
 
+  const paramsPath = useParams();
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -30,7 +32,7 @@ const DetalhesDemandaPagina = () => {
   const location = useLocation();
 
   /** Variável utilizada para receber os dados de uma demanda */
-  const [dados, setDados] = useState(location.state);
+  const [dados, setDados] = useState(null);
 
   /** Variável para esconder os dados da demanda enquanto busca as preferências do usuário */
   const [carregamento, setCarregamento] = useState(true);
@@ -71,7 +73,7 @@ const DetalhesDemandaPagina = () => {
 
   /** UseEffect utilizado para buscar o usuário do sistema e pegar os dados do state */
   useEffect(() => {
-    buscarDemanda(location.state);
+    buscarDemanda(paramsPath.id);
     buscarUsuario();
   }, []);
 
@@ -86,7 +88,7 @@ const DetalhesDemandaPagina = () => {
 
   /** useEffect utilizado para adicionar uma mensagem ao tour caso o status da demanda seja "backlog_edicao" */
   useEffect(() => {
-    if (dados.status === "BACKLOG_EDICAO") {
+    if (dados && dados.status === "BACKLOG_EDICAO") {
       setSteps([
         ...steps,
         {
@@ -173,15 +175,15 @@ const DetalhesDemandaPagina = () => {
                 </IconButton>
               </Box>
             </Box>
-            <Box className="w-full">
+            <Box className="w-full mt-10 mb-16">
               {/* Mostrar os dados da demanda */}
               <DetalhesDemanda
                 dados={dados}
                 usuario={usuario}
-                setDados={setDados}
                 botao={true}
                 salvar={true}
                 updateDemandaProps={updateDemandaProps}
+                onlyView={false}
               />
             </Box>
           </>

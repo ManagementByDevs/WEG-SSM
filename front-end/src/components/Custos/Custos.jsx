@@ -377,7 +377,7 @@ const Custos = (props) => {
                     <TableRow>
                       <th
                         align="center"
-                        className="p-4 w-0"
+                        className="p-6 w-0"
                         style={{ width: "10%" }}
                       >
                         <Typography

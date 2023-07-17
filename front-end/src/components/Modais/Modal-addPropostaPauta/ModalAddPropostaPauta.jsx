@@ -7,29 +7,23 @@ import {
   Typography,
   Box,
   Button,
-  Checkbox,
-  FormGroup,
   FormControlLabel,
   Paper,
   Select,
   FormControl,
   MenuItem,
-  TextField,
   RadioGroup,
   IconButton,
   Tooltip,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Input,
   Radio,
 } from "@mui/material";
 
 import { red } from "@mui/material/colors";
 
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CloseIcon from "@mui/icons-material/Close";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import Feedback from "../../Feedback/Feedback";
 import ContainerPauta from "../../ContainerPauta/ContainerPauta";
@@ -40,7 +34,6 @@ import TemaContext from "../../../service/TemaContext";
 import PautaService from "../../../service/pautaService";
 import PropostaService from "../../../service/propostaService";
 import ForumService from "../../../service/forumService";
-import EntitiesObjectService from "../../../service/entitiesObjectService";
 import CookieService from "../../../service/cookieService";
 import ExportPdfService from "../../../service/exportPdfService";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
@@ -341,7 +334,7 @@ const ModalAddPropostaPauta = (props) => {
             />
 
             {/* Botão de add uma nova pauta e ícone de fechar */}
-            <Box className="w-full flex items-center justify-between mt-2">
+            <Box className="flex items-center justify-between mt-2" sx={{width: "98%"}}>
               <Box className="flex items-center gap-1">
                 <Typography
                   fontSize={FontConfig.big}
@@ -366,7 +359,7 @@ const ModalAddPropostaPauta = (props) => {
                     color="primary"
                     onClick={() => setnovaPauta(false)}
                   >
-                    <CloseIcon />
+                    <DeleteOutlineOutlinedIcon />
                   </IconButton>
                 </Tooltip>
               )}

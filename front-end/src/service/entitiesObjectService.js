@@ -54,6 +54,33 @@ class EntitiesObjectService {
     };
   }
 
+  demanda() {
+    return {
+      analista: this.usuario(),
+      anexo: [this.anexo()],
+      beneficios: [this.beneficio()],
+      buSolicitante: this.bu(),
+      busBeneficiadas: [this.bu()],
+      data: "",
+      departamento: this.departamento(),
+      escopo: 0,
+      forum: this.forum(),
+      frequencia: "",
+      gerente: this.usuario(),
+      historicoDemanda: [],
+      id: 0,
+      problema: "",
+      proposta: "",
+      secaoTI: this.secaoTI(),
+      solicitante: this.usuario(),
+      status: "",
+      tamanho: "",
+      titulo: "",
+      visibilidade: true,
+      motivoRecusa: "",
+    };
+  }
+
   proposta() {
     return {
       analista: this.usuario(),

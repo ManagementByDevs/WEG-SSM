@@ -1093,6 +1093,13 @@ const TextLanguage = (linguagem) => {
           removerFiltro: "Remover Filtro",
           mostrandoResultados: "Mostrando resultados de:"
         },
+        modalSimilaridade:{
+          avisoSimilaridade: "Aviso de Similaridade",
+          descricao: "A demanda que você tentou criar é semelhante a uma demanda já existente no sistema. Caso deseje, é possível visualizar a demanda semelhante e cancelar o processo, ou ignorar e criar sua demanda.",
+          ignorar: "Ignorar",
+          visualizarDemanda: "Visualizar demanda",
+          cancelar: "Cancelar"
+        }
       }
     : linguagem == "en"
     ? {
@@ -2153,6 +2160,13 @@ const TextLanguage = (linguagem) => {
           removerFiltro: "Remove Filter",
           mostrandoResultados: "Showing results from:"
         },
+        modalSimilaridade:{
+          avisoSimilaridade: "Notice of Similarity",
+          descricao: "The demand you tried to create is similar to an existing demand in the system. If you wish, you can view the similar demand and cancel the process, or ignore and create your demand.",
+          ignorar: "Ignore",
+          visualizarDemanda: "View demand",
+          cancelar: "Cancel"
+        }
       }
     : linguagem == "ch"
     ? {
@@ -3168,6 +3182,13 @@ const TextLanguage = (linguagem) => {
           removerFiltro: "删除过滤器",
           mostrandoResultados: "显示结果来自："
         },
+        modalSimilaridade:{
+          avisoSimilaridade: "相似性通知",
+          descricao: "您尝试创建的需求与系统中的现有需求类似。如果您愿意，您可以查看类似的需求并取消流程，或者忽略并创建您的需求",
+          ignorar: "忽略",
+          visualizarDemanda: "查看需求",
+          cancelar: "取消"
+        }
       }
     : linguagem == "es"
     ? {
@@ -4236,6 +4257,12 @@ const TextLanguage = (linguagem) => {
           removerFiltro: "Quitar Filtro",
           mostrandoResultados: "Mostrando resultados de:"
         },
+        modalSimilaridade:{
+          avisoSimilaridade: "Aviso de similitud",
+          descricao: "La demanda que intentó crear es similar a una demanda existente en el sistema. Si lo desea, puede visualizar la demanda similar y cancelar el proceso, o ignorar y crear su demanda.",
+          visualizarDemanda: "Ver demanda",
+          cancelar: "Cancelar"
+        }
       }
     : null;
 };

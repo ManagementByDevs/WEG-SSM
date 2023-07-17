@@ -714,8 +714,12 @@ const DetalhesDemanda = (props) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
+  useEffect(() => {
+
+  }, [])
+
   return (
-    <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
+    <Box className="flex flex-col justify-center relative items-center">
       {/* Feedback demanda Editada */}
       <Feedback
         open={feedbackDemandaEditada}
@@ -790,58 +794,60 @@ const DetalhesDemanda = (props) => {
         sx={{ width: "60rem", borderTopColor: "primary.main" }}
       >
 
-        {props.usuario?.id == props.dados.solicitante?.id || props.usuario.tipoUsuario != "SOLICITANTE" ? (
+        {props.usuario?.id == props.dados.solicitante?.id || props.usuario.tipoUsuario != "SOLICITANTE" || props.onlyView ? (
           <StatusDemanda
             status={props.dados.status}
           />
         ) : null}
 
         {/* Mostrar o icone de edição caso siga os requisitos */}
-        <Box
-          className="absolute cursor-pointer flex flex-col"
-          sx={{ top: "40px", right: "5px" }}
-          onClick={editarDemanda}
-        >
-          {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            !editar ? (
-            <ModeEditOutlineOutlinedIcon
-              id="terceiro"
-              className="delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main", fontSize: "25px" }}
-            />
-          ) : null}
-          {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
-            <EditOffOutlinedIcon
-              className="delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main", fontSize: "25px" }}
-            />
-          ) : null}
+        {!props.onlyView &&
+          <Box
+            className="absolute cursor-pointer flex flex-col"
+            sx={{ top: "40px", right: "5px" }}
+            onClick={editarDemanda}
+          >
+            {props.usuario?.id == props.dados.solicitante?.id &&
+              props.dados.status == "BACKLOG_EDICAO" &&
+              !editar ? (
+              <ModeEditOutlineOutlinedIcon
+                id="terceiro"
+                className="delay-120 hover:scale-110 duration-300"
+                sx={{ color: "icon.main", fontSize: "25px" }}
+              />
+            ) : null}
+            {props.usuario?.id == props.dados.solicitante?.id &&
+              props.dados.status == "BACKLOG_EDICAO" &&
+              editar ? (
+              <EditOffOutlinedIcon
+                className="delay-120 hover:scale-110 duration-300"
+                sx={{ color: "icon.main", fontSize: "25px" }}
+              />
+            ) : null}
 
-          {props.usuario?.id == props.dados.solicitante?.id && props.dados.status == "BACKLOG_EDICAO" ? (
-            <InfoOutlinedIcon
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!lendoTexto && !librasAtivo) {
-                  setModalMotivoRecusa(true);
-                } else if (librasAtivo) {
+            {props.usuario?.id == props.dados.solicitante?.id && props.dados.status == "BACKLOG_EDICAO" ? (
+              <InfoOutlinedIcon
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!lendoTexto && !librasAtivo) {
+                    setModalMotivoRecusa(true);
+                  } else if (librasAtivo) {
 
-                } else {
-                  lerTexto(texts.demanda.motivo);
-                }
-              }}
-              id="setimo"
-              className="delay-120 hover:scale-110 duration-300 mt-3"
-              sx={{
-                color: "icon.main",
-                cursor: "pointer",
-                fontSize: "25px",
-              }}
-            />
-          ) : null}
-        </Box>
+                  } else {
+                    lerTexto(texts.demanda.motivo);
+                  }
+                }}
+                id="setimo"
+                className="delay-120 hover:scale-110 duration-300 mt-3"
+                sx={{
+                  color: "icon.main",
+                  cursor: "pointer",
+                  fontSize: "25px",
+                }}
+              />
+            ) : null}
+          </Box>
+        }
         {/* o que irá aparecer caso não esteja editando */}
         {!editar ? (
           <>
