@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
 
-import { Button, Tab, Box, Tooltip, IconButton, Drawer } from "@mui/material";
+import { Button, Tab, Box, Tooltip, IconButton, Drawer, Paper, Typography, Chip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -410,6 +410,40 @@ const Home = () => {
     setSidebarFiltro({ ...sidebarFiltro, [anchor]: open });
   };
 
+  /** Função para formatar o nome do status da demanda para o solicitante */
+  const formatarNomeStatus = (status) => {
+    if (status == "CANCELLED") {
+      return texts.demanda.status.reprovada;
+    } else if (status == "BACKLOG_REVISAO") {
+      return texts.demanda.status.aguardandoRevisao;
+    } else if (status == "BACKLOG_EDICAO") {
+      return texts.demanda.status.aguardandoEdicao;
+    } else if (status == "BACKLOG_APROVACAO") {
+      return texts.demanda.status.emAprovacao;
+    } else if (status == "ASSESSMENT") {
+      return texts.demanda.status.aprovada;
+    } else if (status == "ASSESSMENT_APROVACAO" || status == "ASSESSMENT_EDICAO" || status == "ASSESSMENT_COMISSAO" || status == "ASSESSMENT_DG") {
+      return texts.demanda.status.emAndamento;
+    } else if (status == "DONE") {
+      return texts.demanda.status.emDesenvolvimento;
+    }
+  };
+
+  /** Função para retornar uma lista com os filtros atuais para amostra abaixo da barra de pesquisa */
+  const retornarAmostraFiltros = () => {
+    if (statusFiltroAtual) {
+      return [{ nome: "status", valor: formatarNomeStatus(statusFiltroAtual) }]
+    }
+    return [];
+  }
+
+  /** Função para limpar um determinado filtro */
+  const removerFiltro = (nomeFiltro) => {
+    if (nomeFiltro == "status") {
+      setStatusFiltroAtual("");
+    }
+  }
+
   return (
     <FundoComHeader>
       {/* Div container */}
@@ -678,17 +712,34 @@ const Home = () => {
                 </Button>
               </Box>
 
-              <Box className="mt-2 h-4">
-
-              </Box>
-
-              <Box className="mt-6" id="quinto">
+              <Box className="mt-4" id="quinto">
                 {carregamentoItens ? (
                   <Box className="mt-6 w-full h-full flex justify-center items-center">
                     <ClipLoader color="#00579D" size={110} />
                   </Box>
                 ) : (
                   <>
+                    {retornarAmostraFiltros().length > 0 ? (
+                      <Box className="mt-4 mb-4 h-6 flex items-center">
+                        <Typography
+                          key={"LabelMostrarResultados"}
+                          fontSize={FontConfig.medium}
+                          color="text.secondary"
+                          mr={2}
+                        >
+                          {texts.sideBarFiltro.mostrandoResultados}
+                        </Typography>
+
+                        {retornarAmostraFiltros().map((filtro, index) => (
+                          <Chip
+                            key={"FiltroAmostra" + index}
+                            label={filtro.valor}
+                            sx={{ fontSize: FontConfig.small }}
+                            onDelete={() => { removerFiltro(filtro.nome) }}
+                          />
+                        ))}
+                      </Box>
+                    ) : null}
                     <TabPanel sx={{ padding: 0 }} value="1">
                       <Ajuda
                         onClick={() => {

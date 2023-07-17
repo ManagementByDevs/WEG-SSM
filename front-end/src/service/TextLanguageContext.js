@@ -934,6 +934,8 @@ const TextLanguageContext = createContext({
       ata: "Ata",
       pauta: "Pauta",
       semAtribuicao: "Sem Atribuição",
+      removerFiltro: "Remover Filtro",
+      mostrandoResultados: "Mostrando resultados de:"
     },
     criarPauta: {
       novaPauta: "Nova Pauta",

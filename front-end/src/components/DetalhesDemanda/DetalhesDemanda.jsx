@@ -402,7 +402,10 @@ const DetalhesDemanda = (props) => {
     for (const beneficio of listaBeneficios) {
       if (beneficio.visible) {
         let beneficioNovo = { ...beneficio };
-        beneficioNovo.valor_mensal = parseFloat(beneficioNovo.valor_mensal.replace(",", "."))
+        
+        if(beneficio.valor_mensal) {
+          beneficioNovo.valor_mensal = parseFloat(beneficioNovo.valor_mensal.toString().replace(",", "."));
+        }
         BeneficioService.put(beneficioNovo).then((response) => { });
       }
     }
