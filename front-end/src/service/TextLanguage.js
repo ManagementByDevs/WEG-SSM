@@ -4257,7 +4257,6 @@ const TextLanguage = (linguagem) => {
         modalSimilaridade:{
           avisoSimilaridade: "Aviso de similitud",
           descricao: "La demanda que intentó crear es similar a una demanda existente en el sistema. Si lo desea, puede visualizar la demanda similar y cancelar el proceso, o ignorar y crear su demanda.",
-          ignorar: "Ignorar",
           visualizarDemanda: "Ver demanda",
           cancelar: "Cancelar"
         }

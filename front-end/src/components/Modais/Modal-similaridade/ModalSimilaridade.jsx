@@ -146,7 +146,7 @@ const ModalSimilaridade = (props) => {
                     props.criarSemVerificacao(false);
                   } else if (librasAtivo) {
                   } else {
-                    lerTexto(texts.modalSimilaridade.ignorar);
+                    lerTexto(texts.barraProgressaoDemanda.botaoCriar);
                   }
                 }}
                 variant="container"
@@ -160,7 +160,7 @@ const ModalSimilaridade = (props) => {
                   fontSize: FontConfig.big,
                 }}
               >
-                {texts.modalSimilaridade.ignorar}
+                {texts.barraProgressaoDemanda.botaoCriar}
               </Button>
 
               {/* Botão de cancelar a criação da demanda */}
