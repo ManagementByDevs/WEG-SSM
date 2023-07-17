@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
 import net.weg.wegssm.util.*;
+import org.jsoup.Jsoup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -3463,6 +3464,8 @@ public class DemandaController {
         Usuario solicitante = usuarioService.findById(demanda.getSolicitante().getId()).get();
         Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(solicitante.getDepartamento(), TipoUsuario.GERENTE);
 
+        demanda.setProblema_consulta(Jsoup.parse(demanda.getProblema()).text());
+        demanda.setProposta_consulta(Jsoup.parse(demanda.getProposta()).text());
         demanda.setData(new Date());
         demanda.setDepartamento(solicitante.getDepartamento());
         demanda.setGerente(gerente);

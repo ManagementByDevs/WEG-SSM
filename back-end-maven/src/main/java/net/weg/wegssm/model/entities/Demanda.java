@@ -37,10 +37,22 @@ public class Demanda {
     private String problema;
 
     /**
+     * Variável para consulta no banco de dados
+     */
+    @Column(nullable = false, length = 999999999)
+    private String problema_consulta;
+
+    /**
      * Proposta da demanda
      */
     @Column(nullable = false, length = 999999999)
     private String proposta;
+
+    /**
+     * Variável para consulta no banco de dados
+     */
+    @Column(nullable = false, length = 999999999)
+    private String proposta_consulta;
 
     /**
      * Frequência da demanda

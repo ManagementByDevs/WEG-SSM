@@ -15,7 +15,10 @@ import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDem
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioAnexosDemanda from "../FormularioAnexosDemanda/FormularioAnexosDemanda";
 import ModalConfirmacao from "../../Modais/Modal-confirmacao/ModalConfirmacao";
+import ModalSimilaridade from "../../Modais/Modal-similaridade/ModalSimilaridade"
 import Feedback from "../../Feedback/Feedback";
+
+import DOMPurify from "dompurify";
 
 import DemandaService from "../../../service/demandaService";
 import EscopoService from "../../../service/escopoService";
@@ -26,6 +29,7 @@ import UsuarioService from "../../../service/usuarioService";
 import CookieService from "../../../service/cookieService";
 import beneficioService from "../../../service/beneficioService";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
+import DemandaSimilaridade from "../../../service/demandaSimilaridade";
 
 /** Componente principal usado para criação de demanda, redirecionando para as etapas respectivas e
  * salvando a demanda e escopos no banco de dados
@@ -85,6 +89,12 @@ const BarraProgressaoDemanda = () => {
   const [carregamentoDemanda, setCarregamentoDemanda] = useState(true);
 
   const [erro, setErro] = useState(false);
+
+  /** Variável utilizada para abrir o modal de aviso de similaridade */
+  const [modalSimilaridade, setModalSimilaridade] = useState(false);
+
+  /** State que guarda a demanda similar */
+  const [demandaSimilar, setDemandaSimilar] = useState(null);
 
   /** Variável para interromper o salvamento de escopos enquanto a demanda estiver sendo criada */
   let criandoDemanda = false;
@@ -236,8 +246,23 @@ const BarraProgressaoDemanda = () => {
       anexo: retornarIdsObjetos(paginaArquivos),
       solicitante: { id: usuario.id },
     };
+
     return objetoDemanda;
   };
+
+  const retornarObjetoDemandaConsulta = () => {
+
+    let problemaSemHtml = DOMPurify.sanitize(paginaDados.problema, { ALLOWED_TAGS: [] });
+    let propostaSemHtml = DOMPurify.sanitize(paginaDados.proposta, { ALLOWED_TAGS: [] });
+
+    const objeto = {
+      titulo: paginaDados.titulo,
+      problema: problemaSemHtml,
+      proposta: propostaSemHtml,
+    }
+
+    return objeto;
+  }
 
   /** Função para criar e retornar um objeto de histórico para salvamento */
   const retornaObjetoHistorico = () => {
@@ -277,9 +302,40 @@ const BarraProgressaoDemanda = () => {
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
   const criarDemanda = () => {
-    setCarregamentoDemanda(true);
-    criandoDemanda = true;
+    let demandaFinal = retornaObjetoDemanda();
+    demandaFinal.status = "BACKLOG_REVISAO";
 
+    let variavel = retornarObjetoDemandaConsulta();
+
+    DemandaSimilaridade.postSimilaridade(variavel).then((response) => {
+      if (response.message === "Nenhuma demanda similar encontrada.") {
+        setCarregamentoDemanda(true);
+        criandoDemanda = true;
+
+        DemandaService.post(demandaFinal).then((demanda) => {
+          ExportPdfService.exportDemanda(demanda.id).then((file) => {
+            // Salvamento do histórico número 1 da demanda
+            let arquivo = new Blob([file], { type: "application/pdf" });
+            DemandaService.addHistorico(
+              demanda.id,
+              retornaObjetoHistorico(),
+              arquivo
+            ).then((response) => {
+              direcionarHome();
+              excluirEscopo();
+            });
+          });
+        });
+      } else {
+        DemandaService.getById(response.id_demanda_similar).then((demandaSimilarRes) => {
+          setDemandaSimilar(demandaSimilarRes.content[0]);
+          setModalSimilaridade(true);
+        })
+      }
+    })
+  };
+
+  const criarDemandaSemVerificacao = () => {
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
 
@@ -297,7 +353,7 @@ const BarraProgressaoDemanda = () => {
         });
       });
     });
-  };
+  }
 
   /** Função para voltar para a etapa anterior na criação da demanda */
   const voltarEtapa = () => {
@@ -396,6 +452,13 @@ const BarraProgressaoDemanda = () => {
         }}
         status={"erro"}
         mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
+      />
+
+      <ModalSimilaridade
+        open={modalSimilaridade}
+        setOpen={setModalSimilaridade}
+        criarSemVerificacao={criarDemandaSemVerificacao}
+        dados={demandaSimilar}
       />
 
       {carregamentoDemanda ? (

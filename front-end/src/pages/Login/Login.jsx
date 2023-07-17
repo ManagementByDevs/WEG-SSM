@@ -11,6 +11,7 @@ import {
   Input,
   Divider,
   Tooltip,
+  Paper,
 } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -150,9 +151,9 @@ const Login = (props) => {
         sx={{ height: "95%" }}
       >
         {/* Modal de login */}
-        <Box>
+        <Paper className="p-8 border-t-4" sx={{borderColor: "primary.main",}}>
           {/* Título Login */}
-          <Box className="w-full flex justify-between items-center mb-1">
+          <Box className="w-full flex justify-between items-center mb-2">
             <Typography
               fontSize={FontConfig.title}
               fontWeight={600}
@@ -167,9 +168,9 @@ const Login = (props) => {
           <Divider />
 
           {/* Formulario */}
-          <Box className="flex gap-4 mt-2">
+          <Box className="flex gap-8 mt-6">
             {/* Inputs */}
-            <Box className="flex flex-col gap-4 mt-2 w-80">
+            <Box className="flex flex-col gap-6 mt-2 w-80">
               <Input
                 className="border-t border-r text-center p-2"
                 sx={{
@@ -224,7 +225,7 @@ const Login = (props) => {
             </Box>
 
             {/* Entrar */}
-            <Box className="flex flex-col justify-end gap-5 mt-2">
+            <Box className="flex flex-col justify-end gap-7 mt-2">
               <Box className="w-full flex justify-start">
                 <FormControlLabel
                   control={<Checkbox />}
@@ -252,7 +253,7 @@ const Login = (props) => {
               {/* </Box> */}
             </Box>
           </Box>
-        </Box>
+        </Paper>
       </Box>
     </FundoComHeader>
   );
