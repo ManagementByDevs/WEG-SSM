@@ -305,10 +305,10 @@ const BarraProgressaoDemanda = () => {
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
 
-    let variavel = retornarObjetoDemandaConsulta();
+    // let variavel = retornarObjetoDemandaConsulta();
 
-    DemandaSimilaridade.postSimilaridade(variavel).then((response) => {
-      if (response.message === "Nenhuma demanda similar encontrada.") {
+    // DemandaSimilaridade.postSimilaridade(variavel).then((response) => {
+    //   if (response.message === "Nenhuma demanda similar encontrada.") {
         setCarregamentoDemanda(true);
         criandoDemanda = true;
 
@@ -326,13 +326,13 @@ const BarraProgressaoDemanda = () => {
             });
           });
         });
-      } else {
-        DemandaService.getById(response.id_demanda_similar).then((demandaSimilarRes) => {
-          setDemandaSimilar(demandaSimilarRes.content[0]);
-          setModalSimilaridade(true);
-        })
-      }
-    })
+    //   } else {
+    //     DemandaService.getById(response.id_demanda_similar).then((demandaSimilarRes) => {
+    //       setDemandaSimilar(demandaSimilarRes.content[0]);
+    //       setModalSimilaridade(true);
+    //     })
+    //   }
+    // })
   };
 
   const criarDemandaSemVerificacao = () => {
