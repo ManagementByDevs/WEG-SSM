@@ -175,15 +175,15 @@ const DetalhesDemandaPagina = () => {
                 </IconButton>
               </Box>
             </Box>
-            <Box className="w-full">
+            <Box className="w-full mt-10 mb-16">
               {/* Mostrar os dados da demanda */}
               <DetalhesDemanda
                 dados={dados}
                 usuario={usuario}
-                setDados={setDados}
                 botao={true}
                 salvar={true}
                 updateDemandaProps={updateDemandaProps}
+                onlyView={false}
               />
             </Box>
           </>

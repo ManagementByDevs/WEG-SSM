@@ -93,6 +93,9 @@ const BarraProgressaoDemanda = () => {
   /** Variável utilizada para abrir o modal de aviso de similaridade */
   const [modalSimilaridade, setModalSimilaridade] = useState(false);
 
+  /** State que guarda a demanda similar */
+  const [demandaSimilar, setDemandaSimilar] = useState(null);
+
   /** Variável para interromper o salvamento de escopos enquanto a demanda estiver sendo criada */
   let criandoDemanda = false;
 
@@ -324,7 +327,10 @@ const BarraProgressaoDemanda = () => {
           });
         });
       } else {
-        setModalSimilaridade(true);
+        DemandaService.getById(response.id_demanda_similar).then((demandaSimilarRes) => {
+          setDemandaSimilar(demandaSimilarRes.content[0]);
+          setModalSimilaridade(true);
+        })
       }
     })
   };
@@ -452,6 +458,7 @@ const BarraProgressaoDemanda = () => {
         open={modalSimilaridade}
         setOpen={setModalSimilaridade}
         criarSemVerificacao={criarDemandaSemVerificacao}
+        dados={demandaSimilar}
       />
 
       {carregamentoDemanda ? (
