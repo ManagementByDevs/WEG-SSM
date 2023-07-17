@@ -530,7 +530,7 @@ const DetalhesAta = (props) => {
                         DateService.getTodaysDateUSFormat(
                           ata.dataReuniao,
                           texts.linguagem,
-                          "ata"
+                          "outro"
                         )
                     );
                   }}
@@ -541,7 +541,7 @@ const DetalhesAta = (props) => {
                     {DateService.getTodaysDateUSFormat(
                       ata.dataReuniao,
                       texts.linguagem,
-                      "ata"
+                      "outro"
                     )}
                   </Typography>
                 </Typography>

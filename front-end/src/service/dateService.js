@@ -92,14 +92,14 @@ class DateService {
    * Retona data passada por parâmetro formatada no padrão americano
    * @returns Data no padrão americano
    */
-  getTodaysDateUSFormat(date, linguagem, onde) {
+  getTodaysDateUSFormat(date, linguagem, forma) {
     let newDate;
     let dd;
     let mm;
     let yyyy;
     let hora;
     let minutos;
-    if (onde == "ata") {
+    if (forma == "outro") {
       const dateParts = date.split(/[T.]/);
       const dateFormatted = `${dateParts[0]} ${dateParts[1]}`;
       newDate = new Date(dateFormatted);

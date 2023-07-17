@@ -222,7 +222,7 @@ const Notificacao = (props) => {
 
   /** Formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd */
   const formatDate = (fullDate) => {
-    return DateService.getTodaysDateUSFormat(fullDate, texts.linguagem, "ata");
+    return DateService.getTodaysDateUSFormat(fullDate, texts.linguagem, "outro");
   };
 
   /** Atualiza o estado da linha ao clicar no checkbox */
