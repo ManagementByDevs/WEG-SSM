@@ -323,7 +323,8 @@ const SliderBar = (props) => {
           ) : (
             props.valorAba > 4 &&
             opcao.id != 1 &&
-            opcao.id != 2 && (
+            opcao.id != 2 && 
+            opcao.id != 5 && (
               <SideBarOrdenacao
                 key={"Ordenação" + index}
                 opcao={opcao}
