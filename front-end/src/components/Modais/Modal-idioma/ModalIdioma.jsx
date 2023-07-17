@@ -205,10 +205,10 @@ const IdiomaModal = () => {
           <Typography
             fontSize={FontConfig?.default}
             onClick={() => {
-              lerTexto("中国人");
+              lerTexto("中文");
             }}
           >
-            中国人
+            中文
           </Typography>
         </MenuItem>
 
