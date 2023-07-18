@@ -150,6 +150,7 @@ const FormularioPropostaProposta = (props) => {
         tipoBeneficio: "",
         moeda: "",
         visible: true,
+        valor_mensal: "0,00"
       };
 
       try {

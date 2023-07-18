@@ -307,11 +307,11 @@ const DetalhesDemanda = (props) => {
     BeneficioService.post().then((response) => {
       setBeneficiosNovos([
         ...beneficiosNovos,
-        { ...response, tipoBeneficio: "", moeda: "", visible: true },
+        { ...response, tipoBeneficio: "", moeda: "", valor_mensal: "0,00", visible: true },
       ]);
       setBeneficios([
         ...beneficios,
-        { ...response, tipoBeneficio: "", moeda: "", visible: true },
+        { ...response, tipoBeneficio: "", moeda: "", valor_mensal: "0,00", visible: true },
       ]);
     });
   };
@@ -402,8 +402,8 @@ const DetalhesDemanda = (props) => {
     for (const beneficio of listaBeneficios) {
       if (beneficio.visible) {
         let beneficioNovo = { ...beneficio };
-        
-        if(beneficio.valor_mensal) {
+
+        if (beneficio.valor_mensal) {
           beneficioNovo.valor_mensal = parseFloat(beneficioNovo.valor_mensal.toString().replace(",", "."));
         }
         BeneficioService.put(beneficioNovo).then((response) => { });
